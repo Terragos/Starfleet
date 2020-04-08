@@ -5,6 +5,8 @@ public class StarShip {
 	String race;
 	int speed;
 	
+	//hello
+	
 	public void move() {
 		System.out.println("I am moving.");
 	}
