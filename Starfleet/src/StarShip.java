@@ -6,6 +6,6 @@ public class StarShip {
 	int speed;
 	
 	public void move() {
-		
+		System.out.println("I am moving.");
 	}
 }
