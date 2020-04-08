@@ -42,6 +42,8 @@ public class Driver {
 			totalDieRoll += dieRoll;
 		}
 		
+		//Hello World
+		
 		if(numOfDice == 0) {
 			System.out.println("Please use more than zero dice rolls.");
 		}
