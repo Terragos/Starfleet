@@ -131,6 +131,24 @@ public class Driver {
 		return totalDieRoll;
 	}
 	
+	public static void waitForSpace() {
+		
+		Scanner keyboard = new Scanner(System.in);  // Create a Scanner object
+	    System.out.println("Waiting for space...");
+
+	    boolean notSpace = true;
+	    
+	    while(notSpace) {
+		    String inputString = keyboard.nextLine();  // Read user input
+		    
+		    if(inputString.contentEquals(" ")) {
+		    	notSpace = false;
+		    	System.out.println("Space was pressed!");
+		    }
+	    }
+	   
+		  
+	}
 	
 
 }
