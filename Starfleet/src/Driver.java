@@ -24,6 +24,7 @@ public class Driver {
 			} else if(input.equalsIgnoreCase("D")) {
 				DamageAllocation.DamageAlloc();
 			} else if(input.equalsIgnoreCase("Q")) {
+				System.out.println("Exiting Program...");
 				break;
 			} else {
 				System.out.println("Invalid Entry");
