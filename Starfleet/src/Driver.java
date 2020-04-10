@@ -6,7 +6,7 @@ public class Driver {
 	/* MAIN Method */
 	public static void main(String[] args) 
 	{
-		int numImpulses=0;
+		int numImpulses = 0;
 		
 		// Die Roll is equal to the die roll that was printed.
 		// Do not need to use but we do have access to it here.
@@ -14,16 +14,34 @@ public class Driver {
 		
 		/* Making an Object of type Starship */
 		StarShip s1 = new StarShip();
-		s1.name = "FED-CV";
-		s1.speed = 2;
+		System.out.print("Ship 1 Name: ");
+		Scanner scan1 = new Scanner(System.in);
+		String sn1 = scan1.next();
+		s1.name = sn1;
+		System.out.print("Ship 1 Speed:");
+		Scanner scan2 = new Scanner(System.in);
+		int i1 = scan2.nextInt();
+		s1.speed = i1;
 
 		StarShip s2 = new StarShip();
-		s2.name = "KLI-D7";
-		s2.speed = 5;
+		System.out.print("Ship 2 Name: ");
+		Scanner scan3 = new Scanner(System.in);
+		String sn2 = scan3.next();
+		s2.name = sn2;
+		System.out.print("Ship 3 Speed:");
+		Scanner scan4 = new Scanner(System.in);
+		int i2 = scan4.nextInt();
+		s2.speed = i2;
 
 		StarShip s3 = new StarShip();
-		s3.name = "GOR-CA";
-		s3.speed = 24;
+		System.out.print("Ship 3 Name: ");
+		Scanner scan5 = new Scanner(System.in);
+		String sn3 = scan5.next();
+		s3.name = sn3;
+		System.out.print("Ship 3 Speed:");
+		Scanner scan6 = new Scanner(System.in);
+		int i3 = scan6.nextInt();
+		s3.speed = i3;
 
 		if (s1.speed>numImpulses) {
 			numImpulses = s1.speed;
@@ -37,13 +55,25 @@ public class Driver {
 			numImpulses = s3.speed;
 		}
 		
-		s1.spi = (double)s1.speed / numImpulses;
-		s2.spi = (double)s2.speed / numImpulses;
-		s3.spi = (double)s3.speed / numImpulses;
+		s1.spi = ((double)s1.speed / numImpulses) + 0.000001;  // + 0.000001 fudge factor
+		s2.spi = ((double)s2.speed / numImpulses) + 0.000001;
+		s3.spi = ((double)s3.speed / numImpulses) + 0.000001;
 
 		System.out.println("================================================");
-		System.out.println("Ship Speeds");
-		System.out.println(s1.name + " = " + s1.speed + "      " + s2.name + " = " + s2.speed + "      "+ s3.name + " = " + s3.speed);
+		System.out.println("                   Ship Speeds");
+		System.out.println("------------------------------------------------");
+		System.out.println("              " + s1.name + "    " + s2.name + "    " + s3.name);
+		System.out.print("                " + s1.speed);
+		for (int x = 1; x<=s1.name.length()+2; x++) {
+			System.out.print(" ");
+		}
+		System.out.print(s2.speed);
+		for (int x = 1; x<=s2.name.length()+3; x++) {
+			System.out.print(" ");
+		}
+		System.out.println(s3.speed);
+		System.out.println("================================================");
+		System.out.println("          Press RETURN for next Impulse");		
 		System.out.println("================================================");
 		System.out.println();
 
@@ -64,7 +94,10 @@ public class Driver {
 			if ((((s1.distrv * 10) - (s1.spi * 10)) / 10) < x1) {
 				System.out.print("   " + s1.name);
 				} else {
-					System.out.print("         ");
+					System.out.print("    ");
+					for (int x = 1; x<=s1.name.length()-1; x++) {
+					System.out.print(" ");
+				}
 			}
 		
 			int x2 = (int)s2.distrv;
@@ -72,7 +105,10 @@ public class Driver {
 			if ((((s2.distrv * 10) - (s2.spi * 10)) / 10) < x2) {
 				System.out.print("    " + s2.name);
 				} else {
-					System.out.print("          ");
+					System.out.print("     ");
+					for (int x = 1; x<=s2.name.length()-1; x++) {
+					System.out.print(" ");
+				}
 			}
 		
 			int x3 = (int)s3.distrv;
@@ -80,19 +116,26 @@ public class Driver {
 			if ((((s3.distrv * 10) - (s3.spi * 10)) / 10) < x3) {
 				System.out.print("    " + s3.name);
 				} else {
-					System.out.print("          ");
+					System.out.print("    ");
+					for (int x = 1; x<=s3.name.length()-1; x++) {
+					System.out.print(" ");
+				}
 			}
-	
-			System.out.println();
-			System.out.println();
+
+			//  Print distance so far to check
+			//  System.out.print(s1.distrv + "    " + s2.distrv + "    " + s3.distrv);
+			
+			//  System.out.println();
+			//  System.out.println();
 	
 			//  Need "WAIT FOR SPACEBAR" CODE
 			//  that does NOT type letters on the screen
 			//  or  show hard returns (causes skipped lines)
 			
+			waitForSpace();
 			
-			// Scanner console = new Scanner(System.in);
-			// String guess = console.next();
+			//  Scanner console = new Scanner(System.in);
+			//  String guess = console.next();
 			
 			//  try {
 			//  	System.in.read();
@@ -131,24 +174,17 @@ public class Driver {
 		return totalDieRoll;
 	}
 	
-	public static void waitForSpace() {
-		
-		Scanner keyboard = new Scanner(System.in);  // Create a Scanner object
-	    System.out.println("Waiting for space...");
-
-	    boolean notSpace = true;
-	    
-	    while(notSpace) {
-		    String inputString = keyboard.nextLine();  // Read user input
-		    
-		    if(inputString.contentEquals(" ")) {
-		    	notSpace = false;
-		    	System.out.println("Space was pressed!");
-		    }
-	    }
-	   
-		  
+	/* Wait for Space */
+	public static void waitForSpace () {
+		Scanner keyboard = new Scanner(System.in);  //  Create a Scanner object
+		boolean notSpace = true;
+		while (notSpace) {
+			String inputString = keyboard.nextLine();  //  Read user input
+			if (inputString.contentEquals("")) {
+				notSpace = false;
+			}
+		}
+			
 	}
-	
 
 }
