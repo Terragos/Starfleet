@@ -3,7 +3,7 @@ import java.util.Scanner;
 
 public class PhaseCalculation {
 	
-	public static int NumShips = 0;
+	public static int numShips = 0;
 	public static Starship[] starships;
 	public static int numImpulses = 0;
 	
@@ -12,74 +12,124 @@ public class PhaseCalculation {
 		
 		System.out.println("How many ships?");
 		int shipsNumInput = keyboard.nextInt();
-		NumShips = shipsNumInput;
+		numShips = shipsNumInput;
 		
-		starships = new Starship[NumShips];
+		starships = new Starship[numShips];
 		
-		for(int i = 0; i < NumShips; i++) {
+		for(int i = 0; i < numShips; i++) {
 
 			Starship star = new Starship();		
-			System.out.print("Ship " + (i+1) + " Name: ");
+			System.out.print("Ship " + (i+1) + " Name : ");
 			String nameInput = keyboard.next();
 			star.name = nameInput;
 			System.out.print("Ship " + (i+1) + " Speed: ");
 			int speedInput = keyboard.nextInt();
 			star.speed = speedInput;
 			
+			System.out.println();
+			
 			starships[i] = star;
+			
 		}
 	
-		// NumImpulses is basically just the max speed among ships
-		for(int i = 0; i < NumShips; i++) {	
+		// numImpulses is basically just the max speed among ships
+		for(int i = 0; i < numShips; i++) {	
 			if (starships[i].speed > numImpulses) {
 				numImpulses = starships[i].speed;
 			}
 		}
 	
-		for(int i = 0; i < NumShips; i++) {	
+		for(int i = 0; i < numShips; i++) {	
 			starships[i].spi = (double) starships[i].speed / (double) numImpulses;			
 		}
 		
-	/*
-		System.out.println("================================================");
-		System.out.println("                   Ship Speeds");
-		System.out.println("------------------------------------------------");
-		System.out.println("              " + s1.name + "    " + s2.name + "    " + s3.name);
-		System.out.print("                " + s1.speed);
-		for (int x = 1; x<=s1.name.length()+2; x++) {
+		
+		System.out.print("=============");
+		for(int k = 0; k < numShips; k++) {	
+			for(int j = 0; j < (starships[k].name.length()); j++) {
+			System.out.print("=");
+			}
+			System.out.print("====");
+		}
+		System.out.println("=====");
+		
+		int shipTotal = 0;
+		for (int i = 0; i <= numShips-1; i++) {
+			shipTotal = shipTotal + starships[i].name.length() + 4;
+		}
+
+		for (int i = 1; i <= ((18 + shipTotal)-11)/2; i++) {
 			System.out.print(" ");
 		}
-		System.out.print(s2.speed);
-		for (int x = 1; x<=s2.name.length()+3; x++) {
-			System.out.print(" ");
+		System.out.println("SHIP SPEEDS");
+		
+		System.out.print("-------------");
+		for(int k = 0; k < numShips; k++) {	
+			for(int j = 0; j < (starships[k].name.length()); j++) {
+			System.out.print("-");
+			}
+			System.out.print("----");
 		}
-		System.out.println(s3.speed);
-		System.out.println("================================================");
-		System.out.println("          Press RETURN for next Impulse");		
-		System.out.println("================================================");
+		System.out.println("-----");
+
+		System.out.print("               ");
+	 	for (int i = 0; i <= numShips - 1; i++) {
+	 		System.out.print(starships[i].name + "    ");
+	 	}
+
 		System.out.println();
+		
+		System.out.print("=========");
+		for(int k = 0; k < numShips; k++) {	
+			for(int j = 0; j < (starships[k].name.length()); j++) {
+			System.out.print("=");
+			}
+			System.out.print("====");
+		}
+		System.out.println("=========");
+		
+		for (int i = 1; i <= ((18 + shipTotal)-29)/2; i++) {
+			System.out.print(" ");
+		}
+		System.out.println("Press RETURN for next Impulse");		
+		
+		System.out.print("=============");
+		
+		for(int k = 0; k < numShips; k++) {	
+			for(int j = 0; j < (starships[k].name.length()); j++) {
+			System.out.print("=");
+			}
+			System.out.print("====");
+		}
+		System.out.print("=====");
+		
+		System.out.println();
+
 	
-	*/
-	
-		for(int i = 1; i <= numImpulses; i++) {	
+		for(int i = 1; i <= numImpulses; i++) {
 			if (i < 10) {
-				System.out.print("Impulse 0" + i + ": ");
+				System.out.print("Impulse 0" + i + ":    ");
 			} else {
-				System.out.print("Impulse " + i + ": ");
+				System.out.print("Impulse " + i + ":    ");
 			}
 
-			for(int k = 0; k < NumShips; k++) {	
+			for(int k = 0; k < numShips; k++) {	
 				starships[k].distrv += starships[k].spi;		
 				if(starships[k].distrv - 1 >= -.001) {
 					starships[k].distrv--;
-					System.out.print(starships[k].name + " ");
+					System.out.print(starships[k].name + "    ");
 				}else {
-					for(int j = 0; j < (starships[k].name.length() + 1); j++) {
+					for(int j = 0; j < (starships[k].name.length()); j++) {
 						System.out.print(" ");
 					}
+					System.out.print("    ");
 				}
 			}
-			waitForSpace();		
+
+			System.out.println();
+			
+			waitForSpace();
+			
 		}  
 	}
 	
