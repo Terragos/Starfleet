@@ -1,4 +1,3 @@
-import java.util.Random;
 import java.util.Scanner;
 
 public class Driver {
@@ -10,13 +9,23 @@ public class Driver {
 		boolean cont = true;
 		
 		while(cont) {
-			System.out.println("What would you like to do?");
-			System.out.println("M for Movement Calculations");
-			System.out.println("W for Weapon Calculations");
-			System.out.println("D for Damage Calculations");
-			System.out.println("Q for Quit");
+			System.out.println("|==================================|");
+			System.out.println("|    STAR FLEET BATTLES UTILITY    |");
+			System.out.println("|==================================|");
+			System.out.println("|    What would you like to do?    |");
+			System.out.println("|==================================|");
+			System.out.println("| [M]ovement Impulse Calculations  |");
+			System.out.println("| [W]eapon Damage Calculations     |");
+			System.out.println("| [D]amage Allocation Calculations |");
+			System.out.println("|==================================|");
+			System.out.println("|              [Q]uit              |");
+			System.out.println("|==================================|");
 			
 			String input = keyboard.nextLine();
+
+			//  IS THERE SOMEWAY TO CLEAR THE SCREEN?
+			//  TO START IN THE TOP LEFT CORNER?
+
 			if(input.equalsIgnoreCase("M")) {
 				PhaseCalculation.PhaseCalc();
 			} else if(input.equalsIgnoreCase("W")) {
@@ -27,7 +36,6 @@ public class Driver {
 				System.out.println("Exiting Program...");
 				break;
 			} else {
-				System.out.println("Invalid Entry");
 				continue;
 			}
 			
