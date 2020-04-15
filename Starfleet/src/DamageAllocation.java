@@ -3,15 +3,21 @@ import java.util.Random;
 
 public class DamageAllocation {
 
-	public static void DamageAlloc() {
+	public static void DamageAlloc(int num) {
 		
 		System.out.println("================================================================");
 		System.out.println("               DAMAGE ALLOCATION CALCULATIONS");
 		System.out.println("================================================================");
 		
-		System.out.print("Number of Damage Points to Allocate: ");
-		Scanner damage = new Scanner(System.in);
-		int totalDamage = damage.nextInt();
+		int totalDamage = 0;
+		
+		if (num == -1) {
+			System.out.print("Number of Damage Points to Allocate: ");
+			Scanner damage = new Scanner(System.in);
+			totalDamage = damage.nextInt();
+		} else {
+			totalDamage = num;
+		}
 		
 		String systemName[] = { "Bridge", "Flag Bridge", "Sensor", "Damage Control", "Aft Hull", "Left Warp Engine", "Transporter", "Tractor Beam", "Shuttle", "Lab", "Front Hull", "Right Warp Engine", "Excess Damage",
 							    "Drone", "Phaser", "Impulse", "Left Warp Engine", "Right Warp Engine", "Aft Hull", "Shuttle", "Damage Control", "Center Warp Engine", "Lab", "Battery", "Phaser", "Excess Damage",
@@ -37,7 +43,7 @@ public class DamageAllocation {
 					      1, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0,
 					      1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0 };
 	
-		int dieRoll = rollDice(1, 143, true) - 1;
+		int dieRoll = rollDice(1, 143) - 1;
 		
 		System.out.println("");
 		System.out.println("Starting Chart Box (Random number 0-142): " + (dieRoll));
@@ -103,7 +109,7 @@ public class DamageAllocation {
 		waitForReturn();
 	}
 	/* rollDice */
-	public static int rollDice(int numOfDice, int numOfSides, boolean print)
+	public static int rollDice(int numOfDice, int numOfSides)
 	{
 		Random randomGenerator = new Random();
 		int dieRoll;
@@ -112,10 +118,6 @@ public class DamageAllocation {
 		for(int i = 0; i < numOfDice; i++) {
 			dieRoll = randomGenerator.nextInt(numOfSides) + 1;
 			totalDieRoll += dieRoll;
-		}
-		
-		if(numOfDice == 0) {
-			System.out.println("Please use more than zero dice rolls.");
 		}
 		
 		return totalDieRoll;
