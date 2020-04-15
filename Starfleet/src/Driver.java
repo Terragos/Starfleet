@@ -20,10 +20,10 @@ public class Driver {
 			System.out.println("|==================================|");
 			System.out.println("|              [Q]uit              |");
 			System.out.println("|==================================|");
-			
+					
 			String input = keyboard.nextLine();
 
-			//  IS THERE SOMEWAY TO CLEAR THE SCREEN?
+			//  IS THERE SOME WAY TO CLEAR THE SCREEN?
 			//  TO START IN THE TOP LEFT CORNER?
 
 			if(input.equalsIgnoreCase("M")) {
@@ -31,17 +31,16 @@ public class Driver {
 			} else if(input.equalsIgnoreCase("W")) {
 				WeaponsDamage.WeaponsDam();
 			} else if(input.equalsIgnoreCase("D")) {
-				DamageAllocation.DamageAlloc();
+				DamageAllocation.DamageAlloc(-1);
 			} else if(input.equalsIgnoreCase("Q")) {
 				System.out.println("Exiting Program...");
 				break;
 			} else {
-				continue;
+				System.out.println("Invalid entry. Try again.");
 			}
 			
 			System.out.println();
 			System.out.println();
 		}
 	}
-
 }
