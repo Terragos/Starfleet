@@ -3,18 +3,20 @@ import java.util.Random;
 
 public class DamageAllocation {
 
-	public static void DamageAlloc(int num) {
+	public static void DamageAlloc(int num) {   //  -1 coming from Main Menu Method / >0 coming from Weapons Damage Method
 		
-		System.out.println("================================================================");
-		System.out.println("               DAMAGE ALLOCATION CALCULATIONS");
-		System.out.println("================================================================");
+		System.out.println();
+		System.out.println();
+		System.out.println("|==============================================================|");
+		System.out.println("|               DAMAGE ALLOCATION PROCEDURE                    |");
+		System.out.println("|==============================================================|");
 		
 		int totalDamage = 0;
 		
 		if (num == -1) {
 			System.out.print("Number of Damage Points to Allocate: ");
-			Scanner damage = new Scanner(System.in);
-			totalDamage = damage.nextInt();
+			int damage = (Driver.getNumber(1, 1000));
+			totalDamage = damage;
 		} else {
 			totalDamage = num;
 		}
@@ -43,20 +45,19 @@ public class DamageAllocation {
 					      1, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0,
 					      1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0 };
 	
-		int dieRoll = rollDice(1, 143) - 1;
+		int chartspot = ((rollDice(1, 11) - 1) * 13);
 		
-		System.out.println("");
-		System.out.println("Starting Chart Box (Random number 0-142): " + (dieRoll));
+		System.out.println();
 		System.out.println("================================================================");
 		System.out.println("Press RETURN to acknowledge that system destroyed");
 		System.out.println("Press \"N\" if NO system of that type is available to be destroyed");
+		System.out.println("----------------------------------------------------------------");
+		System.out.println("Allocating " + totalDamage + " points of damage");
 		System.out.println("================================================================");
 		System.out.println("Damage\tSystem Name");
 		System.out.println("Count");
 		System.out.println("================================================================");
 		
-		int chartspot = dieRoll;
-
 		for(int s = 1; s<=totalDamage; s++)
 		{
 			if (chartspot <= 142) {
@@ -108,7 +109,9 @@ public class DamageAllocation {
 		
 		waitForReturn();
 	}
-	/* rollDice */
+	
+// ROLL DICE METHOD
+	
 	public static int rollDice(int numOfDice, int numOfSides)
 	{
 		Random randomGenerator = new Random();
@@ -123,7 +126,8 @@ public class DamageAllocation {
 		return totalDieRoll;
 	}
 
-	/* Wait for Return */
+// WAIT FOR RETURN
+
 	public static void waitForReturn () {
 		Scanner keyboard = new Scanner(System.in);  //  Create a Scanner object
 		boolean notSpace = true;
@@ -135,5 +139,4 @@ public class DamageAllocation {
 		}
 			
 	}
-	
 }
