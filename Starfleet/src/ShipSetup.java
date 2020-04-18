@@ -14,7 +14,7 @@ public class ShipSetup {
 			System.out.println("|============================================================|");
 			System.out.println();
 
-			SortShips();
+			SortShips();															// Always SORT ships before printing to screen
 			
 			System.out.println("     NAME\tSPEED\tTURN MODE");    // PRINT MODIFIED LIST OF SHIPS TO SCREEN
 			System.out.println();
