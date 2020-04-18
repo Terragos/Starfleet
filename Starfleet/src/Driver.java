@@ -206,7 +206,7 @@ public class Driver {
 		String userInput = "";					//  Initialize string
 
 		int intFromString = -1;
-		
+		/*
 		while(intFromString < 0) {
 			userInput = keyboard.nextLine();
 			try {
@@ -218,11 +218,29 @@ public class Driver {
 				}
 			}
 		}
+		*/
 		
-		if (intFromString <= small || intFromString >= big) {
-			System.out.print("[" + small + "-" + big + "]");		//  Remind user what number range is being looked for
+		int input = 0;
+		boolean cont = true;
+		
+		while(cont) {
+			try {
+				input = keyboard.nextInt();
+				if (input <= small || input > big) {
+					System.out.print("[" + (small+1) + "-" + big + "]"); //  Remind user what number range is being looked for
+				} else { 
+					cont = false;
+				}
+			} catch (Exception e) {		
+				System.out.print("[" + (small+1) + "-" + big + "]");	 // Remind user what number range is being looked for
+				input = 0; // This line and 
+				keyboard.nextLine(); // this line prevent a very bad infinite loop
+			}
 		}
-		return intFromString;
+		
+		if(input == 0) {System.out.println("??");}
+		
+		return input;
 	}
 	
 //	public static void StringToInteger() {                               //  EXMAPLE OF ERROR CATCH
