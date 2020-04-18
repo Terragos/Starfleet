@@ -132,17 +132,6 @@ public class ShipSetup {
 					Driver.starships[49] = Driver.starships[y];
 					Driver.starships[y] = Driver.starships[y+1];
 					Driver.starships[y+1] = Driver.starships[49];
-					
-//					int tempSpeed = Driver.starships[y].speed;
-//					String tempTurnMode = Driver.starships[y].turnMode;
-//					double tempSpi = Driver.starships[y].spi;
-//					double tempDisTrv = Driver.starships[y].distrv;
-//					
-//					Driver.starships[y].name = Driver.starships[y+1].name; 
-//					Driver.starships[y].speed = Driver.starships[y+1].;
-//					Driver.starships[y].turnMode = Driver.starships[y+1].turnMode;
-//					Driver.starships[y].spi = Driver.starships[y+1].spi;
-//					Driver.starships[y].distrv = Driver.starships[y+1].distrv;
 				}
 			}
 		}
