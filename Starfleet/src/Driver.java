@@ -1,11 +1,12 @@
 import java.util.Scanner;
 
+//import Starship.Race;
+
 public class Driver {
 
 	public static int numImpulses = 0;
 	public static int numShips = 0;
 	public static Starship[] starships;
-	
 
 // MAIN Method
 	
@@ -47,7 +48,6 @@ public class Driver {
 					System.out.print("Ship " + (numShips + 1) + " Speed    : ");
 					int speedInput = getNumber(0, 32);
 					star.speed = speedInput;
-					System.out.println();
 
 					System.out.print("Ship " + (numShips + 1) + " Turn Mode: ");
 					String turnModeInput = getInput("AABCDEFXY");
@@ -69,7 +69,7 @@ public class Driver {
 		star.turnMode = "D";
 		star.speed = 5;
 		starships[0] = star;
-		
+
 		star = new Starship();
 		star.name = "Kli-D7";
 		star.turnMode = "E";
@@ -116,11 +116,12 @@ public class Driver {
 		star.name = "Fed-CV 3";
 		star.turnMode = "C";
 		star.speed = 8;
-		starships[8] = star;		
+		starships[8] = star;
+		
 		star = new Starship();
-		star.name = "Kli-F5";
-		star.turnMode = "C";
-		star.speed = 21;
+		star.name = "Kli-DN";
+		star.turnMode = "E";
+		star.speed = 8;
 		starships[9] = star;
 		
 		star = new Starship();
@@ -152,11 +153,12 @@ public class Driver {
 			System.out.println("|        [I]mpulse Movement Procedure                        |");
 			System.out.println("|        [W]eapon Damage Procedure                           |");
 			System.out.println("|        [D]amage Allocation Procedure                       |");
+			System.out.println("|        [S]shipyard                                         |");
 			System.out.println("|============================================================|");
 			System.out.println("|                            [Q]uit                          |");
 			System.out.println("|============================================================|");
 
-			String userInput = getInput("MIWDQmiwdq");
+			String userInput = getInput("MIWDQS");
 			
 			int damageTotal = 0;
 			if(userInput.equalsIgnoreCase("M")) {
@@ -167,6 +169,8 @@ public class Driver {
 				WeaponsDamage.WeaponsDam(-1);
 			} else if(userInput.equalsIgnoreCase("D")) {
 				DamageAllocation.DamageAlloc(-1);
+			} else if(userInput.equalsIgnoreCase("S")) {
+				Shipyard.GotoShipyard(-1);
 			} else if(userInput.equalsIgnoreCase("Q")) {
 				System.out.println("Exiting Program...");
 				break;
@@ -226,7 +230,7 @@ public class Driver {
 		while(cont) {
 			try {
 				input = keyboard.nextInt();
-				if (input <= small || input >= big) {
+				if (input < small || input > big) {
 					System.out.print("[" + (small+1) + "-" + big + "]"); //  Remind user what number range is being looked for
 				} else { 
 					cont = false;
@@ -238,29 +242,9 @@ public class Driver {
 			}
 		}
 		
+//		if(input == 0) {System.out.println("??");}
+		
 		return input;
 	}
 	
-//	public static void StringToInteger() {                               //  EXMAPLE OF ERROR CATCH
-//		System.out.println("Enter the dimensions of a rectangle");
-//		System.out.print("L:");
-//		Scanner s = new Scanner(System.in);
-//		try{
-//			// convert the string read from the scanner into Integer type
-//			Integer length = Integer.parseInt(s.nextLine());
-//			System.out.print("W:");
-//			s = new Scanner(System.in);
-//			Integer width = Integer.parseInt(s.nextLine());
-//			// Printing the area of rectangle
-//			System.out.println("Area of rectangle:"+width*length);
-//		}
-//		catch(NumberFormatException ne){
-//			System.out.println("Invalid Input");
-//		}
-//		finally{
-//			s.close();
-//		}
-//
-//	}
-
 }
