@@ -2,6 +2,8 @@ import java.util.Scanner;
 
 public class WeaponsDamage {
 	
+	public final static int MAXDIST = 300;
+	
 	public static void WeaponsDam (int impulseNumber) {   //  If yes > 0 then in the middle of an Impulse Movement Procedure
 
 		int totalDamage = 0;
@@ -14,12 +16,12 @@ public class WeaponsDamage {
 				System.out.println("|==========================================================================|");
 				System.out.println("|                         WEAPONS DAMAGE PROCEDURE                         |");
 				System.out.println("|==========================================================================|");
-				System.out.println("|  Type [1] Phaser   [P]hoton Torpedo [S/P/O]     [D]isruptor Bolt         |");
+				System.out.println("|  Type [1] Phaser   [P]hoton Torpedo [S/P/O]     Disruptor [B]olt         |");
 				System.out.println("|  Type [2] Phaser   P[L]asma Torpedo [R/2/G/F]   [T]ractor-Repulsor Beam  |");
 				System.out.println("|  Type [3] Phaser   [F]usion Beam [S/O/X]                                 |");
 				System.out.println("|  Type [4] Phaser   [H]ellbore [S/O/D]                                    |");
 				System.out.println("|==========================================================================|");
-				System.out.println("|                     [Q]uit and go Damage Allocation                      |");
+				System.out.println("|                        Go to [D]amage Allocation                         |");
 				if (impulseNumber == -1) {
 					System.out.println("|                          [R]eturn to Main Menu                           |");
 				} else {
@@ -39,7 +41,7 @@ public class WeaponsDamage {
 			int general = 0;
 			int specific = 0;
 			int shieldDamage = 0;
-			if (weaponInput.equalsIgnoreCase("Q")) {			        
+			if (weaponInput.equalsIgnoreCase("D")) {			        
 				System.out.println();
 				System.out.println("(GSR = energy allocated / 2)");				//  Apply Damage to 3 shield types first
 				System.out.print("General Shield Reinforcement : ");
@@ -59,8 +61,6 @@ public class WeaponsDamage {
 				}
 
 			} else if(weaponInput.equalsIgnoreCase("R")) {
-				//  Quit and Return to Main Menu
-				System.out.println("Exiting Program...");
 				break;
 			}
 
@@ -110,9 +110,9 @@ public class WeaponsDamage {
 			}
 				
 			System.out.print("Distance: ");
-			int distanceInput = keyboard.nextInt();
+			int distanceInput = Driver.getNumber(-1, MAXDIST);
 			System.out.print("Number:   ");
-			int numberInput = keyboard.nextInt();
+			int numberInput = Driver.getNumber(-1, 200);
 			System.out.println();
 
 //	String weaponTypeInput;
@@ -141,7 +141,7 @@ public class WeaponsDamage {
 			} else if(weaponInput.equalsIgnoreCase("O")) {
 				totalDamage = fusionBeamOverloaded(typeInput, numberInput, distanceInput, totalDamage);		
 
-			} else if(weaponInput.equalsIgnoreCase("D")) {
+			} else if(weaponInput.equalsIgnoreCase("B")) {
 				totalDamage = disruptorBolt(numberInput, distanceInput, totalDamage);		
 
 			} else if(weaponInput.equalsIgnoreCase("T")) {

@@ -4,6 +4,8 @@ import java.awt.Color;
 
 public class PhaseCalculation {
 	
+	public static Scanner keyboard = new Scanner(System.in);
+	
 	public static void PhaseCalc() {
 
 		System.out.println();
@@ -17,16 +19,16 @@ public class PhaseCalculation {
 		
 		System.out.println("     NAME\tSPEED\tTURN MODE");    // PRINT MODIFIED LIST OF SHIPS TO SCREEN
 		System.out.println();
-		for (int i = 1; i <= Driver.numShips; i++) {
+		for (int i = 1; i <= Driver.currentGameYard.numShips; i++) {
 			if (i <= 9) {
 				System.out.print(" ");
 			}
-			if (Driver.starships[i-1].name.length() <=3 ) {
-				Driver.starships[i-1].name = Driver.starships[i-1].name + "   ";
+			if (Driver.currentGameYard.list[i-1].name.length() <=3 ) {
+				Driver.currentGameYard.list[i-1].name = Driver.currentGameYard.list[i-1].name + "   ";
 			}
-			System.out.print(i + ")  " + Driver.starships[i-1].name);
-			System.out.print("\t" + Driver.starships[i-1].speed + "\t" + Driver.starships[i-1].turnMode);
-			if (Driver.starships[i-1].speed == 0) {
+			System.out.print(i + ")  " + Driver.currentGameYard.list[i-1].name);
+			System.out.print("\t" + Driver.currentGameYard.list[i-1].speed + "\t" + Driver.currentGameYard.list[i-1].turnMode);
+			if (Driver.currentGameYard.list[i-1].speed == 0) {
 				System.out.print("\t<--- Speed is ZERO");
 			}
 			System.out.println();
@@ -49,13 +51,13 @@ public class PhaseCalculation {
 	
 		Driver.numImpulses = 32;
 		
-		for(int i = 0; i < Driver.numShips; i++) {	
-			Driver.starships[i].spi = (double) Driver.starships[i].speed / (double) Driver.numImpulses;			
+		for(int i = 0; i < Driver.currentGameYard.numShips; i++) {	
+			Driver.currentGameYard.list[i].spi = (double) Driver.currentGameYard.list[i].speed / (double) Driver.numImpulses;			
 		}
 		
 		System.out.print("=============");
-		for(int k = 0; k < Driver.numShips; k++) {	
-			for(int j = 0; j < (Driver.starships[k].name.length()); j++) {
+		for(int k = 0; k < Driver.currentGameYard.numShips; k++) {	
+			for(int j = 0; j < (Driver.currentGameYard.list[k].name.length()); j++) {
 			System.out.print("=");
 			}
 			System.out.print("====");
@@ -63,8 +65,8 @@ public class PhaseCalculation {
 		System.out.println("=================");
 		
 		int shipTotal = 0;
-		for (int i = 0; i <= Driver.numShips - 1; i++) {
-			shipTotal = shipTotal + Driver.starships[i].name.length() + 4;
+		for (int i = 0; i <= Driver.currentGameYard.numShips - 1; i++) {
+			shipTotal = shipTotal + Driver.currentGameYard.list[i].name.length() + 4;
 		}
 
 		for (int i = 1; i <= ((18 + shipTotal)-11)/2; i++) {   //  CENTERS TEXT
@@ -73,8 +75,8 @@ public class PhaseCalculation {
 		System.out.println("SHIP SPEEDS");
 		
 		System.out.print("-------------");
-		for(int k = 0; k < Driver.numShips; k++) {	
-			for(int j = 0; j < (Driver.starships[k].name.length()); j++) {
+		for(int k = 0; k < Driver.currentGameYard.numShips; k++) {	
+			for(int j = 0; j < (Driver.currentGameYard.list[k].name.length()); j++) {
 			System.out.print("-");
 			}
 			System.out.print("----");
@@ -82,16 +84,16 @@ public class PhaseCalculation {
 		System.out.println("-----------------");
 
 		System.out.print("Name:          ");
-	 	for (int i = 0; i <= Driver.numShips - 1; i++) {
-	 		System.out.print(Driver.starships[i].name + "    ");
+	 	for (int i = 0; i <= Driver.currentGameYard.numShips - 1; i++) {
+	 		System.out.print(Driver.currentGameYard.list[i].name + "    ");
 	 	}
 		System.out.println();
 
 		System.out.print("Min Hex to Turn: ");
-	 	for (int i = 0; i <= Driver.numShips - 1; i++) {
-	 		int HexMinToTurn = FindHexMinToTurn(Driver.starships[i].turnMode, Driver.starships[i].speed);
+	 	for (int i = 0; i <= Driver.currentGameYard.numShips - 1; i++) {
+	 		int HexMinToTurn = FindHexMinToTurn(Driver.currentGameYard.list[i].turnMode, Driver.currentGameYard.list[i].speed);
 	 		System.out.print(HexMinToTurn + "    ");
-	 		for (int k=1; k <= Driver.starships[i].name.length()-1; k++) {
+	 		for (int k=1; k <= Driver.currentGameYard.list[i].name.length()-1; k++) {
 	 			System.out.print(" ");
 	 		}
 	 	}
@@ -99,8 +101,8 @@ public class PhaseCalculation {
 		System.out.println();
 		
 		System.out.print("=========");
-		for(int k = 0; k < Driver.numShips; k++) {	
-			for(int j = 0; j < (Driver.starships[k].name.length()); j++) {
+		for(int k = 0; k < Driver.currentGameYard.numShips; k++) {	
+			for(int j = 0; j < (Driver.currentGameYard.list[k].name.length()); j++) {
 			System.out.print("=");
 			}
 			System.out.print("====");
@@ -119,8 +121,8 @@ public class PhaseCalculation {
 		System.out.println();
 		System.out.print("=============");
 		
-		for(int k = 0; k < Driver.numShips; k++) {	
-			for(int j = 0; j < (Driver.starships[k].name.length()); j++) {
+		for(int k = 0; k < Driver.currentGameYard.numShips; k++) {	
+			for(int j = 0; j < (Driver.currentGameYard.list[k].name.length()); j++) {
 			System.out.print("=");
 			}
 			System.out.print("====");
@@ -133,8 +135,8 @@ public class PhaseCalculation {
 		for(int i = 1; i <= Driver.numImpulses; i++) {
 			
 			int move = 0;
-			for(int m = 0; m < Driver.numShips; m++) {	
-				if(Driver.starships[m].distrv + Driver.starships[m].spi >= .999) {
+			for(int m = 0; m < Driver.currentGameYard.numShips; m++) {	
+				if(Driver.currentGameYard.list[m].distrv + Driver.currentGameYard.list[m].spi >= .999) {
 					move = move + 1;
 				}
 			} 
@@ -147,14 +149,14 @@ public class PhaseCalculation {
 					System.out.print("Impulse " + i + ":    ");
 				}
 			
-				for(int k = 0; k < Driver.numShips; k++) {	
-					Driver.starships[k].distrv += Driver.starships[k].spi;
+				for(int k = 0; k < Driver.currentGameYard.numShips; k++) {	
+					Driver.currentGameYard.list[k].distrv += Driver.currentGameYard.list[k].spi;
 	
-					if(Driver.starships[k].distrv - 1 >= -.001) {
-						Driver.starships[k].distrv--;
-						System.out.print(Driver.starships[k].name + "    ");
+					if(Driver.currentGameYard.list[k].distrv - 1 >= -.001) {
+						Driver.currentGameYard.list[k].distrv--;
+						System.out.print(Driver.currentGameYard.list[k].name + "    ");
 					} else {
-						for(int j = 0; j < (Driver.starships[k].name.length()); j++) {
+						for(int j = 0; j < (Driver.currentGameYard.list[k].name.length()); j++) {
 							System.out.print(" ");
 						}
 					System.out.print("    ");
@@ -170,8 +172,8 @@ public class PhaseCalculation {
 						cont3 = false;
 					} else if (userInput.equalsIgnoreCase("W")) {
 						WeaponsDamage.WeaponsDam(i);
-					} else if (userInput.equalsIgnoreCase("T")) {
-						AddTorpedo();
+					} else if (userInput.equalsIgnoreCase("T")) {						
+						AddOrRemoveTorpedo();
 					} else if (userInput.equalsIgnoreCase("D")) {
 						AddDrone();
 					} else if (userInput.equalsIgnoreCase("S")) {
@@ -183,11 +185,11 @@ public class PhaseCalculation {
 				
 				
 			} else {
-				for(int k = 0; k < Driver.numShips; k++) {	
-					Driver.starships[k].distrv += Driver.starships[k].spi;
+				for(int k = 0; k < Driver.currentGameYard.numShips; k++) {	
+					Driver.currentGameYard.list[k].distrv += Driver.currentGameYard.list[k].spi;
 	
-					if(Driver.starships[k].distrv - 1 >= -.001) {
-						Driver.starships[k].distrv--;
+					if(Driver.currentGameYard.list[k].distrv - 1 >= -.001) {
+						Driver.currentGameYard.list[k].distrv--;
 					} 
 				}
 			}
@@ -317,7 +319,7 @@ public class PhaseCalculation {
 			} else if (speed >= 27) {
 				numHexes = 5;
 			}
-		} else if (mode.equalsIgnoreCase("AA")) {
+		} else if (mode.equalsIgnoreCase("AA")) { 
 			if (speed <= 8) {
 				numHexes = 1;
 			} else if (speed >= 9 && speed <= 16) {
@@ -327,7 +329,7 @@ public class PhaseCalculation {
 			} else if (speed >= 25) {
 				numHexes = 4;
 			}
-		} else if (mode.equalsIgnoreCase("AAA")) {
+		} else if (mode.equalsIgnoreCase("Y")) {
 			if (speed <= 11) {
 				numHexes = 1;
 			} else if (speed >= 12 && speed <= 23) {
@@ -335,96 +337,67 @@ public class PhaseCalculation {
 			} else if (speed >= 24) {
 				numHexes = 3;
 			}			
-		} else if (mode.equalsIgnoreCase("AAAA")) {
+		} else if (mode.equalsIgnoreCase("X")) {
 			numHexes = 1;
 		}
 		return numHexes;
 	}
 	
-// ADD TORPEDO METHOD - ON-THE-FLY
+	// ADD TORPEDO METHOD - ON-THE-FLY
+	public static void AddOrRemoveTorpedo() {
+		int location = findTorpInCurrGameYard(); 
+		if(location != -1) {
+			Driver.currentGameYard.removeShipFromShipyard(location + 1);
+		}else {
+			Starship torp = new Starship(0, 32, "TORP");
+			Driver.currentGameYard.addShipToShipyard(torp);
+		}
+	}
 	
-	public static void AddTorpedo() {
-		Starship extra = new Starship();
-		Driver.starships[Driver.numShips] = extra;
-		Driver.numShips++;
-		Driver.starships[Driver.numShips-1].name = "Torp";
-		Driver.starships[Driver.numShips-1].turnMode = "X";
-		Driver.starships[Driver.numShips-1].speed = 32;
-		Driver.starships[Driver.numShips-1].distrv = 0;
-		Driver.starships[Driver.numShips-1].spi = 1;
+	public static int findTorpInCurrGameYard() {
+		
+		for(int i = 0; i < Driver.currentGameYard.numShips; i++) {
+			if(Driver.currentGameYard.list[i].name == "TORP") {
+				return i;
+			}
+		}
+		
+		return -1;
 	}
 
-// ADD DRONE METHOD - ON-THE-FLY
-
-	public static void AddDrone() {
-		Scanner keyboard = new Scanner(System.in);
-		
-		Starship extra = new Starship();
-		Driver.starships[Driver.numShips] = extra;
-		Driver.numShips++;
-
+	// ADD DRONE METHOD - ON-THE-FLY
+	public static void AddDrone() {		
 		System.out.print("Drone Name : ");
 		String droneName = keyboard.nextLine();
-		Driver.starships[Driver.numShips-1].name = droneName;
-//		Driver.starships[Driver.numShips-1].name = "Drone";
-
+		
 		System.out.print("Drone Speed: ");
-		int droneSpeed = Driver.getNumber(0, 32);
-		Driver.starships[Driver.numShips-1].speed = droneSpeed;
-//		Driver.starships[Driver.numShips-1].speed = 32;
+		int droneSpeed = Driver.getNumber(-1, 32);
 		
-		Driver.starships[Driver.numShips-1].turnMode = "X";
-		Driver.starships[Driver.numShips-1].distrv = 0;
-		Driver.starships[Driver.numShips-1].spi = (double)Driver.starships[Driver.numShips-1].speed / (double)32;
-		
-//		int speedInput = keyboard.nextInt();
-//		keyboard.nextLine(); // Just a dummy, empties the Keyboard Array
-//		
-//		Driver.starships[Driver.numShips-1].distrv = 0;
-//		Driver.starships[Driver.numShips-1].spi = Driver.starships[Driver.numShips-1].speed / 32;
+		Starship drone = new Starship(1, droneSpeed, droneName);
+		Driver.currentGameYard.addShipToShipyard(drone);
 	}
 
-// ADD SHUTTLE METHOD - ON-THE-FLY	
-	
-	public static void AddShuttle() {
-		Scanner keyboard = new Scanner(System.in);
-		
-		Starship extra = new Starship();
-		Driver.starships[Driver.numShips] = extra;
-		Driver.numShips++;
-
+	// ADD SHUTTLE METHOD - ON-THE-FLY	
+	public static void AddShuttle() {	
 		System.out.print("Shuttle Name : ");
 		String shuttleName = keyboard.nextLine();
-		Driver.starships[Driver.numShips-1].name = shuttleName;
-
-		System.out.print("Shuttle Speed: ");
-		int shuttleSpeed = Driver.getNumber(0, 32);
-		Driver.starships[Driver.numShips-1].speed = shuttleSpeed;
 		
-		Driver.starships[Driver.numShips-1].turnMode = "X";
-		Driver.starships[Driver.numShips-1].distrv = 0;
-		Driver.starships[Driver.numShips-1].spi = (double)Driver.starships[Driver.numShips-1].speed / (double)32;
+		System.out.print("Shuttle Speed: ");
+		int shuttleSpeed = Driver.getNumber(-1, 32);
+		
+		Starship shuttle = new Starship(2, shuttleSpeed, shuttleName);
+		Driver.currentGameYard.addShipToShipyard(shuttle);
 	}
 
-// ADD FIGHTER METHOD - ON-THE-FLY
-	
-	public static void AddFighter() {
-		Scanner keyboard = new Scanner(System.in);
-		
-		Starship extra = new Starship();
-		Driver.starships[Driver.numShips] = extra;
-		Driver.numShips++;
-
+	// ADD FIGHTER METHOD - ON-THE-FLY
+	public static void AddFighter() {		
 		System.out.print("Fighter Name : ");
 		String fighterName = keyboard.nextLine();
-		Driver.starships[Driver.numShips-1].name = fighterName;
-
-		System.out.print("Fighter Speed: ");
-		int fighterSpeed = Driver.getNumber(0, 32);
-		Driver.starships[Driver.numShips-1].speed = fighterSpeed;
 		
-		Driver.starships[Driver.numShips-1].turnMode = "X";
-		Driver.starships[Driver.numShips-1].distrv = 0;
-		Driver.starships[Driver.numShips-1].spi = (double)Driver.starships[Driver.numShips-1].speed / (double)32;
+		System.out.print("Fighter Speed: ");
+		int fighterSpeed = Driver.getNumber(-1, 32);
+		
+		Starship fighter = new Starship(2, fighterSpeed, fighterName);
+		Driver.currentGameYard.addShipToShipyard(fighter);
 	}	
 }
