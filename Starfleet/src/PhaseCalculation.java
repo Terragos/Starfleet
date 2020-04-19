@@ -1,5 +1,6 @@
 import java.util.Random;
 import java.util.Scanner;
+import java.awt.Color;
 
 public class PhaseCalculation {
 	
@@ -16,17 +17,21 @@ public class PhaseCalculation {
 		
 		System.out.println("     NAME\tSPEED\tTURN MODE");    // PRINT MODIFIED LIST OF SHIPS TO SCREEN
 		System.out.println();
-		for (int i = 0; i <= Driver.numShips-1; i++) {
-			if (i < 10) {
+		for (int i = 1; i <= Driver.numShips; i++) {
+			if (i <= 9) {
 				System.out.print(" ");
 			}
-			if (Driver.starships[i].name.length() <=3 ) {
-				Driver.starships[i].name = Driver.starships[i].name + "   ";
+			if (Driver.starships[i-1].name.length() <=3 ) {
+				Driver.starships[i-1].name = Driver.starships[i-1].name + "   ";
 			}
-			System.out.print((i+1) + ") " + Driver.starships[i].name);
-			System.out.println("\t" + Driver.starships[i].speed + "\t" + Driver.starships[i].turnMode); 
+			System.out.print(i + ")  " + Driver.starships[i-1].name);
+			System.out.print("\t" + Driver.starships[i-1].speed + "\t" + Driver.starships[i-1].turnMode);
+			if (Driver.starships[i-1].speed == 0) {
+				System.out.print("\t<--- Speed is ZERO");
+			}
+			System.out.println();
 		}
-		
+
 		System.out.println();
 		System.out.println("|============================================================|");
 		System.out.println("|      Do you need to modify the ship list in any way?       |");
