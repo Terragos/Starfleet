@@ -1,7 +1,7 @@
 
 public class Starship {
 
-	enum Race { FEDRATION, KLINGON, ROMULAN, EWOK }
+	enum Race { FEDERATION, KLINGON, ROMULAN, KZINTI, GORN, THOLIAN }
 	enum Type { DN, CA, CX, CL, TUG }
 	
 	//  Starship class
