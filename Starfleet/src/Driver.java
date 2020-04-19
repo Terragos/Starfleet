@@ -226,7 +226,7 @@ public class Driver {
 		while(cont) {
 			try {
 				input = keyboard.nextInt();
-				if (input <= small || input > big) {
+				if (input <= small || input >= big) {
 					System.out.print("[" + (small+1) + "-" + big + "]"); //  Remind user what number range is being looked for
 				} else { 
 					cont = false;
@@ -237,8 +237,6 @@ public class Driver {
 				keyboard.nextLine(); // this line prevent a very bad infinite loop
 			}
 		}
-		
-		if(input == 0) {System.out.println("??");}
 		
 		return input;
 	}

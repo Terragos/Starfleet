@@ -105,22 +105,6 @@ public class ShipSetup {
 				}
 			}
 			
-			/*
-			if (userInput.equalsIgnoreCase("R")) {
-				System.out.print("Remove which ship? [0 to cancel] ");
-				int removeInput = -1;
-				while (removeInput <= -1 || removeInput >= Driver.numShips+1) {		//  While the input is out of range, return -1
-					removeInput = Driver.getNumber(0, Driver.numShips);				//  Get a new input
-				}
-				if (removeInput >= 1 && removeInput <= Driver.numShips) {			//  If the input is in range
-					for (int n = removeInput; n <= Driver.numShips; n++) {			//  then move all ships above that space down 1
-						Driver.starships[n-1] = Driver.starships[n];
-					}
-					Driver.numShips--;												//  And reduce numShips by 1
-				}
-			}
-			*/
-			
 			if (userInput.equalsIgnoreCase("R")) {
 				System.out.print("Remove which ship? [0 to cancel] ");
 				int removeInput = -1;
