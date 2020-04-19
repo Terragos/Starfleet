@@ -9,6 +9,9 @@ public class ShipSetup {
 		
 		while(cont) {
 			System.out.println();
+			System.out.println();
+			System.out.println("|============================================================|");
+			System.out.println("|                  SHIP MODIFICATION MENU                    |");
 			System.out.println("|============================================================|");
 			System.out.println("|           Current ship, object and monster list:           |");
 			System.out.println("|============================================================|");
@@ -16,7 +19,7 @@ public class ShipSetup {
 
 			SortShips();															// Always SORT ships before printing to screen
 			
-			System.out.println("     NAME\tSPEED\tTURN MODE");    // PRINT MODIFIED LIST OF SHIPS TO SCREEN
+			System.out.println("     NAME\tSPEED\tTURN MODE");    					// PRINT MODIFIED LIST OF SHIPS TO SCREEN
 			System.out.println();
 			for (int i = 1; i <= Driver.numShips; i++) {
 				if (i <= 9) {
@@ -48,32 +51,39 @@ public class ShipSetup {
 
 			} else if (userInput.equalsIgnoreCase("A")) {
 			
-				boolean cont2 = true;
-				while(cont2) {
-					Starship star = new Starship();		
-					System.out.print("Ship " + (Driver.numShips + 1) + " Name     : ");
-			
-					String nameInput = keyboard.nextLine();
-					if (nameInput.contentEquals("")) {
-					//break;
-						cont2 = false;
-					} else {
-						star.name = nameInput;
-
-						System.out.print("Ship " + (Driver.numShips + 1) + " Speed    : ");
-						int speedInput = Driver.getNumber(0, 32);
-						star.speed = speedInput;
-//						System.out.println();
-
-						System.out.print("Ship " + (Driver.numShips + 1) + " Turn Mode: ");
-						String turnModeInput = Driver.getInput("AABCDEFXY");
-						star.turnMode = turnModeInput.toUpperCase();
-						System.out.println();
+				System.out.println("Would you like to add a ship [M]amually or from the [S]hipyard? ");
+				String userInput2 = Driver.getInput("MS");
+				
+				if (userInput2.equalsIgnoreCase("M")) {
+					boolean cont2 = true;
+					while(cont2) {
+						Starship star = new Starship();		
+						System.out.print("Ship " + (Driver.numShips + 1) + " Name     : ");
+				
+						String nameInput = keyboard.nextLine();
+						if (nameInput.contentEquals("")) {
+						//break;
+							cont2 = false;
+						} else {
+							star.name = nameInput;
+	
+							System.out.print("Ship " + (Driver.numShips + 1) + " Speed    : ");
+							int speedInput = Driver.getNumber(0, 32);
+							star.speed = speedInput;
+	//						System.out.println();
+	
+							System.out.print("Ship " + (Driver.numShips + 1) + " Turn Mode: ");
+							String turnModeInput = Driver.getInput("AABCDEFXY");
+							star.turnMode = turnModeInput.toUpperCase();
+							System.out.println();
+							
+							Driver.starships[Driver.numShips] = star;
 						
-						Driver.starships[Driver.numShips] = star;
-					
-						Driver.numShips++;
-					}	
+							Driver.numShips++;
+						}	
+					}
+				} else if (userInput2.equalsIgnoreCase("S")) {
+					Shipyard.GotoShipyard(1);
 				}
 
 			} else if (userInput.equalsIgnoreCase("M")) {
@@ -82,7 +92,7 @@ public class ShipSetup {
 				int modifyInput = -1;
 				while (modifyInput <= -1 || modifyInput >= Driver.numShips) {
 					modifyInput = Driver.getNumber(0, Driver.numShips);								//  Get number between 0 and numShips
-					if (modifyInput >=0 && modifyInput <= Driver.numShips) {						//  Checking for between 1 and numShips
+					if (modifyInput > 0 && modifyInput <= Driver.numShips) {						//  Checking for between 1 and numShips
 						System.out.print("[N]ame, [S]peed, [T]urn Mode or [A]ll? [0 to cancel] ");
 						String nameSpeedBoth = Driver.getInput("NSTA0");
 						if (nameSpeedBoth.equalsIgnoreCase("N") || nameSpeedBoth.equalsIgnoreCase("A")) {
@@ -104,6 +114,22 @@ public class ShipSetup {
 					}
 				}
 			}
+			
+			/*
+			if (userInput.equalsIgnoreCase("R")) {
+				System.out.print("Remove which ship? [0 to cancel] ");
+				int removeInput = -1;
+				while (removeInput <= -1 || removeInput >= Driver.numShips+1) {		//  While the input is out of range, return -1
+					removeInput = Driver.getNumber(0, Driver.numShips);				//  Get a new input
+				}
+				if (removeInput >= 1 && removeInput <= Driver.numShips) {			//  If the input is in range
+					for (int n = removeInput; n <= Driver.numShips; n++) {			//  then move all ships above that space down 1
+						Driver.starships[n-1] = Driver.starships[n];
+					}
+					Driver.numShips--;												//  And reduce numShips by 1
+				}
+			}
+			*/
 			
 			if (userInput.equalsIgnoreCase("R")) {
 				System.out.print("Remove which ship? [0 to cancel] ");
