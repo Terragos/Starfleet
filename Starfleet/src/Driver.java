@@ -14,48 +14,90 @@ public class Driver {
 		Scanner keyboard = new Scanner(System.in);
 		boolean cont = true;
 
-		System.out.println("|============================================================|");
-		System.out.println("|                 STAR FLEET BATTLES UTILITY                 |");
-		System.out.println("|============================================================|");
-		System.out.println("|       Java Code by D. Brian Weese and Harrison Weese       |");
-		System.out.println("|============================================================|");
+		System.out.println("|==============================================================================|");
+		System.out.println("|                         STAR FLEET BATTLES UTILITY                           |");
+		System.out.println("|==============================================================================|");
+		System.out.println("|              Java Code by Harrison Weese and D. Brian Weese                  |");
+		System.out.println("|==============================================================================|");
 		System.out.println();
 		System.out.println();
-		System.out.print("Would you like to do an initial setup of ships, objects and/or monsters for the game? [Y][N] ");
-		
-		String doSetup = getInput("YN");
-		
-		if (doSetup.equalsIgnoreCase("Y")) {			
-			System.out.println();
-			System.out.println("|============================================================|");
-			System.out.println("|   Enter Ship Info.  Hit RETURN to continue to Main Menu    |");
-			System.out.println("|============================================================|");
-			System.out.println();
+		System.out.print("Would you like to add ships [M]anually or from the [S]hipyard? [0 = Main Menu] ");
 
-			while(cont) {
+		String userInput2 = Driver.getInput("MS0");
+		
+		if (userInput2.equalsIgnoreCase("M")) {
+			boolean cont2 = true;
+			while(cont2) {
 				Starship star = new Starship();		
-				System.out.print("Ship " + (currentGameYard.numShips + 1) + " Name     : ");
+				System.out.print("Ship " + (Driver.currentGameYard.numShips + 1) + " Name     : ");
 		
 				String nameInput = keyboard.nextLine();
 				if (nameInput.contentEquals("")) {
 				//break;
-					cont = false;
+					cont2 = false;
 				} else {
 					star.name = nameInput;
 
-					System.out.print("Ship " + (currentGameYard.numShips + 1) + " Speed    : ");
-					int speedInput = getNumber(0, 32);
+					System.out.print("Ship " + (Driver.currentGameYard.numShips + 1) + " Speed    : ");
+					int speedInput = Driver.getNumber(0, 32);
 					star.speed = speedInput;
+//						System.out.println();
 
-					System.out.print("Ship " + (currentGameYard.numShips + 1) + " Turn Mode: ");
-					String turnModeInput = getInput("AABCDEFXY");
-					star.turnMode = turnModeInput;
+					System.out.print("Ship " + (Driver.currentGameYard.numShips + 1) + " Turn Mode: ");
+					String turnModeInput = Driver.getInput("ABCDEFXY-");
+					star.turnMode = turnModeInput.toUpperCase();
+											
+					System.out.print("Ship " + (Driver.currentGameYard.numShips + 1) + " Break Down [?-6] ('-' = n/a): ");
+					String breakDownString = "-";
+					String breakDownInput = Driver.getInput("-123456");
+					if (breakDownInput == "-") {
+						breakDownString = "-";
+					} else {
+						breakDownString = breakDownInput.concat("-6");
+					}
+					star.breakDown = breakDownString;
 					System.out.println();
 
-					currentGameYard.addShipToShipyard(star);
+					Driver.currentGameYard.addShipToShipyard(star);
 				}	
 			}
-		}		
+		} else if (userInput2.equalsIgnoreCase("S")) {
+			Driver.defaultYard.displayShipyardMenu(1);
+		}
+		
+//		String doSetup = getInput("YN");
+//		
+//		if (doSetup.equalsIgnoreCase("Y")) {			
+//			System.out.println();
+//			System.out.println("|============================================================|");
+//			System.out.println("|   Enter Ship Info.  Hit RETURN to continue to Main Menu    |");
+//			System.out.println("|============================================================|");
+//			System.out.println();
+//
+//			while(cont) {
+//				Starship star = new Starship();		
+//				System.out.print("Ship " + (currentGameYard.numShips + 1) + " Name     : ");
+//		
+//				String nameInput = keyboard.nextLine();
+//				if (nameInput.contentEquals("")) {
+//				//break;
+//					cont = false;
+//				} else {
+//					star.name = nameInput;
+//
+//					System.out.print("Ship " + (currentGameYard.numShips + 1) + " Speed    : ");
+//					int speedInput = getNumber(0, 32);
+//					star.speed = speedInput;
+//
+//					System.out.print("Ship " + (currentGameYard.numShips + 1) + " Turn Mode: ");
+//					String turnModeInput = getInput("AABCDEFXY");
+//					star.turnMode = turnModeInput;
+//					System.out.println();
+//
+//					currentGameYard.addShipToShipyard(star);
+//				}	
+//			}
+//		}
 		
 //  TEST DUMMY STARSHIP INFO
 		
@@ -141,17 +183,17 @@ public class Driver {
 		while(cont) {
 			System.out.println();
 			System.out.println();
-			System.out.println("|============================================================|");
-			System.out.println("|                         SFB MAIN MENU                      |");
-			System.out.println("|============================================================|");
-			System.out.println("|        [M]odify, Add or Remove Ship Name & Speeds          |");
-			System.out.println("|        [I]mpulse Movement Procedure                        |");
-			System.out.println("|        [W]eapon Damage Procedure                           |");
-			System.out.println("|        [D]amage Allocation Procedure                       |");
-			System.out.println("|        [S]hipyard                                          |");
-			System.out.println("|============================================================|");
-			System.out.println("|                            [Q]uit                          |");
-			System.out.println("|============================================================|");
+			System.out.println("|==========================================================================|");
+			System.out.println("|                             SFB MAIN MENU                                |");
+			System.out.println("|==========================================================================|");
+			System.out.println("|            [M]odify, Add, Remove or View Ship Name & Speeds              |");
+			System.out.println("|            [I]mpulse Movement Procedure                                  |");
+			System.out.println("|            [W]eapon Damage Procedure                                     |");
+			System.out.println("|            [D]amage Allocation Procedure                                 |");
+			System.out.println("|            [S]hipyard                                                    |");
+			System.out.println("|==========================================================================|");
+			System.out.println("|                                [Q]uit                                    |");
+			System.out.println("|==========================================================================|");
 
 			String userInput = getInput("MIWDQS");
 			
@@ -188,7 +230,9 @@ public class Driver {
 		while (location < 0) {
 			inputLetter = keyboard.nextLine().toUpperCase();
 			location = word.indexOf(inputLetter);                  //  Getting position of user's input of the "word" string passed through
-			if (location == -1 ) {                                 //  location = -1 if character is not found in "word" string
+			if (inputLetter.equalsIgnoreCase("AA")) {
+				location = 0;
+			} else if (location == -1 ) {                          //  location = -1 if character is not found in "word" string
 				for (int d = 0; d <= word.length()-1; d++) {
 					System.out.print("[" + word.charAt(d) + "]");  //  Remind user what letter inputs are being looked for
 				}
