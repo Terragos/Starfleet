@@ -10,37 +10,53 @@ public class ShipSetup {
 		while(cont) {
 			System.out.println();
 			System.out.println();
-			System.out.println("|============================================================|");
-			System.out.println("|                  SHIP MODIFICATION MENU                    |");
-			System.out.println("|============================================================|");
-			System.out.println("|           Current ship, object and monster list:           |");
-			System.out.println("|============================================================|");
+			System.out.println("|==========================================================================|");
+			System.out.println("|                         SHIP MODIFICATION MENU                           |");
+			System.out.println("|==========================================================================|");
+			System.out.println("|                  Current ship, object and monster list:                  |");
+			System.out.println("|==========================================================================|");
 			System.out.println();
 
-			SortShips();															// Always SORT ships before printing to screen
+			SortShips();														// Always SORT ships before printing to screen
 			
-			System.out.println("     NAME\tSPEED\tTURN MODE");    					// PRINT MODIFIED LIST OF SHIPS TO SCREEN
+			System.out.println("     \t\t\t\tHexes  \tH.E.T.");					// PRINT MODIFIED LIST OF SHIPS TO SCREEN
+			System.out.println("     Ship\tShip\tTurn   Before\tBreak");		// PRINT MODIFIED LIST OF SHIPS TO SCREEN
+			System.out.println("     Name\tSpeed\tMode   Turning\tDown");
 			System.out.println();
 			for (int i = 1; i <= Driver.currentGameYard.numShips; i++) {
-				if (i <= 9) {
+				int HexMinToTurn = PhaseCalculation.FindHexMinToTurn(Driver.currentGameYard.list[i-1].turnMode, Driver.currentGameYard.list[i-1].speed);
+				String HexMin = Integer.toString(HexMinToTurn);
+				if (Driver.currentGameYard.list[i-1].turnMode =="*" ) {
+					HexMin = "*";
+				}if (i <= 9) {
 					System.out.print(" ");
 				}
 				if (Driver.currentGameYard.list[i-1].name.length() <=3 ) {
 					Driver.currentGameYard.list[i-1].name = Driver.currentGameYard.list[i-1].name + "   ";
 				}
 				System.out.print(i + ")  " + Driver.currentGameYard.list[i-1].name);
-				System.out.println("\t" + Driver.currentGameYard.list[i-1].speed + "\t" + Driver.currentGameYard.list[i-1].turnMode); 
+
+				if (Driver.currentGameYard.list[i-1].speed < 10) {
+					System.out.print("\t  " + Driver.currentGameYard.list[i-1].speed + "\t " + Driver.currentGameYard.list[i-1].turnMode + "\t  " + HexMin + "\t " + Driver.currentGameYard.list[i-1].breakDown);
+				} else {
+					System.out.print("\t " + Driver.currentGameYard.list[i-1].speed + "\t " + Driver.currentGameYard.list[i-1].turnMode + "\t  " + HexMin + "\t " + Driver.currentGameYard.list[i-1].breakDown);	
+				}
+				
+				if (Driver.currentGameYard.list[i-1].speed == 0) {
+					System.out.print("\t<--- Speed is ZERO");
+				}
+				System.out.println();
 			}
 			
 			System.out.println();
-			System.out.println("|=============================================================|");
-			System.out.println("|                   [A]dd [M]odify [R]emove                   |");
+			System.out.println("|==========================================================================|");
+			System.out.println("|                         [A]dd [M]odify [R]emove                          |");
 			if (goToImpProc == "Y") { 																 	 // Print this line only if coming
-				System.out.println("|             RETURN to go to Impulse Procedure               |");   // from the Impulse Procedure 
+				System.out.println("|                    RETURN to go to Impulse Procedure                     |");   // from the Impulse Procedure 
 			} else if (goToImpProc == "N") {
-				System.out.println("|               RETURN to return to Main Menu                 |");   // Print this line only if coming 
+				System.out.println("|                      RETURN to return to Main Menu                       |");   // Print this line only if coming 
 			}																						 	 // from the Main Menu
-			System.out.println("|=============================================================|");
+			System.out.println("|==========================================================================|");
 			System.out.println();
 
 			String userInput = Driver.getInput("AMR");
@@ -51,7 +67,7 @@ public class ShipSetup {
 
 			} else if (userInput.equalsIgnoreCase("A")) {
 			
-				System.out.println("Would you like to add a ship [M]anually or from the [S]hipyard? ");
+				System.out.println("Would you like to add ships [M]anually or from the [S]hipyard? ");
 				String userInput2 = Driver.getInput("MS");
 				
 				if (userInput2.equalsIgnoreCase("M")) {
@@ -75,8 +91,18 @@ public class ShipSetup {
 							System.out.print("Ship " + (Driver.currentGameYard.numShips + 1) + " Turn Mode: ");
 							String turnModeInput = Driver.getInput("AABCDEFXY");
 							star.turnMode = turnModeInput.toUpperCase();
+
+							System.out.print("Ship " + (Driver.currentGameYard.numShips + 1) + " Break Down [?-6] ('-' = n/a): ");
+							String breakDownString = "-";
+							String breakDownInput = Driver.getInput("-123456");
+							if (breakDownInput == "-") {
+								breakDownString = "-";
+							} else {
+								breakDownString = breakDownInput.concat("-6");
+							}
+							star.breakDown = breakDownString;
 							System.out.println();
-													
+							
 							Driver.currentGameYard.addShipToShipyard(star);
 						}	
 					}
