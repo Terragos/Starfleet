@@ -7,9 +7,9 @@ public class DamageAllocation {
 		
 		System.out.println();
 		System.out.println();
-		System.out.println("|==============================================================|");
-		System.out.println("|               DAMAGE ALLOCATION PROCEDURE                    |");
-		System.out.println("|==============================================================|");
+		System.out.println("|==========================================================================|");
+		System.out.println("|                     DAMAGE ALLOCATION PROCEDURE                          |");
+		System.out.println("|==========================================================================|");
 		
 		int totalDamage = 0;
 		
