@@ -7,7 +7,6 @@ public class Shipyard {
 	public Starship[] list;
 	public String name;
 	
-	
 	public Shipyard() {
 		numberOfShipyardMadeThusFar++;
 		numShips = 0;
@@ -483,7 +482,6 @@ public class Shipyard {
 		defaultYard.addShipToShipyard(ship);
 		ship = new Starship("Tholian", "L-Qshp", "10", "8", "83", "2-6", "0.5", "-", "4", "B", "-", "150");
 		defaultYard.addShipToShipyard(ship);
-
 	    
 	    return  defaultYard;
 	}
@@ -536,15 +534,15 @@ public class Shipyard {
 					int adjusted = whichShip + firstOfRace - 1;
 				
 					if (whichShip > 0) {
-						Starship newShip = new Starship();
-						newShip.name = (list[adjusted].race).substring(0,3) + "-" + (list[adjusted].shipType);
-						newShip.turnMode = list[adjusted].turnMode;
+						Starship copiedShip = list[adjusted];
+						copiedShip.name = (list[adjusted].race).substring(0,3) + "-" + (list[adjusted].shipType);
+						copiedShip.turnMode = list[adjusted].turnMode;
 						
 						System.out.print("Ship Speed: ");
 						int shipSpeed = Driver.getNumber(-1, 32);
 						
-						newShip.speed = shipSpeed;
-						Driver.currentGameYard.addShipToShipyard(newShip);
+						copiedShip.speed = shipSpeed;
+						Driver.currentGameYard.addShipToShipyard(copiedShip);
 						whichShip = -1;
 					} else {
 						whichShip = 0;

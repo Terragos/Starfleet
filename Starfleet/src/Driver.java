@@ -1,17 +1,28 @@
 import java.util.Scanner;
 
-//import Starship.Race;
+//TODO, if no ships, dont do impulses
 
 public class Driver {
 
+	public final static boolean TESTING = false;
 	public static int numImpulses = 0;
 	public static Shipyard currentGameYard = new Shipyard("Current Game Shipyard");
 	public static Shipyard defaultYard = Shipyard.setupDefaultShipyard();
+	public static Scanner keyboard = new Scanner(System.in);
 
 	/* Main Method */
 	public static void main(String[] args) {
 		
-		Scanner keyboard = new Scanner(System.in);
+		if(Driver.TESTING) {
+			currentGameYard.addShipToShipyard(defaultYard.list[30]);
+			currentGameYard.addShipToShipyard(defaultYard.list[36]);
+			currentGameYard.addShipToShipyard(defaultYard.list[72]);
+			for(int i = 0;  i < currentGameYard.numShips; i++) {
+				if((i+1) * 4 <= 32)
+					currentGameYard.list[i].speed = (i+1) * 4;
+			}
+		}
+		
 		boolean cont = true;
 
 		System.out.println("|==============================================================================|");
@@ -32,10 +43,13 @@ public class Driver {
 				System.out.print("Ship " + (Driver.currentGameYard.numShips + 1) + " Name     : ");
 		
 				String nameInput = keyboard.nextLine();
+				
 				if (nameInput.contentEquals("")) {
 				//break;
 					cont2 = false;
 				} else {
+					if(nameInput.length() > 10)
+						nameInput = nameInput.substring(0, 10);
 					star.name = nameInput;
 
 					System.out.print("Ship " + (Driver.currentGameYard.numShips + 1) + " Speed    : ");
@@ -65,128 +79,15 @@ public class Driver {
 			Driver.defaultYard.displayShipyardMenu(1);
 		}
 		
-//		String doSetup = getInput("YN");
-//		
-//		if (doSetup.equalsIgnoreCase("Y")) {			
-//			System.out.println();
-//			System.out.println("|============================================================|");
-//			System.out.println("|   Enter Ship Info.  Hit RETURN to continue to Main Menu    |");
-//			System.out.println("|============================================================|");
-//			System.out.println();
-//
-//			while(cont) {
-//				Starship star = new Starship();		
-//				System.out.print("Ship " + (currentGameYard.numShips + 1) + " Name     : ");
-//		
-//				String nameInput = keyboard.nextLine();
-//				if (nameInput.contentEquals("")) {
-//				//break;
-//					cont = false;
-//				} else {
-//					star.name = nameInput;
-//
-//					System.out.print("Ship " + (currentGameYard.numShips + 1) + " Speed    : ");
-//					int speedInput = getNumber(0, 32);
-//					star.speed = speedInput;
-//
-//					System.out.print("Ship " + (currentGameYard.numShips + 1) + " Turn Mode: ");
-//					String turnModeInput = getInput("AABCDEFXY");
-//					star.turnMode = turnModeInput;
-//					System.out.println();
-//
-//					currentGameYard.addShipToShipyard(star);
-//				}	
-//			}
-//		}
-		
-//  TEST DUMMY STARSHIP INFO
-		
-//		Starship star = new Starship();
-//		star.name = "Fed-CV 1";
-//		star.turnMode = "D";
-//		star.speed = 5;
-//		starships[0] = star;
-//
-//		star = new Starship();
-//		star.name = "Kli-D7";
-//		star.turnMode = "E";
-//		star.speed = 10;
-//		starships[1] = star;
-//		
-//		star = new Starship();
-//		star.name = "Rom-WH";
-//		star.turnMode = "A";
-//		star.speed = 12;
-//		starships[2] = star;
-//		
-//		star = new Starship();
-//		star.name = "Monster 1";
-//		star.turnMode = "A";
-//		star.speed = 2;
-//		starships[3] = star;
-//		
-//		star = new Starship();
-//		star.name = "Monster 2";
-//		star.turnMode = "B";
-//		star.speed = 14;
-//		starships[4] = star;
-//		
-//		star = new Starship();
-//		star.name = "Fed-CV 2";
-//		star.turnMode = "B";
-//		star.speed = 7;
-//		starships[5] = star;
-//		
-//		star = new Starship();
-//		star.name = "Kli-F5";
-//		star.turnMode = "C";
-//		star.speed = 21;
-//		starships[6] = star;
-//		
-//		star = new Starship();
-//		star.name = "Asteroid";
-//		star.turnMode = "C";
-//		star.speed = 2;
-//		starships[7] = star;
-//		
-//		star = new Starship();
-//		star.name = "Fed-CV 3";
-//		star.turnMode = "C";
-//		star.speed = 8;
-//		starships[8] = star;
-//		
-//		star = new Starship();
-//		star.name = "Kli-DN";
-//		star.turnMode = "E";
-//		star.speed = 8;
-//		starships[9] = star;
-//		
-//		star = new Starship();
-//		star.name = "Asteroid";
-//		star.turnMode = "C";
-//		star.speed = 2;
-//		starships[10] = star;
-//		
-//		star = new Starship();
-//		star.name = "Fed-CV 3";
-//		star.turnMode = "C";
-//		star.speed = 8;
-//		starships[11] = star;
-//		
-//		numShips = 12;
-
-// END TEST DUMMY STARSHIP INFO
-		
 		
 		cont = true;
-		
 		while(cont) {
 			System.out.println();
 			System.out.println();
 			System.out.println("|==========================================================================|");
 			System.out.println("|                             SFB MAIN MENU                                |");
 			System.out.println("|==========================================================================|");
-			System.out.println("|            [M]odify, Add, Remove or View Ship Name & Speeds              |");
+			System.out.println("|            [M]odify, Add, Remove or View Ship Name & Stats               |");
 			System.out.println("|            [I]mpulse Movement Procedure                                  |");
 			System.out.println("|            [W]eapon Damage Procedure                                     |");
 			System.out.println("|            [D]amage Allocation Procedure                                 |");

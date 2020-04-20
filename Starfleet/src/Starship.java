@@ -1,6 +1,7 @@
 
 public class Starship {
 
+	enum Ship { TORPEDO, DRONE, SHUTTLE, FIGHTER, STARSHIP, MONSTER }
 	/*
 	enum Race { FEDERATION, KLINGON, ROMULAN, KZINTI, GORN, THOLIAN }
 	enum Type { DNPLUS, DN, CA, CX, CL, TUG }
@@ -23,30 +24,47 @@ public class Starship {
 	public int speed;        // hexes moved for entire turn
 	public double spi;       // speed per impulse
 	public double distrv;    // distance traveled 
+	public Ship kindOfShip;
 
 	/* Default Constructor */
 	public Starship() {
 		
 	}
 	
-	public Starship(int num, int speed, String name) {
-		if(num == 0) { 
-			/* TORPEDO */
+	/* Non Regular Starship Constructor */
+	public Starship(Ship kind, int speed, String name) {
+		if(kind == Ship.TORPEDO) { 
 			this.name = name;
 			this.turnMode = "X";
 			this.speed = speed;
 			this.spi = speed/32.0;
 			this.distrv = 0;
-		} else if(num == 1 || num == 2) { 
-			/* Drone, Shuttle, and Fighter */
+			this.breakDown = "-";
+			this.kindOfShip = kind;
+		} else if(kind == Ship.DRONE) {
 			this.name = name;
 			this.speed = speed;
 			this.spi = speed/32.0;
 			this.distrv = 0;
-			if(num == 2) 
-				this.turnMode = "Y";
-			else
-				this.turnMode = "X";
+			this.turnMode = "X";
+			this.breakDown = "-";
+			this.kindOfShip = kind;
+		} else if(kind == Ship.SHUTTLE) {
+			this.name = name;
+			this.speed = speed;
+			this.spi = speed/32.0;
+			this.distrv = 0;
+			this.turnMode = "Y";
+			this.breakDown = "*";
+			this.kindOfShip = kind;
+		} else if(kind == Ship.FIGHTER) {
+			this.name = name;
+			this.speed = speed;
+			this.spi = speed/32.0;
+			this.distrv = 0;
+			this.turnMode = "Y";
+			this.breakDown = "*";
+			this.kindOfShip = kind;	
 		}
 	}
 	
@@ -67,9 +85,12 @@ public class Starship {
 		this.ruleNum = ruleNum;
 		this.yearInService = yearInService;
 		this.name = race.substring(0,3) + "-" + type;
+		if(this.name.length() > 10)
+			this.name = this.name.substring(0, 10);
 		this.speed = 0;
 		this.spi = 0.0;
 		this.distrv = 0.0;
+		this.kindOfShip = Ship.STARSHIP;
 	}
 	
 	public Starship(String race, String type, String crewUnits, String boardingParties, String BPV, 
@@ -91,6 +112,7 @@ public class Starship {
 		this.spi = spi;
 		this.distrv = distrv;
 		this.name = race.substring(0,3) + "-" + type;
+		this.kindOfShip = Ship.STARSHIP;
 	}
 	
 	public String toString() {

@@ -81,6 +81,8 @@ public class ShipSetup {
 						//break;
 							cont2 = false;
 						} else {
+							if(nameInput.length() > 10)
+								nameInput = nameInput.substring(0, 10);
 							star.name = nameInput;
 	
 							System.out.print("Ship " + (Driver.currentGameYard.numShips + 1) + " Speed    : ");
@@ -129,6 +131,8 @@ public class ShipSetup {
 						if(nameSpeedBoth.equalsIgnoreCase("N") || nameSpeedBoth.equalsIgnoreCase("A")) {
 							System.out.print("Ship " + (modifyInput) + " NEW Name : ");
 							String nameInput = keyboard.nextLine();
+							if(nameInput.length() > 10)
+								nameInput = nameInput.substring(0, 10);
 							Driver.currentGameYard.list[modifyInput-1].name = nameInput;
 						} else if(nameSpeedBoth.equalsIgnoreCase("S") || nameSpeedBoth.equalsIgnoreCase("A")) {
 							System.out.print("Ship " + (modifyInput) + " NEW Speed: ");

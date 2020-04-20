@@ -32,8 +32,9 @@ public class PhaseCalculation {
 			if (i <= 9) {
 				System.out.print(" ");
 			}
-			if (Driver.currentGameYard.list[i-1].name.length() <=3 ) {
-				Driver.currentGameYard.list[i-1].name = Driver.currentGameYard.list[i-1].name + "   ";
+			if (Driver.currentGameYard.list[i-1].name.length() <=3 ) { 
+				//Driver.currentGameYard.list[i-1].name = Driver.currentGameYard.list[i-1].name + "   ";
+				System.out.print("\t");
 			}
 			System.out.print(i + ")  " + Driver.currentGameYard.list[i-1].name);
 
@@ -145,7 +146,7 @@ public class PhaseCalculation {
 		System.out.print("=================");
 		System.out.println();
 
-//  BEGIN ACTUAL IMPULSE MOVEMENT PROCEDURE
+		//  BEGIN ACTUAL IMPULSE MOVEMENT PROCEDURE
 		
 		for(int i = 1; i <= Driver.numImpulses; i++) {
 			
@@ -177,8 +178,6 @@ public class PhaseCalculation {
 					System.out.print("    ");
 					}
 				}
-	
-//				waitForReturn();    // Wait for RETURN, [W] to go to Weapon Damage or add [T]orpedo, [D]drone, [S]huttle, [F]ighter
 
 				boolean cont3 = true;
 				while (cont3) {
@@ -197,7 +196,6 @@ public class PhaseCalculation {
 						AddFighter();
 					}
 				}
-				
 				
 			} else {
 				for(int k = 0; k < Driver.currentGameYard.numShips; k++) {	
@@ -364,7 +362,7 @@ public class PhaseCalculation {
 		if(location != -1) {
 			Driver.currentGameYard.removeShipFromShipyard(location + 1);
 		}else {
-			Starship torp = new Starship(0, 32, "TORP");
+			Starship torp = new Starship(Starship.Ship.TORPEDO, 32, "TORP");
 			Driver.currentGameYard.addShipToShipyard(torp);
 		}
 	}
@@ -372,7 +370,7 @@ public class PhaseCalculation {
 	public static int findTorpInCurrGameYard() {
 		
 		for(int i = 0; i < Driver.currentGameYard.numShips; i++) {
-			if(Driver.currentGameYard.list[i].name == "TORP") {
+			if(Driver.currentGameYard.list[i].kindOfShip == Starship.Ship.TORPEDO) {
 				return i;
 			}
 		}
@@ -388,7 +386,7 @@ public class PhaseCalculation {
 		System.out.print("Drone Speed: ");
 		int droneSpeed = Driver.getNumber(-1, 32);
 		
-		Starship drone = new Starship(1, droneSpeed, droneName);
+		Starship drone = new Starship(Starship.Ship.DRONE, droneSpeed, droneName);
 		Driver.currentGameYard.addShipToShipyard(drone);
 	}
 
@@ -400,7 +398,7 @@ public class PhaseCalculation {
 		System.out.print("Shuttle Speed: ");
 		int shuttleSpeed = Driver.getNumber(-1, 32);
 		
-		Starship shuttle = new Starship(2, shuttleSpeed, shuttleName);
+		Starship shuttle = new Starship(Starship.Ship.SHUTTLE, shuttleSpeed, shuttleName);
 		Driver.currentGameYard.addShipToShipyard(shuttle);
 	}
 
@@ -412,7 +410,7 @@ public class PhaseCalculation {
 		System.out.print("Fighter Speed: ");
 		int fighterSpeed = Driver.getNumber(-1, 32);
 		
-		Starship fighter = new Starship(2, fighterSpeed, fighterName);
+		Starship fighter = new Starship(Starship.Ship.FIGHTER, fighterSpeed, fighterName);
 		Driver.currentGameYard.addShipToShipyard(fighter);
 	}	
 }

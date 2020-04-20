@@ -68,8 +68,7 @@ public class WeaponsDamage {
 			int energyInput = 0;
 			int photonEnergyInput = 0;
 
-//  Asking what type of Photon Torpedo
-				
+			//  Asking what type of Photon Torpedo			
 			if (weaponInput.equalsIgnoreCase("P")) {
 				System.out.print("Photon Type [S]tandard [P]roximity [O]verload:   ");
 				String weaponTypeInput = Driver.getInput("SPO");
@@ -82,8 +81,7 @@ public class WeaponsDamage {
 				} 
 			}
 				
-//  Asking what type of Plasma Torpedo
-				
+			//  Asking what type of Plasma Torpedo
 			if (weaponInput.equalsIgnoreCase("L")) {
 				System.out.print("Plasma Type [R] [2]G [G] [F]:   ");
 				String weaponTypeInput = Driver.getInput("R2GF");
@@ -91,8 +89,7 @@ public class WeaponsDamage {
 				typeInput = options.indexOf(weaponTypeInput);           // Getting number: R=1, 2=2, G=3, F=4 
 			}
 
-//  Asking what type of Fusion Beam
-				
+			//  Asking what type of Fusion Beam	
 			if (weaponInput.equalsIgnoreCase("F")) {
 				System.out.print("Type [S]tandard [O]verloaded [X]suicide:   ");
 				String weaponTypeInput = Driver.getInput("SOX");
@@ -100,8 +97,7 @@ public class WeaponsDamage {
 				typeInput = options.indexOf(weaponTypeInput)-1;         // Getting number: O=1, X=2 
 			}
 				
-//  Asking what type of Hellbore
-				
+			//  Asking what type of Hellbore
 			if (weaponInput.equalsIgnoreCase("H")) {
 				System.out.print("Type [S]tandard [O]verloaded [D]irect-Fire:   ");
 				String weaponTypeInput = Driver.getInput("SOD");
@@ -115,8 +111,7 @@ public class WeaponsDamage {
 			int numberInput = Driver.getNumber(-1, 200);
 			System.out.println();
 
-//	String weaponTypeInput;
-			
+			//	String weaponTypeInput;
 			if (weaponInput.equalsIgnoreCase("1")) {
 				totalDamage = type1Phaser(numberInput, distanceInput, totalDamage);		
 
