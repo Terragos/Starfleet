@@ -10,16 +10,25 @@ public class PhaseCalculation {
 
 		System.out.println();
 		System.out.println();
-		System.out.println("|============================================================|");
-		System.out.println("|                IMPULSE MOVEMENT PRCOEDURE                  |");
-		System.out.println("|============================================================|");
-		System.out.println("|           Current ship, object and monster list:           |");
-		System.out.println("|============================================================|");
+		System.out.println("|==========================================================================|");
+		System.out.println("|                       IMPULSE MOVEMENT PRCOEDURE                         |");
+		System.out.println("|==========================================================================|");
+		System.out.println("|                  Current ship, object and monster list:                  |");
+		System.out.println("|==========================================================================|");
 		System.out.println();
 		
-		System.out.println("     NAME\tSPEED\tTURN MODE");    // PRINT MODIFIED LIST OF SHIPS TO SCREEN
+		ShipSetup.SortShips();															// Always SORT ships before printing to screen
+
+		System.out.println("     \t\t\t\tHexes  \tH.E.T.");					// PRINT MODIFIED LIST OF SHIPS TO SCREEN
+		System.out.println("     Ship\tShip\tTurn   Before\tBreak");		// PRINT MODIFIED LIST OF SHIPS TO SCREEN
+		System.out.println("     Name\tSpeed\tMode   Turning\tDown");
 		System.out.println();
 		for (int i = 1; i <= Driver.currentGameYard.numShips; i++) {
+			int HexMinToTurn = FindHexMinToTurn(Driver.currentGameYard.list[i-1].turnMode, Driver.currentGameYard.list[i-1].speed);
+			String HexMin = Integer.toString(HexMinToTurn);
+			if (Driver.currentGameYard.list[i-1].turnMode =="*" ) {
+				HexMin = "*";
+			}
 			if (i <= 9) {
 				System.out.print(" ");
 			}
@@ -27,18 +36,24 @@ public class PhaseCalculation {
 				Driver.currentGameYard.list[i-1].name = Driver.currentGameYard.list[i-1].name + "   ";
 			}
 			System.out.print(i + ")  " + Driver.currentGameYard.list[i-1].name);
-			System.out.print("\t" + Driver.currentGameYard.list[i-1].speed + "\t" + Driver.currentGameYard.list[i-1].turnMode);
+
+			if (Driver.currentGameYard.list[i-1].speed < 10) {
+				System.out.print("\t  " + Driver.currentGameYard.list[i-1].speed + "\t " + Driver.currentGameYard.list[i-1].turnMode + "\t  " + HexMin + "\t " + Driver.currentGameYard.list[i-1].breakDown);
+			} else {
+				System.out.print("\t " + Driver.currentGameYard.list[i-1].speed + "\t " + Driver.currentGameYard.list[i-1].turnMode + "\t  " + HexMin + "\t " + Driver.currentGameYard.list[i-1].breakDown);	
+			}
+			
 			if (Driver.currentGameYard.list[i-1].speed == 0) {
 				System.out.print("\t<--- Speed is ZERO");
 			}
 			System.out.println();
 		}
-
+		
 		System.out.println();
-		System.out.println("|============================================================|");
-		System.out.println("|      Do you need to modify the ship list in any way?       |");
-		System.out.println("|          RETURN to continue to Impulse Procedure           |");
-		System.out.println("|============================================================|");
+		System.out.println("|==========================================================================|");
+		System.out.println("|             Do you need to modify the ship list in any way?              |");
+		System.out.println("|                 RETURN to continue to Impulse Procedure                  |");
+		System.out.println("|==========================================================================|");
 		System.out.println();
 		
 		String doModify = Driver.getInput("YN");         //  ALLOW USER TO MODIFY CURRENT SHIPS IF NEEDED	
@@ -69,10 +84,10 @@ public class PhaseCalculation {
 			shipTotal = shipTotal + Driver.currentGameYard.list[i].name.length() + 4;
 		}
 
-		for (int i = 1; i <= ((18 + shipTotal)-11)/2; i++) {   //  CENTERS TEXT
+		for (int i = 1; i <= ((18 + shipTotal)-26)/2; i++) {   //  CENTERS TEXT
 			System.out.print(" ");
 		}
-		System.out.println("SHIP SPEEDS");
+		System.out.println("IMPULSE MOVEMENT PROCEDURE");
 		
 		System.out.print("-------------");
 		for(int k = 0; k < Driver.currentGameYard.numShips; k++) {	
@@ -83,7 +98,7 @@ public class PhaseCalculation {
 		}
 		System.out.println("-----------------");
 
-		System.out.print("Name:          ");
+		System.out.print("Ship Name:     ");
 	 	for (int i = 0; i <= Driver.currentGameYard.numShips - 1; i++) {
 	 		System.out.print(Driver.currentGameYard.list[i].name + "    ");
 	 	}
