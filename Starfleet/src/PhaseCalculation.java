@@ -19,36 +19,7 @@ public class PhaseCalculation {
 		
 		ShipSetup.SortShips();															// Always SORT ships before printing to screen
 
-		System.out.println("     \t\t\t\tHexes  \tH.E.T.");					// PRINT MODIFIED LIST OF SHIPS TO SCREEN
-		System.out.println("     Ship\tShip\tTurn   Before\tBreak");		// PRINT MODIFIED LIST OF SHIPS TO SCREEN
-		System.out.println("     Name\tSpeed\tMode   Turning\tDown");
-		System.out.println();
-		for (int i = 1; i <= Driver.currentGameYard.numShips; i++) {
-			int HexMinToTurn = FindHexMinToTurn(Driver.currentGameYard.list[i-1].turnMode, Driver.currentGameYard.list[i-1].speed);
-			String HexMin = Integer.toString(HexMinToTurn);
-			if (Driver.currentGameYard.list[i-1].turnMode =="*" ) {
-				HexMin = "*";
-			}
-			if (i <= 9) {
-				System.out.print(" ");
-			}
-			if (Driver.currentGameYard.list[i-1].name.length() <=3 ) { 
-				//Driver.currentGameYard.list[i-1].name = Driver.currentGameYard.list[i-1].name + "   ";
-				System.out.print("\t");
-			}
-			System.out.print(i + ")  " + Driver.currentGameYard.list[i-1].name);
-
-			if (Driver.currentGameYard.list[i-1].speed < 10) {
-				System.out.print("\t  " + Driver.currentGameYard.list[i-1].speed + "\t " + Driver.currentGameYard.list[i-1].turnMode + "\t  " + HexMin + "\t " + Driver.currentGameYard.list[i-1].breakDown);
-			} else {
-				System.out.print("\t " + Driver.currentGameYard.list[i-1].speed + "\t " + Driver.currentGameYard.list[i-1].turnMode + "\t  " + HexMin + "\t " + Driver.currentGameYard.list[i-1].breakDown);	
-			}
-			
-			if (Driver.currentGameYard.list[i-1].speed == 0) {
-				System.out.print("\t<--- Speed is ZERO");
-			}
-			System.out.println();
-		}
+		ShipSetup.PrintCurrentShipsInGame();
 		
 		System.out.println();
 		System.out.println("|==========================================================================|");
@@ -63,14 +34,84 @@ public class PhaseCalculation {
 			ShipSetup.ShipSetupOrModify("Y");         // Pass "Y" to go on to Impulse Procedure ("n" to NOT go on...)
 		}
 		
-		//  START IMPULSE PROCEDURE - PRINTS FANCY HEADER
+		//  START IMPULSE PROCEDURE
 	
 		Driver.numImpulses = 32;
 		
 		for(int i = 0; i < Driver.currentGameYard.numShips; i++) {	
 			Driver.currentGameYard.list[i].spi = (double) Driver.currentGameYard.list[i].speed / (double) Driver.numImpulses;			
 		}
+
+		PrintImpulseHeader();  // PRINTS FANCY HEADER
+		System.out.println();
 		
+		//  BEGIN ACTUAL IMPULSE MOVEMENT PROCEDURE
+		for(int i = 1; i <= Driver.numImpulses; i++) {
+			
+			int move = 0;
+			for(int m = 0; m < Driver.currentGameYard.numShips; m++) {	
+				if(Driver.currentGameYard.list[m].distrv + Driver.currentGameYard.list[m].spi >= .999) {
+					move = move + 1;
+				}
+			} 
+
+			if (move > 0) {
+
+				if (i < 10) {
+					System.out.print("Impulse 0" + i + ":    ");
+				} else if (i >= 10) {
+					System.out.print("Impulse " + i + ":    ");
+				}
+			
+				for(int k = 0; k < Driver.currentGameYard.numShips; k++) {	
+					Driver.currentGameYard.list[k].distrv += Driver.currentGameYard.list[k].spi;
+	
+					if(Driver.currentGameYard.list[k].distrv - 1 >= -.001) {
+						Driver.currentGameYard.list[k].distrv--;
+						System.out.print(Driver.currentGameYard.list[k].name + "    ");
+					} else {
+						for(int j = 0; j < (Driver.currentGameYard.list[k].name.length()); j++) {
+							System.out.print(" ");
+						}
+					System.out.print("    ");
+					}
+				}
+
+				boolean cont3 = true;
+				while (cont3) {
+					String userInput = Driver.getInput("WTDSF");
+					if (userInput.contentEquals("")) {
+						cont3 = false;
+					} else if (userInput.equalsIgnoreCase("W")) {
+						WeaponsDamage.WeaponsDam(i);
+						cont3 = false;
+						System.out.println();
+					} else if (userInput.equalsIgnoreCase("T")) {						
+						AddOrRemoveTorpedo();
+						//  NEED CODE TO EMPTY OUT KEYBOARD BUFFER  ???
+					} else if (userInput.equalsIgnoreCase("D")) {
+						AddDrone();
+					} else if (userInput.equalsIgnoreCase("S")) {
+						AddShuttle();
+					} else if (userInput.equalsIgnoreCase("F")) {
+						AddFighter();
+					}
+				}
+				
+			} else {
+				for(int k = 0; k < Driver.currentGameYard.numShips; k++) {	
+					Driver.currentGameYard.list[k].distrv += Driver.currentGameYard.list[k].spi;
+	
+					if(Driver.currentGameYard.list[k].distrv - 1 >= -.001) {
+						Driver.currentGameYard.list[k].distrv--;
+					} 
+				}
+			}
+		}  
+	}
+	
+
+	public static void PrintImpulseHeader() {
 		System.out.print("=============");
 		for(int k = 0; k < Driver.currentGameYard.numShips; k++) {	
 			for(int j = 0; j < (Driver.currentGameYard.list[k].name.length()); j++) {
@@ -144,72 +185,7 @@ public class PhaseCalculation {
 			System.out.print("====");
 		}
 		System.out.print("=================");
-		System.out.println();
-
-		//  BEGIN ACTUAL IMPULSE MOVEMENT PROCEDURE
-		
-		for(int i = 1; i <= Driver.numImpulses; i++) {
-			
-			int move = 0;
-			for(int m = 0; m < Driver.currentGameYard.numShips; m++) {	
-				if(Driver.currentGameYard.list[m].distrv + Driver.currentGameYard.list[m].spi >= .999) {
-					move = move + 1;
-				}
-			} 
-
-			if (move > 0) {
-
-				if (i < 10) {
-					System.out.print("Impulse 0" + i + ":    ");
-				} else if (i >= 10) {
-					System.out.print("Impulse " + i + ":    ");
-				}
-			
-				for(int k = 0; k < Driver.currentGameYard.numShips; k++) {	
-					Driver.currentGameYard.list[k].distrv += Driver.currentGameYard.list[k].spi;
-	
-					if(Driver.currentGameYard.list[k].distrv - 1 >= -.001) {
-						Driver.currentGameYard.list[k].distrv--;
-						System.out.print(Driver.currentGameYard.list[k].name + "    ");
-					} else {
-						for(int j = 0; j < (Driver.currentGameYard.list[k].name.length()); j++) {
-							System.out.print(" ");
-						}
-					System.out.print("    ");
-					}
-				}
-
-				boolean cont3 = true;
-				while (cont3) {
-					String userInput = Driver.getInput("WTDSF");
-					if (userInput.contentEquals("")) {
-						cont3 = false;
-					} else if (userInput.equalsIgnoreCase("W")) {
-						WeaponsDamage.WeaponsDam(i);
-					} else if (userInput.equalsIgnoreCase("T")) {						
-						AddOrRemoveTorpedo();
-					} else if (userInput.equalsIgnoreCase("D")) {
-						AddDrone();
-					} else if (userInput.equalsIgnoreCase("S")) {
-						AddShuttle();
-					} else if (userInput.equalsIgnoreCase("F")) {
-						AddFighter();
-					}
-				}
-				
-			} else {
-				for(int k = 0; k < Driver.currentGameYard.numShips; k++) {	
-					Driver.currentGameYard.list[k].distrv += Driver.currentGameYard.list[k].spi;
-	
-					if(Driver.currentGameYard.list[k].distrv - 1 >= -.001) {
-						Driver.currentGameYard.list[k].distrv--;
-					} 
-				}
-			}
-		}  
 	}
-	
-
 	
 // ROLL DICE METHOD
 	
