@@ -1,7 +1,8 @@
 import java.util.Scanner;
 
 //TODO, if no ships, don't do impulses  DONE!!!!
-//TODO  NEED CODE TO EMPTY OUT KEYBOARD BUFFER  ???  In Impulse procedure after toggling TORPEDO, maybe ???  (there is an extra space)
+//TODO, NEED CODE TO EMPTY OUT KEYBOARD BUFFER  ???  In Impulse procedure after toggling TORPEDO, maybe ???  (there is an extra space)
+//TODO, IS is possible to change the name of "PhaseCalculation" to "ImpulseCalculation"?  Everywhere "Phase" --> "Impulse" ???
 
 public class Driver {
 
