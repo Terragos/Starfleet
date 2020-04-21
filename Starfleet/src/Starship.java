@@ -1,124 +1,210 @@
+import java.util.Scanner;
 
-public class Starship {
+public class ShipSetup {
 
-	enum Ship { TORPEDO, DRONE, SHUTTLE, FIGHTER, STARSHIP, MONSTER }
-	/*
-	enum Race { FEDERATION, KLINGON, ROMULAN, KZINTI, GORN, THOLIAN }
-	enum Type { DNPLUS, DN, CA, CX, CL, TUG }
-	*/
-	
-	//  Starship class
-	public String race;
-	public String shipType;
-	public String crewUnits;
-	public String boardingParties;
-	public String BPV;
-	public String breakDown;
-	public String moveCost;
-	public String spareShuttles;
-	public String sizeClass;
-	public String name;      // name
-	public String turnMode;  // turn mode letter - converted to # of hexes to move forward before turning during Impulse Procedure
-	public String ruleNum;
-	public String yearInService;
-	public int speed;        // hexes moved for entire turn
-	public double spi;       // speed per impulse
-	public double distrv;    // distance traveled 
-	public Ship kindOfShip;
-
-	/* Default Constructor */
-	public Starship() {
+	public static void ShipSetupOrModify(String goToImpProc) {
 		
-	}
+		Scanner keyboard = new Scanner(System.in);
+		boolean cont = true;
+		
+		while(cont) {
+			System.out.println();
+			System.out.println();
+			System.out.println("|==========================================================================|");
+			System.out.println("|                         SHIP MODIFICATION MENU                           |");
+
+			if (Driver.currentGameYard.numShips > 0) {
+				System.out.println("|==========================================================================|");
+				System.out.println("|                  Current ship, object and monster list:                  |");
+				System.out.println("|==========================================================================|");
+				System.out.println();
+
+				SortShips();														// Always SORT ships before printing to screen
+				PrintCurrentShipsInGame();
+				
+				System.out.println();
+			}
+						
+			System.out.println("|==========================================================================|");
+			System.out.println("|                         [A]dd [M]odify [R]emove                          |");
+			if (goToImpProc == "Y") { 																 	 // Print this line only if coming
+				System.out.println("|                    RETURN to go to Impulse Procedure                     |");   // from the Impulse Procedure 
+			} else if (goToImpProc == "N") {
+				System.out.println("|                      RETURN to return to Main Menu                       |");   // Print this line only if coming 
+			}																						 	 // from the Main Menu
+			System.out.println("|==========================================================================|");
+
+			String userInput = Driver.getInput("AMR");
+			
+			if (userInput.contentEquals("")) {
+				//break;
+				cont = false;
+
+			} else if (userInput.equalsIgnoreCase("A")) {
+			
+				System.out.println("Would you like to add ships [M]anually or from the [S]hipyard? ");
+				String userInput2 = Driver.getInput("MS");
+				
+				if (userInput2.equalsIgnoreCase("M")) {
+					boolean cont2 = true;
+					while(cont2) {
+						Starship star = new Starship();		
+						System.out.print("Ship " + (Driver.currentGameYard.numShips + 1) + " Name     : ");
+				
+						String nameInput = keyboard.nextLine();
+						if (nameInput.contentEquals("")) {
+						//break;
+							cont2 = false;
+						} else {
+							if(nameInput.length() > 10)
+								nameInput = nameInput.substring(0, 10);
+							star.name = nameInput;
 	
-	/* Non Regular Starship Constructor */
-	public Starship(Ship kind, int speed, String name) {
-		if(kind == Ship.TORPEDO) { 
-			this.name = name;
-			this.turnMode = "X";
-			this.speed = speed;
-			this.spi = speed/32.0;
-			this.distrv = 0;
-			this.breakDown = "-";
-			this.kindOfShip = kind;
-		} else if(kind == Ship.DRONE) {
-			this.name = name;
-			this.speed = speed;
-			this.spi = speed/32.0;
-			this.distrv = 0;
-			this.turnMode = "X";
-			this.breakDown = "-";
-			this.kindOfShip = kind;
-		} else if(kind == Ship.SHUTTLE) {
-			this.name = name;
-			this.speed = speed;
-			this.spi = speed/32.0;
-			this.distrv = 0;
-			this.turnMode = "Y";
-			this.breakDown = "*";
-			this.kindOfShip = kind;
-		} else if(kind == Ship.FIGHTER) {
-			this.name = name;
-			this.speed = speed;
-			this.spi = speed/32.0;
-			this.distrv = 0;
-			this.turnMode = "Y";
-			this.breakDown = "*";
-			this.kindOfShip = kind;	
+							System.out.print("Ship " + (Driver.currentGameYard.numShips + 1) + " Speed    : ");
+							int speedInput = Driver.getNumber(0, 32);
+							star.speed = speedInput;
+	
+							System.out.print("Ship " + (Driver.currentGameYard.numShips + 1) + " Turn Mode: ");
+							String turnModeInput = Driver.getInput("AABCDEFXY");
+							star.turnMode = turnModeInput.toUpperCase();
+
+							System.out.print("Ship " + (Driver.currentGameYard.numShips + 1) + " Break Down [?-6] ('-' = n/a): ");
+							String breakDownString = "-";
+							String breakDownInput = Driver.getInput("-123456");
+							if (breakDownInput == "-") {
+								breakDownString = "-";
+							} else {
+								breakDownString = breakDownInput.concat("-6");
+							}
+							star.breakDown = breakDownString;
+							System.out.println();
+							
+							Driver.currentGameYard.addShipToShipyard(star);
+						}	
+					}
+				} else if (userInput2.equalsIgnoreCase("S")) {
+					Driver.defaultYard.displayShipyardMenu(1);
+				}
+
+			} else if (userInput.equalsIgnoreCase("M")) {
+				boolean cont2 = true;
+				while (cont2) {
+					
+					System.out.print("Modify which ship? [0 to cancel]");
+				
+					int modifyInput = Driver.getNumber(0, Driver.currentGameYard.numShips);	
+
+					if(modifyInput == 0) {
+						cont2 = false;
+						//break;
+					}else {
+					
+						System.out.print("[N]ame, [S]peed, [T]urn Mode or [A]ll? [0 to cancel] ");
+						String nameSpeedBoth = Driver.getInput("NSTA0");
+						
+						if(nameSpeedBoth.equalsIgnoreCase("N") || nameSpeedBoth.equalsIgnoreCase("A")) {
+							System.out.print("Ship " + (modifyInput) + " NEW Name : ");
+							String nameInput = keyboard.nextLine();
+							if(nameInput.length() > 10)
+								nameInput = nameInput.substring(0, 10);
+							Driver.currentGameYard.list[modifyInput-1].name = nameInput;
+						} else if(nameSpeedBoth.equalsIgnoreCase("S") || nameSpeedBoth.equalsIgnoreCase("A")) {
+							System.out.print("Ship " + (modifyInput) + " NEW Speed: ");
+							int speedInput = Driver.getNumber(-1, 32);
+							Driver.currentGameYard.list[modifyInput-1].speed = speedInput;
+						} else if(nameSpeedBoth.equalsIgnoreCase("T") || nameSpeedBoth.equalsIgnoreCase("A")) {
+							System.out.print("Ship " + (modifyInput) + " Turn Mode: ");
+							String turnModeInput = Driver.getInput("ABCDEF");
+							Driver.currentGameYard.list[modifyInput-1].turnMode = turnModeInput.toUpperCase();
+						} else if(nameSpeedBoth.equalsIgnoreCase("0")) {
+							//continue;
+						}
+						System.out.println();
+					}
+				}
+			} else if (userInput.equalsIgnoreCase("R")) {
+				System.out.print("Remove which ship? [0 to cancel] ");
+				int removeInput = -1;
+
+				removeInput = Driver.getNumber(0, Driver.currentGameYard.numShips);				//  Get a new input
+
+				Driver.currentGameYard.removeShipFromShipyard(removeInput);
+
+			}	
 		}
 	}
 	
-	public Starship(String race, String type, String crewUnits, String boardingParties, String BPV, 
-			String breakDown, String moveCost, String spareShuttles, String sizeClass, 
-			String turnMode, String ruleNum, String yearInService) {
-		this.race = race;
-		this.shipType = type;
-		this.crewUnits = crewUnits;
-		this.boardingParties = boardingParties;
-		this.BPV = BPV;
-		this.breakDown = breakDown;
-		this.moveCost = moveCost;
-		this.spareShuttles = spareShuttles;
-		this.sizeClass = sizeClass;
-		this.name = name;
-		this.turnMode = turnMode;
-		this.ruleNum = ruleNum;
-		this.yearInService = yearInService;
-		this.name = race.substring(0,3) + "-" + type;
-		if(this.name.length() > 10)
-			this.name = this.name.substring(0, 10);
-		this.speed = 0;
-		this.spi = 0.0;
-		this.distrv = 0.0;
-		this.kindOfShip = Ship.STARSHIP;
+	// Sort ships by speed, fastest first
+	public static void SortShips () {
+		Starship temp = new Starship();
+		Driver.currentGameYard.list[Driver.currentGameYard.numShips] = temp;
+
+		for (int x = 0; x <= Driver.currentGameYard.numShips-1; x++) {
+			for (int y = 0; y <= Driver.currentGameYard.numShips-2; y++) {
+				if (Driver.currentGameYard.list[y].speed < Driver.currentGameYard.list[y+1].speed) {
+					
+					Driver.currentGameYard.list[49] = Driver.currentGameYard.list[y];
+					Driver.currentGameYard.list[y] = Driver.currentGameYard.list[y+1];
+					Driver.currentGameYard.list[y+1] = Driver.currentGameYard.list[49];
+				}
+			}
+		}
 	}
 	
-	public Starship(String race, String type, String crewUnits, String boardingParties, String BPV, 
-			String breakDown, String moveCost, String spareShuttles, String sizeClass, 
-			String turnMode, String ruleNum, String yearInService, int speed, double spi, double distrv) {
-		this.race = race;
-		this.shipType = type;
-		this.crewUnits = crewUnits;
-		this.boardingParties = boardingParties;
-		this.BPV = BPV;
-		this.breakDown = breakDown;
-		this.moveCost = moveCost;
-		this.spareShuttles = spareShuttles;
-		this.sizeClass = sizeClass;
-		this.turnMode = turnMode;
-		this.ruleNum = ruleNum;
-		this.yearInService = yearInService;
-		this.speed = speed;
-		this.spi = spi;
-		this.distrv = distrv;
-		this.name = race.substring(0,3) + "-" + type;
-		this.kindOfShip = Ship.STARSHIP;
+	// PRINT MODIFIED LIST OF SHIPS TO SCREEN
+	public static void PrintCurrentShipsInGame() {
+		System.out.println("     \t\t\t\tHexes  \tH.E.T.");
+		System.out.println("     Ship\tShip\tTurn   Before\tBreak");
+		System.out.println("     Name\tSpeed\tMode   Turning\tDown");
+		System.out.println();
+		
+		for (int i = 1; i <= Driver.currentGameYard.numShips; i++) {
+			int HexMinToTurn = PhaseCalculation.FindHexMinToTurn(Driver.currentGameYard.list[i-1].turnMode, Driver.currentGameYard.list[i-1].speed);
+			String HexMin = Integer.toString(HexMinToTurn);
+			if (Driver.currentGameYard.list[i-1].turnMode =="*" ) {
+				HexMin = "*";
+			}
+
+			String extraSpace = getExtraSpaces(i, 2);
+
+//			String extraSpace = "";
+//			if (i < 10) {
+//				extraSpace = " ";
+//			}
+			
+			if (Driver.currentGameYard.list[i-1].name.length() <=3 ) {
+				Driver.currentGameYard.list[i-1].name = Driver.currentGameYard.list[i-1].name + "   ";
+			}
+			System.out.print(extraSpace + i + ")  " + Driver.currentGameYard.list[i-1].name);
+
+			getExtraSpaces(i, 2);
+	        
+//			extraSpace = "";
+//			if (Driver.currentGameYard.list[i-1].speed < 10) {
+//				extraSpace = " ";
+//			}
+			System.out.print("\t " + extraSpace + Driver.currentGameYard.list[i-1].speed + "\t " + Driver.currentGameYard.list[i-1].turnMode + "\t  " + HexMin + "\t " + Driver.currentGameYard.list[i-1].breakDown);
+			
+			if (Driver.currentGameYard.list[i-1].speed == 0) {
+				System.out.print("\t<--- Speed is ZERO");
+			}
+			System.out.println();
+		}
+
 	}
 	
-	public String toString() {
-		return this.race.substring(0,3).toUpperCase() + "\t" + this.shipType + "\t" + this.crewUnits + "\t" + this.boardingParties + "\t"
-				+ this.BPV + "\t" + this.breakDown + "\t" + this.moveCost + "\t" + this.spareShuttles + "\t" + this.sizeClass + "\t" 
-				+ this.turnMode + "\t" + this.ruleNum + "\t" + this.yearInService;
-	}
-	
+	public static String getExtraSpaces (int num, int maxDigits) {
+
+		String extraSpace = "";
+		int digitCount = 0;
+		
+        while(num != 0) {
+            num /= 10;
+            ++digitCount;
+        }
+        for (int i = 1; i <= maxDigits-digitCount; i++) {
+        	extraSpace = extraSpace + " ";
+        }
+        return extraSpace;
+    } 
 }
