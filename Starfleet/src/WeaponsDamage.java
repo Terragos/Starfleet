@@ -25,7 +25,7 @@ public class WeaponsDamage {
 				if (impulseNumber == -1) {
 					System.out.println("|                          [R]eturn to Main Menu                           |");
 				} else {
-					System.out.println("|                      [R]eturn to Impulse Procedure                       |");
+					System.out.println("|                      Return to [I]mpulse Procedure                       |");
 				}
 				System.out.println("|==========================================================================|");
 			}
@@ -35,35 +35,9 @@ public class WeaponsDamage {
 
 			String weaponInput = "";
 			while (weaponInput.length() == 0) {                           //  Do NOT accept RETURN as a valid answer
-				weaponInput = Driver.getInput("1234PLFHDTQR");
+				weaponInput = Driver.getInput("1234PLFHDTQIR");
 			}
 			
-			int general = 0;
-			int specific = 0;
-			int shieldDamage = 0;
-			if (weaponInput.equalsIgnoreCase("D")) {			        
-				System.out.println();
-				System.out.println("(GSR = energy allocated / 2)");				//  Apply Damage to 3 shield types first
-				System.out.print("General Shield Reinforcement : ");
-				general = Driver.getNumber(0, 100);
-				System.out.print("Specific Shield Reinforcement: ");
-				specific = Driver.getNumber(0, 100);
-				System.out.print("Shield Damage                : ");
-				shieldDamage = Driver.getNumber(0, 100);
-				totalDamage = totalDamage - general - specific - shieldDamage;
-				if (totalDamage > 0) {    										//  Quit and Go to Damage Allocation with total damage
-					DamageAllocation.DamageAlloc(totalDamage);					//  Pass through total damage number
-					totalDamage = 0;
-					continue;
-				} else {
-					totalDamage = 0;
-					break;
-				}
-
-			} else if(weaponInput.equalsIgnoreCase("R")) {
-				break;
-			}
-
 			int typeInput = 0;
 			int energyInput = 0;
 			int photonEnergyInput = 0;
@@ -104,52 +78,63 @@ public class WeaponsDamage {
 				String options = "SOD"; 
 				typeInput = options.indexOf(weaponTypeInput);           // Getting number: S=1, O=2, D=3 
 			}
-				
-			System.out.print("Distance: ");
-			int distanceInput = Driver.getNumber(-1, MAXDIST);
-			System.out.print("Number:   ");
-			int numberInput = Driver.getNumber(-1, 200);
-			System.out.println();
-
+			
+			String choice = "1234PLFHTQ";
+			
+			int distanceInput = 0;
+			int numberInput = 0;
+			if ("1234PLFHTQ".contains(weaponInput)) {
+				System.out.print("Distance: ");
+				distanceInput = Driver.getNumber(-1, MAXDIST);
+				System.out.print("Number:   ");
+				numberInput = Driver.getNumber(-1, 200);
+			}
+			
 			//	String weaponTypeInput;
 			if (weaponInput.equalsIgnoreCase("1")) {
 				totalDamage = type1Phaser(numberInput, distanceInput, totalDamage);		
-
+				System.out.println("Total Damage: " + totalDamage);
 			} else if(weaponInput.equalsIgnoreCase("2")) {
 				totalDamage = type2Phaser(numberInput, distanceInput, totalDamage);		
-
+				System.out.println("Total Damage: " + totalDamage);
 			} else if(weaponInput.equalsIgnoreCase("3")) {
 				totalDamage = type3Phaser(numberInput, distanceInput, totalDamage);		
-
+				System.out.println("Total Damage: " + totalDamage);
 			} else if(weaponInput.equalsIgnoreCase("4")) {
 				totalDamage = type4Phaser(numberInput, distanceInput, totalDamage);		
-
+				System.out.println("Total Damage: " + totalDamage);
 			} else if(weaponInput.equalsIgnoreCase("P")) {
 				totalDamage = photonTorpedo(typeInput, energyInput, numberInput, distanceInput, totalDamage);		
-
+				System.out.println("Total Damage: " + totalDamage);
 			} else if(weaponInput.equalsIgnoreCase("L")) {
 				totalDamage = plasmaTorpedo(typeInput, numberInput, distanceInput, totalDamage);		
-
+				System.out.println("Total Damage: " + totalDamage);
 			} else if(weaponInput.equalsIgnoreCase("F")) {
 				totalDamage = fusionBeam(numberInput, distanceInput, totalDamage);		
-
+				System.out.println("Total Damage: " + totalDamage);
 			} else if(weaponInput.equalsIgnoreCase("O")) {
 				totalDamage = fusionBeamOverloaded(typeInput, numberInput, distanceInput, totalDamage);		
-
+				System.out.println("Total Damage: " + totalDamage);
 			} else if(weaponInput.equalsIgnoreCase("B")) {
 				totalDamage = disruptorBolt(numberInput, distanceInput, totalDamage);		
-
+				System.out.println("Total Damage: " + totalDamage);
 			} else if(weaponInput.equalsIgnoreCase("T")) {
 				totalDamage = tractorRepulsorBeam(numberInput, distanceInput, totalDamage);		
-
+				System.out.println("Total Damage: " + totalDamage);
 			} else if(weaponInput.equalsIgnoreCase("H")) {
 				totalDamage = hellbore(typeInput, numberInput, distanceInput, totalDamage);		
-
+				System.out.println("Total Damage: " + totalDamage);
+			} else if(weaponInput.equalsIgnoreCase("D")) {
+				DamageAllocation.DamageAlloc(totalDamage);
+				totalDamage = 0;
+			} else if(weaponInput.equalsIgnoreCase("I")) {
+				System.out.println();
+				PhaseCalculation.PrintImpulseHeader();
+				break;
+			} else if(weaponInput.equalsIgnoreCase("R")) {
+				break;
 			}
-			
-			System.out.println("Total Damage: " + totalDamage);
-			System.out.println();
-			
+
 		}
 
 	}
