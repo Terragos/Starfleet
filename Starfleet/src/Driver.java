@@ -1,10 +1,11 @@
 import java.util.Scanner;
 
-//TODO, if no ships, dont do impulses
+//TODO, if no ships, don't do impulses  DONE!!!!
+//TODO  NEED CODE TO EMPTY OUT KEYBOARD BUFFER  ???  In Impulse procedure after toggling TORPEDO, maybe ???  (there is an extra space)
 
 public class Driver {
 
-	public final static boolean TESTING = false;
+	public final static boolean TESTING = true;
 	public static int numImpulses = 0;
 	public static Shipyard currentGameYard = new Shipyard("Current Game Shipyard");
 	public static Shipyard defaultYard = Shipyard.setupDefaultShipyard();
@@ -14,13 +15,23 @@ public class Driver {
 	public static void main(String[] args) {
 		
 		if(Driver.TESTING) {
-			currentGameYard.addShipToShipyard(defaultYard.list[30]);
-			currentGameYard.addShipToShipyard(defaultYard.list[36]);
-			currentGameYard.addShipToShipyard(defaultYard.list[72]);
-			for(int i = 0;  i < currentGameYard.numShips; i++) {
-				if((i+1) * 4 <= 32)
-					currentGameYard.list[i].speed = (i+1) * 4;
+			System.out.println("|==============================================================================|");
+			System.out.println("|            HERE ARE SEVERAL TEST SHIPS THAT HAVE BEEN LOADED                 |");
+			System.out.println("|==============================================================================|");
+			System.out.println();
+			int randomShip = 0;
+			int randomSpeed = 0;
+			for (int i = 1; i <= 5; i++) {
+				randomShip = DamageAllocation.rollDice(1, 296);
+				currentGameYard.addShipToShipyard(defaultYard.list[randomShip]);
+				randomSpeed = DamageAllocation.rollDice(1, 17) + 1;
+				currentGameYard.list[i-1].speed = randomSpeed;
 			}
+			ShipSetup.SortShips();
+			ShipSetup.PrintCurrentShipsInGame();
+			System.out.println();
+			System.out.println();
+			
 		}
 		
 		boolean cont = true;
@@ -30,7 +41,6 @@ public class Driver {
 		System.out.println("|==============================================================================|");
 		System.out.println("|              Java Code by Harrison Weese and D. Brian Weese                  |");
 		System.out.println("|==============================================================================|");
-		System.out.println();
 		System.out.println();
 		System.out.print("Would you like to add ships [M]anually or from the [S]hipyard? [0 = Main Menu] ");
 
@@ -55,7 +65,6 @@ public class Driver {
 					System.out.print("Ship " + (Driver.currentGameYard.numShips + 1) + " Speed    : ");
 					int speedInput = Driver.getNumber(0, 32);
 					star.speed = speedInput;
-//						System.out.println();
 
 					System.out.print("Ship " + (Driver.currentGameYard.numShips + 1) + " Turn Mode: ");
 					String turnModeInput = Driver.getInput("ABCDEFXY-");
@@ -83,7 +92,6 @@ public class Driver {
 		cont = true;
 		while(cont) {
 			System.out.println();
-			System.out.println();
 			System.out.println("|==========================================================================|");
 			System.out.println("|                             SFB MAIN MENU                                |");
 			System.out.println("|==========================================================================|");
@@ -97,12 +105,22 @@ public class Driver {
 			System.out.println("|==========================================================================|");
 
 			String userInput = getInput("MIWDQS");
+			String userInput3 = "";
 			
 			int damageTotal = 0;
 			if(userInput.equalsIgnoreCase("M")) {
 				ShipSetup.ShipSetupOrModify("N");     // Pass "N" to NOT go on to Impulse Procedure ("Y" to go to...)
 			} else if(userInput.equalsIgnoreCase("I")) {
-				PhaseCalculation.PhaseCalc();
+				if (currentGameYard.numShips > 0) { 
+					PhaseCalculation.PhaseCalc();
+				} else {
+					System.out.print("You have no ships assigned to the current game.  Would you like to add some ships?");
+					userInput3 = getInput("YN");
+					if (userInput3.equalsIgnoreCase("Y")) {
+						ShipSetup.ShipSetupOrModify("N");
+					}
+				}
+				System.out.println();
 			} else if(userInput.equalsIgnoreCase("W")) {
 				WeaponsDamage.WeaponsDam(-1);
 			} else if(userInput.equalsIgnoreCase("D")) {
@@ -131,7 +149,7 @@ public class Driver {
 		while (location < 0) {
 			inputLetter = keyboard.nextLine().toUpperCase();
 			location = word.indexOf(inputLetter);                  //  Getting position of user's input of the "word" string passed through
-			if (inputLetter.equalsIgnoreCase("AA")) {
+			if (inputLetter.equalsIgnoreCase("AA") || inputLetter.equalsIgnoreCase("AAA") || inputLetter.equalsIgnoreCase("AAAA")) {
 				location = 0;
 			} else if (location == -1 ) {                          //  location = -1 if character is not found in "word" string
 				for (int d = 0; d <= word.length()-1; d++) {
@@ -167,10 +185,7 @@ public class Driver {
 				input = 0; // This line and 
 				keyboard.nextLine(); // this line prevent a very bad infinite loop
 			}
-		}
-		
-//		if(input == 0) {System.out.println("??");}
-		
+		}		
 		return input;
 	}
 	
