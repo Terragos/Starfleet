@@ -187,6 +187,7 @@ public class PhaseCalculation {
 		System.out.print("=================");
 	}
 	
+	
 // ROLL DICE METHOD
 	
 	public static int rollDice(int numOfDice, int numOfSides, boolean print)
