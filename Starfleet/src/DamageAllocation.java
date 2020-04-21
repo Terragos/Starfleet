@@ -14,7 +14,7 @@ public class DamageAllocation {
 		int totalDamage = 0;
 		
 		if (num == -1) {
-			System.out.print("Number of Damage Points to Allocate: ");
+			System.out.print(" Number of Damage Points to Allocate: ");
 			int damage = (Driver.getNumber(1, 1000));
 			totalDamage = damage;
 		} else {
@@ -69,13 +69,12 @@ public class DamageAllocation {
 			System.out.println("|            Press RETURN to acknowledge that system destroyed             |");
 			System.out.println("|     Press \"N\" if NO system of that type is available to be destroyed     |");
 			System.out.println("|--------------------------------------------------------------------------|");
-			String extraSpace = "";
-			if (totalDamage < 10) {
-				extraSpace = "  ";
-			} else if (totalDamage < 100) {
-				extraSpace = " ";
-			}
-			System.out.println("|                      Allocating " + totalDamage + " points of damage                     " + extraSpace + "|");
+
+			String extraSpace = ShipSetup.getExtraSpaces(totalDamage, 3);
+
+			String textToCenter = "Allocating " + totalDamage + " point(s) of damage";
+			String spacedText = spacesToCenter(textToCenter, 74);
+			System.out.println(spacedText);
 			System.out.println("|==========================================================================|");
 			System.out.println();
 			System.out.println("\tDamage\tSystem Name");
@@ -83,12 +82,14 @@ public class DamageAllocation {
 			System.out.println("     ================================");
 			
 			for(int damageCount = 1; damageCount <= totalDamage; damageCount++) {
-				String extraSpace2 = "";
-				if (damageCount < 10) {
-					extraSpace2 = " ";
-				}
+				
+				extraSpace = ShipSetup.getExtraSpaces(damageCount, 3);
+//				String extraSpace2 = "";
+//				if (damageCount < 10) {
+//					extraSpace2 = " ";
+//				}
 				if (chartspot <= 142) {
-					System.out.print("\t  " + extraSpace2 + damageCount + "\t" + systemName[chartspot]);
+					System.out.print("\t " + extraSpace + damageCount + "\t" + systemName[chartspot]);
 	
 					Scanner keyboard = new Scanner(System.in);
 					boolean cont = true;
@@ -109,7 +110,7 @@ public class DamageAllocation {
 						} else {}
 					}
 				} else {
-					System.out.print("\t" + extraSpace2 + damageCount + "\t" + systemName[chartspot-143]);
+					System.out.print("\t" + extraSpace + damageCount + "\t" + systemName[chartspot-143]);
 	
 					Scanner keyboard = new Scanner(System.in);
 					boolean cont = true;
@@ -165,4 +166,25 @@ public class DamageAllocation {
 			}
 		}
 	}
+	
+	public static String spacesToCenter(String textToCenter, int spaceWidth) {
+		String returnString = "";
+		String leftSideSpaces = "";
+		String rightSideSpaces = "";
+		int numSpaces = 0;
+		spaceWidth = spaceWidth - textToCenter.length();
+		int numLeftSpaces = spaceWidth/2;
+		int numRightSpaces = spaceWidth - numLeftSpaces;
+		
+		for (int i = 1; i <= numLeftSpaces; i++) {
+			leftSideSpaces = leftSideSpaces + " ";
+			rightSideSpaces = rightSideSpaces + " ";
+		}
+		if (numLeftSpaces != numRightSpaces) {
+			rightSideSpaces = rightSideSpaces + " ";
+		}
+		returnString = "|" + leftSideSpaces + textToCenter + rightSideSpaces + "|"; 
+		return returnString;
+	}
+	
 }
