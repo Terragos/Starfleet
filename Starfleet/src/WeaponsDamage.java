@@ -3,11 +3,27 @@ import java.util.Scanner;
 public class WeaponsDamage {
 	
 	public final static int MAXDIST = 300;
+	public static Starship currentShip;
+	public static Scanner keyboard = new Scanner(System.in);
 	
 	public static void WeaponsDam (int impulseNumber) {   //  If yes > 0 then in the middle of an Impulse Movement Procedure
-
 		int totalDamage = 0;
-		Scanner keyboard = new Scanner(System.in);
+		
+		ShipSetup.SortCurrentShipyard();														// Always SORT ships before printing to screen
+		ShipSetup.PrintCurrentShipsInGameThatHaveSSD();
+		System.out.println();
+		
+		System.out.print("Which ship is firing? [0 to cancel] ");
+		int input = -5;
+
+		input = Driver.getNumber(0, Driver.currentGameYard.numStarships);				//  Get a new input
+
+		if(input == 0) {
+			return;
+		}
+		
+		currentShip = Driver.currentGameYard.list[input-1];
+		
 		boolean cont = true;
 		while(cont) {
 			if (totalDamage == 0) {
@@ -30,19 +46,7 @@ public class WeaponsDamage {
 				System.out.println("|==========================================================================|");
 			}
 		
-			int lockOnMultiplier = 1;
-			System.out.print("What is your top sensor number? ");
-			int number = Driver.getNumber(0,6);
-			int die = DamageAllocation.rollDice(1,6);
-			System.out.println("Roll for Lock-On: " + die);
-			if(die <= number) {
-				System.out.println("-- Lock-On Achieved --");
-				lockOnMultiplier = 1;
-			}else {
-				System.out.print("  For the remainder of the round, you may not \n"
-						+ "fire seeking weapons. See rule D6.12 for more info. ");
-				lockOnMultiplier = 2;
-			}
+			
 			
 			System.out.println();
 			System.out.print("Weapon:   ");
@@ -99,7 +103,10 @@ public class WeaponsDamage {
 				System.out.print("Distance: ");
 				distanceInput = Driver.getNumber(-1, MAXDIST);	
 				
-				distanceInput *= lockOnMultiplier;
+				/*
+				if(currentShip.lockedOn == false)
+					distanceInput *= 2;
+				*/
 				
 				System.out.print("Number:   ");
 				numberInput = Driver.getNumber(-1, 200);

@@ -188,8 +188,7 @@ public class PhaseCalculation {
 	}
 	
 	
-// ROLL DICE METHOD
-	
+	// ROLL DICE METHOD
 	public static int rollDice(int numOfDice, int numOfSides, boolean print)
 	{
 		Random randomGenerator = new Random();
@@ -216,9 +215,8 @@ public class PhaseCalculation {
 		
 		return totalDieRoll;
 	}	
-	
-// FIND TURN MODE NUMBER BASED ON TURN MODE LETTER
 
+	// FIND TURN MODE NUMBER BASED ON TURN MODE LETTER
 	public static int FindHexMinToTurn(String mode, int speed) {
 		int numHexes = 0; 
 		if (mode.equalsIgnoreCase("F")) {

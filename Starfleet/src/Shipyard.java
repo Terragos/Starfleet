@@ -4,18 +4,21 @@ public class Shipyard {
 	public static int numberOfShipyardMadeThusFar = 0;
 	
 	public int numShips = 0;
+	public int numStarships = 0;
 	public Starship[] list;
 	public String name;
 	
 	public Shipyard() {
 		numberOfShipyardMadeThusFar++;
 		numShips = 0;
+		numStarships = 0;
 		list = new Starship[500];
 	}
 	
 	public Shipyard(String name) {
 		numberOfShipyardMadeThusFar++;
 		numShips = 0;
+		numStarships = 0;
 		list = new Starship[500];
 		this.name = name;
 	}
@@ -23,23 +26,26 @@ public class Shipyard {
 	public void addShipToShipyard(Starship ship) {
 		this.list[numShips] = ship;
 		numShips++;
+		if(ship.kindOfShip == Starship.Ship.STARSHIP) 
+			numStarships++;
 	}
 	
 	public void removeShipFromShipyard(int remover) {
+		if(this.list[remover-1].kindOfShip == Starship.Ship.STARSHIP) {
+			numStarships--;
+		}
 		for (int n = remover; n <= Driver.currentGameYard.numShips; n++) {	
 			this.list[n-1] = this.list[n];
 		}
 		this.numShips--;
 	}
 	
-	public static Shipyard setupDefaultShipyard() 
-	{
-		
+	public static Shipyard setupDefaultShipyard() {	
 		Shipyard defaultYard = new Shipyard("default Yard");
 		
 		Starship ship = new Starship("Federation", "DN", "50", "14", "180", "3-6", "1.5", "4", "2", "E", "R2.2", "168");
-		ship.setupSSD(2, 2, 2, 2, 10, 4, 15, 15, 15, 6, 2, 5, 4, 2, 1, 6, 0, 10, 0, 18, 6, 9, 10, 10, 12);
-		// Sensor Track  (6, 6, 6, 6, 5, 4, 3, 2, 1, 0)
+		int[] se = new int[]{6, 6, 6, 6, 5, 4, 3, 2, 1, 0};
+		ship.setupSSD(2, 2, 2, 2, 10, 4, 15, 15, 15, 6, 2, 5, 4, 2, 1, 6, 0, 10, 0, 18, 6, 9, 10, 10, 12, se);
 		// Scanner Track (0, 0, 0, 0, 1, 2, 3, 4, 5, 9)
 		// DamCon Track  (6, 6, 4, 4, 4, 2, 2, 2, 0)
 		defaultYard.addShipToShipyard(ship);
@@ -58,20 +64,23 @@ public class Shipyard {
 
 		ship = new Starship("Federation", "CX", "46", "14", "268", "5-6", "1", "4", "2", "D", "R2.52", "-");
 		defaultYard.addShipToShipyard(ship);
+		
 		ship = new Starship("Federation", "CC", "45", "10", "137", "5-6", "1", "3", "3", "D", "R2.3", "83");
-		ship.setupSSD(2, 2, 2, 2, 8, 4, 0, 15, 15, 4, 2, 4, 2, 2, 1, 4, 0, 8, 0, 12, 4, 6, 6, 6, 6);
-		// Sensor Track  (6, 6, 5, 3, 1, 0)
+		se = new int[]{6, 6, 5, 3, 1, 0};
+		ship.setupSSD(2, 2, 2, 2, 8, 4, 0, 15, 15, 4, 2, 4, 2, 2, 1, 4, 0, 8, 0, 12, 4, 6, 6, 6, 6, se);
 		// Scanner Track (0, 0, 1, 3, 5, 9)
 		// DamCon Track  (4, 4, 2, 2, 2, 0)
+		
 		defaultYard.addShipToShipyard(ship);
 		ship = new Starship("Federation", "CC+", "45", "10", "145", "5-6", "1", "3", "3", "D", "R2.3", "165");
 		defaultYard.addShipToShipyard(ship);
 		ship = new Starship("Federation", "CA", "43", "10", "125", "5-6", "1", "3", "3", "D", "R2.4", "65");
-		ship.setupSSD(2, 0, 2, 2, 6, 4, 0, 15, 15, 4, 0, 4, 2, 2, 1, 4, 0, 8, 0, 12, 4, 6, 6, 6, 6);
-		// Sensor Track  (6, 6, 5, 3, 1, 0)
+		se = new int[]{6, 6, 5, 3, 1, 0};
+		ship.setupSSD(2, 0, 2, 2, 6, 4, 0, 15, 15, 4, 0, 4, 2, 2, 1, 4, 0, 8, 0, 12, 4, 6, 6, 6, 6, se);
 		// Scanner Track (0, 0, 1, 3, 5, 9)
 		// DamCon Track  (4, 4, 2, 2, 2, 0)
 		defaultYard.addShipToShipyard(ship);
+		
 		ship = new Starship("Federation", "CA+", "43", "10", "137", "5-6", "1", "3", "3", "D", "R2.4", "165");
 		defaultYard.addShipToShipyard(ship);
 		ship = new Starship("Federation", "CVA", "49", "10", "172/150", "4-6", "1", "2+4", "2", "R2.D", "13", "171");
@@ -96,12 +105,14 @@ public class Shipyard {
 		defaultYard.addShipToShipyard(ship);
 		ship = new Starship("Federation", "ECL", "40", "6", "90", "4-6", "0.75", "4", "3", "C", "R2.15", "171");
 		defaultYard.addShipToShipyard(ship);
+		
 		ship = new Starship("Federation", "NCL", "36", "8", "116", "4-6", "0.67", "2", "3", "C", "R2.18", "170");
-		ship.setupSSD(2, 0, 1, 2, 6, 4, 0, 12, 12, 4, 4, 2, 2, 2, 1, 4, 1, 4, 0, 5, 5, 6, 6, 6, 6);
-		// Sensor Track  (6, 6, 5, 3, 1, 0)
+		se = new int[]{6, 6, 5, 3, 1, 0};
+		ship.setupSSD(2, 0, 1, 2, 6, 4, 0, 12, 12, 4, 4, 2, 2, 2, 1, 4, 1, 4, 0, 5, 5, 6, 6, 6, 6, se);
 		// Scanner Track (0, 0, 1, 3, 5, 9)
 		// DamCon Track  (4, 4, 2, 2, 2, 0)
 		defaultYard.addShipToShipyard(ship);
+		
 		ship = new Starship("Federation", "NCL+", "36", "8", "120", "4-6", "0.67", "2", "3", "C", "R2.18", "175");
 		defaultYard.addShipToShipyard(ship);
 		ship = new Starship("Federation", "NSC", "32", "8", "120/100", "4-6", "0.67", "2", "3", "C", "R2.19", "176");
@@ -110,12 +121,14 @@ public class Shipyard {
 		defaultYard.addShipToShipyard(ship);
 		ship = new Starship("Federation", "NEC", "38", "8", "120", "4-6", "0.67", "2", "3", "C", "R2.20", "184");
 		defaultYard.addShipToShipyard(ship);
+		
 		ship = new Starship("Federation", "DD", "20", "6", "94", "3-6", "0.5", "1", "4", "C", "R2.6", "65");
-		ship.setupSSD(2, 0, 1, 2, 6, 4, 15, 0, 0, 4, 0, 2, 2, 2, 1, 2, 0, 8, 0, 5, 5, 4, 6, 6, 4);
-		// Sensor Track  (6, 6, 5, 3, 1, 0)
+		se = new int[]{6, 6, 5, 3, 1, 0};
+		ship.setupSSD(2, 0, 1, 2, 6, 4, 15, 0, 0, 4, 0, 2, 2, 2, 1, 2, 0, 8, 0, 5, 5, 4, 6, 6, 4, se);
 		// Scanner Track (0, 0, 1, 3, 5, 9)
 		// DamCon Track  (2, 2, 2, 0)
 		defaultYard.addShipToShipyard(ship);
+		
 		ship = new Starship("Federation", "DD+", "20", "6", "106", "3-6", "0.5", "1", "4", "C", "R2.6", "165");
 		defaultYard.addShipToShipyard(ship);
 		ship = new Starship("Federation", "DDL", "22", "6", "94", "3-6", "0.5", "1", "4", "C", "R2.27", "160");
@@ -177,17 +190,13 @@ public class Shipyard {
 		ship = new Starship("Federation", "L-Qshp", "12", "8", "81", "2-6", "0.5", "-", "4", "B", "-", "74");
 		defaultYard.addShipToShipyard(ship);
 
-//		ship.setupSSD(br, fb, eb, ac, phr, trp, CW, LW, RW, imp, apr, bat, tns, trc, prb, sht, drn, lab, crg, FH, AH, DC, SE, SC, ED);
-		// Sensor Track  ()
-		// Scanner Track ()
-		// DamCon Track  ()
-
 		ship = new Starship("Klingon", "B-10", "81", "32", "316", "2-6", "2", "2+2", "2", "E", "R3.17", "-");
-		ship.setupSSD(5, 5, 2, 2, 21, 12, 30, 15, 15, 13, 6, 12, 12, 5, 1, 12, 10, 6, 0, 15, 36, 10, 10, 10, 10);
-		// Sensor Track  (6, 6, 6, 6, 5, 4, 3, 2, 1, 0)
+		se = new int[]{6, 6, 6, 6, 5, 4, 3, 2, 1, 0};
+		ship.setupSSD(5, 5, 2, 2, 21, 12, 30, 15, 15, 13, 6, 12, 12, 5, 1, 12, 10, 6, 0, 15, 36, 10, 10, 10, 10, se);
 		// Scanner Track (0, 0, 0, 1, 2, 3, 4, 5, 6, 9)
 		// DamCon Track  (8, 8, 6, 6, 4, 4, 2, 2, 2, 0)
 		defaultYard.addShipToShipyard(ship);
+		
 		ship = new Starship("Klingon", "C-9B", "62", "24", "210", "3-6", "1.5", "2", "2", "D", "R3.2", "175");
 		defaultYard.addShipToShipyard(ship);
 		ship = new Starship("Klingon", "C-9A", "62", "24", "221", "3-6", "1.5", "2", "2", "D", "R3.2", "180");
@@ -198,12 +207,14 @@ public class Shipyard {
 		defaultYard.addShipToShipyard(ship);
 		ship = new Starship("Klingon", "C-8B", "60", "24", "217", "3-6", "1.5", "2", "2", "D", "R3.3", "175");
 		defaultYard.addShipToShipyard(ship);
+		
 		ship = new Starship("Klingon", "C-8V", "66", "20", "235/200", "3-6", "1.5", "2+6", "2", "D", "R3.28", "174");
-		ship.setupSSD(4, 4, 2, 2, 16, 4, 15, 15, 15, 8, 5, 8, 8, 8, 1, 31, 4, 6, 0, 12, 20, 8, 8, 8, 8);
-		// Sensor Track  (6, 6, 6, 5, 3, 2, 1, 0)
+		se = new int[]{6, 6, 6, 5, 3, 2, 1, 0};
+		ship.setupSSD(4, 4, 2, 2, 16, 4, 15, 15, 15, 8, 5, 8, 8, 8, 1, 31, 4, 6, 0, 12, 20, 8, 8, 8, 8, se);
 		// Scanner Track (0, 0, 0, 1, 2, 3, 5, 9)
 		// DamCon Track  (6, 6, 4, 4, 2, 2, 2, 0)
 		defaultYard.addShipToShipyard(ship);
+		
 		ship = new Starship("Klingon", "DX", "46", "20", "267", "5-6", "1", "2", "2", "B", "S2", "-");
 		defaultYard.addShipToShipyard(ship);
 		ship = new Starship("Klingon", "D-7", "45", "14", "117", "5-6", "1", "1", "3", "B", "R3.4", "83");
@@ -212,13 +223,14 @@ public class Shipyard {
 		defaultYard.addShipToShipyard(ship);
 		ship = new Starship("Klingon", "D-7B", "45", "14", "125", "5-6", "1", "1", "3", "B", "R3.4", "165");
 		defaultYard.addShipToShipyard(ship);
+		
 		ship = new Starship("Klingon", "D-7C", "47", "16", "139", "5-6", "1", "2", "3", "B", "R3.31", "123");
-		ship.setupSSD(2, 2, 1, 2, 9, 4, 0, 15, 15, 5, 4, 3, 7, 5, 1, 2, 4, 4, 0, 4, 6, 6, 6, 6, 5);
-		// Sensor Track  (6, 6, 5, 3, 1, 0)
+		se = new int[]{6, 6, 5, 3, 1, 0};
+		ship.setupSSD(2, 2, 1, 2, 9, 4, 0, 15, 15, 5, 4, 3, 7, 5, 1, 2, 4, 4, 0, 4, 6, 6, 6, 6, 5, se);
 		// Scanner Track (0, 0, 1, 3, 5, 9)
 		// DamCon Track  (4, 4, 2, 2, 2, 0)
-
 		defaultYard.addShipToShipyard(ship);
+		
 		ship = new Starship("Klingon", "D-6", "44", "14", "113", "5-6", "1", "1", "3", "B", "R3.5", "62");
 		defaultYard.addShipToShipyard(ship);
 		ship = new Starship("Klingon", "D-6B", "44", "14", "124", "5-6", "1", "1", "3", "B", "R3.5", "165");
@@ -245,12 +257,14 @@ public class Shipyard {
 		defaultYard.addShipToShipyard(ship);
 		ship = new Starship("Klingon", "AD-5", "40", "8", "120", "5-6", "0.67", "1", "3", "B", "R3.29", "176");
 		defaultYard.addShipToShipyard(ship);
+		
 		ship = new Starship("Klingon", "F-5L", "26", "12", "94", "4-6", "0.5", "1", "4", "A", "R3.34", "90");
-		ship.setupSSD(1, 2, 1, 1, 5, 2, 0, 8, 8, 3, 3, 2, 2, 1, 1, 2, 3, 2, 0, 2, 5, 4, 4, 4, 4);
-		// Sensor Track  (6, 5, 3, 0)
+		se = new int[]{6, 5, 3, 0};
+		ship.setupSSD(1, 2, 1, 1, 5, 2, 0, 8, 8, 3, 3, 2, 2, 1, 1, 2, 3, 2, 0, 2, 5, 4, 4, 4, 4, se);
 		// Scanner Track (0, 1, 3, 9)
 		// DamCon Track  (4, 2, 2, 0)
 		defaultYard.addShipToShipyard(ship);
+		
 		ship = new Starship("Klingon", "F-5", "22", "8", "71", "4-6", "0.5", "-", "4", "A", "R3.6", "65");
 		defaultYard.addShipToShipyard(ship);
 		ship = new Starship("Klingon", "F-5B", "22", "8", "75", "4-6", "0.5", "-", "4", "A", "R3.6", "165");
@@ -265,12 +279,14 @@ public class Shipyard {
 		defaultYard.addShipToShipyard(ship);
 		ship = new Starship("Klingon", "F-5MB", "20", "6", "77/64", "4-6", "0.5", "-", "4", "A", "R3.27", "175");
 		defaultYard.addShipToShipyard(ship);
+		
 		ship = new Starship("Klingon", "F-5CVL", "24", "6", "90/70", "4-6", "0.5", "1+2", "4", "A", "R3.30", "167");
-		ship.setupSSD(1, 2, 1, 1, 5, 2, 0, 8, 8, 3, 0, 1, 1, 2, 1, 10, 1, 2, 0, 2, 4, 4, 4, 4, 4);
-		// Sensor Track  (6, 5, 3, 0)
+		se = new int[]{6, 5, 3, 0};
+		ship.setupSSD(1, 2, 1, 1, 5, 2, 0, 8, 8, 3, 0, 1, 1, 2, 1, 10, 1, 2, 0, 2, 4, 4, 4, 4, 4, se);
 		// Scanner Track (0, 1, 3, 9)
 		// DamCon Track  (2, 2, 2, 0)
 		defaultYard.addShipToShipyard(ship);
+		
 		ship = new Starship("Klingon", "E-4", "14", "6", "55", "4-6", "0.33", "-", "4", "A", "R3.7", "65");
 		defaultYard.addShipToShipyard(ship);
 		ship = new Starship("Klingon", "E-4B", "14", "6", "59", "4-6", "0.33", "-", "4", "A", "R3.7", "165");
@@ -367,12 +383,14 @@ public class Shipyard {
 		defaultYard.addShipToShipyard(ship);
 		ship = new Starship("Kzinti", "SCS", "65", "24", "215", "4-6", "1.5", "3+3", "2", "E", "R5.11", "181");
 		defaultYard.addShipToShipyard(ship);
+		
 		ship = new Starship("Kzinti", "CVA", "65", "20", "215", "4-6", "1.5", "2+6", "2", "E", "R5.25", "173");
-		ship.setupSSD(3, 3, 2, 3, 20, 4, 15, 15, 15, 7, 4, 7, 7, 8, 1, 28, 8, 9, 0, 7, 18, 9, 10, 10, 12);
-		// Sensor Track  (6, 6, 6, 6, 5, 4, 3, 2, 1, 0)
+		se = new int[]{6, 6, 6, 6, 5, 4, 3, 2, 1, 0};
+		ship.setupSSD(3, 3, 2, 3, 20, 4, 15, 15, 15, 7, 4, 7, 7, 8, 1, 28, 8, 9, 0, 7, 18, 9, 10, 10, 12, se);
 		// Scanner Track (0, 0, 0, 0, 1, 2, 3, 4, 5, 9)
 		// DamCon Track  (6, 6, 4, 4, 4, 2, 2, 2, 0)
 		defaultYard.addShipToShipyard(ship);
+		
 		ship = new Starship("Kzinti", "CV", "50", "20", "147", "5-6", "1", "3+3", "3", "E", "R5.6", "166");
 		defaultYard.addShipToShipyard(ship);
 		ship = new Starship("Kzinti", "CVS", "50", "20", "169", "5-6", "1", "3+3", "3", "E", "R5.7", "170");
@@ -383,12 +401,15 @@ public class Shipyard {
 		defaultYard.addShipToShipyard(ship);
 		ship = new Starship("Kzinti", "CSX", "41", "18", "264", "5-6", "1", "3", "2", "C", "S2", "-");
 		defaultYard.addShipToShipyard(ship);
+		
 		ship = new Starship("Kzinti", "CC", "44", "20", "150", "5-6", "1", "2", "3", "C", "R5.4", "107");
-		ship.setupSSD(3, 0, 1, 3, 12, 4, 10, 10, 10, 3, 5, 5, 5, 2, 1, 2, 4, 6, 0, 5, 12, 6, 6, 6, 6);
+		se = new int[]{6, 6, 6, 4, 1, 0};
+		ship.setupSSD(3, 0, 1, 3, 12, 4, 10, 10, 10, 3, 5, 5, 5, 2, 1, 2, 4, 6, 0, 5, 12, 6, 6, 6, 6, se);
 		// Sensor Track  (6, 6, 6, 4, 1, 0)
 		// Scanner Track (0, 1, 2, 3, 5, 9)
 		// DamCon Track  (4, 4, 2, 2, 2, 0)
 		defaultYard.addShipToShipyard(ship);
+		
 		ship = new Starship("Kzinti", "BC", "40", "16", "138", "5-6", "1", "2", "3", "C", "R5.3", "160");
 		defaultYard.addShipToShipyard(ship);
 		ship = new Starship("Kzinti", "CS", "40", "16", "116", "5-6", "1", "2", "3", "C", "R5.2", "65");
@@ -513,18 +534,21 @@ public class Shipyard {
 		defaultYard.addShipToShipyard(ship);
 		ship = new Starship("Tholian", "C", "34", "10", "120", "4-6", "0.75", "1", "3", "B", "R7.6", "147");
 		defaultYard.addShipToShipyard(ship);
+		
 		ship = new Starship("Tholian", "CVA", "40", "8", "141", "4-6", "0.75", "1+4", "3", "B", "R7.9", "173");
-		ship.setupSSD(2, 0, 1, 2, 10, 0, 0, 12, 12, 4, 3, 3, 2, 8, 1, 4, 0, 4, 0, 7, 7, 6, 6, 6, 6);
-		// Sensor Track  (6, 6, 5, 3, 1, 0)
+		se = new int[]{6, 6, 5, 3, 1, 0};
+		ship.setupSSD(2, 0, 1, 2, 10, 0, 0, 12, 12, 4, 3, 3, 2, 8, 1, 4, 0, 4, 0, 7, 7, 6, 6, 6, 6, se);
 		// Scanner Track (0, 0, 1, 3, 5, 9)
 		// DamCon Track  (4, 4, 2, 2, 2, 0)
 		defaultYard.addShipToShipyard(ship);
+		
 		ship = new Starship("Tholian", "DD", "18", "8", "80", "5-6", "0.5", "-", "4", "A", "R7.4", "115");
-		ship.setupSSD(2, 0, 1, 1, 6, 2, 0, 8, 8, 3, 0, 2, 1, 4, 1, 2, 0, 2, 0, 5, 0, 4, 5, 5, 4);
-		// Sensor Track  (6, 5, 3, 1, 0)
+		se = new int[]{6, 5, 3, 1, 0};
+		ship.setupSSD(2, 0, 1, 1, 6, 2, 0, 8, 8, 3, 0, 2, 1, 4, 1, 2, 0, 2, 0, 5, 0, 4, 5, 5, 4, se);
 		// Scanner Track (0, 1, 3, 5, 9)
 		// DamCon Track  (2, 2, 2, 0)
 		defaultYard.addShipToShipyard(ship);
+		
 		ship = new Starship("Tholian", "PC+", "14", "6", "65", "5-6", "0.5", "1", "4", "A", "R7.3", "98");
 		defaultYard.addShipToShipyard(ship);
 		ship = new Starship("Tholian", "PC", "12", "5", "59", "5-6", "0.5", "1", "4", "A", "R7.2", "83");
@@ -712,15 +736,15 @@ public class Shipyard {
 		ship = new Starship("Andromedan", "Cour", "10", "4", "70", "6", "0.33", "-", "4", "A", "R13.5", "166");
 		defaultYard.addShipToShipyard(ship);
 		ship = new Starship("Andromedan", "E-Mod", "0", "0", "40", "-", "*", "-", "4", "-", "R13.7", "184");
-
 		defaultYard.addShipToShipyard(ship);
+		
 		ship = new Starship("Civilian", "F-L", "2", "-", "61/18", "1-6", "0.5", "-", "4", "B", "R1.6", "74");
-		ship.setupSSD(1, 0, 1, 1, 2, 0, 0, 4, 4, 2, 1, 1, 1, 0, 0, 1, 0, 1, 50, 3, 3, 3, 3, 3, 4);
-		// Sensor Track  (6, 3, 0)
+		se = new int[]{6, 3, 0};
+		ship.setupSSD(1, 0, 1, 1, 2, 0, 0, 4, 4, 2, 1, 1, 1, 0, 0, 1, 0, 1, 50, 3, 3, 3, 3, 3, 4, se);
 		// Scanner Track (0, 2, 9)
 		// DamCon Track  (2, 2, 0)
-
 		defaultYard.addShipToShipyard(ship);
+		
 		ship = new Starship("Civilian", "F-S", "1", "-", "26/12", "1-6", "0.33", "-", "4", "B", "R1.5", "74");
 		defaultYard.addShipToShipyard(ship);
 		ship = new Starship("Civilian", "Armd Pr", "4", "2", "75/20", "3-6", "0.2", "-", "4", "C", "R1.8", "80");

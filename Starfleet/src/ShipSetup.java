@@ -154,8 +154,8 @@ public class ShipSetup {
 	// PRINT MODIFIED LIST OF SHIPS TO SCREEN
 	public static void PrintCurrentShipsInGame() {
 		System.out.println("     \t\t\t\tHexes  \tH.E.T.");
-		System.out.println("     Ship\tShip\tTurn   Before\tBreak");
-		System.out.println("     Name\tSpeed\tMode   Turning\tDown");
+		System.out.println("     Ship\tShip\tTurn   Before\tBreak\tSensor");
+		System.out.println("     Name\tSpeed\tMode   Turning\tDown\tLock-On");
 		System.out.println();
 		
 		for (int i = 1; i <= Driver.currentGameYard.numShips; i++) {
@@ -166,11 +166,6 @@ public class ShipSetup {
 			}
 
 			String extraSpace = getExtraSpaces(i, 2);
-
-//			String extraSpace = "";
-//			if (i < 10) {
-//				extraSpace = " ";
-//			}
 			
 			if (Driver.currentGameYard.list[i-1].name.length() <=3 ) {
 				Driver.currentGameYard.list[i-1].name = Driver.currentGameYard.list[i-1].name + "   ";
@@ -179,11 +174,21 @@ public class ShipSetup {
 
 			getExtraSpaces(i, 2);
 	        
-//			extraSpace = "";
-//			if (Driver.currentGameYard.list[i-1].speed < 10) {
-//				extraSpace = " ";
-//			}
-			System.out.print("\t " + extraSpace + Driver.currentGameYard.list[i-1].speed + "\t " + Driver.currentGameYard.list[i-1].turnMode + "\t  " + HexMin + "\t " + Driver.currentGameYard.list[i-1].breakDown);
+			lockOnCalculations();
+			
+			
+			// Sets up the display variable for 
+			// whether or not ship is locked on 
+			String locked = "Yes";
+			if(Driver.currentGameYard.list[i-1].lockedOn == false) {
+				if(Driver.currentGameYard.list[i].hasSSD == false) 
+					locked = "-";
+				else 
+					locked = "No";
+			}
+			
+			System.out.print("\t " + extraSpace + Driver.currentGameYard.list[i-1].speed + "\t " + Driver.currentGameYard.list[i-1].turnMode + "\t  " 
+					+ HexMin + "\t " + Driver.currentGameYard.list[i-1].breakDown + "\t" + locked);
 			
 			if (Driver.currentGameYard.list[i-1].speed == 0) {
 				System.out.print("\t<--- Speed is ZERO");
@@ -193,6 +198,23 @@ public class ShipSetup {
 
 	}
 	
+	public static void lockOnCalculations() {
+		
+		int die = DamageAllocation.rollDice(1,6);
+		
+		int number = 0;
+		for(int i = 0; i < Driver.currentGameYard.numShips; i++) {
+			if(Driver.currentGameYard.list[i].hasSSD && Driver.currentGameYard.list[i].ssd[22].remaining > 0) {
+				number = Driver.currentGameYard.list[i].ssd[22].numOfThisPart - Driver.currentGameYard.list[i].ssd[22].remaining;
+				int minNeededRoll = Driver.currentGameYard.list[i].sensorNums[number];
+				
+				if(die <= minNeededRoll) {
+					Driver.currentGameYard.list[i].lockedOn = true;
+				}
+			}
+		}	
+	}
+	
 	public static void PrintCurrentShipsInGameThatHaveSSD() {
 		System.out.println("     Ship\tShip\t");
 		System.out.println("     Name\tSpeed\t");
@@ -200,24 +222,19 @@ public class ShipSetup {
 		
 		for (int i = 1, print = 1; i <= Driver.currentGameYard.numShips; i++) {
 
-			
 			String extraSpace = getExtraSpaces(i, 2);
 
 			if (Driver.currentGameYard.list[i-1].name.length() <=3 ) {
 				Driver.currentGameYard.list[i-1].name = Driver.currentGameYard.list[i-1].name + "   ";
 			}
 			
-			try {
-				int num = Driver.currentGameYard.list[i-1].ssd[0].remaining;
+			if(Driver.currentGameYard.list[i-1].hasSSD) {
 				System.out.print(extraSpace + (print++) + ")  " + Driver.currentGameYard.list[i-1].name);
 				getExtraSpaces(i, 2);
 				System.out.print("\t " + extraSpace + Driver.currentGameYard.list[i-1].speed + "\t ");
 				System.out.println();
-			}catch(Exception e) {
-				// Do not print it out.
 			}
 		}
-
 	}
 	
 	public static String getExtraSpaces (int num, int maxDigits) {
