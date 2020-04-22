@@ -38,6 +38,7 @@ public class Shipyard {
 		Shipyard defaultYard = new Shipyard("default Yard");
 		
 		Starship ship = new Starship("Federation", "DN", "50", "14", "180", "3-6", "1.5", "4", "2", "E", "R2.2", "168");
+		ship.setupSSD(2, 2, 2, 2, 10, 4, 15, 15, 15, 6, 2, 5, 4, 2, 1, 6, 0, 10, 0, 18, 6, 9, 10, 10, 12);
 		defaultYard.addShipToShipyard(ship);
 		
 		// Shipyard with 1 ship in it.

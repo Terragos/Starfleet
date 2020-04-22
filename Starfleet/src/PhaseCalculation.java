@@ -17,7 +17,7 @@ public class PhaseCalculation {
 		System.out.println("|==========================================================================|");
 		System.out.println();
 		
-		ShipSetup.SortShips();															// Always SORT ships before printing to screen
+		ShipSetup.SortCurrentShipyard();															// Always SORT ships before printing to screen
 
 		ShipSetup.PrintCurrentShipsInGame();
 		

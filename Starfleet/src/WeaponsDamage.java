@@ -30,6 +30,20 @@ public class WeaponsDamage {
 				System.out.println("|==========================================================================|");
 			}
 		
+			int lockOnMultiplier = 1;
+			System.out.print("What is your top sensor number? ");
+			int number = Driver.getNumber(0,6);
+			int die = DamageAllocation.rollDice(1,6);
+			System.out.println("Roll for Lock-On: " + die);
+			if(die <= number) {
+				System.out.println("-- Lock-On Achieved --");
+				lockOnMultiplier = 1;
+			}else {
+				System.out.print("  For the remainder of the round, you may not \n"
+						+ "fire seeking weapons. See rule D6.12 for more info. ");
+				lockOnMultiplier = 2;
+			}
+			
 			System.out.println();
 			System.out.print("Weapon:   ");
 
@@ -83,7 +97,10 @@ public class WeaponsDamage {
 			int numberInput = 0;
 			if ("1234PLFHTQ".contains(weaponInput)) {
 				System.out.print("Distance: ");
-				distanceInput = Driver.getNumber(-1, MAXDIST);
+				distanceInput = Driver.getNumber(-1, MAXDIST);	
+				
+				distanceInput *= lockOnMultiplier;
+				
 				System.out.print("Number:   ");
 				numberInput = Driver.getNumber(-1, 200);
 			}

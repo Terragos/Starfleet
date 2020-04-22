@@ -19,7 +19,7 @@ public class ShipSetup {
 				System.out.println("|==========================================================================|");
 				System.out.println();
 
-				SortShips();														// Always SORT ships before printing to screen
+				SortCurrentShipyard();														// Always SORT ships before printing to screen
 				PrintCurrentShipsInGame();
 				
 				System.out.println();
@@ -135,7 +135,7 @@ public class ShipSetup {
 	}
 	
 	// Sort ships by speed, fastest first
-	public static void SortShips () {
+	public static void SortCurrentShipyard() {
 		Starship temp = new Starship();
 		Driver.currentGameYard.list[Driver.currentGameYard.numShips] = temp;
 
@@ -189,6 +189,33 @@ public class ShipSetup {
 				System.out.print("\t<--- Speed is ZERO");
 			}
 			System.out.println();
+		}
+
+	}
+	
+	public static void PrintCurrentShipsInGameThatHaveSSD() {
+		System.out.println("     Ship\tShip\t");
+		System.out.println("     Name\tSpeed\t");
+		System.out.println();
+		
+		for (int i = 1, print = 1; i <= Driver.currentGameYard.numShips; i++) {
+
+			
+			String extraSpace = getExtraSpaces(i, 2);
+
+			if (Driver.currentGameYard.list[i-1].name.length() <=3 ) {
+				Driver.currentGameYard.list[i-1].name = Driver.currentGameYard.list[i-1].name + "   ";
+			}
+			
+			try {
+				int num = Driver.currentGameYard.list[i-1].ssd[0].remaining;
+				System.out.print(extraSpace + (print++) + ")  " + Driver.currentGameYard.list[i-1].name);
+				getExtraSpaces(i, 2);
+				System.out.print("\t " + extraSpace + Driver.currentGameYard.list[i-1].speed + "\t ");
+				System.out.println();
+			}catch(Exception e) {
+				// Do not print it out.
+			}
 		}
 
 	}
