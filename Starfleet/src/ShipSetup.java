@@ -164,19 +164,25 @@ public class ShipSetup {
 			if (Driver.currentGameYard.list[i-1].turnMode =="*" ) {
 				HexMin = "*";
 			}
-			String extraSpace = "";
-			if (i < 10) {
-				extraSpace = " ";
-			}
+
+			String extraSpace = getExtraSpaces(i, 2);
+
+//			String extraSpace = "";
+//			if (i < 10) {
+//				extraSpace = " ";
+//			}
+			
 			if (Driver.currentGameYard.list[i-1].name.length() <=3 ) {
 				Driver.currentGameYard.list[i-1].name = Driver.currentGameYard.list[i-1].name + "   ";
 			}
 			System.out.print(extraSpace + i + ")  " + Driver.currentGameYard.list[i-1].name);
 
-			extraSpace = "";
-			if (Driver.currentGameYard.list[i-1].speed < 10) {
-				extraSpace = " ";
-			}
+			getExtraSpaces(i, 2);
+	        
+//			extraSpace = "";
+//			if (Driver.currentGameYard.list[i-1].speed < 10) {
+//				extraSpace = " ";
+//			}
 			System.out.print("\t " + extraSpace + Driver.currentGameYard.list[i-1].speed + "\t " + Driver.currentGameYard.list[i-1].turnMode + "\t  " + HexMin + "\t " + Driver.currentGameYard.list[i-1].breakDown);
 			
 			if (Driver.currentGameYard.list[i-1].speed == 0) {
@@ -186,4 +192,19 @@ public class ShipSetup {
 		}
 
 	}
+	
+	public static String getExtraSpaces (int num, int maxDigits) {
+
+		String extraSpace = "";
+		int digitCount = 0;
+		
+        while(num != 0) {
+            num /= 10;
+            ++digitCount;
+        }
+        for (int i = 1; i <= maxDigits-digitCount; i++) {
+        	extraSpace = extraSpace + " ";
+        }
+        return extraSpace;
+    } 
 }
