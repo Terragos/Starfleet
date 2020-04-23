@@ -26,7 +26,7 @@ public class ShipSetup {
 			}
 						
 			System.out.println("|==========================================================================|");
-			System.out.println("|                         [A]dd [M]odify [R]emove                          |");
+			System.out.println("|               [A]dd Ship    [M]odify Ship    [R]emove Ship               |");
 			if (goToImpProc == "Y") { 																 	 // Print this line only if coming
 				System.out.println("|                    RETURN to go to Impulse Procedure                     |");   // from the Impulse Procedure 
 			} else if (goToImpProc == "N") {
@@ -108,15 +108,18 @@ public class ShipSetup {
 							if(nameInput.length() > 10)
 								nameInput = nameInput.substring(0, 10);
 							Driver.currentGameYard.list[modifyInput-1].name = nameInput;
-						} else if(nameSpeedBoth.equalsIgnoreCase("S") || nameSpeedBoth.equalsIgnoreCase("A")) {
+						}
+						if(nameSpeedBoth.equalsIgnoreCase("S") || nameSpeedBoth.equalsIgnoreCase("A")) {
 							System.out.print("Ship " + (modifyInput) + " NEW Speed: ");
 							int speedInput = Driver.getNumber(-1, 32);
 							Driver.currentGameYard.list[modifyInput-1].speed = speedInput;
-						} else if(nameSpeedBoth.equalsIgnoreCase("T") || nameSpeedBoth.equalsIgnoreCase("A")) {
+						}
+						if(nameSpeedBoth.equalsIgnoreCase("T") || nameSpeedBoth.equalsIgnoreCase("A")) {
 							System.out.print("Ship " + (modifyInput) + " Turn Mode: ");
 							String turnModeInput = Driver.getInput("ABCDEF");
 							Driver.currentGameYard.list[modifyInput-1].turnMode = turnModeInput.toUpperCase();
-						} else if(nameSpeedBoth.equalsIgnoreCase("0")) {
+						}
+						if(nameSpeedBoth.equalsIgnoreCase("0")) {
 							//continue;
 						}
 						System.out.println();
