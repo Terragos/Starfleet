@@ -8,6 +8,8 @@ public class Shipyard {
 	public Starship[] list;
 	public String name;
 	
+	public static boolean showOnlySSDs = true;
+	
 	public Shipyard() {
 		numberOfShipyardsMadeThusFar++;
 		numShips = 0;
@@ -791,11 +793,18 @@ public class Shipyard {
 			System.out.println();
 			System.out.println("|==========================================================================|");
 			System.out.println("|                              THE SHIPYARD                                |");
+			System.out.println("|--------------------------------------------------------------------------|");
+			if (showOnlySSDs == true) {
+				System.out.println("|                       Show ONLY ships with SSDs                          |");
+			} else {
+				System.out.println("|                 Show ALL ships (with AND without SSDs)                   |");
+			}
 			System.out.println("|==========================================================================|");
-			System.out.println("|   Races Available in the Shipyard:                 [X] All Fleets        |");
-			System.out.println("|      [F]ederation     [K]lingon      [G]orn        [A]ndromedan          |");
-			System.out.println("|      [R]omulan        K[z]inti       [T]holian     [W]YN                 |");
-			System.out.println("|      [O]rion          [H]ydran       [L]yran       [C]ivilian Ships      |");
+			System.out.println("|   Races Available in the Shipyard:                    [S]how SSD Toggle  |");
+			System.out.println("|     [F]ederation     [O]rion       [A]ndromedan                          |");
+			System.out.println("|     [K]lingon        [G]orn        [W]YN                                 |");
+			System.out.println("|     [R]omulan        [T]holian     [L]yran                               |");
+			System.out.println("|     K[z]inti         [H]ydran      [C]ivilian Ships   [X] All Fleets     |");
 			System.out.println("|==========================================================================|");
 			
 			if (pass == -1) {
@@ -806,40 +815,44 @@ public class Shipyard {
 			}
 			System.out.println("|==========================================================================|");
 	
-			userRace = Driver.getInput("FKGRZTOHLXAWC");
+			userRace = Driver.getInput("FKGRZTOHLXAWCS");
 			
-			if (userRace.contentEquals("")) {
-				cont = false;
-			} else { //if (userRace.equalsIgnoreCase("A") || userRace.equalsIgnoreCase("F") || userRace.equalsIgnoreCase("K") || userRace.equalsIgnoreCase("G") || userRace.equalsIgnoreCase("R") || userRace.equalsIgnoreCase("Z") || userRace.equalsIgnoreCase("T")) {    
-				System.out.println();
-		
-				String race = getRace(userRace);
-				
-				int firstOfRace = this.printShipyardBasedOnRace(race); // fed == 0
-				// Not the best way of doing this, fix later
-
-				int count = this.numberOfShipsWithRace(race);
-				
-				int whichShip = -1;
-				while (whichShip < 0) {
-					System.out.print("Which ship to add to the game?  [0 to cancel]");
+			if (userRace.contentEquals("S")) {
+				showOnlySSDs = !showOnlySSDs;
+			} else {
+				if (userRace.contentEquals("")) {
+					cont = false;
+				} else { //if (userRace.equalsIgnoreCase("A") || userRace.equalsIgnoreCase("F") || userRace.equalsIgnoreCase("K") || userRace.equalsIgnoreCase("G") || userRace.equalsIgnoreCase("R") || userRace.equalsIgnoreCase("Z") || userRace.equalsIgnoreCase("T")) {    
+					System.out.println();
 			
-					whichShip = Driver.getNumber(0, count);
-					int adjusted = whichShip + firstOfRace - 1;
+					String race = getRace(userRace);
+					
+					int firstOfRace = this.printShipyardBasedOnRace(race); // fed == 0
+					// Not the best way of doing this, fix later
+	
+					int count = this.numberOfShipsWithRace(race);
+					
+					int whichShip = -1;
+					while (whichShip < 0) {
+						System.out.print("Which ship to add to the game?  [0 to cancel]");
 				
-					if (whichShip > 0) {
-						Starship copiedShip = list[adjusted];
-						copiedShip.name = (list[adjusted].race).substring(0,3) + "-" + (list[adjusted].shipType);
-						copiedShip.turnMode = list[adjusted].turnMode;
-						
-						System.out.print("Ship Speed: ");
-						int shipSpeed = Driver.getNumber(-1, 32);
-						
-						copiedShip.speed = shipSpeed;
-						Driver.currentGameYard.addShipToShipyard(copiedShip);
-						whichShip = -1;
-					} else {
-						whichShip = 0;
+						whichShip = Driver.getNumber(0, count);
+						int adjusted = whichShip + firstOfRace - 1;
+					
+						if (whichShip > 0) {
+							Starship copiedShip = list[adjusted];
+							copiedShip.name = (list[adjusted].race).substring(0,3) + "-" + (list[adjusted].shipType);
+							copiedShip.turnMode = list[adjusted].turnMode;
+							
+							System.out.print("Ship Speed: ");
+							int shipSpeed = Driver.getNumber(-1, 32);
+							
+							copiedShip.speed = shipSpeed;
+							Driver.currentGameYard.addShipToShipyard(copiedShip);
+							whichShip = -1;
+						} else {
+							whichShip = 0;
+						}
 					}
 				}
 			}
@@ -858,6 +871,7 @@ public class Shipyard {
 	
 	public int printShipyardBasedOnRace (String race) {
 
+		String hasSSD = "";
 		System.out.println("ShpYrd\tRace\tShip\tCrew\tBrdg\tBPV\tBreak\tMove\tSpare\tSize\tTurn\tRule\tYear in");
 		System.out.println("Number\t\tType\tUnits\tParties\t\tDown\tCost\tShtls\tClass\tMode\tNumber\tService");
 		System.out.println("-------------------------------------------------------------------------------------------------------------");
@@ -865,20 +879,41 @@ public class Shipyard {
 		int firstOfRace = -1;
 		for (int i = 0; i < this.numShips; i++) {
 			if (this.list[i].race.equals(race)) {
-				
-				if (num < 10) {
-					System.out.print("0" + num + ")" + "\t");
-					if(firstOfRace == -1) {
-						firstOfRace = i;
-					}
-				} else {
-					System.out.print(num + ")" + "\t");
+				if (this.list[i].hasSSD == true) {
+					hasSSD = " *";
 				}
-				num++;
-				
-				System.out.print(this.list[i].toString());
-				System.out.println();
+
+				if (showOnlySSDs == true) {		// Do this if SSD Toggle is ON (TRUE)
+					if (num < 10) {
+						if (hasSSD == " *") {
+							System.out.print(" " + num + ")" + hasSSD + "\t" + this.list[i].toString());
+							System.out.println();
+						}
+						if(firstOfRace == -1) {
+							firstOfRace = i;
+						}
+					} else {
+						if (hasSSD == " *") {
+							System.out.print(num + ")" + hasSSD  + "\t" + this.list[i].toString());
+							System.out.println();
+						}
+					}
+					num++;
+				} else {						// Do this if SSD Toggle is OFF (FALSE)
+					if (num < 10) {
+						System.out.print(" " + num + ")" + hasSSD + "\t" + this.list[i].toString());
+						System.out.println();
+						if(firstOfRace == -1) {
+							firstOfRace = i;
+						}
+					} else {
+						System.out.print(num + ")" + hasSSD  + "\t" + this.list[i].toString());
+						System.out.println();
+					}
+					num++;
+				}
 			}
+			hasSSD = "";
 		}		
 		
 		System.out.println();
