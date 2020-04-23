@@ -28,7 +28,13 @@ public class Starship {
 	public Part[] ssd;
 	public boolean hasSSD = false;
 	public int[] sensorNums;
+	public int[] scannerNums;
+	public int[] damConNums;
 	public boolean lockedOn = false;
+/*  LEAVE AS A PERMANENT COMMENT 				
+	public int indexOfNextDamCon = Driver.currentGameYard.list[i].ssd[21].numOfThisPart - Driver.currentGameYard.list[i].ssd[21].remaining; 
+	public int indexOfNextSensor = Driver.currentGameYard.list[i].ssd[22].numOfThisPart - Driver.currentGameYard.list[i].ssd[22].remaining; 
+	public int indexOfNextScanner = Driver.currentGameYard.list[i].ssd[23].numOfThisPart - Driver.currentGameYard.list[i].ssd[23].remaining; */ 
 
 	/* Default Constructor */
 	public Starship() {
@@ -55,7 +61,7 @@ public class Starship {
 			this.breakDown = "-";
 			this.kindOfShip = kind;
 			this.ssd = new Part[25];
-			this.setupSSD(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5, fake);
+			this.setupSSD(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5, fake, fake, fake);
 			// Maybe make a drone class
 		} else if(kind == Ship.SHUTTLE) {
 			this.name = name;
@@ -66,7 +72,7 @@ public class Starship {
 			this.breakDown = "*";
 			this.kindOfShip = kind;
 			this.ssd = new Part[25];
-			this.setupSSD(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 6, fake);
+			this.setupSSD(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 6, fake, fake, fake);
 		} else if(kind == Ship.FIGHTER) {
 			this.name = name;
 			this.speed = speed;
@@ -136,13 +142,15 @@ public class Starship {
 
 	public void setupSSD(int bridge, int flagBridge, int emerBridge, int aux, int phaser, int torpedo, int centerWarp, 
 			int leftWarp, int rightWarp, int impulse, int apr, int battery, int trans, int tractor, int probe, 
-			int shuttle, int drone, int lab, int cargo, int fHull, int aHull, int damageCon, int sensor, int scanner, int excessDam, int[] sensNums) {
+			int shuttle, int drone, int lab, int cargo, int fHull, int aHull, int damageCon, int sensor, int scanner, int excessDam, int[] sensNums, int[] scanNums, int[] damConNums) {
 		
 		int[] ints = { bridge, flagBridge, emerBridge, aux, phaser, torpedo, centerWarp, 
 				leftWarp, rightWarp, impulse, apr, battery, trans, tractor, probe, 
 				shuttle, drone, lab, cargo, fHull, aHull, damageCon, sensor, scanner, (excessDam+1) };
 		
 		this.sensorNums = sensNums;
+		this.scannerNums = scanNums;
+		this.damConNums = damConNums;
 		
 		Starship ship = new Starship();
 		
@@ -153,15 +161,3 @@ public class Starship {
 		this.hasSSD = true;
 	}
 }
-
-
-
-
-
-
-
-
-
-
-
-
