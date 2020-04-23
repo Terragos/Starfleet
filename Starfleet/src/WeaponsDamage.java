@@ -9,20 +9,23 @@ public class WeaponsDamage {
 	public static void WeaponsDam (int impulseNumber) {   //  If yes > 0 then in the middle of an Impulse Movement Procedure
 		int totalDamage = 0;
 		
+		System.out.println();
+
 		ShipSetup.SortCurrentShipyard();														// Always SORT ships before printing to screen
 		ShipSetup.PrintCurrentShipsInGameThatHaveSSD();
+
 		System.out.println();
 		
 		System.out.print("Which ship is firing? [0 to cancel] ");
-		int input = -5;
+		int shipNumFiring = -5;
 
-		input = Driver.getNumber(0, Driver.currentGameYard.numStarships);				//  Get a new input
+		shipNumFiring = Driver.getNumber(0, Driver.currentGameYard.numStarships);				//  Get a new input
 
-		if(input == 0) {
+		if(shipNumFiring == 0) {
 			return;
 		}
 		
-		currentShip = Driver.currentGameYard.list[input-1];
+		currentShip = Driver.currentGameYard.list[shipNumFiring-1];
 		
 		boolean cont = true;
 		while(cont) {
@@ -101,12 +104,17 @@ public class WeaponsDamage {
 			int numberInput = 0;
 			if ("1234PLFHTQ".contains(weaponInput)) {
 				System.out.print("Distance: ");
-				distanceInput = Driver.getNumber(-1, MAXDIST);	
-				
-				/*
-				if(currentShip.lockedOn == false)
+				distanceInput = Driver.getNumber(-1, MAXDIST);
+				// MODIFY DISTANCE FOR SENSOR LOCK-ON FAILURE
+				if (currentShip.lockedOn == false)
 					distanceInput *= 2;
-				*/
+				// MODIFY DISTANCE FOR SCANNER NUMBER
+				
+				int nextScannerNum = currentShip.ssd[23].numOfThisPart - currentShip.ssd[23].remaining;
+				distanceInput += currentShip.scannerNums[nextScannerNum];
+				if (currentShip.lockedOn == false || nextScannerNum > 0) {
+					System.out.println("New Distance " + distanceInput + " (modified due to Sensor Lock-on failure and/or Scanner resolution number)");
+				}
 				
 				System.out.print("Number:   ");
 				numberInput = Driver.getNumber(-1, 200);
