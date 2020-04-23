@@ -117,8 +117,13 @@ public class DamageAllocation {
 		System.out.println(spacedText);
 		System.out.println("|==========================================================================|");
 		System.out.println();
-		System.out.println("\tDamage\tSystem Name");
-		System.out.println("\tCount");
+		if(Driver.TESTING) {
+			System.out.println("\tDamage\tRow/\tSystem");
+			System.out.println("\tCount\t   Col\tName");
+		} else {
+			System.out.println("\tDamage\tSystem");
+			System.out.println("\tCount\tName");
+		}
 		System.out.println("     ================================");
 		
 		boolean damageDealt = true;
@@ -127,17 +132,19 @@ public class DamageAllocation {
 			
 			if(damageDealt == true) {
 				die = rollDice(2, 6);
-				if(Driver.TESTING)
-					System.out.print("\t  " + damageCount + "\t" + die + ": ");
+				extraSpace = ShipSetup.getExtraSpaces(damageCount, 3);
+				if(Driver.TESTING) {
+					System.out.print("\t  " + extraSpace + damageCount + "\t" + die + "/");
+				} else {
+					System.out.print("\t  " + extraSpace + damageCount);
+				}
 			}
 			
 			damageDealt = false;
 			
-			extraSpace = ShipSetup.getExtraSpaces(damageCount, 3);
-			
 			int col = hits[die]; // Starts at 0
 			if(Driver.TESTING)
-				System.out.println("Column: " + col);
+				System.out.print(col);
 			
 			String searchVal = "";
 			if(systemName[die][col].equals("Any Warp Engine")) {				
@@ -182,7 +189,7 @@ public class DamageAllocation {
 			
 			if(currentShip.ssd[number].remaining >= 1) { // IF REMAINING
 				
-				System.out.print(searchVal + "\t");
+				System.out.print("\t" + searchVal + "\t");
 				currentShip.ssd[number].remaining--;
 				
 				if(currentShip.ssd[number].remaining == 0) {
@@ -192,7 +199,7 @@ public class DamageAllocation {
 						Driver.currentGameYard.removeShipFromShipyard(input);
 						return;
 					}else {
-						System.out.print("\t -- Final " + Starship.partNames[number] + " destroyed. --");
+						System.out.print(" -- Final " + Starship.partNames[number] + " destroyed. --");
 					}
 					hits[die]++;
 				} else if (special[die][col] == 1) {
@@ -203,22 +210,28 @@ public class DamageAllocation {
 				
 			} else if (currentShip.ssd[number].remaining == 0) { // ELSE IF NONE REMAINING
 				
-				if(Driver.TESTING)
+				if(Driver.TESTING) {
 					System.out.print("-- No " + Starship.partNames[number] + " available. --");
+				}
 				hits[die]++;
 				damageDealt = false;	
 			}
-			
-			
-			
+
+			if(Driver.TESTING) {
+				System.out.print("\tSe:" + currentShip.ssd[22].remaining + " Sc:" + currentShip.ssd[23].remaining + " Da:" + currentShip.ssd[21].remaining + " Ex:" + currentShip.ssd[24].remaining);
+			}
 			
 			if(damageDealt == true) {
 				damageCount++;
 				String input2 = keyboard.nextLine();
 				if(input2.equalsIgnoreCase("0")) {
 					return;
+				} else if(input2.equalsIgnoreCase("N")) {		//  In case SSD is wrong or computer crashes, allow to user hit "N" to
+					currentShip.ssd[number].remaining = 0;		//  to user hit "N" to "destroyed" all of those systems with that name.
+					damageCount--;
 				}
 			}
+			System.out.println();
 		}
 			
 		System.out.println();
