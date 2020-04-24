@@ -1,12 +1,11 @@
 import java.util.Scanner;
 
 //TODO, NEED CODE TO EMPTY OUT KEYBOARD BUFFER  ???  In Impulse procedure after toggling TORPEDO, maybe ???  (there is an extra space)
-//TODO, in Damage Allocation if user input "N" (instead of RETURN) zero out "that part"'s number of reaming systems
 //TODO, IS it possible to change the name of "PhaseCalculation" to "ImpulseCalculation"?  Everywhere "Phase" --> "Impulse" ???
 
 public class Driver {
 
-	public final static boolean TESTING = false;
+	public final static boolean TESTING = true;
 	public static int numImpulses = 0;
 	public static Shipyard currentGameYard = new Shipyard("Current Game Shipyard");
 	public static Shipyard defaultYard = Shipyard.setupDefaultShipyard();
@@ -18,7 +17,7 @@ public class Driver {
 		if(Driver.TESTING) {
 			System.out.println("|==============================================================================|");
 			System.out.println("|            HERE ARE SEVERAL TEST SHIPS THAT HAVE BEEN LOADED                 |");
-			System.out.println("|===================== =========================================================|");
+			System.out.println("|==============================================================================|");
 			System.out.println();
 			
 			currentGameYard.addShipToShipyard(defaultYard.list[0]);
@@ -27,14 +26,14 @@ public class Driver {
 			currentGameYard.list[1].speed = DamageAllocation.rollDice(1, 10) + 1;
 			currentGameYard.addShipToShipyard(defaultYard.list[18]);
 			currentGameYard.list[2].speed = DamageAllocation.rollDice(1, 10) + 1;
-//			currentGameYard.addShipToShipyard(defaultYard.list[54]);
-//			currentGameYard.list[3].speed = DamageAllocation.rollDice(1, 15) + 1;
-//			currentGameYard.addShipToShipyard(defaultYard.list[60]);
-//			currentGameYard.list[4].speed = DamageAllocation.rollDice(1, 10) + 1;
-//			currentGameYard.addShipToShipyard(defaultYard.list[65]);
-//			currentGameYard.list[5].speed = DamageAllocation.rollDice(1, 10) + 1;
-//			currentGameYard.addShipToShipyard(defaultYard.list[297]);
-//			currentGameYard.list[6].speed = DamageAllocation.rollDice(1, 5) + 1;
+			currentGameYard.addShipToShipyard(defaultYard.list[54]);
+			currentGameYard.list[3].speed = DamageAllocation.rollDice(1, 15) + 1;
+			currentGameYard.addShipToShipyard(defaultYard.list[60]);
+			currentGameYard.list[4].speed = DamageAllocation.rollDice(1, 10) + 1;
+			currentGameYard.addShipToShipyard(defaultYard.list[65]);
+			currentGameYard.list[5].speed = DamageAllocation.rollDice(1, 10) + 1;
+			currentGameYard.addShipToShipyard(defaultYard.list[297]);
+			currentGameYard.list[6].speed = DamageAllocation.rollDice(1, 5) + 1;
 			
 			ShipSetup.SortCurrentShipyard();
 			ShipSetup.PrintCurrentShipsInGame();
