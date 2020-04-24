@@ -110,7 +110,8 @@ public class WeaponsDamage {
 					distanceInput *= 2;
 				// MODIFY DISTANCE FOR SCANNER NUMBER
 				
-				int nextScannerNum = currentShip.ssd[23].numOfThisPart - currentShip.ssd[23].remaining;
+				int nextScannerNum = currentShip.ssd[23].numOfThisPart
+						- currentShip.ssd[23].remaining;
 				distanceInput += currentShip.scannerNums[nextScannerNum];
 				if (currentShip.lockedOn == false || nextScannerNum > 0) {
 					System.out.println("New Distance " + distanceInput + " (modified due to Sensor Lock-on failure and/or Scanner resolution number)");
