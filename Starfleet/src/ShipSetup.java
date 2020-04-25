@@ -169,12 +169,7 @@ public class ShipSetup {
 //			boolean hasSSD = ship.hasSSD;
 //			Part[] ssd = ship.ssd;
 //			Part sensor = ssd[22];
-			int sensorIndex = 0;
-			int scannerIndex = 0;
-			if (ship.hasSSD == true) {
-				sensorIndex = ship.ssd[22].numOfThisPart - ship.ssd[22].remaining;
-				scannerIndex = ship.ssd[23].numOfThisPart - ship.ssd[23].remaining;
-			}
+			
 			int HexMinToTurn = PhaseCalculation.FindHexMinToTurn(ship.turnMode, ship.speed);
 			String HexMin = Integer.toString(HexMinToTurn);
 			if (ship.turnMode =="*" ) {
@@ -199,12 +194,21 @@ public class ShipSetup {
 				else 
 					locked = "No";
 			}
-			
-//			int nextScannerNum = Driver.currentGameYard.list[i].ssd[23].numOfThisPart - Driver.currentGameYard.list[i].ssd[23].remaining; 
+			int sensorIndex = 0;
+			int scannerIndex = 0;
+			if (ship.hasSSD == true) {
+				sensorIndex = ship.ssd[22].numOfThisPart - ship.ssd[22].remaining;
+				scannerIndex = ship.ssd[23].numOfThisPart - ship.ssd[23].remaining;
+			}
 			
 			System.out.print("\t " + extraSpace + ship.speed + "\t " + ship.turnMode + "\t  " 
-					+ HexMin + "\t " + ship.breakDown + "\t" + locked + "\t" + ship.scannerNums[scannerIndex]);
+					+ HexMin + "\t " + ship.breakDown + "\t" + locked);
 			
+			if(ship.hasSSD) {
+				System.out.println("\t" + ship.scannerNums[scannerIndex]);
+			}else {
+				System.out.println("\t- ");
+			}
 			if (ship.speed == 0) {
 				System.out.print("\t<--- Speed is ZERO");
 			}
