@@ -32,7 +32,7 @@ public class Driver {
 			currentGameYard.list[4].speed = DamageAllocation.rollDice(1, 10) + 1;
 			currentGameYard.addShipToShipyard(defaultYard.list[65]);
 			currentGameYard.list[5].speed = DamageAllocation.rollDice(1, 10) + 1;
-			currentGameYard.addShipToShipyard(defaultYard.list[297]);
+			currentGameYard.addShipToShipyard(defaultYard.list[320]);
 			currentGameYard.list[6].speed = DamageAllocation.rollDice(1, 5) + 1;
 			
 			ShipSetup.SortCurrentShipyard();
@@ -204,9 +204,11 @@ public class Driver {
 						System.out.println();
 						System.out.println("Alternate Parts on SSDs include:");
 						System.out.println("\tFlag Bridge = Security");
-						System.out.println("\tTorpedo = Photon, Disruptor Bolt, Plasma, SFG");
+						System.out.println("\tTorpedo = Photon Torpedo, Disruptor Bolt, Plasma Torpedo, SFG, Fusion Beam");
 						System.out.println("\tTractor = Web");
-						System.out.println("\tDrone = ADD");
+						System.out.println("\tDrone = ADD< ESG, Hellbore");
+						System.out.println("\tShuttle = Fighter");
+						System.out.println("\tCargo or Front/Aft Hull = Repair");
 						System.out.println();
 						System.out.println("Please indicate how many boxes are left on the SSD \nfor the following systems (-1 = cancel):");
 
