@@ -839,6 +839,14 @@ public class Shipyard {
 						whichShip = Driver.getNumber(0, count);
 						int adjusted = whichShip + firstOfRace - 1;
 					
+						if (whichShip > 0 && list[adjusted].hasSSD == false) {
+							System.out.print("You are about to add a ship to the game WIHTOUT an assign SSD.  Proceed?");
+							String yesOrNo = Driver.getInput("YN");
+							if (yesOrNo.equalsIgnoreCase("N")) {
+								whichShip = -1;
+							}
+						}
+						
 						if (whichShip > 0) {
 							Starship copiedShip = list[adjusted];
 							copiedShip.name = (list[adjusted].race).substring(0,3) + "-" + (list[adjusted].shipType);
@@ -850,6 +858,8 @@ public class Shipyard {
 							copiedShip.speed = shipSpeed;
 							Driver.currentGameYard.addShipToShipyard(copiedShip);
 							whichShip = -1;
+						} else if (whichShip == -1) {
+							
 						} else {
 							whichShip = 0;
 						}
