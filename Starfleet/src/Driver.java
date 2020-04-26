@@ -50,7 +50,7 @@ public class Driver {
 		System.out.println("|              Java Code by Harrison Weese and D. Brian Weese                  |");
 		System.out.println("|==============================================================================|");
 		System.out.println();
-		System.out.print("Would you like to add ships [M]anually or from the [S]hipyard? [0 = Main Menu] ");
+		System.out.print("Would you like to add ships [M]anually or from the [S]hipyard? [RETURN = Main Menu] ");
 
 		String userInput2 = Driver.getInput("MS0");
 		
@@ -75,7 +75,7 @@ public class Driver {
 					star.speed = speedInput;
 
 					System.out.print("Ship " + (Driver.currentGameYard.numShips + 1) + " Turn Mode: ");
-					String turnModeInput = Driver.getInput("ABCDEFXY-");
+					String turnModeInput = Driver.getInput("ABCDEF-");
 					star.turnMode = turnModeInput.toUpperCase();
 											
 					System.out.print("Ship " + (Driver.currentGameYard.numShips + 1) + " Break Down [?-6] ('-' = n/a): ");
