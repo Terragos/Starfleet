@@ -679,14 +679,14 @@ public class Shipyard {
 		se = new int[]{6, 6, 5, 3, 1, 0};
 		sc = new int[]{0, 0, 1, 3, 5, 9};
 		da = new int[]{4, 4, 2, 2, 2, 0};
-		ship.setupSSD(2, 0, 1, 2, 10, 0, 0, 12, 12, 4, 3, 3, 2, 8, 1, 4, 0, 4, 0, 7, 7, 6, 6, 6, 6, se, sc, da);
+		ship.setupSSD(4, 0, 1, 2, 10, 0, 0, 12, 12, 4, 3, 3, 2, 6, 1, 4, 0, 4, 0, 7, 7, 6, 6, 6, 6, se, sc, da);
 		defaultYard.addShipToShipyard(ship);
 		
 		ship = new Starship("Tholian", "DD", "18", "8", "80", "5-6", "0.5", "-", "4", "A", "R7.4", "115");
 		se = new int[]{6, 5, 3, 1, 0};
 		sc = new int[]{0, 1, 3, 5, 9};
 		da = new int[]{2, 2, 2, 0};
-		ship.setupSSD(2, 0, 1, 1, 6, 2, 0, 8, 8, 3, 0, 2, 1, 4, 1, 2, 0, 2, 0, 5, 0, 4, 5, 5, 4, se, sc, da);
+		ship.setupSSD(4, 0, 1, 1, 6, 2, 0, 8, 8, 3, 0, 2, 1, 2, 1, 2, 0, 2, 0, 5, 0, 4, 5, 5, 4, se, sc, da);
 		defaultYard.addShipToShipyard(ship);
 		
 		ship = new Starship("Tholian", "PC+", "14", "6", "65", "5-6", "0.5", "1", "4", "A", "R7.3", "98");
@@ -755,7 +755,6 @@ public class Shipyard {
 		se = new int[]{6, 6, 5, 3, 1, 0};
 		sc = new int[]{0, 0, 1, 3, 5, 9};
 		da = new int[]{4, 4, 2, 2, 0};
-//		ship.setupSSD(B, F, E, A, P, T, C,  L,  R,  I, A, B, TS,TC,P, S, D, L, C, FH,AF,DA,SE,SC,EX,sensNums, scanNums, damConNums);
 		ship.setupSSD(2, 0, 2, 2, 8, 0, 10, 10, 10, 5, 3, 2, 2, 4, 1, 25, 0, 2, 0, 12, 9, 5, 6, 6, 5, se, sc, da);
 		defaultYard.addShipToShipyard(ship);
 
