@@ -109,11 +109,12 @@ public class Driver {
 			System.out.println("|            [D]amage Allocation Procedure                                 |");
 			System.out.println("|            [S]hipyard                                                    |");
 			System.out.println("|            [C]hange SSD Numbers (because of Program Crash)               |");
+			System.out.println("|            [R]ules to Remember                                           |");
 			System.out.println("|==========================================================================|");
 			System.out.println("|                                [Q]uit                                    |");
 			System.out.println("|==========================================================================|");
 
-			String userInput = getInput("MIWDQSC");
+			String userInput = getInput("MIWDQSCR");
 			String userInput3 = "";
 			
 			int damageTotal = 0;
@@ -139,7 +140,8 @@ public class Driver {
 			} else if(userInput.equalsIgnoreCase("C")) {
 				//  Allow user to ADD ships and tell how many systems left of each type
 				ModifyShipSystems();
-				
+			} else if(userInput.equalsIgnoreCase("R")) {
+				RulesToRemember();
 			} else if(userInput.equalsIgnoreCase("Q")) {
 				System.out.println("Exiting Program...");
 				break;
@@ -202,13 +204,13 @@ public class Driver {
 						//break;
 					}else {
 						System.out.println();
-						System.out.println("Alternate Parts on SSDs include:");
-						System.out.println("\tFlag Bridge = Security");
-						System.out.println("\tTorpedo = Photon Torpedo, Disruptor Bolt, Plasma Torpedo, SFG, Fusion Beam");
-						System.out.println("\tTractor = Web");
-						System.out.println("\tDrone = ADD< ESG, Hellbore");
-						System.out.println("\tShuttle = Fighter");
-						System.out.println("\tCargo or Front/Aft Hull = Repair");
+						System.out.println("Alternate Parts on SSDs include (Annex #7E):");
+						System.out.println("\tFlag Bridge = Security, Web Generator, Displacement Device");
+						System.out.println("\tTorpedo = Photon Torpedo, Disruptor Bolt, Plasma Torpedo, SFG, Fusion Beam, Tractor-Repulsor Beam");
+						System.out.println("\tDrone = ADD, ESG, Hellbore, Plasmatic Pulsars, Power Absorbers");
+						System.out.println("\tShuttle = Fighter, Mine Andormedan Hangar");
+						System.out.println("\tCargo = Repair, Mine");
+						System.out.println("\tFront/Aft Hull = Repair");
 						System.out.println();
 						System.out.println("Please indicate how many boxes are left on the SSD \nfor the following systems (-1 = cancel):");
 
@@ -246,8 +248,206 @@ public class Driver {
 		}
 	}
 	
-//  GET LETTER AS INPUT THAT IS IN PASSED STRING
+	public static void RulesToRemember() {
+		
+		boolean cont = true;
+		
+		System.out.println("|=================================================================================|");
+		System.out.println("|                              RULES TO REMEMBER:                                 |");
+		System.out.println("|=================================================================================|");
+		System.out.println("|    [W]eapons Energy Costs (E0.0 & F0.0)       [S]hield Costs (D3.0)             |");
+		System.out.println("|    [B]atteries                                [D]amage Control ()               |");
+		System.out.println("|    [H]igh Energy Turns                        [A]nti-Drone & Drone              |");
+		System.out.println("|    [R]epair Systems (G17.0)                   [ ]                               |");
+		System.out.println("|=================================================================================|");
+		System.out.println("|                         RETURN to return to Main Menu                           |"); 
+		System.out.println("|=================================================================================|");
 	
+		System.out.print("What rule would you like to be reminded of? ");
+		
+		while (cont) {
+			String userInput2 = Driver.getInput("RAWBSHD");
+			
+			if (userInput2.equalsIgnoreCase("W")) {
+				System.out.println("|=================================================================================|");
+				System.out.println("|                          WEAPONS ENERGY COSTS:                                  |");
+				System.out.println("|---------------------------------------------------------------------------------|");
+				System.out.println("| Rule:  TYPE:                   Energy Cost          Hold Over      Other:       |");
+				System.out.println("|                              (Cost per turn)          Cost                      |");
+				System.out.println("| E2.0   Phaser:                                                  1 to energize   |");
+				System.out.println("|          I, II                 1   Any Src             -        before the 1st  |");
+				System.out.println("|          III                  1/2  Any Src             -        turn used in    |");
+				System.out.println("|          IV                    2   Any Src             -        the game.       |");
+				System.out.println("|          Gatling (Ph-III)     1/4 (4 shots/box) Any    -                        |");
+				System.out.println("| E3.0   Disrupter Bolt:         1   Any Src             -                        |");
+				System.out.println("|          Overloaded           1+1  Any Src             -                        |");
+				System.out.println("| E4.0   Photon Torpedo:        2+2  Warp Only           1/box/Any source         |");
+				System.out.println("|          Proximity            2+2  Warp Only                                    |");
+				System.out.println("|          Overloaded         2+2+(1-4 extra) Warp Only  2/box/Any source         |");
+				System.out.println("| E7.0   Fusion Beam             2   Any Src             -                        |");
+				System.out.println("| E8.0   Mauler                                                                   |");
+				System.out.println("| E9.0   Tractor-Repulsor Beam  3+3  Any Src             1      Sub. Tractor Beam |");
+				System.out.println("| E10.0  Hellbore               3+3  Any Src             3      Surrounding Damage|");
+				System.out.println("|          Overloaded           3+6  Any Src             -                        |");
+				System.out.println("| FP1.0  Plasma Torpedo:                                                          |");
+				System.out.println("|          Type-R              2+2+5 Any Src    NO ship/4 starbase  *EPT 2+2+10   |");
+				System.out.println("|          Type-S (G-II)       2+2+4 Any Src             2          *EPT 2+2+8    |");
+				System.out.println("|          Type-G              2+2+3 Any Src             1          *EPT 2+2+6    |");
+				System.out.println("|          Type-F              1+1+3 Any Src             0                        |");
+				System.out.println("|          *EPT - Enveloping hits all 6 shields equally (dmg/6, >=1/2 round up)   |");
+				System.out.println("| G15.0  Stasis Field Generator  5+10+15+20+25+...       -                        |");
+				System.out.println("| G18.0  Displacement Device    2+2  Warp Only           1                        |");
+				System.out.println("|        ESG                                                                      |");
+				System.out.println("|                                                                                 |");
+				System.out.println("|=================================================================================|");
+			} else if (userInput2.equalsIgnoreCase("A")) {
+				System.out.println("|=================================================================================|");
+				System.out.println("|                                ANTI-DRONES (E5.0)                               |");
+				System.out.println("|---------------------------------------------------------------------------------|");
+				System.out.println("|                                                                                 |");
+				System.out.println("|                                                                                 |");
+				System.out.println("|                                                                                 |");
+				System.out.println("|                                                                                 |");
+				System.out.println("|                                                                                 |");
+				System.out.println("|                                                                                 |");
+				System.out.println("|                                                                                 |");
+				System.out.println("|                                                                                 |");
+				System.out.println("|=================================================================================|");
+				System.out.println("|                                 DRONES: (FD1.0)                                 |");
+				System.out.println("|---------------------------------------------------------------------------------|");
+				System.out.println("|   Type     Speed    Endurance   Warhead     Damage     Space     Cost           |");
+				System.out.println("|                     (in turns)           (to destroy)                           |");
+				System.out.println("|    IS       12          1          8          3         1/2       0             |");
+				System.out.println("|    I         8          3         12          4          1        0             |");
+				System.out.println("|    II       12          2         12          4          1       1/2            |");
+				System.out.println("|    III      12         25         12          4          1        1             |");
+				System.out.println("|    IV        8          3         24          6          2        0             |");
+				System.out.println("|    I        12          2         24          6          2       1/2            |");
+				System.out.println("|                                                                                 |");
+				System.out.println("|  DRONE RACKS: Unless otherwise stated all drone racks are Standard \"A\"          |");
+				System.out.println("|                                                                                 |");
+				System.out.println("|  Rule: Type:         Capacity      Rate of Fire       Restrictions              |");
+				System.out.println("|             (Each SSD box)                                                      |");
+				System.out.println("|  FD3.1  \"A\":            4           1 per turn            -                     |");
+				System.out.println("|  FD3.2  \"B\":            6           1 per turn            -                     |");
+				System.out.println("|  FD3.3  \"C\":            4           1 per turn     12 impulses apart            |");
+				System.out.println("|  FD3.4  \"D\":                                                                    |");
+				System.out.println("|  FD3.5  \"E\":       8 (Type-IS)      4 per turn      8 impulses apart            |");
+				System.out.println("|  FD3.6  \"F\":            4           1 per turn            -                     |");
+				System.out.println("|  FD3.7  \"G\":                                                                    |");
+				System.out.println("|=================================================================================|");
+			} else if (userInput2.equalsIgnoreCase("R")) {
+				System.out.println("|=================================================================================|");
+				System.out.println("|                         REPAIR SYSTEMS   (G17.0 / Annex #9)                     |");
+				System.out.println("|---------------------------------------------------------------------------------|");
+				System.out.println("|   - 1 repair point = 1 unit of power from any source (except reserve power)     |");
+				System.out.println("|   - No more than 5 repair pts can be applied to any 1 system per turn           |");
+				System.out.println("|   - Multiple systems can be in repair simultaneously                            |");
+				System.out.println("|   - Unused repair points cannot be saved                                        |");
+				System.out.println("|   - Bases & FRDs can repair themselves during a scenario, but at 4x the cost    |");
+				System.out.println("|---------------------------------------------------------------------------------|");
+				System.out.println("|   ADD                   3  |  Lab                5  |  Probe               3    |");
+				System.out.println("|   APR                   4  |  Mine Rack          4  |  Repair Box          6    |");
+				System.out.println("|   Battery               2  |  PA Panel           5  |  Sensor             10    |");
+				System.out.println("|   Bridge (Any Control)  6  |  Phaser-I           5  |  Scanner            10    |");
+				System.out.println("|   Cargo                 1  |  Phaser-II          4  |  Shield              2    |");
+				System.out.println("|   Damage Control        3  |  Phaser-III         2  |  Shuttle Bay         2    |");
+				System.out.println("|   Displ. Device        25  |  Phaser-IV         10  |  Stasis Field Gen   20    |");
+				System.out.println("|   Disruptor             8  |  Phaser-G           6  |  Special Sensors    15    |");
+				System.out.println("|   Drone Rack            3  |  Photon Torpedo     8  |  Tractor Beam        3    |");
+				System.out.println("|   Expanding Field Gen  15  |  Plasma-F           5  |  Transporter         3    |");
+				System.out.println("|   Fusion Beam           6  |  Plasma-G          10  |  Ubitron Interface   4    |");
+				System.out.println("|   Hellbore             15  |  Plasma-R          20  |  Warp Engine        10    |");
+				System.out.println("|   Hull                  1  |  Plasma-S          15  |  Web                 6    |");
+				System.out.println("|   Impulse               5  |  Plasmatic Pulsar  15  |  Web Caster         15    |");
+				System.out.println("|=================================================================================|");
+			} else if (userInput2.equalsIgnoreCase("B")) {
+				System.out.println("|=================================================================================|");
+				System.out.println("|                                 BATTERIES (H7.0)                                |");
+				System.out.println("|---------------------------------------------------------------------------------|");
+				System.out.println("|  - Batteries are assumed to be charged at the beginning of a scenario           |");
+				System.out.println("|  - Must be recharged after being discharged                                     |");
+				System.out.println("|  - Batteries destroyed in combet are assumed to be those previously discharged  |");
+				System.out.println("|=================================================================================|");
+			} else if (userInput2.equalsIgnoreCase("S")) {
+				System.out.println("|=================================================================================|");
+				System.out.println("|                               SHIELD COSTS (D3.0)                               |");
+				System.out.println("|---------------------------------------------------------------------------------|");
+				System.out.println("|                                     MINIMUM         FULL                        |");
+				System.out.println("|  COST OF OPERATion:              (5 SSD boxes)   (All Avail)                    |");
+				System.out.println("|    Size Class 1 (Starbases)          2 pts     +    5 pts                       |");
+				System.out.println("|    Size Class 2 (Dreadnoughts)       1 pt      +    3 pts                       |");
+				System.out.println("|    Size Class 3 (Cruisers)           1 pt      +    1 pt                        |");
+				System.out.println("|    Size Class 4 (Destroyers)                 1 pt                               |");
+				System.out.println("|    Size Class 5 (P/F's)                      1 pt                               |");
+				System.out.println("|                                                                                 |");
+				System.out.println("|  GENERAL SHIELD REINFORCEMENT (GSR):                                            |");
+				System.out.println("|    Energy supplied / 2 = GSR available (round down)                             |");
+				System.out.println("|    Reinforce all shields and eliminated before Specific Reinforcement           |");
+				System.out.println("|                                                                                 |");
+				System.out.println("|  SPECIFIC SHIELD REINFORCEMENT:                                                 |");
+				System.out.println("|    Energy supplied \"adds\" to the number of SSD boxes for a specific shield    |");
+				System.out.println("|                                                                                 |");
+				System.out.println("|  NOTE: A shield that is down cannot be reinforced specifically, but GSR would   |");
+				System.out.println("|    still block fire coming from that direction.                                 |");
+				System.out.println("|=================================================================================|");
+			} else if (userInput2.equalsIgnoreCase("H")) {
+				System.out.println("|=================================================================================|");
+				System.out.println("|                            HIGH ENERGY TURNS (C6.0)                             |");
+				System.out.println("|---------------------------------------------------------------------------------|");
+				System.out.println("|  - Cost = 5 * movement cost                                                     |");
+				System.out.println("|  - Defined as a \"snap turn\" to face any adjacent hex regardless of turn mode  |");
+				System.out.println("|  - Does not affect acceleration                                                 |");
+				System.out.println("|  - Cannot be preformed on Impulse 1                                             |");
+				System.out.println("|  - Seeking weapons and fighters may perform 1 HET per turn, never breakdown     |");
+				System.out.println("|  - Immediately following a HET, roll 1 die to see if breakdown occurs           |");
+				System.out.println("|---------------------------------------------------------------------------------|");
+				System.out.println("|  - BREAKDOWN (C6.54)                                                            |");
+				System.out.println("|      - On the first HET of a turn, 2 is subtracted from the die roll            |");
+				System.out.println("|      - If breakdown occurs:                                                     |");
+				System.out.println("|          - Immediate stop                                                       |");
+				System.out.println("|          - Destroyed: 1/5 of warp boxes & 1/3 crew units (round down)           |");
+				System.out.println("|          - 2 internal hits via DAC                                              |");
+				System.out.println("|          - Breakdown rating reduced by 1                                        |");
+				System.out.println("|          - Stasis fields, Expanding Spheres, Tractor Beams released             |");
+				System.out.println("|          - For 8 Impulses, or the rest of the turn (whichever is less):         |");
+				System.out.println("|              - No weapons may be fired (inc. seeking wepaons)                   |");
+				System.out.println("|              - No shuttles/fighters may be launched/recovered                   |");
+				System.out.println("|              - No tractor beams/transporters may be used                        |");
+				System.out.println("|      - Ship may resume \"nromal\" operations at the beginning of the next turn    |");
+				System.out.println("|=================================================================================|");
+			} else if (userInput2.equalsIgnoreCase("D")) {
+				System.out.println("|=================================================================================|");
+				System.out.println("|                                DAMAGE CONTROL:                                  |");
+				System.out.println("|---------------------------------------------------------------------------------|");
+				System.out.println("|                                                                                 |");
+				System.out.println("|                                                                                 |");
+				System.out.println("|                                                                                 |");
+				System.out.println("|                                                                                 |");
+				System.out.println("|                                                                                 |");
+				System.out.println("|                                                                                 |");
+				System.out.println("|                                                                                 |");
+				System.out.println("|                                                                                 |");
+				System.out.println("|=================================================================================|");
+			} else if (userInput2.equalsIgnoreCase("")) {
+				//  break
+				cont = false;
+			} 
+			if (!(userInput2.equalsIgnoreCase(""))) {
+			PrintShortRulesMenu();
+			}
+		}
+
+	}
+
+	public static void PrintShortRulesMenu () {
+		System.out.println("|   [W]eapons   [E]nergy Alloc   [H]ET   [D]amage Control   [A]DD & Drone         |");
+		System.out.println("|   [S]hields   [R]epair System   [ ]         [ ]           [ ]                   |");
+		System.out.println("|=================================================================================|");
+		System.out.println();
+	}
+	
+	//  GET LETTER AS INPUT THAT IS IN PASSED STRING
 	public static String getInput(String word) {
 		Scanner keyboard = new Scanner(System.in);
 		
@@ -269,8 +469,7 @@ public class Driver {
 		return inputLetter;
 	}
 	
-//  GET NUMBER AS INPUT THAT IS BETWEEN PASSED SMALL/BIG
-
+	//  GET NUMBER AS INPUT THAT IS BETWEEN PASSED SMALL/BIG
 	public static int getNumber(int small, int big) {
 		Scanner keyboard = new Scanner(System.in);
 		
