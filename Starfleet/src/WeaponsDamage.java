@@ -35,10 +35,10 @@ public class WeaponsDamage {
 				System.out.println("|==========================================================================|");
 				System.out.println("|                         WEAPONS DAMAGE PROCEDURE                         |");
 				System.out.println("|==========================================================================|");
-				System.out.println("|  Type [1] Phaser   [P]hoton Torpedo [S/P/O]     Disruptor [B]olt         |");
-				System.out.println("|  Type [2] Phaser   P[L]asma Torpedo [R/2/G/F]   [T]ractor-Repulsor Beam  |");
-				System.out.println("|  Type [3] Phaser   [F]usion Beam [S/O/X]                                 |");
-				System.out.println("|  Type [4] Phaser   [H]ellbore [S/O/D]                                    |");
+				System.out.println("|  Type [1] Phaser  [P]hoton Torpedo [S/P/O]    Disruptor [B]olt           |");
+				System.out.println("|  Type [2] Phaser  P[L]asma Torpedo [R/2/G/F]  [T]ractor-Repulsor Beam    |");
+				System.out.println("|  Type [3] Phaser  [F]usion Beam [S/O/X]       [S]uicide Shuttle (Admin)  |");
+				System.out.println("|  Type [4] Phaser  [H]ellbore [S/O/D]          Dro[N]e                    |");
 				System.out.println("|==========================================================================|");
 				System.out.println("|                        Go to [D]amage Allocation                         |");
 				if (impulseNumber == -1) {
@@ -56,7 +56,7 @@ public class WeaponsDamage {
 
 			String weaponInput = "";
 			while (weaponInput.length() == 0) {                           //  Do NOT accept RETURN as a valid answer
-				weaponInput = Driver.getInput("1234PLFHDTQIR");
+				weaponInput = Driver.getInput("1234PLFHDTQIRSN");
 			}
 			
 			int typeInput = 0;
@@ -105,18 +105,22 @@ public class WeaponsDamage {
 			if ("1234PLFHTQ".contains(weaponInput)) {
 				System.out.print("Distance: ");
 				distanceInput = Driver.getNumber(-1, MAXDIST);
-				// MODIFY DISTANCE FOR SENSOR LOCK-ON FAILURE
-				if (currentShip.lockedOn == false)
-					distanceInput *= 2;
-				// MODIFY DISTANCE FOR SCANNER NUMBER
 				
-				int nextScannerNum = currentShip.ssd[23].numOfThisPart
-						- currentShip.ssd[23].remaining;
+				// MODIFY DISTANCE FOR SENSOR LOCK-ON FAILURE
+				if (currentShip.lockedOn == false) {
+					distanceInput *= 2;
+				}
+				
+				// MODIFY DISTANCE FOR SCANNER NUMBER
+				int nextScannerNum = currentShip.ssd[23].numOfThisPart - currentShip.ssd[23].remaining;
 				distanceInput += currentShip.scannerNums[nextScannerNum];
 				if (currentShip.lockedOn == false || nextScannerNum > 0) {
 					System.out.println("New Distance " + distanceInput + " (modified due to Sensor Lock-on failure and/or Scanner resolution number)");
 				}
 				
+				System.out.print("Number:   ");
+				numberInput = Driver.getNumber(-1, 200);
+			} else if (weaponInput.equalsIgnoreCase("S") || weaponInput.equalsIgnoreCase("N")) {
 				System.out.print("Number:   ");
 				numberInput = Driver.getNumber(-1, 200);
 			}
@@ -155,6 +159,12 @@ public class WeaponsDamage {
 			} else if(weaponInput.equalsIgnoreCase("H")) {
 				totalDamage = hellbore(typeInput, numberInput, distanceInput, totalDamage);		
 //				System.out.println("\tTotal Damage: " + totalDamage);
+			} else if(weaponInput.equalsIgnoreCase("S")) {
+				totalDamage = adminSuicideShuttle(numberInput, totalDamage);		
+//				System.out.println("\tTotal Damage: " + totalDamage);
+			} else if(weaponInput.equalsIgnoreCase("N")) {
+				totalDamage = drone(numberInput, totalDamage);		
+//				System.out.println("\tTotal Damage: " + totalDamage);
 			} else if(weaponInput.equalsIgnoreCase("D")) {
 				DamageAllocation.DamageAlloc(totalDamage);
 				totalDamage = 0;
@@ -165,7 +175,7 @@ public class WeaponsDamage {
 			} else if(weaponInput.equalsIgnoreCase("R")) {
 				break;
 			}
-			if ("1234PLFHTQ".contains(weaponInput)) {
+			if ("1234PLFHTQSN".contains(weaponInput)) {
 				System.out.println("\tTotal Damage: " + totalDamage);
 			}
 			
@@ -173,7 +183,7 @@ public class WeaponsDamage {
 
 	}
 
-//  TYPE 1 PHASER
+	//  TYPE 1 PHASER
 	public static int type1Phaser(int num, int dist, int total) {
 		int intPhaser1[][] = {{0, 1, 2, 3, 4, 5, 6, 9,16,26,51,76},   //  distance
 							  {9, 8, 7, 6, 5, 5, 4, 3, 2, 1, 1, 0},   //  die roll 1 
@@ -205,7 +215,7 @@ public class WeaponsDamage {
 		return total;
 	}
 	
-//  TYPE 2 PHASER
+	//  TYPE 2 PHASER
 	public static int type2Phaser(int num, int dist, int total) {
 		int intPhaser2[][] = {{0, 1, 2, 3, 4, 9,16,31,51},   //  distance
 							  {6, 5, 5, 4, 3, 2, 1, 1, 0},   //  die roll 1
@@ -235,7 +245,7 @@ public class WeaponsDamage {
 		return total;
 	}
 	
-//  TYPE 3 PHASER
+	//  TYPE 3 PHASER
 	public static int type3Phaser(int num, int dist, int total) {
 		int intPhaser3[][] = {{0, 1, 2, 3, 4, 9,16},   //  distance
 							  {4, 4, 4, 3, 1, 1, 0},   //  die roll 1
@@ -261,7 +271,7 @@ public class WeaponsDamage {
 		return total;
 	}
 	
-//  TYPE 4 PHASER
+	//  TYPE 4 PHASER
 	public static int type4Phaser(int num, int dist, int total) {
 		int intPhaser4[][] = {{ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9,10,11,14,18,26,41,71,101},   //  distance
 							  {20,20,20,20,20,20,20,15,12,10, 8, 6, 5, 4, 3, 2, 1,  0},   //  die roll 1
@@ -295,7 +305,7 @@ public class WeaponsDamage {
 		return total;
 	}
 	
-//  PHOTON TORPEDO
+	//  PHOTON TORPEDO
 	public static int photonTorpedo(int type, int energy, int num, int dist, int total) {
 		int intPhoton[][] = {{0, 1, 2, 3, 4, 5, 6, 7, 8, 9,10,11,12,13,31},   //  distance
 							 {0, 0, 5, 4, 4, 3, 3, 3, 3, 2, 2, 2, 2, 1, 0},   //  Standard (int type = 1)
@@ -337,7 +347,7 @@ public class WeaponsDamage {
 		return total;
 	}
 	
-//  PLASMA TORPEDO
+	//  PLASMA TORPEDO
 	public static int plasmaTorpedo(int type, int num, int dist, int total) {
 		int intPlasma[][] = {{ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31},   //  distance
 				  			 {50,50,50,50,50,50,50,50,50,50,50,35,35,35,35,35,25,25,25,25,25,20,20,20,20,20,10,10,10, 5, 1, 0},   //  Type R
@@ -349,16 +359,23 @@ public class WeaponsDamage {
 			dist = 31;			
 		}
 
+		int feedbackDamage = 0;
 		int startTotal = total;
 		for(int i = 0; i < num; i++) {
 			int damage = intPlasma[type][dist];
 			total += damage;
 		}
+		if (dist <= 1) {
+			feedbackDamage = total/4;
+			System.out.println("");
+			System.out.println("Feedback Damage: " + feedbackDamage);
+			System.out.println("");
+		}
 		System.out.print("Volley Damage: " + (total-startTotal));
 		return total;
 	}
 	
-//  FUSION BEAM
+	//  FUSION BEAM
 	public static int fusionBeam(int num, int dist, int total) {
 		int intFusion[][] = {{ 0, 1, 2, 3,11,16,25},   //  distance
 							 {13, 8, 6, 4, 3, 2, 0},   //  die roll 1
@@ -387,7 +404,7 @@ public class WeaponsDamage {
 		return total;
 	}
 	
-//  FUSION BEAM OVERLOADED (int type 1) / SUICIDE (int type 2)
+	//  FUSION BEAM OVERLOADED (int type 1) / SUICIDE (int type 2)
 	public static int fusionBeamOverloaded(int type, int num, int dist, int total) {
 		int intFusionOver[][] = {{ 0, 1, 2, 3, 9},   //  distance
 							     {19,12, 9, 6, 0},   //  die roll 1
@@ -418,7 +435,7 @@ public class WeaponsDamage {
 		return total;
 	}
 	
-//  DISRUPTOR BOLT
+	//  DISRUPTOR BOLT
 	public static int disruptorBolt(int num, int dist, int total) {
 		int intDisruptor[][] = {{0, 1, 2, 3, 4, 9,16,31,51},   //  distance
 				  			    {6, 5, 5, 4, 3, 2, 1, 1, 0},   //  die roll 1
@@ -450,7 +467,7 @@ public class WeaponsDamage {
 		return total;
 	}
 	
-//  TRACTOR-REPULSOR BEAM
+	//  TRACTOR-REPULSOR BEAM
 	public static int tractorRepulsorBeam(int num, int dist, int total) {
 		int intTracRep[][] = {{ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9,10,11,12,13,19,26},   //  distance
 							  {20,20,20,20,20,20,18,18,18,12,12,12,12, 8, 3, 0},   //  die roll 1
@@ -476,7 +493,7 @@ public class WeaponsDamage {
 		return total;
 	}
 	
-//  HELLBORE
+	//  HELLBORE
 	public static int hellbore(int type, int num, int dist, int total) {
 		int hellbore[][] = {{ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9,16,23,41},   //  distance
 						    {20,20,17,15,15,13,13,13,13,10, 8, 4, 0},   //  Base (Standard) (int type = 1)
@@ -517,6 +534,37 @@ public class WeaponsDamage {
 		}
 		System.out.println();
 		System.out.print("Volley Damage: " + (total-startTotal));
+		return total;
+	}
+	
+	public static int adminSuicideShuttle(int num, int total) {
+		int startTotal = total;
+		total = total + (num * 18);
+		System.out.println();
+		System.out.print("Volley Damage: " + (total - startTotal));
+		return total;
+	}
+	
+	public static int drone(int num, int total) {
+		int startTotal = total;
+		int droneDamage = 0;
+		
+		System.out.println("Drone Types: 0 = IS, 1 = I, 2 = II, 3 = III, 4 = IV, 5 = IV");
+		
+		for (int i = 1; i <= num; i++) {
+			System.out.print("Drone Type : ");
+			int droneType = Driver.getNumber(0, 5);
+			if (droneType == 0) {
+				droneDamage =+ 8;
+			} else if (droneType >= 1 && droneType <= 3) {
+				droneDamage =+ 12;
+			} else if (droneType == 4 || droneType == 5) {
+				droneDamage =+ 24;
+			}
+			total = total + droneDamage;
+		}
+		System.out.println();
+		System.out.print("Volley Damage: " + (total - startTotal));
 		return total;
 	}
 }
