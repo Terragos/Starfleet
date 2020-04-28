@@ -93,9 +93,16 @@ public class DamageAllocation {
 		specific = Driver.getNumber(0, 100);
 		System.out.print("\tShield Damage                : ");
 		shieldDamage = Driver.getNumber(0, 100);
-		totalDamage = totalDamage - general - specific - shieldDamage;
+		int allShieldDamage = general + specific + shieldDamage;
+		totalDamage = totalDamage - allShieldDamage;
 		System.out.println();
 		System.out.print("\tTOTAL DAMAGE after accounting for shields: " + totalDamage);
+		System.out.println();
+		System.out.print("\tArmor Damage                 : ");
+		int armorDamage = Driver.getNumber(0, 100);
+		System.out.println();
+		totalDamage = totalDamage - armorDamage;
+		System.out.print("\tTOTAL DAMAGE after accounting for armor : " + totalDamage);
 		System.out.println();
 		
 		if (totalDamage <= 0) {
@@ -226,12 +233,15 @@ public class DamageAllocation {
 				}
 				damageCount++;
 				String input2 = keyboard.nextLine();
-				if(input2.equalsIgnoreCase("0")) {
-					return;
-				} else if(input2.equalsIgnoreCase("N")) {		//  In case SSD is wrong or computer crashes, allow to user hit "N" to
+
+				if(input2.equalsIgnoreCase("N")) {		//  In case SSD is wrong or computer crashes, allow to user hit "N" to
 					currentShip.ssd[number].remaining = 0;		//  to user hit "N" to "destroyed" all of those systems with that name.
 					damageCount--;
 				}
+			}
+			
+			if (damageCount + armorDamage + allShieldDamage == 20) { 
+				RollForCriticalHit();
 			}
 		}
 			
@@ -242,6 +252,66 @@ public class DamageAllocation {
 			System.out.println("Press RETURN to return to Weapons Damage");
 		}
 		waitForReturn();
+	}
+	
+	public static void RollForCriticalHit () {
+		int die = rollDice(2, 6);
+		if (die == 2) {
+			System.out.println("Critical Hit!");
+			System.out.println("Weapons tracking systems knocked out for an unkown number of turns.");
+			System.out.println("All current lock-on are lost.");
+			System.out.println("No weapons can be fired/launched until system is repaired.");
+			System.out.println();
+			System.out.println("Roll one d6 at end of turn (one time only).  A roll of \"6\" always fails.");
+			System.out.println("If die roll is less than highest Damage Control number, then the weapons trcking systems are repaired.");
+			System.out.println();
+			
+		} else if (die == 3) {
+			System.out.println("Critical Hit!");
+			System.out.println("Transporter failure.  Transporters cannot be used until repaired.");
+			System.out.println();
+			System.out.println("Roll one d6 at end of turn (one time only).  A roll of \"6\" always fails.");
+			System.out.println("If die roll is less than highest Damage Control number, then the weapons trcking systems are repaired.");
+			System.out.println();
+			
+		} else if (die == 4) {
+			System.out.println("Critical Hit!");
+			System.out.println("Power failure in the labs.  Labs cannot be used until repaired.");
+			System.out.println();
+			System.out.println("Roll one d6 at end of turn (one time only).  A roll of \"6\" always fails.");
+			System.out.println("If die roll is less than highest Damage Control number, then the weapons trcking systems are repaired.");
+			System.out.println();
+			
+		} else if (die >= 5 && die <= 9) {
+			System.out.println("No critical hit!");
+
+		} else if (die == 10) {
+			System.out.println("Critical Hit!");
+			System.out.println("Shuttle launch controls jammed.  No Shuttles can be launched/recovered until repaired.");
+			System.out.println();
+			System.out.println("Roll one d6 at end of turn (one time only).  A roll of \"6\" always fails.");
+			System.out.println("If die roll is less than highest Damage Control number, then the weapons trcking systems are repaired.");
+			System.out.println();
+			
+		} else if (die == 11) {
+			System.out.println("Critical Hit!");
+			System.out.println("Tractor beam breakdown.  Tractor beams cannot be used until repaired.");
+			System.out.println();
+			System.out.println("Roll one d6 at end of turn (one time only).  A roll of \"6\" always fails.");
+			System.out.println("If die roll is less than highest Damage Control number, then the weapons trcking systems are repaired.");
+			System.out.println();
+			
+		} else if (die == 12) {
+			System.out.println("Critical Hit!");
+			System.out.println("Warp engine controls are damaged, and the ship cannot use warp energy for movement.");
+			System.out.println("1/2 of the output of the warp engines can be used for other purposes.");
+			System.out.println("The other 1/2 of the power output cannot be used until repaired.");
+			System.out.println();
+			System.out.println("Roll one d6 at end of turn (one time only).  A roll of \"6\" always fails.");
+			System.out.println("If die roll is less than highest Damage Control number, then the weapons trcking systems are repaired.");
+			System.out.println();
+			
+		}
 	}
 	
 	// ROLL DICE METHOD
