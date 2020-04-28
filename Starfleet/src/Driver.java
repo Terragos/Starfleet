@@ -205,7 +205,7 @@ public class Driver {
 					}else {
 						System.out.println();
 						System.out.println("Alternate Parts on SSDs include (Annex #7E):");
-						System.out.println("\tFlag Bridge = Security, Web Generator, Displacement Device");
+						System.out.println("\tFlag Bridge = Security, Web, Displacement Device");
 						System.out.println("\tTorpedo = Photon Torpedo, Disruptor Bolt, Plasma Torpedo, SFG, Fusion Beam, Tractor-Repulsor Beam");
 						System.out.println("\tDrone = ADD, ESG, Hellbore, Plasmatic Pulsars, Power Absorbers");
 						System.out.println("\tShuttle = Fighter, Mine Andormedan Hangar");
@@ -339,20 +339,22 @@ public class Driver {
 				System.out.println("|   - Unused repair points cannot be saved                                        |");
 				System.out.println("|   - Bases & FRDs can repair themselves during a scenario, but at 4x the cost    |");
 				System.out.println("|---------------------------------------------------------------------------------|");
-				System.out.println("|   ADD                   3  |  Lab                5  |  Probe               3    |");
-				System.out.println("|   APR                   4  |  Mine Rack          4  |  Repair Box          6    |");
-				System.out.println("|   Battery               2  |  PA Panel           5  |  Sensor             10    |");
-				System.out.println("|   Bridge (Any Control)  6  |  Phaser-I           5  |  Scanner            10    |");
-				System.out.println("|   Cargo                 1  |  Phaser-II          4  |  Shield              2    |");
-				System.out.println("|   Damage Control        3  |  Phaser-III         2  |  Shuttle Bay         2    |");
-				System.out.println("|   Displacement Device  25  |  Phaser-IV         10  |  Stasis Field Gen   20    |");
-				System.out.println("|   Disruptor             8  |  Phaser-G           6  |  Special Sensors    15    |");
-				System.out.println("|   Drone Rack            3  |  Photon Torpedo     8  |  Tractor Beam        3    |");
-				System.out.println("|   Expanding Field Gen  15  |  Plasma-F           5  |  Transporter         3    |");
-				System.out.println("|   Fusion Beam           6  |  Plasma-G          10  |  Ubitron Interface   4    |");
-				System.out.println("|   Hellbore             15  |  Plasma-R          20  |  Warp Engine        10    |");
-				System.out.println("|   Hull                  1  |  Plasma-S          15  |  Web                 6    |");
-				System.out.println("|   Impulse               5  |  Plasmatic Pulsar  15  |  Web Caster         15    |");
+				System.out.println("|   ADD                    3  |  Hull               1  |  Probe               3   |");
+				System.out.println("|   APR                    4  |  Impulse            5  |  Repair Box          6   |");
+				System.out.println("|   Battery                2  |  Lab                5  |  Sensor             10   |");
+				System.out.println("|   Bridge (Any Control)   6  |  Mine Rack          4  |  Scanner            10   |");
+				System.out.println("|   Cargo                  1  |  PA Panel           5  |  Shield              2   |");
+				System.out.println("|   Damage Control         3  |  Phaser-I           5  |  Shuttle Bay         2   |");
+				System.out.println("|   Displacement Device   25  |  Phaser-II          4  |  Stasis Field Gen   20   |");
+				System.out.println("|   Disruptor: range 40    8  |  Phaser-III         2  |  Special Sensors    15   |");
+				System.out.println("|   Disruptor: range 30    3  |  Phaser-IV         10  |  Tractor Beam        3   |");
+				System.out.println("|   Disruptor: range 22   15  |  Phaser-G           6  |  Transporter         3   |");
+				System.out.println("|   Disruptor: range 15    6  |  Photon Torpedo     8  |  Ubitron Interface   4   |");
+				System.out.println("|   Disruptor: range 10   15  |  Plasma-F           5  |  Warp Engine        10   |");
+				System.out.println("|   Drone Rack             3  |  Plasma-G          10  |  Warp Reactor        6   |");
+				System.out.println("|   Expanding Field Gen   15  |  Plasma-R          20  |  Web                 6   |");
+				System.out.println("|   Fusion Beam            6  |  Plasma-S          15  |  Web Caster         15   |");
+				System.out.println("|   Hellbore              15  |  Plasmatic Pulsar  15  |                          |");
 				System.out.println("|=================================================================================|");
 			} else if (userInput2.equalsIgnoreCase("B")) {
 				System.out.println("|=================================================================================|");
