@@ -79,7 +79,7 @@ public class PhaseCalculation {
 
 				boolean cont3 = true;
 				while (cont3) {
-					String userInput = Driver.getInput("WTDSF");
+					String userInput = Driver.getInput("WTDSFRA");
 					if (userInput.contentEquals("")) {
 						cont3 = false;
 					} else if (userInput.equalsIgnoreCase("W")) {
@@ -95,7 +95,20 @@ public class PhaseCalculation {
 						AddShuttle();
 					} else if (userInput.equalsIgnoreCase("F")) {
 						AddFighter();
-					}
+					} else if (userInput.equalsIgnoreCase("R")) {                   // Remove destroyed ship/monster
+						System.out.println();
+						ShipSetup.PrintCurrentShipsInGame();
+						System.out.print("Remove which ship? [0 to cancel] ");
+						int removeInput = -1;
+						removeInput = Driver.getNumber(0, Driver.currentGameYard.numShips);
+						System.out.println("Are you sure you want to remove: " + Driver.currentGameYard.list[removeInput-1].name);
+						String yesOrNo = Driver.getInput("YN");
+						if (yesOrNo.contentEquals("Y")) {
+							Driver.currentGameYard.removeShipFromShipyard(removeInput);
+						}
+					} else if (userInput.equalsIgnoreCase("A")) {  					// Add ship/monster
+						System.out.print("Add \"Add ship code\" here.");
+					} 
 				}
 				
 			} else {
@@ -243,7 +256,7 @@ public class PhaseCalculation {
 		for (int i = 1; i <= ((17 + shipTotal)-29)/2 - 2; i++) {     //  CENTERS TEXT
 			System.out.print(" ");
 		}
-		System.out.print("[W][T][D][S][F]");		
+		System.out.print("[W][T][D][S][F][R][A]");		
 
 		System.out.println();
 		System.out.print("=============");
