@@ -970,12 +970,86 @@ public class Shipyard {
 		defaultYard.addShipToShipyard(ship);
 		ship = new Starship("All Fleets", "GBDP", "0", "0", "7", "-", "*", "-", "-", "-", "R1.14", "75");
 		defaultYard.addShipToShipyard(ship);
-	    
+
+		//  MONSTERS  =============================================================================================
+
+		ship = new Starship("Monster", "Planet Crusher", "-", "-", "-", "-", "-", "-", "-", "0", "SM1.0", "-");
+		se = new int[]{6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6};
+		sc = new int[]{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+		da = new int[]{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+		ship.setupSSD(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 200, se, sc, da);
+		defaultYard.addShipToShipyard(ship);
+
+		ship = new Starship("Monster", "Space Amoeba", "-", "-", "-", "-", "-", "-", "-", "-", "SM2.0", "-");
+		se = new int[]{6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6};
+		sc = new int[]{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+		da = new int[]{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+		ship.setupSSD(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 200, se, sc, da);
+		defaultYard.addShipToShipyard(ship);
+
+		ship = new Starship("Monster", "Moray Eel", "-", "-", "-", "-", "-", "-", "-", "-", "SM3.0", "-");
+		se = new int[]{6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6};
+		sc = new int[]{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+		da = new int[]{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+		ship.setupSSD(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 400, se, sc, da);
+		defaultYard.addShipToShipyard(ship);
+
+		ship = new Starship("Monster", "Cosmic Cloud", "-", "-", "-", "-", "-", "-", "-", "-", "SM4.0", "-");
+		se = new int[]{6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6};
+		sc = new int[]{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+		da = new int[]{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+		ship.setupSSD(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 200, se, sc, da);
+		defaultYard.addShipToShipyard(ship);
+
+		ship = new Starship("Monster", "Sunsnake", "-", "-", "-", "-", "-", "-", "-", "-", "SM5.0", "-");
+		se = new int[]{6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6};
+		sc = new int[]{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+		da = new int[]{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+		ship.setupSSD(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 200, se, sc, da);
+		defaultYard.addShipToShipyard(ship);
+
+		ship = new Starship("Monster", "Mind Monster", "-", "-", "-", "-", "-", "-", "-", "-", "SM6.0", "-");
+		se = new int[]{6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6};
+		sc = new int[]{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+		da = new int[]{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+		ship.setupSSD(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 200, se, sc, da);
+		defaultYard.addShipToShipyard(ship);
+
+		ship = new Starship("Monster", "Arastoz 1x", "-", "-", "-", "-", "-", "-", "-", "-", "SL49.0", "-");
+		se = new int[]{6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6};
+		sc = new int[]{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+		da = new int[]{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+		ship.setupSSD(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 100, se, sc, da);
+		defaultYard.addShipToShipyard(ship);
+
+		ship = new Starship("Monster", "Arastoz 2x", "-", "-", "-", "-", "-", "-", "-", "-", "SL49.0", "-");
+		se = new int[]{6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6};
+		sc = new int[]{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+		da = new int[]{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+		ship.setupSSD(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 200, se, sc, da);
+		defaultYard.addShipToShipyard(ship);
+
+		ship = new Starship("Monster", "Arastoz 3x", "-", "-", "-", "-", "-", "-", "-", "-", "SL49.0", "-");
+		se = new int[]{6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6};
+		sc = new int[]{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+		da = new int[]{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+		ship.setupSSD(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 400, se, sc, da);
+		defaultYard.addShipToShipyard(ship);
+
+		ship = new Starship("Monster", "Arastoz 4x", "-", "-", "-", "-", "-", "-", "-", "-", "SL49.0", "-");
+		se = new int[]{6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6};
+		sc = new int[]{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+		da = new int[]{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+		ship.setupSSD(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 800, se, sc, da);
+		defaultYard.addShipToShipyard(ship);
+
 	    return  defaultYard;
 	}
 	
 	public void displayShipyardMenu(int pass) {
 
+		boolean isMonster = true;
+		
 		boolean cont = true; 
 		while (cont) {
 			String userRace = "";
@@ -993,7 +1067,7 @@ public class Shipyard {
 			System.out.println("|==========================================================================|");
 			System.out.println("|   Races Available in the Shipyard:                    [S]how SSD Toggle  |");
 			System.out.println("|     [F]ederation     [O]rion       [A]ndromedan                          |");
-			System.out.println("|     [K]lingon        [G]orn        [W]YN                                 |");
+			System.out.println("|     [K]lingon        [G]orn        [W]YN              [M]onsters         |");
 			System.out.println("|     [R]omulan        [T]holian     [L]yran                               |");
 			System.out.println("|     K[z]inti         [H]ydran      [C]ivilian Ships   [X] All Fleets     |");
 			System.out.println("|==========================================================================|");
@@ -1006,7 +1080,7 @@ public class Shipyard {
 			}
 			System.out.println("|==========================================================================|");
 	
-			userRace = Driver.getInput("FKGRZTOHLXAWCS");
+			userRace = Driver.getInput("FKGRZTOHLXAWCSM");
 			
 			if (userRace.contentEquals("S")) {
 				showOnlySSDs = !showOnlySSDs;
@@ -1025,7 +1099,11 @@ public class Shipyard {
 					
 					int whichShip = -1;
 					while (whichShip < 0) {
-						System.out.print("Which ship to add to the game?  [0 to cancel]");
+						if (userRace.contentEquals("M")) {
+							System.out.print("Which monster to add to the game?  [0 to cancel]");
+						} else {
+							System.out.print("Which ship to add to the game?  [0 to cancel]");
+						}
 				
 						whichShip = Driver.getNumber(0, count);
 						int adjusted = whichShip + firstOfRace - 1;
@@ -1039,16 +1117,41 @@ public class Shipyard {
 						}
 						
 						if (whichShip > 0) {
-							Starship copiedShip = list[adjusted];
-							copiedShip.name = (list[adjusted].race).substring(0,3) + "-" + (list[adjusted].shipType);
-							copiedShip.turnMode = list[adjusted].turnMode;
-							
-							System.out.print("Ship Speed: ");
-							int shipSpeed = Driver.getNumber(-1, 32);
-							
-							copiedShip.speed = shipSpeed;
-							Driver.currentGameYard.addShipToShipyard(copiedShip);
-							whichShip = -1;
+							if (userRace.contentEquals("M")) {
+								Starship copiedShip = list[adjusted];
+								copiedShip.name = list[adjusted].shipType;
+								copiedShip.turnMode = list[adjusted].turnMode;
+								if (whichShip == 1 || whichShip == 3 || whichShip == 6) {  // Planet Crusher, Moray Eel of Space, Mind Monster
+									copiedShip.speed = 6;
+								} else if (whichShip == 2 || whichShip == 4) {  // Space Amoeba, Cosmic Cloud
+									copiedShip.speed = 4;
+								} else if (whichShip == 5) {  // Sunsnake
+									copiedShip.speed = 3;
+								} else if (whichShip == 7) {  // Arastoz 1 piece (single)
+									copiedShip.speed = 14;
+								} else if (whichShip == 8) {  // Arastoz 2 pieces joined
+									copiedShip.speed = 12;
+								} else if (whichShip == 9) {  // Arastoz 3 pieces joined
+									copiedShip.speed = 10;
+								} else if (whichShip == 10) {  // Arastoz 4 pieces joined
+									copiedShip.speed = 8;
+								}
+								System.out.println("Monster Speed is: " + copiedShip.speed);
+								System.out.println();
+								Driver.currentGameYard.addShipToShipyard(copiedShip);
+								whichShip = -1;
+							} else {
+								Starship copiedShip = list[adjusted];
+								copiedShip.name = (list[adjusted].race).substring(0,3) + "-" + (list[adjusted].shipType);
+								copiedShip.turnMode = list[adjusted].turnMode;
+								
+								System.out.print("Ship Speed: ");
+								int shipSpeed = Driver.getNumber(-1, 32);
+								
+								copiedShip.speed = shipSpeed;
+								Driver.currentGameYard.addShipToShipyard(copiedShip);
+								whichShip = -1;
+							}
 						} else if (whichShip == -1) {
 							
 						} else {
@@ -1150,6 +1253,8 @@ public class Shipyard {
 			race = "Civilian";
 		} else if (r.equalsIgnoreCase("X")) {
 			race = "All Fleets";
+		} else if (r.equalsIgnoreCase("M")) {
+			race = "Monster";
 		}
 		return race;
 	}
