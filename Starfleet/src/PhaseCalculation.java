@@ -428,9 +428,29 @@ public class PhaseCalculation {
 		System.out.print("Drone Name : ");
 		String droneName = keyboard.nextLine();
 		
-		System.out.print("Drone Speed: ");
-		int droneSpeed = Driver.getNumber(-1, 32);
-		
+		System.out.println("|==============================================================================|");
+		System.out.println("|                              DRONE TYPES: (FD1.0)                            |");
+		System.out.println("|------------------------------------------------------------------------------|");
+		System.out.println("|         Type     Speed    Endurance   Warhead     Damage     Space     Cost  |");
+		System.out.println("|                           (in turns)           (to destroy)                  |");
+		System.out.println("|  (0)     IS       12          1          8          3         1/2       0    |");
+		System.out.println("|  (1)     I         8          3         12          4          1        0    |");
+		System.out.println("|  (2)     II       12          2         12          4          1       1/2   |");
+		System.out.println("|  (3)     III      12         25         12          4          1        1    |");
+		System.out.println("|  (4)     IV        8          3         24          6          2        0    |");
+		System.out.println("|  (5)     I        12          2         24          6          2       1/2   |");
+		System.out.println("|==============================================================================|");
+		System.out.print("Drone Type : ");
+		int droneType = Driver.getNumber(0, 5);
+		int droneSpeed = 0;
+		if (droneType == 1 || droneType == 4) {
+			System.out.print("Drone Speed: 8");
+			droneSpeed = 8;
+		} else {
+			System.out.print("Drone Speed: 12");
+			droneSpeed = 12;
+		}
+		System.out.println();
 		Starship drone = new Starship(Starship.Ship.DRONE, droneSpeed, droneName);
 		Driver.currentGameYard.addShipToShipyard(drone);
 	}
@@ -441,7 +461,7 @@ public class PhaseCalculation {
 		String shuttleName = keyboard.nextLine();
 		
 		System.out.print("Shuttle Speed: ");
-		int shuttleSpeed = Driver.getNumber(-1, 32);
+		int shuttleSpeed = Driver.getNumber(-1, 6);
 		
 		Starship shuttle = new Starship(Starship.Ship.SHUTTLE, shuttleSpeed, shuttleName);
 		Driver.currentGameYard.addShipToShipyard(shuttle);
