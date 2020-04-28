@@ -41,6 +41,33 @@ public class Starship {
 		
 	}
 	
+	/* Copy Constructor */
+	public Starship(Starship ship) {
+		this.race = ship.race;
+		this.shipType = ship.shipType;
+		this.crewUnits = ship.crewUnits;
+		this.boardingParties = ship.boardingParties;
+		this.BPV = ship.BPV;
+		this.breakDown = ship.breakDown;
+		this.moveCost = ship.moveCost;
+		this.spareShuttles = ship.spareShuttles;
+		this.sizeClass = ship.sizeClass;
+		this.name = ship.name;
+		this.turnMode = ship.turnMode;
+		this.ruleNum = ship.ruleNum;
+		this.yearInService = ship.yearInService;
+		this.speed = ship.speed;
+		this.spi = ship.spi;
+		this.distrv = ship.distrv;
+		this.kindOfShip = ship.kindOfShip;
+		this.ssd = ship.ssd;
+		this.hasSSD = ship.hasSSD;
+		this.sensorNums = ship.sensorNums;
+		this.scannerNums = ship.scannerNums;
+		this.damConNums = ship.damConNums;
+		this.lockedOn = ship.lockedOn;
+	}
+	
 	/* Non Regular Starship Constructor */
 	public Starship(Ship kind, int speed, String name) {
 		int[] fake = {0};
