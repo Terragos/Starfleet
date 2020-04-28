@@ -464,7 +464,7 @@ public class Driver {
 		
 		boolean cont = true;
 		
-		String inputLetter = "";
+		String inputLetter  = "";
 		int location = -2;
 		while (location < 0) {
 			inputLetter = keyboard.nextLine().toUpperCase();
