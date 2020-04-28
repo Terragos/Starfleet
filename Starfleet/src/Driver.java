@@ -258,7 +258,7 @@ public class Driver {
 		System.out.println("|   [W]eapons Energy Costs (E0.0 & F0.0)    [S]hield Costs (D3.0)                 |");
 		System.out.println("|   [B]atteries (H7.0)                      [D]amage Control (D9.0)               |");
 		System.out.println("|   [H]igh Energy Turns (C6.0)              [A]nti-Drone & Drone (E5.0 & FD1.0)   |");
-		System.out.println("|   [R]epair Systems (G17.0)                [ ]                                   |");
+		System.out.println("|   [R]epair Systems (G17.0)                                                      |");
 		System.out.println("|=================================================================================|");
 		System.out.println("|                         RETURN to return to Main Menu                           |"); 
 		System.out.println("|=================================================================================|");
@@ -298,7 +298,7 @@ public class Driver {
 				System.out.println("| G15.0  Stasis Field Generator  5+10+15+20+25+...       -                        |");
 				System.out.println("| G18.0  Displacement Device    2+2  Warp Only           1                        |");
 				System.out.println("|        ESG                                                                      |");
-				System.out.println("|                                                                                 |");
+				System.out.println("| J2.22  Admin Shuttles (Suicide) 3+3+3 Warp Only        1 Any Src                |");
 				System.out.println("|=================================================================================|");
 			} else if (userInput2.equalsIgnoreCase("A")) {
 				System.out.println("|=================================================================================|");
