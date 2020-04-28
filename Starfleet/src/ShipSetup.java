@@ -212,7 +212,6 @@ public class ShipSetup {
 			if (ship.speed == 0) {
 				System.out.print("\t<--- Speed is ZERO");
 			}
-			System.out.println();
 		}
 
 	}
