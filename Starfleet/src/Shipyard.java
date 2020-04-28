@@ -26,7 +26,8 @@ public class Shipyard {
 	}
 	
 	public void addShipToShipyard(Starship ship) {
-		this.list[numShips] = ship;
+		
+		this.list[numShips] = new Starship(ship);
 		numShips++;
 		if(ship.kindOfShip == Starship.Ship.STARSHIP) 
 			numStarships++;
