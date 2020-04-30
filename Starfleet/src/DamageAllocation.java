@@ -61,12 +61,12 @@ public class DamageAllocation {
 		ShipSetup.PrintCurrentShipsInGameThatHaveSSD();
 		System.out.println();
 		
-		System.out.print("Deal damage to which ship? [0 to cancel] ");
+		System.out.print("Deal damage to which ship? [RETURN to cancel] ");
 		int input = -5;
 
-		input = Driver.getNumber(0, Driver.currentGameYard.numShips);				//  Get a new input
+		input = Driver.getNumber(1, Driver.currentGameYard.numShips);				//  Get a new input
 
-		if(input == 0) {
+		if(input == -1) {
 			return;
 		}
 		
@@ -77,6 +77,9 @@ public class DamageAllocation {
 		if (num == -1) {
 			System.out.print("Number of Damage Points to Allocate: ");
 			int damage = (Driver.getNumber(1, 1000));
+			if (damage == -1) {
+				return;
+			}
 			totalDamage = damage;
 		} else {
 			totalDamage = num;
@@ -88,22 +91,26 @@ public class DamageAllocation {
 		System.out.println();
 		System.out.println("\t(GSR = energy allocated / 2)");				//  Apply Damage to 3 shield types first
 		System.out.print("\tGeneral Shield Reinforcement : ");
-		general = Driver.getNumber(0, 100);
+		general = Driver.getNumberNoCancel(0, 100);
 		System.out.print("\tSpecific Shield Reinforcement: ");
-		specific = Driver.getNumber(0, 100);
+		specific = Driver.getNumberNoCancel(0, 100);
 		System.out.print("\tShield Damage                : ");
-		shieldDamage = Driver.getNumber(0, 100);
+		shieldDamage = Driver.getNumberNoCancel(0, 100);
 		int allShieldDamage = general + specific + shieldDamage;
 		totalDamage = totalDamage - allShieldDamage;
 		System.out.println();
 		System.out.print("\tTOTAL DAMAGE after accounting for shields: " + totalDamage);
 		System.out.println();
 		System.out.print("\tArmor Damage                 : ");
-		int armorDamage = Driver.getNumber(0, 100);
+		int armorDamage = Driver.getNumberNoCancel(0, 100);
 		System.out.println();
 		totalDamage = totalDamage - armorDamage;
 		System.out.print("\tTOTAL DAMAGE after accounting for armor : " + totalDamage);
 		System.out.println();
+		
+		if (armorDamage + allShieldDamage >= 20) { 
+			RollForCriticalHit();
+		}
 		
 		if (totalDamage <= 0) {
 			return;
@@ -256,6 +263,8 @@ public class DamageAllocation {
 	
 	public static void RollForCriticalHit () {
 		int die = rollDice(2, 6);
+		System.out.println();
+		System.out.println("===========================================================================");
 		if (die == 2) {
 			System.out.println("Critical Hit!");
 			System.out.println("Weapons tracking systems knocked out for an unkown number of turns.");
@@ -312,6 +321,8 @@ public class DamageAllocation {
 			System.out.println();
 			
 		}
+		System.out.println("============================================================================");
+		System.out.println();
 	}
 	
 	// ROLL DICE METHOD
