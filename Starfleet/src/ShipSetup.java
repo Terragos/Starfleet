@@ -61,7 +61,7 @@ public class ShipSetup {
 							star.name = nameInput;
 	
 							System.out.print("Ship " + (Driver.currentGameYard.numShips + 1) + " Speed    : ");
-							int speedInput = Driver.getNumber(0, 32);
+							int speedInput = Driver.getNumberNoCancel(0, 32);
 							star.speed = speedInput;
 	
 							System.out.print("Ship " + (Driver.currentGameYard.numShips + 1) + " Turn Mode: ");
@@ -90,17 +90,17 @@ public class ShipSetup {
 				boolean cont2 = true;
 				while (cont2) {
 					
-					System.out.print("Modify which ship? [0 to cancel]");
+					System.out.print("Modify which ship? [RETURN to cancel]");
 				
-					int modifyInput = Driver.getNumber(0, Driver.currentGameYard.numShips);	
+					int modifyInput = Driver.getNumber(1, Driver.currentGameYard.numShips);	
 
-					if(modifyInput == 0) {
+					if(modifyInput == -1) {
 						cont2 = false;
 						//break;
 					}else {
 					
-						System.out.print("[N]ame, [S]peed, [T]urn Mode or [A]ll? [0 to cancel] ");
-						String nameSpeedBoth = Driver.getInput("NSTA0");
+						System.out.print("[N]ame, [S]peed, [T]urn Mode or [A]ll? [RETURN to cancel] ");
+						String nameSpeedBoth = Driver.getInput("NSTA");
 						
 						if(nameSpeedBoth.equalsIgnoreCase("N") || nameSpeedBoth.equalsIgnoreCase("A")) {
 							System.out.print("Ship " + (modifyInput) + " NEW Name : ");
@@ -111,7 +111,7 @@ public class ShipSetup {
 						}
 						if(nameSpeedBoth.equalsIgnoreCase("S") || nameSpeedBoth.equalsIgnoreCase("A")) {
 							System.out.print("Ship " + (modifyInput) + " NEW Speed: ");
-							int speedInput = Driver.getNumber(-1, 32);
+							int speedInput = Driver.getNumberNoCancel(0, 32);
 							Driver.currentGameYard.list[modifyInput-1].speed = speedInput;
 						}
 						if(nameSpeedBoth.equalsIgnoreCase("T") || nameSpeedBoth.equalsIgnoreCase("A")) {
@@ -119,20 +119,24 @@ public class ShipSetup {
 							String turnModeInput = Driver.getInput("ABCDEF");
 							Driver.currentGameYard.list[modifyInput-1].turnMode = turnModeInput.toUpperCase();
 						}
-						if(nameSpeedBoth.equalsIgnoreCase("0")) {
+						if(nameSpeedBoth.equalsIgnoreCase("")) {
 							//continue;
 						}
 						System.out.println();
 					}
 				}
 			} else if (userInput.equalsIgnoreCase("R")) {
-				System.out.print("Remove which ship? [0 to cancel] ");
+				System.out.print("Remove which ship? [RETURN to cancel] ");
 				int removeInput = -1;
 
-				removeInput = Driver.getNumber(0, Driver.currentGameYard.numShips);				//  Get a new input
-
-				Driver.currentGameYard.removeShipFromShipyard(removeInput);
-
+				removeInput = Driver.getNumber(1, Driver.currentGameYard.numShips);				//  Get a new input
+				if (removeInput > 0) {
+					System.out.print("Are you sure you want to remove: " + Driver.currentGameYard.list[removeInput-1].name);
+					String yesOrNo = Driver.getInput("YN");
+					if (yesOrNo.contentEquals("Y")) {
+						Driver.currentGameYard.removeShipFromShipyard(removeInput);
+					}
+				}
 			}	
 		}
 	}
