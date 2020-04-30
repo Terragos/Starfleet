@@ -13,13 +13,18 @@ public class Driver {
 
 	/* Main Method */
 	public static void main(String[] args) {
+
+//		for (int i = 1; i <= 100; i++) {
+//			System.out.print(i + ". Enter a number between 1 and 100: ");
+//			int number = getNumberNoCancel(1,100);
+//		}
 		
-		if(Driver.TESTING) {
+		if (Driver.TESTING) {
 			System.out.println("|==============================================================================|");
 			System.out.println("|            HERE ARE SEVERAL TEST SHIPS THAT HAVE BEEN LOADED                 |");
 			System.out.println("|==============================================================================|");
 			System.out.println();
-			
+
 			currentGameYard.addShipToShipyard(defaultYard.list[0]);
 			currentGameYard.list[0].speed = DamageAllocation.rollDice(1, 15) + 1;
 			currentGameYard.addShipToShipyard(defaultYard.list[3]);
@@ -34,14 +39,14 @@ public class Driver {
 			currentGameYard.list[5].speed = DamageAllocation.rollDice(1, 10) + 1;
 			currentGameYard.addShipToShipyard(defaultYard.list[320]);
 			currentGameYard.list[6].speed = DamageAllocation.rollDice(1, 5) + 1;
-			
+
 			ShipSetup.SortCurrentShipyard();
 			ShipSetup.PrintCurrentShipsInGame();
 			System.out.println();
 			System.out.println();
-			
+
 		}
-		
+
 		boolean cont = true;
 
 		System.out.println("|==============================================================================|");
@@ -53,32 +58,33 @@ public class Driver {
 		System.out.print("Would you like to add ships [M]anually or from the [S]hipyard? [RETURN = Main Menu] ");
 
 		String userInput2 = Driver.getInput("MS0");
-		
+
 		if (userInput2.equalsIgnoreCase("M")) {
 			boolean cont2 = true;
-			while(cont2) {
-				Starship star = new Starship();		
+			while (cont2) {
+				Starship star = new Starship();
 				System.out.print("Ship " + (Driver.currentGameYard.numShips + 1) + " Name     : ");
-		
+
 				String nameInput = keyboard.nextLine();
-				
+
 				if (nameInput.contentEquals("")) {
-				//break;
+					// break;
 					cont2 = false;
 				} else {
-					if(nameInput.length() > 10)
+					if (nameInput.length() > 10)
 						nameInput = nameInput.substring(0, 10);
 					star.name = nameInput;
 
 					System.out.print("Ship " + (Driver.currentGameYard.numShips + 1) + " Speed    : ");
-					int speedInput = Driver.getNumber(0, 32);
+					int speedInput = Driver.getNumberNoCancel(0, 32);
 					star.speed = speedInput;
 
 					System.out.print("Ship " + (Driver.currentGameYard.numShips + 1) + " Turn Mode: ");
 					String turnModeInput = Driver.getInput("ABCDEF-");
 					star.turnMode = turnModeInput.toUpperCase();
-											
-					System.out.print("Ship " + (Driver.currentGameYard.numShips + 1) + " Break Down [?-6] ('-' = n/a): ");
+
+					System.out
+							.print("Ship " + (Driver.currentGameYard.numShips + 1) + " Break Down [?-6] ('-' = n/a): ");
 					String breakDownString = "-";
 					String breakDownInput = Driver.getInput("-123456");
 					if (breakDownInput == "-") {
@@ -90,15 +96,14 @@ public class Driver {
 					System.out.println();
 
 					Driver.currentGameYard.addShipToShipyard(star);
-				}	
+				}
 			}
 		} else if (userInput2.equalsIgnoreCase("S")) {
 			Driver.defaultYard.displayShipyardMenu(1);
 		}
-		
-		
+
 		cont = true;
-		while(cont) {
+		while (cont) {
 			System.out.println();
 			System.out.println("|==========================================================================|");
 			System.out.println("|                             SFB MAIN MENU                                |");
@@ -116,47 +121,48 @@ public class Driver {
 
 			String userInput = getInput("MIWDQSCR");
 			String userInput3 = "";
-			
+
 			int damageTotal = 0;
-			if(userInput.equalsIgnoreCase("M")) {
-				ShipSetup.ShipSetupOrModify("N");     // Pass "N" to NOT go on to Impulse Procedure ("Y" to go to...)
-			} else if(userInput.equalsIgnoreCase("I")) {
-				if (currentGameYard.numShips > 0) { 
+			if (userInput.equalsIgnoreCase("M")) {
+				ShipSetup.ShipSetupOrModify("N"); // Pass "N" to NOT go on to Impulse Procedure ("Y" to go to...)
+			} else if (userInput.equalsIgnoreCase("I")) {
+				if (currentGameYard.numShips > 0) {
 					PhaseCalculation.PhaseCalc();
 				} else {
-					System.out.print("You have no ships assigned to the current game.  Would you like to add some ships?");
+					System.out.print(
+							"You have no ships assigned to the current game.  Would you like to add some ships?");
 					userInput3 = getInput("YN");
 					if (userInput3.equalsIgnoreCase("Y")) {
 						ShipSetup.ShipSetupOrModify("N");
 					}
 				}
 				System.out.println();
-			} else if(userInput.equalsIgnoreCase("W")) {
+			} else if (userInput.equalsIgnoreCase("W")) {
 				WeaponsDamage.WeaponsDam(-1);
-			} else if(userInput.equalsIgnoreCase("D")) {
+			} else if (userInput.equalsIgnoreCase("D")) {
 				DamageAllocation.DamageAlloc(-1);
-			} else if(userInput.equalsIgnoreCase("S")) {
+			} else if (userInput.equalsIgnoreCase("S")) {
 				defaultYard.displayShipyardMenu(-1);
-			} else if(userInput.equalsIgnoreCase("C")) {
-				//  Allow user to ADD ships and tell how many systems left of each type
+			} else if (userInput.equalsIgnoreCase("C")) {
+				// Allow user to ADD ships and tell how many systems left of each type
 				ModifyShipSystems();
-			} else if(userInput.equalsIgnoreCase("R")) {
+			} else if (userInput.equalsIgnoreCase("R")) {
 				RulesToRemember();
-			} else if(userInput.equalsIgnoreCase("Q")) {
+			} else if (userInput.equalsIgnoreCase("Q")) {
 				System.out.println("Exiting Program...");
 				break;
 			}
-			
+
 			System.out.println();
 			System.out.println();
 		}
 	}
-	
+
 	public static void ModifyShipSystems() {
 		Scanner keyboard = new Scanner(System.in);
 		boolean cont = true;
-		
-		while(cont) {
+
+		while (cont) {
 			System.out.println();
 			System.out.println();
 			System.out.println("|==========================================================================|");
@@ -170,63 +176,65 @@ public class Driver {
 
 				ShipSetup.SortCurrentShipyard();
 				ShipSetup.PrintCurrentShipsInGame();
-				
+
 				System.out.println();
 			}
-						
+
 			System.out.println("|==========================================================================|");
 			System.out.println("|       [A]dd Ship from Shipyard   [M]odify Systems   [R]emove Ship        |");
-			System.out.println("|                      RETURN to return to Main Menu                       |"); 
+			System.out.println("|                      RETURN to return to Main Menu                       |");
 			System.out.println("|==========================================================================|");
 
 			String userInput = Driver.getInput("AMR");
-			
+
 			if (userInput.contentEquals("")) {
-				//break;
+				// break;
 				cont = false;
 
 			} else if (userInput.equalsIgnoreCase("A")) {
-			
+
 				Driver.defaultYard.displayShipyardMenu(1);
 
 			} else if (userInput.equalsIgnoreCase("M")) {
-				
+
 				boolean cont2 = true;
 				while (cont2) {
-					
-					int dummyArray[] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
-					System.out.print("Modify systems of which ship? [0 to cancel]");
-				
-					int shipNumInput = Driver.getNumber(0, Driver.currentGameYard.numShips);	
 
-					if(shipNumInput == 0) {
+					int dummyArray[] = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
+					System.out.print("Modify systems of which ship? [RETURN to cancel]");
+
+					int shipNumInput = Driver.getNumber(1, Driver.currentGameYard.numShips);
+
+					if (shipNumInput == -1) {
 						cont2 = false;
-						//break;
-					}else {
+						// break;
+					} else {
 						System.out.println();
 						System.out.println("Alternate Parts on SSDs include (Annex #7E):");
 						System.out.println("\tFlag Bridge = Security, Web, Displacement Device");
-						System.out.println("\tTorpedo = Photon Torpedo, Disruptor Bolt, Plasma Torpedo, SFG, Fusion Beam, Tractor-Repulsor Beam");
+						System.out.println(
+								"\tTorpedo = Photon Torpedo, Disruptor Bolt, Plasma Torpedo, SFG, Fusion Beam, Tractor-Repulsor Beam");
 						System.out.println("\tDrone = ADD, ESG, Hellbore, Plasmatic Pulsars, Power Absorbers");
 						System.out.println("\tShuttle = Fighter, Mine Andormedan Hangar");
 						System.out.println("\tCargo = Repair, Mine");
 						System.out.println("\tFront/Aft Hull = Repair");
 						System.out.println();
-						System.out.println("Please indicate how many boxes are left on the SSD \nfor the following systems (-1 = cancel):");
+						System.out.println(
+								"Please indicate how many boxes are left on the SSD \nfor the following systems (-1 = cancel):");
 
 						int cancel = 0;
-						for (int numPart = 0; numPart <=24; numPart++) {
-							System.out.print("\t" + currentGameYard.list[shipNumInput-1].ssd[numPart].name + ": ");
-							dummyArray[numPart] = getNumber(-1, 100);
-							if (dummyArray[numPart] < 0) {
+						for (int numPart = 0; numPart <= 24; numPart++) {
+							System.out.print("\t" + currentGameYard.list[shipNumInput - 1].ssd[numPart].name + ": ");
+							dummyArray[numPart] = getNumber(0, 100);
+							if (dummyArray[numPart] == -1) {
 								System.out.println("Modification cancelled");
 								cancel = -1;
 								break;
 							}
 						}
 						if (cancel == 0) {
-							for (int numPart = 0; numPart <=24; numPart++) {
-								currentGameYard.list[shipNumInput-1].ssd[numPart].numOfThisPart = dummyArray[numPart];
+							for (int numPart = 0; numPart <= 24; numPart++) {
+								currentGameYard.list[shipNumInput - 1].ssd[numPart].numOfThisPart = dummyArray[numPart];
 							}
 						}
 						System.out.println();
@@ -234,24 +242,29 @@ public class Driver {
 						System.out.println();
 					}
 				}
-				
+
 			} else if (userInput.equalsIgnoreCase("R")) {
-				
-				System.out.print("Remove which ship? [0 to cancel] ");
+
+				System.out.print("Remove which ship? [RETURN to cancel] ");
 				int removeInput = -1;
 
-				removeInput = Driver.getNumber(0, Driver.currentGameYard.numShips);				//  Get a new input
+				removeInput = Driver.getNumber(1, Driver.currentGameYard.numShips); // Get a new input
 
-				Driver.currentGameYard.removeShipFromShipyard(removeInput);
-
-			}	
+				if (removeInput > 0) {
+					System.out.print("Are you sure you want to remove: " + Driver.currentGameYard.list[removeInput-1].name);
+					String yesOrNo = Driver.getInput("YN");
+					if (yesOrNo.contentEquals("Y")) {
+						Driver.currentGameYard.removeShipFromShipyard(removeInput);
+					}
+				}
+			}
 		}
 	}
-	
+
 	public static void RulesToRemember() {
-		
+
 		boolean cont = true;
-		
+
 		System.out.println("|=================================================================================|");
 		System.out.println("|                              RULES TO REMEMBER:                                 |");
 		System.out.println("|=================================================================================|");
@@ -260,14 +273,14 @@ public class Driver {
 		System.out.println("|   [H]igh Energy Turns (C6.0)              [A]nti-Drone & Drone (E5.0 & FD1.0)   |");
 		System.out.println("|   [R]epair Systems (G17.0)                                                      |");
 		System.out.println("|=================================================================================|");
-		System.out.println("|                         RETURN to return to Main Menu                           |"); 
+		System.out.println("|                         RETURN to return to Main Menu                           |");
 		System.out.println("|=================================================================================|");
-	
+
 		System.out.print("What rule would you like to be reminded of? ");
-		
+
 		while (cont) {
 			String userInput2 = Driver.getInput("RAWBSHD");
-			
+
 			if (userInput2.equalsIgnoreCase("W")) {
 				System.out.println("|=================================================================================|");
 				System.out.println("|                          WEAPONS ENERGY COSTS:                                  |");
@@ -409,7 +422,7 @@ public class Driver {
 				System.out.println("|              - No weapons may be fired (inc. seeking wepaons)                   |");
 				System.out.println("|              - No shuttles/fighters may be launched/recovered                   |");
 				System.out.println("|              - No tractor beams/transporters may be used                        |");
-				System.out.println("|      - Ship may resume \"nromal\" operations at the beginning of the next turn    |");
+				System.out.println("|      - Ship may resume \"normal\" operations at the beginning of the next turn    |");
 				System.out.println("|=================================================================================|");
 			} else if (userInput2.equalsIgnoreCase("D")) {
 				System.out.println("|=================================================================================|");
@@ -441,71 +454,134 @@ public class Driver {
 				System.out.println("|   Impulse               5  |  Plasmatic Pulsar  15  |  Web Caster         15    |");
 				System.out.println("|=================================================================================|");
 			} else if (userInput2.equalsIgnoreCase("")) {
-				//  break
+				// break
 				cont = false;
-			} 
+			}
 			if (!(userInput2.equalsIgnoreCase(""))) {
-			PrintShortRulesMenu();
+				PrintShortRulesMenu();
 			}
 		}
 
 	}
 
-	public static void PrintShortRulesMenu () {
+	public static void PrintShortRulesMenu() {
 		System.out.println("|   [W]eapons   [E]nergy Alloc   [H]ET   [D]amage Control   [A]DD & Drone         |");
-		System.out.println("|   [S]hields   [R]epair System   [ ]         [ ]           [ ]                   |");
+		System.out.println("|   [S]hields   [R]epair System   [ ]         [ ]           [RETURN]              |");
 		System.out.println("|=================================================================================|");
 		System.out.println();
 	}
-	
-	//  GET LETTER AS INPUT THAT IS IN PASSED STRING
+
+	// GET LETTER AS INPUT THAT IS IN PASSED STRING
 	public static String getInput(String word) {
 		Scanner keyboard = new Scanner(System.in);
-		
+
 		boolean cont = true;
-		
-		String inputLetter  = "";
+
+		String inputLetter = "";
 		int location = -2;
 		while (location < 0) {
 			inputLetter = keyboard.nextLine().toUpperCase();
-			location = word.indexOf(inputLetter);                  //  Getting position of user's input of the "word" string passed through
-			if (inputLetter.equalsIgnoreCase("AA") || inputLetter.equalsIgnoreCase("AAA") || inputLetter.equalsIgnoreCase("AAAA")) {
+			location = word.indexOf(inputLetter); // Getting position of user's input of the "word" string passed
+													// through
+			if (inputLetter.equalsIgnoreCase("AA") || inputLetter.equalsIgnoreCase("AAA")
+					|| inputLetter.equalsIgnoreCase("AAAA")) {
 				location = 0;
-			} else if (location == -1 ) {                          //  location = -1 if character is not found in "word" string
-				for (int d = 0; d <= word.length()-1; d++) {
-					System.out.print("[" + word.charAt(d) + "]");  //  Remind user what letter inputs are being looked for
+			} else if (location == -1) { // location = -1 if character is not found in "word" string
+				for (int d = 0; d <= word.length() - 1; d++) {
+					System.out.print("[" + word.charAt(d) + "]"); // Remind user what letter inputs are being looked for
 				}
 			}
 		}
 		return inputLetter;
 	}
-	
-	//  GET NUMBER AS INPUT THAT IS BETWEEN PASSED SMALL/BIG
+
+	// GET LETTER AS INPUT THAT IS IN PASSED STRING
+	public static String getInputNoCancel(String word) {
+		Scanner keyboard = new Scanner(System.in);
+
+		boolean cont = true;
+
+		String inputLetter = "";
+		int location = -1;
+		while (location < 0 || inputLetter.contentEquals("")) {
+			inputLetter = keyboard.nextLine().toUpperCase();
+			location = word.indexOf(inputLetter); // Getting position of user's input of the "word" string passed
+													// through
+			if (inputLetter.equalsIgnoreCase("AA") || inputLetter.equalsIgnoreCase("AAA")
+					|| inputLetter.equalsIgnoreCase("AAAA")) {
+				location = 0;
+			} else if (location == -1 || inputLetter.contentEquals("")) { // location = -1 if character is not found in "word" string
+				for (int d = 0; d <= word.length() - 1; d++) {
+					System.out.print("[" + word.charAt(d) + "]"); // Remind user what letter inputs are being looked for
+				}
+			}
+		}
+		return inputLetter;
+	}
+
+	// GET NUMBER AS INPUT THAT IS BETWEEN PASSED SMALL/BIG
 	public static int getNumber(int small, int big) {
 		Scanner keyboard = new Scanner(System.in);
-		
-		String userInput = "";					//  Initialize string
 
-		int intFromString = -1;
-		
-		int input = 0;
 		boolean cont = true;
-		
-		while(cont) {
-			try {
-				input = keyboard.nextInt();
-				if (input < small || input > big) {
-					System.out.print("[" + (small+1) + "-" + big + "]"); //  Remind user what number range is being looked for
-				} else { 
-					cont = false;
+		int input = 0;
+		String userInput = "";
+
+		while (cont) {
+			userInput = keyboard.nextLine().toUpperCase();
+			if (userInput.length() > 0) {
+				try {
+					input = Integer.parseInt(userInput);
+				} catch (NumberFormatException e) {
+					input = -1;
 				}
-			} catch (Exception e) {		
-				System.out.print("[" + (small+1) + "-" + big + "]");	 // Remind user what number range is being looked for
-				input = 0; // This line and 
-				keyboard.nextLine(); // this line prevent a very bad infinite loop
+
+				if (input >= small && input <= big) {
+					cont = false;
+				} else {
+					System.out.print("[" + (small) + "-" + big + "]"); // Remind user what number range is being looked
+																		// for
+					input = 0; // This line and
+					// keyboard.nextLine(); // this line prevent a very bad infinite loop
+				}
+			} else {
+				input = -1; // user Input is "", returns -1
+				cont = false;
 			}
-		}		
+		}
 		return input;
 	}
-	
+
+	public static int getNumberNoCancel(int small, int big) {
+		Scanner keyboard = new Scanner(System.in);
+
+		boolean cont = true;
+		int input = -1;
+		String userInput = "";
+
+		while (input == -1) {
+			userInput = keyboard.nextLine().toUpperCase();
+			if (userInput.length() >= 0) {
+				try {
+					input = Integer.parseInt(userInput);
+				} catch (NumberFormatException e) {
+					input = -1;
+				}
+
+				if (input < small || input > big) {
+					System.out.print("[" + (small) + "-" + big + "]"); // Remind user what number range is being looked
+					input = -1;
+				}
+																		// for
+					// This line and
+					// keyboard.nextLine(); // this line prevent a very bad infinite loop
+			}
+//			else {
+//				input = -1; // user Input is "", returns -1
+//				cont = false;
+//			}
+		}
+		return input;
+	}
+
 }
