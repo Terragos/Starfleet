@@ -253,12 +253,34 @@ public class ShipSetup {
 		
 	}
 
+	public static void PrintCurrentNonMonstersInGameThatHaveSSD() {
+		System.out.println("     Ship\tShip\t");
+		System.out.println("     Name\tSpeed\t");
+		System.out.println();
+		
+		for (int i = 1; i <= Driver.currentGameYard.numShips; i++) {
+
+			String extraSpace = getExtraSpaces(i, 2);
+
+			if (Driver.currentGameYard.list[i-1].name.length() <=3 ) {
+				Driver.currentGameYard.list[i-1].name = Driver.currentGameYard.list[i-1].name + "   ";
+			}
+			
+			if(Driver.currentGameYard.list[i-1].hasSSD && Driver.currentGameYard.list[i-1].race != "Monster") {
+				System.out.print(extraSpace + i + ")  " + Driver.currentGameYard.list[i-1].name);
+				getExtraSpaces(i, 2);
+				System.out.print("\t " + extraSpace + Driver.currentGameYard.list[i-1].speed + "\t ");
+				System.out.println();
+			}
+		}
+	}
+	
 	public static void PrintCurrentShipsInGameThatHaveSSD() {
 		System.out.println("     Ship\tShip\t");
 		System.out.println("     Name\tSpeed\t");
 		System.out.println();
 		
-		for (int i = 1, print = 1; i <= Driver.currentGameYard.numShips; i++) {
+		for (int i = 1; i <= Driver.currentGameYard.numShips; i++) {
 
 			String extraSpace = getExtraSpaces(i, 2);
 
@@ -267,7 +289,7 @@ public class ShipSetup {
 			}
 			
 			if(Driver.currentGameYard.list[i-1].hasSSD) {
-				System.out.print(extraSpace + (print++) + ")  " + Driver.currentGameYard.list[i-1].name);
+				System.out.print(extraSpace + i + ")  " + Driver.currentGameYard.list[i-1].name);
 				getExtraSpaces(i, 2);
 				System.out.print("\t " + extraSpace + Driver.currentGameYard.list[i-1].speed + "\t ");
 				System.out.println();
@@ -275,44 +297,44 @@ public class ShipSetup {
 		}
 	}
 	
-	public static void PrintCurrentSpecificRaceInGame(String printWhichRace, String printWhichShipType) {
-		System.out.println("     Name\tSpeed\t");
-		System.out.println();
-
-		if (printWhichRace.equalsIgnoreCase("ALL")) {
-			for (int i = 1, print = 1; i <= Driver.currentGameYard.numShips; i++) {
-	
-				String extraSpace = getExtraSpaces(i, 2);
-	
-				if (Driver.currentGameYard.list[i-1].name.length() <=3 ) {
-					Driver.currentGameYard.list[i-1].name = Driver.currentGameYard.list[i-1].name + "   ";
-				}
-				
-				if(Driver.currentGameYard.list[i-1].hasSSD) {
-					System.out.print(extraSpace + (print++) + ")  " + Driver.currentGameYard.list[i-1].name);
-					getExtraSpaces(i, 2);
-					System.out.print("\t " + extraSpace + Driver.currentGameYard.list[i-1].speed + "\t ");
-					System.out.println();
-				}
-			}
-		} else  {
-			for (int i = 1, print = 1; i <= Driver.currentGameYard.numShips; i++) {
-				
-				String extraSpace = getExtraSpaces(i, 2);
-	
-				if (Driver.currentGameYard.list[i-1].name.length() <=3 ) {
-					Driver.currentGameYard.list[i-1].name = Driver.currentGameYard.list[i-1].name + "   ";
-				}
-				
-				if(Driver.currentGameYard.list[i-1].race.equalsIgnoreCase(printWhichRace)) {
-					System.out.print(extraSpace + (print++) + ")  " + Driver.currentGameYard.list[i-1].name);
-					getExtraSpaces(i, 2);
-					System.out.print("\t " + extraSpace + Driver.currentGameYard.list[i-1].speed + "\t ");
-					System.out.println();
-				}
-			}
-		}
-	}
+//	public static void PrintCurrentSpecificRaceInGame(String printWhichRace, String printWhichShipType) {
+//		System.out.println("     Name\tSpeed\t");
+//		System.out.println();
+//
+//		if (printWhichRace.equalsIgnoreCase("ALL")) {
+//			for (int i = 1, print = 1; i <= Driver.currentGameYard.numShips; i++) {
+//	
+//				String extraSpace = getExtraSpaces(i, 2);
+//	
+//				if (Driver.currentGameYard.list[i-1].name.length() <=3 ) {
+//					Driver.currentGameYard.list[i-1].name = Driver.currentGameYard.list[i-1].name + "   ";
+//				}
+//				
+//				if(Driver.currentGameYard.list[i-1].hasSSD) {
+//					System.out.print(extraSpace + (print++) + ")  " + Driver.currentGameYard.list[i-1].name);
+//					getExtraSpaces(i, 2);
+//					System.out.print("\t " + extraSpace + Driver.currentGameYard.list[i-1].speed + "\t ");
+//					System.out.println();
+//				}
+//			}
+//		} else  {
+//			for (int i = 1, print = 1; i <= Driver.currentGameYard.numShips; i++) {
+//				
+//				String extraSpace = getExtraSpaces(i, 2);
+//	
+//				if (Driver.currentGameYard.list[i-1].name.length() <=3 ) {
+//					Driver.currentGameYard.list[i-1].name = Driver.currentGameYard.list[i-1].name + "   ";
+//				}
+//				
+//				if(Driver.currentGameYard.list[i-1].race.equalsIgnoreCase(printWhichRace)) {
+//					System.out.print(extraSpace + (print++) + ")  " + Driver.currentGameYard.list[i-1].name);
+//					getExtraSpaces(i, 2);
+//					System.out.print("\t " + extraSpace + Driver.currentGameYard.list[i-1].speed + "\t ");
+//					System.out.println();
+//				}
+//			}
+//		}
+//	}
 
 	public static String getExtraSpaces (int num, int maxDigits) {
 
