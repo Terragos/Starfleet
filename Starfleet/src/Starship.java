@@ -29,7 +29,7 @@ public class Starship {
 	public int[] sensorNums;
 	public int[] scannerNums;
 	public int[] damConNums;
-	public boolean lockedOn = false;
+	public boolean lockedOn = true;
 /*  LEAVE AS A PERMANENT COMMENT 				
 	public int indexOfNextDamCon = Driver.currentGameYard.list[i].ssd[21].numOfThisPart - Driver.currentGameYard.list[i].ssd[21].remaining; 
 	public int indexOfNextSensor = Driver.currentGameYard.list[i].ssd[22].numOfThisPart - Driver.currentGameYard.list[i].ssd[22].remaining; 
@@ -137,7 +137,6 @@ public class Starship {
 		this.distrv = 0.0;
 		this.kindOfShip = Ship.STARSHIP;
 		this.ssd = new Part[25];
-		this.hasSSD = true;
 	}
 	
 	public Starship(String race, String type, String crewUnits, String boardingParties, String BPV, 
@@ -161,7 +160,6 @@ public class Starship {
 		this.name = race.substring(0,3) + "-" + type;
 		this.kindOfShip = Ship.STARSHIP;
 		this.ssd = new Part[25];
-		this.hasSSD = true;
 	}
 	
 	public String toString() {
