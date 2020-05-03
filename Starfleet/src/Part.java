@@ -7,6 +7,6 @@ public class Part {
 	public Part(int num, String name) {
 		this.numOfThisPart = num;
 		this.name = name;
-		remaining = num;
+		this.remaining = num;
 	}
-}
+} 
