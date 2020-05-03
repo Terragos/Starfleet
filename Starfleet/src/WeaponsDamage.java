@@ -8,15 +8,15 @@ public class WeaponsDamage {
 	
 	public static void WeaponsDam (int impulseNumber) {   //  If yes > 0 then in the middle of an Impulse Movement Procedure
 		int totalDamage = 0;
-		boolean cont = true;
 		
 		System.out.println();
 
-		ShipSetup.SortCurrentShipyard();														// Always SORT ships before printing to screen
-		ShipSetup.PrintCurrentShipsInGameThatHaveSSD();
-
 		boolean reset = false;
 		while (!reset) {
+
+			ShipSetup.SortCurrentShipyard();														// Always SORT ships before printing to screen
+			ShipSetup.PrintCurrentNonMonstersInGameThatHaveSSD();
+//		ShipSetup.PrintCurrentShipsInGameThatHaveSSD();
 			
 			System.out.println();
 			System.out.print("Which ship is firing? [RETURN to cancel] ");
@@ -37,6 +37,7 @@ public class WeaponsDamage {
 				}
 			}
 			
+			boolean cont = true;
 			while(cont) {
 				if (totalDamage == 0) {
 					System.out.println();
@@ -118,15 +119,14 @@ public class WeaponsDamage {
 					distanceInput = Driver.getNumber(0, MAXDIST);
 					
 					// MODIFY DISTANCE FOR SENSOR LOCK-ON FAILURE
-					if (currentShip.lockedOn == false) {
+					if (currentShip.race != "Monster" && currentShip.lockedOn == false) {    //  Monster always have lock on
 						distanceInput *= 2;
 					}
 					
 					// MODIFY DISTANCE FOR SCANNER NUMBER
-					int nextScannerNum = currentShip.ssd[23].numOfThisPart - 
-							currentShip.ssd[23].remaining;
+					int nextScannerNum = currentShip.ssd[23].numOfThisPart - currentShip.ssd[23].remaining;
 					distanceInput += currentShip.scannerNums[nextScannerNum];
-					if (currentShip.lockedOn == false || nextScannerNum > 0) {
+					if (currentShip.race != "Monster" && (currentShip.lockedOn == false || nextScannerNum > 0)) {
 						System.out.println("New Distance " + distanceInput + " (modified due to Sensor Lock-on failure and/or Scanner resolution number)");
 					}
 					
@@ -200,11 +200,12 @@ public class WeaponsDamage {
 				if(weaponInput.equalsIgnoreCase("D")) {
 					DamageAllocation.DamageAlloc(totalDamage);
 					totalDamage = 0;
-					reset = true;
-	
+					reset = false;
+					cont = false;
+					
 				} else if(weaponInput.equalsIgnoreCase("M")) {
 					System.out.print("Deal damage to a Monster\t");
-					totalDamage = MonsterStuff.monsterDamageFromShip(totalDamage);
+					totalDamage = MonsterStuff.MonsterDamageFromShip(totalDamage);
 	//				cont = false;
 					
 				} else if(weaponInput.equalsIgnoreCase("A")) {
@@ -214,10 +215,13 @@ public class WeaponsDamage {
 				} else if(weaponInput.equalsIgnoreCase("I")) {
 					System.out.println();
 					PhaseCalculation.PrintImpulseHeader();
-					break;
+
+					reset = false;
+//					break;
 				
 				} else if(weaponInput.equalsIgnoreCase("R")) {
-					break;
+					reset = false;
+//					break;
 					
 				}
 				
@@ -228,259 +232,6 @@ public class WeaponsDamage {
 		}
 
 	}
-
-//	public static void labResearchPoints () {
-//		//  Also Some Monster Damage
-//		int labResearch[][] = {{ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9,10},   //  distance
-//							   {10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0},   //  die roll 1 
-//							   { 9, 8, 7, 6, 5, 4, 3, 2, 1, 0, 0},   //  die roll 2
-//							   { 8, 7, 6, 5, 4, 3, 2, 1, 0, 0, 0},   //  die roll 3
-//							   { 7, 6, 5, 4, 3, 2, 1, 0, 0, 0, 0},   //  die roll 4
-//							   { 6, 5, 4, 3, 2, 1, 0, 0, 0, 0, 0},   //  die roll 5
-//							   { 5, 4, 3, 2, 1, 0, 0, 0, 0, 0, 0}};  //  die roll 6
-//		int raceNum = -1;
-//		int die = 0;
-//		int dist = 0;
-//		int numLabs = 0;
-//		int research = 0;
-//		
-//		System.out.println();
-//		System.out.println("|===============================================================================|");
-//		System.out.println("|                             LAB RESEARCH BY RACE                              |");
-//		System.out.println("|---------------+---------------+---------------+---------------+---------------|");
-//		String extraSpaces = "";
-//		String suffix = "";
-//		int count = 0;
-//		for (int i = 0; i <= Driver.labResearchRace.length-1; i++) {
-//			if (Driver.labResearchRace[i].contains("Race")) {
-//				for (int k= 1; k <= 5-count; k++) {
-//					System.out.print("|               ");
-//				}
-//				System.out.println("|");
-//				break;
-//			}
-//			if (count == 4) {
-//				extraSpaces = ShipSetup.getExtraSpaces(Driver.labResearchTotalPoints[i], 3);
-//				suffix = extraSpaces + "    |";
-//				
-//			}
-//			
-//			System.out.print("|   " + Driver.labResearchRace[i].substring(0, 3) + ": " + Driver.labResearchTotalPoints[i] + suffix + "  \t");
-//			count++;
-//			if (count == 5) {
-//				System.out.println();
-//				count = 0;
-//			}
-//			suffix = "";
-//		}
-//
-//		
-//		System.out.println("|===============================================================================|");
-//		ShipSetup.PrintCurrentShipsInGame();
-//
-//		int shipResearching = -1;
-//
-//		boolean cont = true;
-//		while (cont) {
-//			System.out.println();
-//			System.out.print("Which ship is collecting research data? [RETURN for cancel] ");
-//			shipResearching = Driver.getNumber(1, Driver.currentGameYard.numStarships);
-//			if(shipResearching > 0) {
-//				die = DamageAllocation.rollDice(1,6);
-//				numLabs = Driver.currentGameYard.list[shipResearching-1].ssd[17].remaining;
-//				String raceOfCurrentShip = Driver.currentGameYard.list[shipResearching-1].race;
-//				String raceOfCurrentShipMain = raceOfCurrentShip;
-//				String nameOfCurrentShip = Driver.currentGameYard.list[shipResearching-1].name;
-//				//  Find race in LabResearch array
-//				raceNum = -1;
-//				for (int i = 0; i <= Driver.labResearchRace.length-1; i++) {
-//					if (raceOfCurrentShip == Driver.labResearchRace[i]) {
-//						raceNum = i;
-//					}
-//				}
-//				
-//				if (raceNum == -1) {  //  If the ship's race is CIVILIAN or ALL FLEETS
-//					System.out.print("Which main ship is the " + nameOfCurrentShip + " collecting data for? ");
-//					int shipResearchingMain = Driver.getNumber(1, Driver.currentGameYard.numStarships);
-//					raceOfCurrentShipMain = Driver.currentGameYard.list[shipResearchingMain-1].race;
-////					System.out.println("raceOfCurrentShipMain: " + raceOfCurrentShipMain);
-//					for (int i = 0; i <= Driver.labResearchRace.length-1; i++) {
-//						if (raceOfCurrentShipMain == Driver.labResearchRace[i]) {
-//							raceNum = i;
-////							System.out.println("raceNum (raceOfCurrentShipMain): " + raceNum);
-//						}
-//					}
-//				}
-//				
-//				System.out.print("Closest distance this turn [0-9, RETURN to cancel]: ");
-//				dist = Driver.getNumber(0, 9);
-//				if (dist != -1) {
-//					System.out.println(nameOfCurrentShip + " has " + numLabs + " functioning labs.");
-//					research = labResearch[die][dist] * numLabs;
-//					System.out.println(nameOfCurrentShip + "'s lab(s) research points this turn: " + research);
-////					int indivShipResearch = research + Driver.currentGameYard.list[shipResearching-1].labPoints;
-////					System.out.println(nameOfCurrentShip + "'s lab(s) provide " + indivShipResearch + " points so far this game.");
-////					System.out.println("raceNum: " + raceNum);
-//					Driver.labResearchTotalPoints[raceNum] = Driver.labResearchTotalPoints[raceNum] + research;
-//					String plural = "s";
-//					if (raceOfCurrentShip == "Federation") {
-//						plural = "";
-//					}
-//					System.out.println("TOTAL research points by the " + raceOfCurrentShipMain + plural + " so far: " + Driver.labResearchTotalPoints[raceNum]);
-//				}
-//			} else {
-//				//  break
-//				cont = false;
-//			}
-//		}
-//		
-////		return total;
-//	}
-
-//	public static int monsterDamage (int total) {
-//		//  Also Some Monster Damage
-//		int labResearch[][] = {{ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9,10},   //  distance
-//							   {10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0},   //  die roll 1 
-//							   { 9, 8, 7, 6, 5, 4, 3, 2, 1, 0, 0},   //  die roll 2
-//							   { 8, 7, 6, 5, 4, 3, 2, 1, 0, 0, 0},   //  die roll 3
-//							   { 7, 6, 5, 4, 3, 2, 1, 0, 0, 0, 0},   //  die roll 4
-//							   { 6, 5, 4, 3, 2, 1, 0, 0, 0, 0, 0},   //  die roll 5
-//							   { 5, 4, 3, 2, 1, 0, 0, 0, 0, 0, 0}};  //  die roll 6
-//
-//		int crewUnitsLost[][] = {{0, 1, 2, 3, 4, 5, 6, 7, 8, 9,10,11},   //  distance
-//								 {4, 4, 4, 3, 3, 3, 2, 2, 2, 2, 2, 0},   //  die roll 1 
-//								 {4, 3, 3, 3, 3, 3, 1, 1, 1, 1, 1, 0},   //  die roll 2
-//								 {3, 3, 3, 2, 2, 2, 0, 0, 0, 0, 0, 0},   //  die roll 3
-//								 {3, 3, 2, 1, 1, 1, 0, 0, 0, 0, 0, 0},   //  die roll 4
-//								 {2, 2, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0},   //  die roll 5
-//								 {1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0}};  //  die roll 6
-//		
-//		int mindWipe[][] = {{0, 1, 2, 3, 4, 5},   //  distance
-//							{6, 5, 4, 3, 2, 1},   //  die roll 1 
-//							{5, 4, 3, 2, 1, 0},   //  die roll 2
-//							{4, 3, 2, 1, 0, 0},   //  die roll 3
-//							{3, 2, 1, 1, 0, 0},   //  die roll 4
-//							{2, 2, 1, 0, 0, 0},   //  die roll 5
-//							{2, 1, 0, 0, 0, 0}};  //  die roll 6
-//		
-//		System.out.println("1) Planet Crusher   3) Moray Eel      5) Sunsnake       7) Space Dragon");
-//		System.out.println("2) Space Amoeba     4) Cosmic Cloud   6) Mind Monster   8) Arastoz");
-//		System.out.print("Which monster? [RETURN to cancel] ");
-//		int monsterNum = Driver.getNumber(1,8);
-//		if (monsterNum != -1) {
-//			int die = DamageAllocation.rollDice(1,6);
-//			
-//			int startTotal = total;
-//			int damage = 0;
-//			int dist = 0;
-//			if (monsterNum == 1) {					//  SM1.0 - PLANET CRUSHER
-//				if (die == 1) {
-//					damage = 40;
-//				} else if (die == 2) {
-//					damage = 30;
-//				} else if (die == 3) {
-//					damage = 20;
-//				} else if (die == 4) {
-//					damage = 10;
-//				} else if (die == 5) {
-//					damage = 5;
-//				} else if (die == 6) {
-//					damage = 1;
-//				}
-//				System.out.print("Planet Crusher does " + damage + " points of damage. \nApply as normal weapon damage.\t");
-//				
-//			} else if (monsterNum == 2) {					//  SM2.0 - SPACE AMOEBA
-//				System.out.print("Closest distance this turn [RETURN to cancel]: ");
-//				dist = Driver.getNumber(0, 9);
-//				if (dist >= 0) {
-//					damage = labResearch[die][dist] * 2;
-//					System.out.print("Space Amoeba does " + damage + " points of damage. \nApply as normal weapon damage.\t");
-//				}
-//				
-//			} else if (monsterNum == 3) {					//  SM3.0 - MORAY EEL
-//				if (die == 1) {
-//					damage = 20;
-//				} else if (die == 2) {
-//					damage = 18;
-//				} else if (die == 3) {
-//					damage = 15;
-//				} else if (die == 4) {
-//					damage = 12;
-//				} else if (die == 5) {
-//					damage = 10;
-//				} else if (die == 6) {
-//					damage = 5;
-//				}
-//				System.out.print("Moray Eel does " + damage + " points of damage. \nDamage BYPASSES shields.\t");
-//				
-//			} else if (monsterNum == 4) {					//  SM4.0 - COSMIC CLOUD
-//				System.out.print("Closest distance this turn: ");
-//				dist = Driver.getNumber(0, 10);
-//				if (dist >= 0) {
-//					System.out.print("Were shields at maximum power? ");
-//					String yesOrNo = Driver.getInput("YN");
-//					int multiplier = 1;
-//					if (yesOrNo.equalsIgnoreCase("N")) {
-//						multiplier = 2;
-//					}
-//					damage = crewUnitsLost[die][dist] * multiplier;
-//					System.out.print("Cosmic Clouds kills " + damage + " crew units. \nNo ship damage.\t");
-//					damage = 0;
-//				}
-//				
-//			} else if (monsterNum == 5) {					//  SM5.0 - SUNSNAKE
-//				if (die == 1) {
-//					damage = 20;
-//				} else if (die == 2) {
-//					damage = 18;
-//				} else if (die == 3) {
-//					damage = 15;
-//				} else if (die == 4) {
-//					damage = 12;
-//				} else if (die == 5) {
-//					damage = 10;
-//				} else if (die == 6) {
-//					damage = 5;
-//				}
-//				System.out.print("Mind Monster does " + damage + " points of damage. \nApply as normal weapon damage.\t");
-//				
-//			} else if (monsterNum == 6) {					//  SM6.0 - MIND MONSTER
-//				System.out.print("Closest distance this turn [RETURN to cancel]: ");
-//				dist = Driver.getNumber(0, 10);
-//				if (dist >=0 ) {
-//					System.out.print("Were shields at maximum power? ");
-//					String yesOrNo = Driver.getInput("YN");
-//					int multiplier = 1;
-//					if (yesOrNo.equalsIgnoreCase("N")) {
-//						die = 1;
-//						dist = dist - 1;
-//						if (dist == -1) {
-//							dist = 0;
-//						}
-//						multiplier = 2;
-//					}
-//					damage = mindWipe[die][dist] * multiplier;
-//					System.out.println("Cosmic Clouds mind wipes " + damage + " crew units. \nNo ship damage.\t");
-//					damage = 0;
-//				}
-//				
-//			} else if (monsterNum == 7) {					//  SM7.0 - SPACE DRAGON
-//				System.out.print("Need code for Space Dragon damage.");
-//				
-//			} else if (monsterNum == 8) {					//  SM8.0 - ARASTOZ
-//				System.out.print("Closest distance this turn [RETURN to cancel]: ");
-//				dist = Driver.getNumber(0, 9);
-//				if (dist >= 0) {
-//					System.out.print("Size of monster: ");
-//					int monsterSize = Driver.getNumber(-1, 4);
-//					damage = labResearch[die][dist] * monsterSize;
-//					System.out.print("Arastoz does " + damage + " points of damage. \nApply as normal weapon damage.\t");
-//				}
-//				total += damage;
-//			}
-//		}
-//		return total;
-//	}
 	
 	//  TYPE 1 PHASER
 	public static int type1Phaser(int num, int dist, int total) {
@@ -872,7 +623,6 @@ public class WeaponsDamage {
 
 	public static int probe(int num, int dist, int total) {
 		int startTotal = total;
-		int probeDamage = 0;
 		
 		int die = 0;
 	
