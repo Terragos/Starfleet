@@ -1078,6 +1078,23 @@ public class Shipyard {
 		ship.setupSSD(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 799, se, sc, da);
 		defaultYard.addShipToShipyard(ship);
 
+		//  OTHER  =============================================================================================
+
+		ship = new Starship("Other", "Planet", "-", "-", "-", "-", "-", "-", "-", "-", "-", "-");
+		se = new int[]{6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6};
+		sc = new int[]{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+		da = new int[]{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+		ship.setupSSD(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 199, se, sc, da);
+		defaultYard.addShipToShipyard(ship);
+
+		ship = new Starship("Other", "Comet", "-", "-", "-", "-", "-", "-", "-", "-", "-", "-");
+		se = new int[]{6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6};
+		sc = new int[]{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+		da = new int[]{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+		ship.setupSSD(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 199, se, sc, da);
+		defaultYard.addShipToShipyard(ship);
+
+		
 	    return  defaultYard;
 	}
 	
