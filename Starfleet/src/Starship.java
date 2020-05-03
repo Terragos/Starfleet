@@ -1,13 +1,12 @@
 
 public class Starship {
 
-	enum Ship { TORPEDO, DRONE, SHUTTLE, FIGHTER, STARSHIP, MONSTER }
+	enum Ship { TORPEDO, DRONE, SHUTTLE, FIGHTER, STARSHIP }
 	
 	public static String[] partNames = {"Bridge", "Flag Bridge", "Emergency Bridge", "Aux Control", "Phaser", "Torpedo", "Center Warp Engine", 
 			"Left Warp Engine", "Right Warp Engine", "Impulse", "APR", "Battery", "Transporter", "Tractor Beam", "Probe", 
 			"Shuttle", "Drone", "Lab", "Cargo", "Front Hull", "Aft Hull", "Damage Control", "Sensor", "Scanner", "Excess Damage"};         
 	
-	//  Starship class
 	public String race;
 	public String shipType;
 	public String crewUnits;
@@ -17,7 +16,7 @@ public class Starship {
 	public String moveCost;
 	public String spareShuttles;
 	public String sizeClass;
-	public String name;      // name
+	public String name;
 	public String turnMode;  // turn mode letter - converted to # of hexes to move forward before turning during Impulse Procedure
 	public String ruleNum;
 	public String yearInService;
@@ -26,7 +25,7 @@ public class Starship {
 	public double distrv;    // distance traveled 
 	public Ship kindOfShip;
 	public Part[] ssd;
-	public boolean hasSSD = false;
+	public boolean hasSSD;
 	public int[] sensorNums;
 	public int[] scannerNums;
 	public int[] damConNums;
@@ -128,6 +127,9 @@ public class Starship {
 		this.ruleNum = ruleNum;
 		this.yearInService = yearInService;
 		this.name = race.substring(0,3) + "-" + type;
+		if (this.race == "Monster") {
+			this.name = this.shipType;
+		}
 		if(this.name.length() > 10)
 			this.name = this.name.substring(0, 10);
 		this.speed = 0;
@@ -135,6 +137,7 @@ public class Starship {
 		this.distrv = 0.0;
 		this.kindOfShip = Ship.STARSHIP;
 		this.ssd = new Part[25];
+		this.hasSSD = true;
 	}
 	
 	public Starship(String race, String type, String crewUnits, String boardingParties, String BPV, 
@@ -158,6 +161,7 @@ public class Starship {
 		this.name = race.substring(0,3) + "-" + type;
 		this.kindOfShip = Ship.STARSHIP;
 		this.ssd = new Part[25];
+		this.hasSSD = true;
 	}
 	
 	public String toString() {
