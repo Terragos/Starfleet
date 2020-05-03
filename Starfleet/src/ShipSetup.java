@@ -266,7 +266,7 @@ public class ShipSetup {
 				Driver.currentGameYard.list[i-1].name = Driver.currentGameYard.list[i-1].name + "   ";
 			}
 			
-			if(Driver.currentGameYard.list[i-1].hasSSD && Driver.currentGameYard.list[i-1].race != "Monster") {
+			if(Driver.currentGameYard.list[i-1].hasSSD && Driver.currentGameYard.list[i-1].race != "Monster" && Driver.currentGameYard.list[i-1].race != "Other") {
 				System.out.print(extraSpace + i + ")  " + Driver.currentGameYard.list[i-1].name);
 				getExtraSpaces(i, 2);
 				System.out.print("\t " + extraSpace + Driver.currentGameYard.list[i-1].speed + "\t ");
