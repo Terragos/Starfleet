@@ -1036,6 +1036,27 @@ public class Shipyard {
 		ship.setupSSD(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 99, se, sc, da);
 		defaultYard.addShipToShipyard(ship);
 
+		ship = new Starship("Monster", "Arastoz 1x", "-", "-", "-", "-", "-", "-", "-", "-", "SL49.0", "-");
+		se = new int[]{6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6};
+		sc = new int[]{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+		da = new int[]{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+		ship.setupSSD(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 99, se, sc, da);
+		defaultYard.addShipToShipyard(ship);
+
+		ship = new Starship("Monster", "Arastoz 1x", "-", "-", "-", "-", "-", "-", "-", "-", "SL49.0", "-");
+		se = new int[]{6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6};
+		sc = new int[]{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+		da = new int[]{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+		ship.setupSSD(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 99, se, sc, da);
+		defaultYard.addShipToShipyard(ship);
+
+		ship = new Starship("Monster", "Arastoz 1x", "-", "-", "-", "-", "-", "-", "-", "-", "SL49.0", "-");
+		se = new int[]{6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6};
+		sc = new int[]{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+		da = new int[]{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+		ship.setupSSD(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 99, se, sc, da);
+		defaultYard.addShipToShipyard(ship);
+
 		ship = new Starship("Monster", "Arastoz 2x", "-", "-", "-", "-", "-", "-", "-", "-", "SL49.0", "-");
 		se = new int[]{6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6};
 		sc = new int[]{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
@@ -1072,31 +1093,31 @@ public class Shipyard {
 			
 			System.out.println();
 			System.out.println();
-			System.out.println("|==========================================================================|");
+			System.out.println("|===========================================================================================================|");
 			System.out.println("|                              THE SHIPYARD                                |");
-			System.out.println("|--------------------------------------------------------------------------|");
+			System.out.println("-------------------------------------------------------------------------------------------------------------");
 			if (showOnlySSDs == true) {
 				System.out.println("|                       Show ONLY ships with SSDs                          |");
 			} else {
 				System.out.println("|                 Show ALL ships (with AND without SSDs)                   |");
 			}
-			System.out.println("|==========================================================================|");
-			System.out.println("|   Races Available in the Shipyard:                    [S]how SSD Toggle  |");
-			System.out.println("|     [F]ederation     [O]rion       [A]ndromedan                          |");
-			System.out.println("|     [K]lingon        [G]orn        [W]YN              [M]onsters         |");
-			System.out.println("|     [R]omulan        [T]holian     [L]yran                               |");
-			System.out.println("|     K[z]inti         [H]ydran      [C]ivilian Ships   [X] All Fleets     |");
-			System.out.println("|==========================================================================|");
+			System.out.println("|===========================================================================================================|");
+			System.out.println("|   Races Available in the Shipyard:                                                  [S]how SSD Toggle     |");
+			System.out.println("|       [F]ederation       [O]rion         [A]ndromedan         Fra[X]                                      |");
+			System.out.println("|       [K]lingon          [G]orn          [W]YN                [ ]                   [M]onsters            |");
+			System.out.println("|       [R]omulan          [T]holian       [L]yran              [ ]                   [C]ivilian Ships      |");
+			System.out.println("|       K[Z]inti           [H]ydran        [S]eltorian          [ ]                   [Q] All Fleets        |");
+			System.out.println("|===========================================================================================================|");
 			
 			if (pass == -1) {
-				System.out.println("|  Display ships from what race?          RETURN to go back to Main Menu   |");
+				System.out.println("|       Display ships from what race?               RETURN to go back to Main Menu        |");
 			}
 			if (pass == 1) {
-				System.out.println("|  Display ships from what race?   RETURN to go back to Modify Ships Menu  |");
+				System.out.println("|       Display ships from what race?        RETURN to go back to Modify Ships Menu       |");
 			}
-			System.out.println("|==========================================================================|");
+			System.out.println("|===========================================================================================================|");
 	
-			userRace = Driver.getInput("FKGRZTOHLXAWCSM");
+			userRace = Driver.getInput("FKGRZTOHLQAWCSM");
 			
 			if (userRace.contentEquals("S")) {
 				showOnlySSDs = !showOnlySSDs;
@@ -1267,9 +1288,13 @@ public class Shipyard {
 			race = "WYN";
 		} else if (r.equalsIgnoreCase("L")) {
 			race = "Lyran";
+		} else if (r.equalsIgnoreCase("X")) {
+			race = "Frax";
+		} else if (r.equalsIgnoreCase("S")) {
+			race = "Seltorian";
 		} else if (r.equalsIgnoreCase("C")) {
 			race = "Civilian";
-		} else if (r.equalsIgnoreCase("X")) {
+		} else if (r.equalsIgnoreCase("Q")) {
 			race = "All Fleets";
 		} else if (r.equalsIgnoreCase("M")) {
 			race = "Monster";
