@@ -132,12 +132,44 @@ public class PhaseCalculation {
 		}
 
 		System.out.println();
-		System.out.print("Are any ships using labs for scientific research? ");
+		System.out.print("Are any ships using labs or launching probes for scientific research? ");
 		yesOrNo = Driver.getInputNoCancel("YN");
 		if (yesOrNo.contentEquals("Y")) {
-			WeaponsDamage.labResearchPoints (WeaponsDamage.labResearchAquired);
+			MonsterStuff.labResearchPoints();
 		}
-	
+
+		boolean monsterInGame = false;
+		for (int i = 1; i <= Driver.currentGameYard.numShips; i++) {
+			if (Driver.currentGameYard.list[i-1].race == "Monster") {
+				monsterInGame = true;
+			}
+		}
+		
+		if (monsterInGame == true) {
+			System.out.println();
+			System.out.print("Were any monsters in range to do damage? ");
+			yesOrNo = Driver.getInputNoCancel("YN");
+			int monsterDamage = 0;
+			if (yesOrNo.contentEquals("Y")) {
+				
+				monsterDamage = MonsterStuff.MonsterDamage();
+				System.out.println();
+				DamageAllocation.DamageAlloc(monsterDamage);
+			}
+		}
+		
+		boolean ArastozInGame = false;
+		
+		for (int i = 1; i <= Driver.currentGameYard.numShips; i++) {
+			if (Driver.currentGameYard.list[i-1].shipType.contains("Arastoz")) {
+				ArastozInGame = true;
+				break;
+			}
+		}
+
+		if (ArastozInGame == true) {
+			MonsterStuff.DidArastozCombine();
+		}
 	}
 	
 	public static void AdjustForDamageControl() {
@@ -472,6 +504,19 @@ public class PhaseCalculation {
 		System.out.println("|==============================================================================|");
 		System.out.print("Drone Type [RETURN to cancel]: ");
 		int droneType = Driver.getNumber(0, 5);
+		if (droneType == 0) {
+			droneName = droneName + " (IS)";  
+		} else if (droneType == 1) {
+			droneName = droneName + " (I)";
+		} else if (droneType == 2) {
+			droneName = droneName + " (II)";
+		} else if (droneType == 3) {
+			droneName = droneName + " (III)";
+		} else if (droneType == 4) {
+			droneName = droneName + " (IV)";
+		} else if (droneType == 5) {
+			droneName = droneName + " (V)";
+		}
 		int droneSpeed = 0;
 
 		if (droneType > -1) {
