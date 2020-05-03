@@ -124,6 +124,8 @@ public class PhaseCalculation {
 			}
 		} 
 		
+		//  End of Impulse Procedure Things
+		
 		System.out.println();
 		System.out.print("Are any ships repairing system with Damage Control? ");
 		String yesOrNo = Driver.getInputNoCancel("YN");
@@ -147,11 +149,10 @@ public class PhaseCalculation {
 		
 		if (monsterInGame == true) {
 			System.out.println();
-			System.out.print("Were any monsters in range to do damage? ");
+			System.out.print("Were any monsters in range to do damage to a ship? ");
 			yesOrNo = Driver.getInputNoCancel("YN");
 			int monsterDamage = 0;
 			if (yesOrNo.contentEquals("Y")) {
-				
 				monsterDamage = MonsterStuff.MonsterDamage();
 				System.out.println();
 				DamageAllocation.DamageAlloc(monsterDamage);
@@ -169,6 +170,29 @@ public class PhaseCalculation {
 
 		if (ArastozInGame == true) {
 			MonsterStuff.DidArastozCombine();
+		}
+		
+		if (monsterInGame == true) {			//  Special circumstance that Monster do damage to non-ships
+			System.out.println();
+			if (Driver.MonsterScenario == 1) {
+				System.out.print("Did the Planet Crusher attack the planet? ");
+				String yesNo = Driver.getInput("YN");
+				int monsterDamage = 0;
+				if (yesNo.equalsIgnoreCase("Y")) {
+					monsterDamage = MonsterStuff.PlanetCrusher();
+					System.out.println();
+					MonsterStuff.MonsterAttacksPlanet(monsterDamage);
+				}
+			} else if (Driver.MonsterScenario == 6) {
+				System.out.print("Did the Mind Monster attack the planet? ");
+				String yesNo = Driver.getInput("YN");
+				int monsterDamage = 0;
+				if (yesNo.equalsIgnoreCase("Y")) {
+					monsterDamage = MonsterStuff.MindMonsterAttacksPlanet();		//  Calculate mind wipe damage as planet damage
+					System.out.println();
+					MonsterStuff.MonsterAttacksPlanet(monsterDamage);
+				}
+			}
 		}
 	}
 	
