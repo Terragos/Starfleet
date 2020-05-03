@@ -3,371 +3,484 @@ import java.util.Scanner;
 public class WeaponsDamage {
 	
 	public final static int MAXDIST = 300;
-	public static int labResearchAquired = 0;
 	public static Starship currentShip;
 	public static Scanner keyboard = new Scanner(System.in);
 	
 	public static void WeaponsDam (int impulseNumber) {   //  If yes > 0 then in the middle of an Impulse Movement Procedure
 		int totalDamage = 0;
+		boolean cont = true;
 		
 		System.out.println();
 
 		ShipSetup.SortCurrentShipyard();														// Always SORT ships before printing to screen
 		ShipSetup.PrintCurrentShipsInGameThatHaveSSD();
 
-		System.out.println();
-		
-		System.out.print("Which ship is firing? [RETURN to cancel] ");
-		int shipNumFiring = -5;
-
-		shipNumFiring = Driver.getNumber(1, Driver.currentGameYard.numStarships);				//  Get a new input
-
-		if(shipNumFiring == -1) {
-			return;
-		}
-		
-		currentShip = Driver.currentGameYard.list[shipNumFiring-1];
-		
-		boolean cont = true;
-		while(cont) {
-			if (totalDamage == 0) {
-				System.out.println();
-				System.out.println();
-				System.out.println("|==========================================================================|");
-				System.out.println("|                         WEAPONS DAMAGE PROCEDURE                         |");
-				System.out.println("|==========================================================================|");
-				System.out.println("|  Type [1] Phaser  [P]hoton Torpedo [S/P/O]    Disruptor [B]olt           |");
-				System.out.println("|  Type [2] Phaser  P[L]asma Torpedo [R/2/G/F]  [T]ractor-Repulsor Beam    |");
-				System.out.println("|  Type [3] Phaser  [F]usion Beam [S/O/X]       [S]uicide Shuttle (Admin)  |");
-				System.out.println("|  Type [4] Phaser  [H]ellbore [S/O/D]          Dro[N]e                    |");
-				System.out.println("|                   [M]onster Damage            L[A]b                      |");
-				System.out.println("|==========================================================================|");
-				System.out.println("|                        Go to [D]amage Allocation                         |");
-				if (impulseNumber == -1) {
-					System.out.println("|                          [R]eturn to Main Menu                           |");
-				} else {
-					System.out.println("|                      Return to [I]mpulse Procedure                       |");
-				}
-				System.out.println("|==========================================================================|");
-			}
-		
-			
+		boolean reset = false;
+		while (!reset) {
 			
 			System.out.println();
-			System.out.print("Weapon:   ");
-
-			String weaponInput = "";
-			while (weaponInput.length() == 0) {                           //  Do NOT accept RETURN as a valid answer
-				weaponInput = Driver.getInput("1234PLFHDTQIRSNMA");
+			System.out.print("Which ship is firing? [RETURN to cancel] ");
+			int shipNumFiring = -5;
+	
+			shipNumFiring = Driver.getNumber(1, Driver.currentGameYard.numStarships);				//  Get a new input
+	
+			if(shipNumFiring == -1) {
+				return;
 			}
 			
-			int typeInput = 0;
-			int energyInput = 0;
-			int photonEnergyInput = 0;
-
-			//  Asking what type of Photon Torpedo			
-			if (weaponInput.equalsIgnoreCase("P")) {
-				System.out.print("Photon Type [S]tandard [P]roximity [O]verload:   ");
-				String weaponTypeInput = Driver.getInput("SPO");
-				String options = "SPO"; 
-				typeInput = options.indexOf(weaponTypeInput);            // Getting number: S=1, P=2, O=3
-				
-				if (typeInput == 3) {
-					System.out.print("Total Energy [5-8]:   ");          //  If type=3 then get energy allocated value
-					photonEnergyInput = Driver.getNumberNoCancel(5, 8);
-				} 
-			}
-				
-			//  Asking what type of Plasma Torpedo
-			if (weaponInput.equalsIgnoreCase("L")) {
-				System.out.print("Plasma Type [R] [2]G [G] [F]:   ");
-				String weaponTypeInput = Driver.getInput("R2GF");
-				String options = "R2GF"; 
-				typeInput = options.indexOf(weaponTypeInput);           // Getting number: R=1, 2=2, G=3, F=4 
-			}
-
-			//  Asking what type of Fusion Beam	
-			if (weaponInput.equalsIgnoreCase("F")) {
-				System.out.print("Type [S]tandard [O]verloaded [X]suicide:   ");
-				String weaponTypeInput = Driver.getInput("SOX");
-				String options = "SOX"; 
-				typeInput = options.indexOf(weaponTypeInput)-1;         // Getting number: O=1, X=2 
-			}
-				
-			//  Asking what type of Hellbore
-			if (weaponInput.equalsIgnoreCase("H")) {
-				System.out.print("Type [S]tandard [O]verloaded [D]irect-Fire:   ");
-				String weaponTypeInput = Driver.getInput("SOD");
-				String options = "SOD"; 
-				typeInput = options.indexOf(weaponTypeInput);           // Getting number: S=1, O=2, D=3 
+			currentShip = Driver.currentGameYard.list[shipNumFiring-1];
+	
+			boolean monsterInGame = false;
+			for (int i = 0; i <= Driver.currentGameYard.numShips-1; i++) {
+				if (Driver.currentGameYard.list[i].race == "Monster") {
+					monsterInGame = true;
+				}
 			}
 			
-			int distanceInput = 0;
-			int numberInput = 0;
-			if ("1234PLFHTQ".contains(weaponInput)) {
-				System.out.print("Distance: ");
-				distanceInput = Driver.getNumber(0, MAXDIST);
-				
-				// MODIFY DISTANCE FOR SENSOR LOCK-ON FAILURE
-				if (currentShip.lockedOn == false) {
-					distanceInput *= 2;
+			while(cont) {
+				if (totalDamage == 0) {
+					System.out.println();
+					System.out.println();
+					System.out.println("|==========================================================================|");
+					System.out.println("|                         WEAPONS DAMAGE PROCEDURE                         |");
+					System.out.println("|==========================================================================|");
+					System.out.println("|  Type [1] Phaser  [P]hoton Torpedo [S/P/O]    Disruptor [B]olt           |");
+					System.out.println("|  Type [2] Phaser  P[L]asma Torpedo [R/2/G/F]  [T]ractor-Repulsor Beam    |");
+					System.out.println("|  Type [3] Phaser  [F]usion Beam [S/O/X]       [S]uicide Shuttle (Admin)  |");
+					System.out.println("|  Type [4] Phaser  [H]ellbore [S/O/D]          Dro[N]e                    |");
+					System.out.println("|  Pr[O]be          L[A]b                                                  |");
+					System.out.println("|==========================================================================|");
+					System.out.println("|                        Go to [D]amage Allocation                         |");
+					if (monsterInGame == true) {
+						System.out.println("|                      Damage to [M]onster from Ship                       |");
+					}
+					if (impulseNumber == -1) {
+						System.out.println("|                          [R]eturn to Main Menu                           |");
+					} else {
+						System.out.println("|                      Return to [I]mpulse Procedure                       |");
+					}
+					System.out.println("|==========================================================================|");
+				}
+	
+				System.out.println();
+				System.out.print("Weapon:   ");
+	
+				String weaponInput = "";
+				while (weaponInput.length() == 0) {                           //  Do NOT accept RETURN as a valid answer
+					weaponInput = Driver.getInput("1234PLFHDTQIRSNAOM");
 				}
 				
-				// MODIFY DISTANCE FOR SCANNER NUMBER
-				int nextScannerNum = currentShip.ssd[23].numOfThisPart - 
-						currentShip.ssd[23].remaining;
-				distanceInput += currentShip.scannerNums[nextScannerNum];
-				if (currentShip.lockedOn == false || nextScannerNum > 0) {
-					System.out.println("New Distance " + distanceInput + " (modified due to Sensor Lock-on failure and/or Scanner resolution number)");
+				int typeInput = 0;
+				int energyInput = 0;
+				int photonEnergyInput = 0;
+	
+				//  Asking what type of Photon Torpedo			
+				if (weaponInput.equalsIgnoreCase("P")) {
+					System.out.print("Photon Type [S]tandard [P]roximity [O]verload:   ");
+					String weaponTypeInput = Driver.getInput("SPO");
+					String options = "SPO"; 
+					typeInput = options.indexOf(weaponTypeInput);            // Getting number: S=1, P=2, O=3
+					
+					if (typeInput == 3) {
+						System.out.print("Total Energy [5-8]:   ");          //  If type=3 then get energy allocated value
+						photonEnergyInput = Driver.getNumberNoCancel(5, 8);
+					} 
+				}
+					
+				//  Asking what type of Plasma Torpedo
+				if (weaponInput.equalsIgnoreCase("L")) {
+					System.out.print("Plasma Type [R] [2]G [G] [F]:   ");
+					String weaponTypeInput = Driver.getInput("R2GF");
+					String options = "R2GF"; 
+					typeInput = options.indexOf(weaponTypeInput);           // Getting number: R=1, 2=2, G=3, F=4 
+				}
+	
+				//  Asking what type of Fusion Beam	
+				if (weaponInput.equalsIgnoreCase("F")) {
+					System.out.print("Type [S]tandard [O]verloaded [X]suicide:   ");
+					String weaponTypeInput = Driver.getInput("SOX");
+					String options = "SOX"; 
+					typeInput = options.indexOf(weaponTypeInput)-1;         // Getting number: O=1, X=2 
+				}
+					
+				//  Asking what type of Hellbore
+				if (weaponInput.equalsIgnoreCase("H")) {
+					System.out.print("Type [S]tandard [O]verloaded [D]irect-Fire:   ");
+					String weaponTypeInput = Driver.getInput("SOD");
+					String options = "SOD"; 
+					typeInput = options.indexOf(weaponTypeInput);           // Getting number: S=1, O=2, D=3 
 				}
 				
-				System.out.print("Number:   ");
-				numberInput = Driver.getNumber(0, 200);
-			} else if (weaponInput.equalsIgnoreCase("S") || weaponInput.equalsIgnoreCase("N")) {
-				System.out.print("Number:   ");
-				numberInput = Driver.getNumber(0, 200);
-			}
-			
-			if (distanceInput >= 0 && numberInput > 0) {
-				if (weaponInput.equalsIgnoreCase("1")) {
-					totalDamage = type1Phaser(numberInput, distanceInput, totalDamage);		
-				} else if(weaponInput.equalsIgnoreCase("2")) {
-					totalDamage = type2Phaser(numberInput, distanceInput, totalDamage);		
-				} else if(weaponInput.equalsIgnoreCase("3")) {
-					totalDamage = type3Phaser(numberInput, distanceInput, totalDamage);		
-				} else if(weaponInput.equalsIgnoreCase("4")) {
-					totalDamage = type4Phaser(numberInput, distanceInput, totalDamage);		
-				} else if(weaponInput.equalsIgnoreCase("P")) {
-					totalDamage = photonTorpedo(typeInput, energyInput, numberInput, distanceInput, totalDamage);		
-				} else if(weaponInput.equalsIgnoreCase("L")) {
-					totalDamage = plasmaTorpedo(typeInput, numberInput, distanceInput, totalDamage);		
-				} else if(weaponInput.equalsIgnoreCase("F")) {
-					totalDamage = fusionBeam(numberInput, distanceInput, totalDamage);		
-				} else if(weaponInput.equalsIgnoreCase("O")) {
-					totalDamage = fusionBeamOverloaded(typeInput, numberInput, distanceInput, totalDamage);		
-				} else if(weaponInput.equalsIgnoreCase("B")) {
-					totalDamage = disruptorBolt(numberInput, distanceInput, totalDamage);		
-				} else if(weaponInput.equalsIgnoreCase("T")) {
-					totalDamage = tractorRepulsorBeam(numberInput, distanceInput, totalDamage);		
-				} else if(weaponInput.equalsIgnoreCase("H")) {
-					totalDamage = hellbore(typeInput, numberInput, distanceInput, totalDamage);		
-				} else if(weaponInput.equalsIgnoreCase("S")) {
-					totalDamage = adminSuicideShuttle(numberInput, totalDamage);		
-				} else if(weaponInput.equalsIgnoreCase("N")) {
-					totalDamage = drone(numberInput, totalDamage);		
+				int distanceInput = 0;
+				int numberInput = 0;
+				if ("1234PLFHTQO".contains(weaponInput)) {
+					System.out.print("Distance: ");
+					distanceInput = Driver.getNumber(0, MAXDIST);
+					
+					// MODIFY DISTANCE FOR SENSOR LOCK-ON FAILURE
+					if (currentShip.lockedOn == false) {
+						distanceInput *= 2;
+					}
+					
+					// MODIFY DISTANCE FOR SCANNER NUMBER
+					int nextScannerNum = currentShip.ssd[23].numOfThisPart - 
+							currentShip.ssd[23].remaining;
+					distanceInput += currentShip.scannerNums[nextScannerNum];
+					if (currentShip.lockedOn == false || nextScannerNum > 0) {
+						System.out.println("New Distance " + distanceInput + " (modified due to Sensor Lock-on failure and/or Scanner resolution number)");
+					}
+					
+					System.out.print("Number:   ");
+					numberInput = Driver.getNumber(0, 200);
+				} else if (weaponInput.equalsIgnoreCase("S") || weaponInput.equalsIgnoreCase("N")) {
+					System.out.print("Number:   ");
+					numberInput = Driver.getNumber(0, 200);
+				}
+				
+				if (distanceInput >= 0 && numberInput > 0) {
+					if (weaponInput.equalsIgnoreCase("1")) {
+						System.out.print("Phaser-I\t");
+						totalDamage = type1Phaser(numberInput, distanceInput, totalDamage);
+						
+					} else if(weaponInput.equalsIgnoreCase("2")) {
+						System.out.print("Phaser-II\t");
+						totalDamage = type2Phaser(numberInput, distanceInput, totalDamage);
+						
+					} else if(weaponInput.equalsIgnoreCase("3")) {
+						System.out.print("Phaser-III\t");
+						totalDamage = type3Phaser(numberInput, distanceInput, totalDamage);
+						
+					} else if(weaponInput.equalsIgnoreCase("4")) {
+						System.out.print("Phaser-IV\t");
+						totalDamage = type4Phaser(numberInput, distanceInput, totalDamage);
+						
+					} else if(weaponInput.equalsIgnoreCase("P")) {
+						System.out.print("Photon Torpedo\t");
+						totalDamage = photonTorpedo(typeInput, energyInput, numberInput, distanceInput, totalDamage);
+						
+					} else if(weaponInput.equalsIgnoreCase("L")) {
+						System.out.print("Plasma Torpedo\t");
+						totalDamage = plasmaTorpedo(typeInput, numberInput, distanceInput, totalDamage);
+						
+					} else if(weaponInput.equalsIgnoreCase("F")) {
+						System.out.print("Fusion Beam\t");
+						totalDamage = fusionBeam(numberInput, distanceInput, totalDamage);
+						
+	//				} else if(weaponInput.equalsIgnoreCase("O")) {
+	//					System.out.println("Overloaded Fusion Beam");
+	//					totalDamage = fusionBeamOverloaded(typeInput, numberInput, distanceInput, totalDamage);
+						
+					} else if(weaponInput.equalsIgnoreCase("B")) {
+						System.out.print("Disruptor Bolt\t");
+						totalDamage = disruptorBolt(numberInput, distanceInput, totalDamage);
+						
+					} else if(weaponInput.equalsIgnoreCase("T")) {
+						System.out.print("Tractor-Repulsor Beam\t");
+						totalDamage = tractorRepulsorBeam(numberInput, distanceInput, totalDamage);
+						
+					} else if(weaponInput.equalsIgnoreCase("H")) {
+						System.out.print("Hellbore\t");
+						totalDamage = hellbore(typeInput, numberInput, distanceInput, totalDamage);
+						
+					} else if(weaponInput.equalsIgnoreCase("S")) {
+						System.out.print("Suicide Shuttle\t");
+						totalDamage = adminSuicideShuttle(numberInput, totalDamage);
+						
+					} else if(weaponInput.equalsIgnoreCase("O")) {
+						System.out.print("Probe\t");
+						totalDamage = probe(numberInput, distanceInput, totalDamage);
+						
+					} else if(weaponInput.equalsIgnoreCase("N")) {
+						System.out.print("Drone\t");
+						totalDamage = drone(numberInput, totalDamage);
+						
+					}
+				}
+				
+				if(weaponInput.equalsIgnoreCase("D")) {
+					DamageAllocation.DamageAlloc(totalDamage);
+					totalDamage = 0;
+					reset = true;
+	
 				} else if(weaponInput.equalsIgnoreCase("M")) {
-					totalDamage = monsterDamage(totalDamage);		
+					System.out.print("Deal damage to a Monster\t");
+					totalDamage = MonsterStuff.monsterDamageFromShip(totalDamage);
+	//				cont = false;
+					
 				} else if(weaponInput.equalsIgnoreCase("A")) {
-					labResearchAquired = labResearchPoints(labResearchAquired);		
+					System.out.print("Gathering Lab Research Data\t");
+					MonsterStuff.labResearchPoints();
+				
+				} else if(weaponInput.equalsIgnoreCase("I")) {
+					System.out.println();
+					PhaseCalculation.PrintImpulseHeader();
+					break;
+				
+				} else if(weaponInput.equalsIgnoreCase("R")) {
+					break;
+					
 				}
-			}
-			
-			if(weaponInput.equalsIgnoreCase("D")) {
-				DamageAllocation.DamageAlloc(totalDamage);
-				totalDamage = 0;
-			} else if(weaponInput.equalsIgnoreCase("I")) {
-				System.out.println();
-				PhaseCalculation.PrintImpulseHeader();
-				break;
-			} else if(weaponInput.equalsIgnoreCase("R")) {
-				break;
-			}
-			
-			if ("1234PLFHTQSNM".contains(weaponInput)) {
-				System.out.println("\tTotal Damage: " + totalDamage);
+				
+				if("1234PLFHTQSNO".contains(weaponInput)) {
+					System.out.println("\tTotal Damage: " + totalDamage);
+				}
 			}
 		}
 
 	}
 
-	public static int labResearchPoints (int total) {
-		//  Also Some Monster Damage
-		int labResearch[][] = {{ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9,10},   //  distance
-							   {10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0},   //  die roll 1 
-							   { 9, 8, 7, 6, 5, 4, 3, 2, 1, 0, 0},   //  die roll 2
-							   { 8, 7, 6, 5, 4, 3, 2, 1, 0, 0, 0},   //  die roll 3
-							   { 7, 6, 5, 4, 3, 2, 1, 0, 0, 0, 0},   //  die roll 4
-							   { 6, 5, 4, 3, 2, 1, 0, 0, 0, 0, 0},   //  die roll 5
-							   { 5, 4, 3, 2, 1, 0, 0, 0, 0, 0, 0}};  //  die roll 6
-		int die = 0;
-		int dist = 0;
-		int numLabs = 0;
-		int research = 0;
-		
-		ShipSetup.PrintCurrentShipsInGame();
+//	public static void labResearchPoints () {
+//		//  Also Some Monster Damage
+//		int labResearch[][] = {{ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9,10},   //  distance
+//							   {10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0},   //  die roll 1 
+//							   { 9, 8, 7, 6, 5, 4, 3, 2, 1, 0, 0},   //  die roll 2
+//							   { 8, 7, 6, 5, 4, 3, 2, 1, 0, 0, 0},   //  die roll 3
+//							   { 7, 6, 5, 4, 3, 2, 1, 0, 0, 0, 0},   //  die roll 4
+//							   { 6, 5, 4, 3, 2, 1, 0, 0, 0, 0, 0},   //  die roll 5
+//							   { 5, 4, 3, 2, 1, 0, 0, 0, 0, 0, 0}};  //  die roll 6
+//		int raceNum = -1;
+//		int die = 0;
+//		int dist = 0;
+//		int numLabs = 0;
+//		int research = 0;
+//		
+//		System.out.println();
+//		System.out.println("|===============================================================================|");
+//		System.out.println("|                             LAB RESEARCH BY RACE                              |");
+//		System.out.println("|---------------+---------------+---------------+---------------+---------------|");
+//		String extraSpaces = "";
+//		String suffix = "";
+//		int count = 0;
+//		for (int i = 0; i <= Driver.labResearchRace.length-1; i++) {
+//			if (Driver.labResearchRace[i].contains("Race")) {
+//				for (int k= 1; k <= 5-count; k++) {
+//					System.out.print("|               ");
+//				}
+//				System.out.println("|");
+//				break;
+//			}
+//			if (count == 4) {
+//				extraSpaces = ShipSetup.getExtraSpaces(Driver.labResearchTotalPoints[i], 3);
+//				suffix = extraSpaces + "    |";
+//				
+//			}
+//			
+//			System.out.print("|   " + Driver.labResearchRace[i].substring(0, 3) + ": " + Driver.labResearchTotalPoints[i] + suffix + "  \t");
+//			count++;
+//			if (count == 5) {
+//				System.out.println();
+//				count = 0;
+//			}
+//			suffix = "";
+//		}
+//
+//		
+//		System.out.println("|===============================================================================|");
+//		ShipSetup.PrintCurrentShipsInGame();
+//
+//		int shipResearching = -1;
+//
+//		boolean cont = true;
+//		while (cont) {
+//			System.out.println();
+//			System.out.print("Which ship is collecting research data? [RETURN for cancel] ");
+//			shipResearching = Driver.getNumber(1, Driver.currentGameYard.numStarships);
+//			if(shipResearching > 0) {
+//				die = DamageAllocation.rollDice(1,6);
+//				numLabs = Driver.currentGameYard.list[shipResearching-1].ssd[17].remaining;
+//				String raceOfCurrentShip = Driver.currentGameYard.list[shipResearching-1].race;
+//				String raceOfCurrentShipMain = raceOfCurrentShip;
+//				String nameOfCurrentShip = Driver.currentGameYard.list[shipResearching-1].name;
+//				//  Find race in LabResearch array
+//				raceNum = -1;
+//				for (int i = 0; i <= Driver.labResearchRace.length-1; i++) {
+//					if (raceOfCurrentShip == Driver.labResearchRace[i]) {
+//						raceNum = i;
+//					}
+//				}
+//				
+//				if (raceNum == -1) {  //  If the ship's race is CIVILIAN or ALL FLEETS
+//					System.out.print("Which main ship is the " + nameOfCurrentShip + " collecting data for? ");
+//					int shipResearchingMain = Driver.getNumber(1, Driver.currentGameYard.numStarships);
+//					raceOfCurrentShipMain = Driver.currentGameYard.list[shipResearchingMain-1].race;
+////					System.out.println("raceOfCurrentShipMain: " + raceOfCurrentShipMain);
+//					for (int i = 0; i <= Driver.labResearchRace.length-1; i++) {
+//						if (raceOfCurrentShipMain == Driver.labResearchRace[i]) {
+//							raceNum = i;
+////							System.out.println("raceNum (raceOfCurrentShipMain): " + raceNum);
+//						}
+//					}
+//				}
+//				
+//				System.out.print("Closest distance this turn [0-9, RETURN to cancel]: ");
+//				dist = Driver.getNumber(0, 9);
+//				if (dist != -1) {
+//					System.out.println(nameOfCurrentShip + " has " + numLabs + " functioning labs.");
+//					research = labResearch[die][dist] * numLabs;
+//					System.out.println(nameOfCurrentShip + "'s lab(s) research points this turn: " + research);
+////					int indivShipResearch = research + Driver.currentGameYard.list[shipResearching-1].labPoints;
+////					System.out.println(nameOfCurrentShip + "'s lab(s) provide " + indivShipResearch + " points so far this game.");
+////					System.out.println("raceNum: " + raceNum);
+//					Driver.labResearchTotalPoints[raceNum] = Driver.labResearchTotalPoints[raceNum] + research;
+//					String plural = "s";
+//					if (raceOfCurrentShip == "Federation") {
+//						plural = "";
+//					}
+//					System.out.println("TOTAL research points by the " + raceOfCurrentShipMain + plural + " so far: " + Driver.labResearchTotalPoints[raceNum]);
+//				}
+//			} else {
+//				//  break
+//				cont = false;
+//			}
+//		}
+//		
+////		return total;
+//	}
 
-		int shipResearching = -1;
-
-		boolean cont = true;
-		while (cont) {
-			System.out.println();
-			System.out.print("Which ship collecting research data? [RETURN for cancel] ");
-			shipResearching = Driver.getNumber(1, Driver.currentGameYard.numStarships);
-			if(shipResearching > 0) {
-				die = DamageAllocation.rollDice(1,6);
-				numLabs = currentShip.ssd[17].remaining;
-				System.out.println("Number of functioning labs: " + numLabs);
-				System.out.print("Closest distance this turn [0-9, RETURN to cancel]: ");
-				dist = Driver.getNumber(0, 9);
-	lab problem
-				if (dist != -1) {
-					research = labResearch[die][dist] * numLabs;
-					System.out.println("Lab(s) provide " + research + " points of research this turn.");
-					total = total + research;
-					System.out.println("Total research points so far: " + total);
-				}
-			} else {
-				//  break
-				cont = false;
-			}
-		}
-		return total;
-	}
-
-	public static int monsterDamage (int total) {
-		//  Also Some Monster Damage
-		int labResearch[][] = {{ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9,10},   //  distance
-							   {10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0},   //  die roll 1 
-							   { 9, 8, 7, 6, 5, 4, 3, 2, 1, 0, 0},   //  die roll 2
-							   { 8, 7, 6, 5, 4, 3, 2, 1, 0, 0, 0},   //  die roll 3
-							   { 7, 6, 5, 4, 3, 2, 1, 0, 0, 0, 0},   //  die roll 4
-							   { 6, 5, 4, 3, 2, 1, 0, 0, 0, 0, 0},   //  die roll 5
-							   { 5, 4, 3, 2, 1, 0, 0, 0, 0, 0, 0}};  //  die roll 6
-
-		int crewUnitsLost[][] = {{0, 1, 2, 3, 4, 5, 6, 7, 8, 9,10,11},   //  distance
-								 {4, 4, 4, 3, 3, 3, 2, 2, 2, 2, 2, 0},   //  die roll 1 
-								 {4, 3, 3, 3, 3, 3, 1, 1, 1, 1, 1, 0},   //  die roll 2
-								 {3, 3, 3, 2, 2, 2, 0, 0, 0, 0, 0, 0},   //  die roll 3
-								 {3, 3, 2, 1, 1, 1, 0, 0, 0, 0, 0, 0},   //  die roll 4
-								 {2, 2, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0},   //  die roll 5
-								 {1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0}};  //  die roll 6
-		
-		int mindWipe[][] = {{0, 1, 2, 3, 4, 5},   //  distance
-							{6, 5, 4, 3, 2, 1},   //  die roll 1 
-							{5, 4, 3, 2, 1, 0},   //  die roll 2
-							{4, 3, 2, 1, 0, 0},   //  die roll 3
-							{3, 2, 1, 1, 0, 0},   //  die roll 4
-							{2, 2, 1, 0, 0, 0},   //  die roll 5
-							{2, 1, 0, 0, 0, 0}};  //  die roll 6
-		
-		System.out.println("1) Planet Crusher   3) Moray Eel      5) Sunsnake       7) Space Dragon");
-		System.out.println("2) Space Amoeba     4) Cosmic Cloud   6) Mind Monster   8) Arastoz");
-		System.out.print("Which monster? [RETURN to cancel] ");
-		int monsterNum = Driver.getNumber(1,8);
-		if (monsterNum != -1) {
-			int die = DamageAllocation.rollDice(1,6);
-			
-			int startTotal = total;
-			int damage = 0;
-			int dist = 0;
-			if (monsterNum == 1) {					//  SM1.0 - PLANET CRUSHER
-				if (die == 1) {
-					damage = 40;
-				} else if (die == 2) {
-					damage = 30;
-				} else if (die == 3) {
-					damage = 20;
-				} else if (die == 4) {
-					damage = 10;
-				} else if (die == 5) {
-					damage = 5;
-				} else if (die == 6) {
-					damage = 1;
-				}
-				System.out.print("Planet Crusher does " + damage + " points of damage. \nApply as normal weapon damage.\t");
-				
-			} else if (monsterNum == 2) {					//  SM2.0 - SPACE AMOEBA
-				System.out.print("Closest distance this turn [RETURN to cancel]: ");
-				dist = Driver.getNumber(0, 9);
-				if (dist >= 0) {
-					damage = labResearch[die][dist] * 2;
-					System.out.print("Space Amoeba does " + damage + " points of damage. \nApply as normal weapon damage.\t");
-				}
-				
-			} else if (monsterNum == 3) {					//  SM3.0 - MORAY EEL
-				if (die == 1) {
-					damage = 20;
-				} else if (die == 2) {
-					damage = 18;
-				} else if (die == 3) {
-					damage = 15;
-				} else if (die == 4) {
-					damage = 12;
-				} else if (die == 5) {
-					damage = 10;
-				} else if (die == 6) {
-					damage = 5;
-				}
-				System.out.print("Moray Eel does " + damage + " points of damage. \nDamage BYPASSES shields.\t");
-				
-			} else if (monsterNum == 4) {					//  SM4.0 - COSMIC CLOUD
-				System.out.print("Closest distance this turn: ");
-				dist = Driver.getNumber(0, 10);
-				if (dist >= 0) {
-					System.out.print("Were shields at maximum power? ");
-					String yesOrNo = Driver.getInput("YN");
-					int multiplier = 1;
-					if (yesOrNo.equalsIgnoreCase("N")) {
-						multiplier = 2;
-					}
-					damage = crewUnitsLost[die][dist] * multiplier;
-					System.out.print("Cosmic Clouds kills " + damage + " crew units. \nNo ship damage.\t");
-					damage = 0;
-				}
-				
-			} else if (monsterNum == 5) {					//  SM5.0 - SUNSNAKE
-				if (die == 1) {
-					damage = 20;
-				} else if (die == 2) {
-					damage = 18;
-				} else if (die == 3) {
-					damage = 15;
-				} else if (die == 4) {
-					damage = 12;
-				} else if (die == 5) {
-					damage = 10;
-				} else if (die == 6) {
-					damage = 5;
-				}
-				System.out.print("Mind Monster does " + damage + " points of damage. \nApply as normal weapon damage.\t");
-				
-			} else if (monsterNum == 6) {					//  SM6.0 - MIND MONSTER
-				System.out.print("Closest distance this turn [RETURN to cancel]: ");
-				dist = Driver.getNumber(0, 10);
-				if (dist >=0 ) {
-					System.out.print("Were shields at maximum power? ");
-					String yesOrNo = Driver.getInput("YN");
-					int multiplier = 1;
-					if (yesOrNo.equalsIgnoreCase("N")) {
-						die = 1;
-						dist = dist - 1;
-						if (dist == -1) {
-							dist = 0;
-						}
-						multiplier = 2;
-					}
-					damage = mindWipe[die][dist] * multiplier;
-					System.out.println("Cosmic Clouds mind wipes " + damage + " crew units. \nNo ship damage.\t");
-					damage = 0;
-				}
-				
-			} else if (monsterNum == 7) {					//  SM7.0 - SPACE DRAGON
-				System.out.print("Need code for Space Dragon damage.");
-				
-			} else if (monsterNum == 8) {					//  SM8.0 - ARASTOZ
-				System.out.print("Closest distance this turn [RETURN to cancel]: ");
-				dist = Driver.getNumber(0, 9);
-				if (dist >= 0) {
-					System.out.print("Size of monster: ");
-					int monsterSize = Driver.getNumber(-1, 4);
-					damage = labResearch[die][dist] * monsterSize;
-					System.out.print("Arastoz does " + damage + " points of damage. \nApply as normal weapon damage.\t");
-				}
-				total += damage;
-			}
-		}
-		return total;
-	}
+//	public static int monsterDamage (int total) {
+//		//  Also Some Monster Damage
+//		int labResearch[][] = {{ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9,10},   //  distance
+//							   {10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0},   //  die roll 1 
+//							   { 9, 8, 7, 6, 5, 4, 3, 2, 1, 0, 0},   //  die roll 2
+//							   { 8, 7, 6, 5, 4, 3, 2, 1, 0, 0, 0},   //  die roll 3
+//							   { 7, 6, 5, 4, 3, 2, 1, 0, 0, 0, 0},   //  die roll 4
+//							   { 6, 5, 4, 3, 2, 1, 0, 0, 0, 0, 0},   //  die roll 5
+//							   { 5, 4, 3, 2, 1, 0, 0, 0, 0, 0, 0}};  //  die roll 6
+//
+//		int crewUnitsLost[][] = {{0, 1, 2, 3, 4, 5, 6, 7, 8, 9,10,11},   //  distance
+//								 {4, 4, 4, 3, 3, 3, 2, 2, 2, 2, 2, 0},   //  die roll 1 
+//								 {4, 3, 3, 3, 3, 3, 1, 1, 1, 1, 1, 0},   //  die roll 2
+//								 {3, 3, 3, 2, 2, 2, 0, 0, 0, 0, 0, 0},   //  die roll 3
+//								 {3, 3, 2, 1, 1, 1, 0, 0, 0, 0, 0, 0},   //  die roll 4
+//								 {2, 2, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0},   //  die roll 5
+//								 {1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0}};  //  die roll 6
+//		
+//		int mindWipe[][] = {{0, 1, 2, 3, 4, 5},   //  distance
+//							{6, 5, 4, 3, 2, 1},   //  die roll 1 
+//							{5, 4, 3, 2, 1, 0},   //  die roll 2
+//							{4, 3, 2, 1, 0, 0},   //  die roll 3
+//							{3, 2, 1, 1, 0, 0},   //  die roll 4
+//							{2, 2, 1, 0, 0, 0},   //  die roll 5
+//							{2, 1, 0, 0, 0, 0}};  //  die roll 6
+//		
+//		System.out.println("1) Planet Crusher   3) Moray Eel      5) Sunsnake       7) Space Dragon");
+//		System.out.println("2) Space Amoeba     4) Cosmic Cloud   6) Mind Monster   8) Arastoz");
+//		System.out.print("Which monster? [RETURN to cancel] ");
+//		int monsterNum = Driver.getNumber(1,8);
+//		if (monsterNum != -1) {
+//			int die = DamageAllocation.rollDice(1,6);
+//			
+//			int startTotal = total;
+//			int damage = 0;
+//			int dist = 0;
+//			if (monsterNum == 1) {					//  SM1.0 - PLANET CRUSHER
+//				if (die == 1) {
+//					damage = 40;
+//				} else if (die == 2) {
+//					damage = 30;
+//				} else if (die == 3) {
+//					damage = 20;
+//				} else if (die == 4) {
+//					damage = 10;
+//				} else if (die == 5) {
+//					damage = 5;
+//				} else if (die == 6) {
+//					damage = 1;
+//				}
+//				System.out.print("Planet Crusher does " + damage + " points of damage. \nApply as normal weapon damage.\t");
+//				
+//			} else if (monsterNum == 2) {					//  SM2.0 - SPACE AMOEBA
+//				System.out.print("Closest distance this turn [RETURN to cancel]: ");
+//				dist = Driver.getNumber(0, 9);
+//				if (dist >= 0) {
+//					damage = labResearch[die][dist] * 2;
+//					System.out.print("Space Amoeba does " + damage + " points of damage. \nApply as normal weapon damage.\t");
+//				}
+//				
+//			} else if (monsterNum == 3) {					//  SM3.0 - MORAY EEL
+//				if (die == 1) {
+//					damage = 20;
+//				} else if (die == 2) {
+//					damage = 18;
+//				} else if (die == 3) {
+//					damage = 15;
+//				} else if (die == 4) {
+//					damage = 12;
+//				} else if (die == 5) {
+//					damage = 10;
+//				} else if (die == 6) {
+//					damage = 5;
+//				}
+//				System.out.print("Moray Eel does " + damage + " points of damage. \nDamage BYPASSES shields.\t");
+//				
+//			} else if (monsterNum == 4) {					//  SM4.0 - COSMIC CLOUD
+//				System.out.print("Closest distance this turn: ");
+//				dist = Driver.getNumber(0, 10);
+//				if (dist >= 0) {
+//					System.out.print("Were shields at maximum power? ");
+//					String yesOrNo = Driver.getInput("YN");
+//					int multiplier = 1;
+//					if (yesOrNo.equalsIgnoreCase("N")) {
+//						multiplier = 2;
+//					}
+//					damage = crewUnitsLost[die][dist] * multiplier;
+//					System.out.print("Cosmic Clouds kills " + damage + " crew units. \nNo ship damage.\t");
+//					damage = 0;
+//				}
+//				
+//			} else if (monsterNum == 5) {					//  SM5.0 - SUNSNAKE
+//				if (die == 1) {
+//					damage = 20;
+//				} else if (die == 2) {
+//					damage = 18;
+//				} else if (die == 3) {
+//					damage = 15;
+//				} else if (die == 4) {
+//					damage = 12;
+//				} else if (die == 5) {
+//					damage = 10;
+//				} else if (die == 6) {
+//					damage = 5;
+//				}
+//				System.out.print("Mind Monster does " + damage + " points of damage. \nApply as normal weapon damage.\t");
+//				
+//			} else if (monsterNum == 6) {					//  SM6.0 - MIND MONSTER
+//				System.out.print("Closest distance this turn [RETURN to cancel]: ");
+//				dist = Driver.getNumber(0, 10);
+//				if (dist >=0 ) {
+//					System.out.print("Were shields at maximum power? ");
+//					String yesOrNo = Driver.getInput("YN");
+//					int multiplier = 1;
+//					if (yesOrNo.equalsIgnoreCase("N")) {
+//						die = 1;
+//						dist = dist - 1;
+//						if (dist == -1) {
+//							dist = 0;
+//						}
+//						multiplier = 2;
+//					}
+//					damage = mindWipe[die][dist] * multiplier;
+//					System.out.println("Cosmic Clouds mind wipes " + damage + " crew units. \nNo ship damage.\t");
+//					damage = 0;
+//				}
+//				
+//			} else if (monsterNum == 7) {					//  SM7.0 - SPACE DRAGON
+//				System.out.print("Need code for Space Dragon damage.");
+//				
+//			} else if (monsterNum == 8) {					//  SM8.0 - ARASTOZ
+//				System.out.print("Closest distance this turn [RETURN to cancel]: ");
+//				dist = Driver.getNumber(0, 9);
+//				if (dist >= 0) {
+//					System.out.print("Size of monster: ");
+//					int monsterSize = Driver.getNumber(-1, 4);
+//					damage = labResearch[die][dist] * monsterSize;
+//					System.out.print("Arastoz does " + damage + " points of damage. \nApply as normal weapon damage.\t");
+//				}
+//				total += damage;
+//			}
+//		}
+//		return total;
+//	}
 	
 	//  TYPE 1 PHASER
 	public static int type1Phaser(int num, int dist, int total) {
@@ -756,4 +869,22 @@ public class WeaponsDamage {
 		System.out.print("Volley Damage: " + (total - startTotal));
 		return total;
 	}
+
+	public static int probe(int num, int dist, int total) {
+		int startTotal = total;
+		int probeDamage = 0;
+		
+		int die = 0;
+	
+		for (int i = 1; i <= num; i++) {
+			die = DamageAllocation.rollDice(1, 6);
+			if (die >= dist) {
+				total = total + 8;
+			}
+		}
+		System.out.println();
+		System.out.print("Volley Damage: " + (total - startTotal));
+		return total;
+	}
+
 }
