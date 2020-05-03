@@ -1121,7 +1121,7 @@ public class Shipyard {
 			System.out.println("|===========================================================================================================|");
 			System.out.println("|   Races Available in the Shipyard:                                                  [S]how SSD Toggle     |");
 			System.out.println("|       [F]ederation       [O]rion         [A]ndromedan         Fra[X]                                      |");
-			System.out.println("|       [K]lingon          [G]orn          [W]YN                [ ]                   [M]onsters            |");
+			System.out.println("|       [K]lingon          [G]orn          [W]YN                [I]SC                 [M]onsters            |");
 			System.out.println("|       [R]omulan          [T]holian       [L]yran              [ ]                   [C]ivilian Ships      |");
 			System.out.println("|       K[Z]inti           [H]ydran        [S]eltorian          [ ]                   [Q] All Fleets        |");
 			System.out.println("|===========================================================================================================|");
@@ -1309,6 +1309,8 @@ public class Shipyard {
 			race = "Frax";
 		} else if (r.equalsIgnoreCase("S")) {
 			race = "Seltorian";
+		} else if (r.equalsIgnoreCase("I")) {
+			race = "ISC";
 		} else if (r.equalsIgnoreCase("C")) {
 			race = "Civilian";
 		} else if (r.equalsIgnoreCase("Q")) {
