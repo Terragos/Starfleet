@@ -7,12 +7,13 @@ public class Driver {
 
 	public final static boolean TESTING = false;
 	public static int labResearchAquired = 0;
+	public static int MonsterScenario = 0;
 	public static int numImpulses = 0;
 	public static Shipyard currentGameYard = new Shipyard("Current Game Shipyard");
 	public static Shipyard defaultYard = Shipyard.setupDefaultShipyard();
 	public static Scanner keyboard = new Scanner(System.in);
 
-	public static String[] labResearchRaceNames = {"Federation", "Klingon", "Romulan", "Kzinti", "Gorn", "Tholian", "Orion", "Hydran", "Lyran", "WYN", "Andromedan"};
+	public static String[] labResearchRaceNames = {"Federation", "Klingon", "Romulan", "Kzinti", "Gorn", "Tholian", "Orion", "Hydran", "Lyran", "WYN", "Andromedan", "Frax", "Seltorian"};
 	//public static int[] labResearchTotalPoints = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
 	public static LabResearch[] labResearches;
 	
@@ -562,7 +563,7 @@ public class Driver {
 		System.out.println("|                                  PRELOAD MENU:                                  |");
 		System.out.println("|---------------------------------------------------------------------------------|");
 		System.out.println("|  Monster Senarios:                              Other Ships:                    |");
-		System.out.println("|      1. The Planet Crusher       (SM1.0)           Fed-CC                       |");
+		System.out.println("|      1. The Planet Crusher       (SM1.0)           Fed-CC           Planet      |");
 		System.out.println("|      2. The Space Amoeba         (SM2.0)           Fed-CC                       |");
 		System.out.println("|      3. The Moray Eel of Space   (SM3.0)                                        |");
 		System.out.println("|      4. The Cosmic Cloud         (SM4.0)                                        |");
@@ -602,14 +603,22 @@ public class Driver {
 			int scenario = getNumber(1,200);
 		
 			if (scenario == 1) {
+				MonsterScenario = 1;
 				scenarioLoaded = true;
+
 				currentGameYard.addShipToShipyard(defaultYard.list[337]);				//  Planet Crusher
 				currentGameYard.list[0].speed = 6;
 				
-				currentGameYard.addShipToShipyard(defaultYard.list[3]);					//  Federation CC
+				currentGameYard.addShipToShipyard(defaultYard.list[354]);				//  Planet
 				currentGameYard.list[1].speed = DamageAllocation.rollDice(1, 10) + 1;
+				currentGameYard.list[1].speed = 0;
+				currentGameYard.list[1].name = "Sheboygen III";
+				
+				currentGameYard.addShipToShipyard(defaultYard.list[3]);					//  Federation CC
+				currentGameYard.list[2].speed = DamageAllocation.rollDice(1, 10) + 1;
 				
 			} else if (scenario == 2) {
+				MonsterScenario = 2;
 				scenarioLoaded = true;
 				currentGameYard.addShipToShipyard(defaultYard.list[338]);				//  Space Amoeba
 				currentGameYard.list[0].speed = 4;
@@ -618,26 +627,37 @@ public class Driver {
 				currentGameYard.list[1].speed = DamageAllocation.rollDice(1, 10) + 1;
 				
 			} else if (scenario == 3) {
+				MonsterScenario = 3;
 				scenarioLoaded = true;
 				currentGameYard.addShipToShipyard(defaultYard.list[339]);				//  Moray Eel of Space
 				currentGameYard.list[0].speed = 6;
 				
 			} else if (scenario == 4) {
+				MonsterScenario = 4;
 				scenarioLoaded = true;
 				currentGameYard.addShipToShipyard(defaultYard.list[340]);				//  Cosmic CLoud
 				currentGameYard.list[0].speed = 4;
 				
 			} else if (scenario == 5) {
+				MonsterScenario = 5;
 				scenarioLoaded = true;
 				currentGameYard.addShipToShipyard(defaultYard.list[341]);				//  Sunsnake
 				currentGameYard.list[0].speed = 3;
 				
 			} else if (scenario == 6) {
+				MonsterScenario = 6;
 				scenarioLoaded = true;
 				currentGameYard.addShipToShipyard(defaultYard.list[342]);				//  Mind Monster
 				currentGameYard.list[0].speed = 6;
-				
+
+				currentGameYard.addShipToShipyard(defaultYard.list[354]);				//  Planet
+				currentGameYard.list[1].speed = DamageAllocation.rollDice(1, 10) + 1;
+				currentGameYard.list[1].speed = 0;
+				currentGameYard.list[1].name = "Libraria IV";
+				currentGameYard.list[1].ssd[24].remaining = 75;
+
 			} else if (scenario == 8) {
+				MonsterScenario = 8;
 				scenarioLoaded = true;
 				currentGameYard.addShipToShipyard(defaultYard.list[347]);				//  Arastoz 1x
 				currentGameYard.list[0].speed = 14;
