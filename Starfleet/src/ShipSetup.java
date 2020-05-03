@@ -169,7 +169,7 @@ public class ShipSetup {
 		
 		for (int i = 1; i <= Driver.currentGameYard.numShips; i++) {
 
-			Starship ship = Driver.currentGameYard.list[i-1];
+			Starship ship = ((Starship) Driver.currentGameYard.list[i-1]);
 //			boolean hasSSD = ship.hasSSD;
 //			Part[] ssd = ship.ssd;
 //			Part sensor = ssd[22];
@@ -209,13 +209,14 @@ public class ShipSetup {
 					+ HexMin + "\t " + ship.breakDown + "\t" + locked);
 			
 			if(ship.hasSSD) {
-				System.out.println("\t" + ship.scannerNums[scannerIndex]);
+				System.out.print("\t" + ship.scannerNums[scannerIndex]);
 			}else {
-				System.out.println("\t- ");
+				System.out.print("\t- ");
 			}
 			if (ship.speed == 0) {
 				System.out.print("\t<--- Speed is ZERO");
 			}
+			System.out.println();
 		}
 
 	}
@@ -242,10 +243,10 @@ public class ShipSetup {
 			if(Driver.currentGameYard.list[i].hasSSD && Driver.currentGameYard.list[i].ssd[22].remaining > 0) {
 				//number = Driver.currentGameYard.list[i].ssd[22].numOfThisPart - Driver.currentGameYard.list[i].ssd[22].remaining;
 				die = DamageAllocation.rollDice(1,6);
-				int minNeededRoll = Driver.currentGameYard.list[i].sensorNums[Driver.currentGameYard.list[i].ssd[22].numOfThisPart - Driver.currentGameYard.list[i].ssd[22].remaining];
-				Driver.currentGameYard.list[i].lockedOn = false;
+				int minNeededRoll = ((Starship) Driver.currentGameYard.list[i]).sensorNums[((Starship) Driver.currentGameYard.list[i]).ssd[22].numOfThisPart - ((Starship) Driver.currentGameYard.list[i]).ssd[22].remaining];
+				((Starship) Driver.currentGameYard.list[i]).lockedOn = false;
 				if (die <= minNeededRoll) {
-					Driver.currentGameYard.list[i].lockedOn = true;
+					((Starship) Driver.currentGameYard.list[i]).lockedOn = true;
 				}
 			}
 		}
@@ -274,14 +275,57 @@ public class ShipSetup {
 		}
 	}
 	
+	public static void PrintCurrentSpecificRaceInGame(String printWhichRace, String printWhichShipType) {
+		System.out.println("     Name\tSpeed\t");
+		System.out.println();
+
+		if (printWhichRace.equalsIgnoreCase("ALL")) {
+			for (int i = 1, print = 1; i <= Driver.currentGameYard.numShips; i++) {
+	
+				String extraSpace = getExtraSpaces(i, 2);
+	
+				if (Driver.currentGameYard.list[i-1].name.length() <=3 ) {
+					Driver.currentGameYard.list[i-1].name = Driver.currentGameYard.list[i-1].name + "   ";
+				}
+				
+				if(Driver.currentGameYard.list[i-1].hasSSD) {
+					System.out.print(extraSpace + (print++) + ")  " + Driver.currentGameYard.list[i-1].name);
+					getExtraSpaces(i, 2);
+					System.out.print("\t " + extraSpace + Driver.currentGameYard.list[i-1].speed + "\t ");
+					System.out.println();
+				}
+			}
+		} else  {
+			for (int i = 1, print = 1; i <= Driver.currentGameYard.numShips; i++) {
+				
+				String extraSpace = getExtraSpaces(i, 2);
+	
+				if (Driver.currentGameYard.list[i-1].name.length() <=3 ) {
+					Driver.currentGameYard.list[i-1].name = Driver.currentGameYard.list[i-1].name + "   ";
+				}
+				
+				if(Driver.currentGameYard.list[i-1].race.equalsIgnoreCase(printWhichRace)) {
+					System.out.print(extraSpace + (print++) + ")  " + Driver.currentGameYard.list[i-1].name);
+					getExtraSpaces(i, 2);
+					System.out.print("\t " + extraSpace + Driver.currentGameYard.list[i-1].speed + "\t ");
+					System.out.println();
+				}
+			}
+		}
+	}
+
 	public static String getExtraSpaces (int num, int maxDigits) {
 
 		String extraSpace = "";
 		int digitCount = 0;
 		
-        while(num != 0) {
-            num /= 10;
-            ++digitCount;
+        if (num == 0) {
+        	digitCount = 1;
+        } else {
+        	while(num != 0) {
+        		num /= 10;
+        		++digitCount;
+        	}
         }
         for (int i = 1; i <= maxDigits-digitCount; i++) {
         	extraSpace = extraSpace + " ";
