@@ -6,58 +6,67 @@ import java.util.Scanner;
 public class Driver {
 
 	public final static boolean TESTING = true;
+	public static int labResearchAquired = 0;
 	public static int numImpulses = 0;
 	public static Shipyard currentGameYard = new Shipyard("Current Game Shipyard");
 	public static Shipyard defaultYard = Shipyard.setupDefaultShipyard();
 	public static Scanner keyboard = new Scanner(System.in);
 
+	public static String[] labResearchRaceNames = {"Federation", "Klingon", "Romulan", "Kzinti", "Gorn", "Tholian", "Orion", "Hydran", "Lyran", "WYN", "Andromedan"};
+	//public static int[] labResearchTotalPoints = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+	public static LabResearch[] labResearches;
+	
 	/* Main Method */
 	public static void main(String[] args) {
 
-//		for (int i = 1; i <= 100; i++) {
-//			System.out.print(i + ". Enter a number between 1 and 100: ");
-//			int number = getNumberNoCancel(1,100);
-//		}
-		
-		if (Driver.TESTING) {
-			System.out.println("|==============================================================================|");
-			System.out.println("|            HERE ARE SEVERAL TEST SHIPS THAT HAVE BEEN LOADED                 |");
-			System.out.println("|==============================================================================|");
-			System.out.println();
-
-			currentGameYard.addShipToShipyard(defaultYard.list[0]);
-			currentGameYard.list[0].speed = DamageAllocation.rollDice(1, 15) + 1;
-			currentGameYard.addShipToShipyard(defaultYard.list[3]);
-			currentGameYard.list[1].speed = DamageAllocation.rollDice(1, 10) + 1;
-			currentGameYard.addShipToShipyard(defaultYard.list[18]);
-			currentGameYard.list[2].speed = DamageAllocation.rollDice(1, 10) + 1;
-			currentGameYard.addShipToShipyard(defaultYard.list[54]);
-			currentGameYard.list[3].speed = DamageAllocation.rollDice(1, 15) + 1;
-			currentGameYard.addShipToShipyard(defaultYard.list[60]);
-			currentGameYard.list[4].speed = DamageAllocation.rollDice(1, 10) + 1;
-			currentGameYard.addShipToShipyard(defaultYard.list[65]);
-			currentGameYard.list[5].speed = DamageAllocation.rollDice(1, 10) + 1;
-			currentGameYard.addShipToShipyard(defaultYard.list[320]);
-			currentGameYard.list[6].speed = DamageAllocation.rollDice(1, 5) + 1;
-
-			ShipSetup.SortCurrentShipyard();
-			ShipSetup.PrintCurrentShipsInGame();
-			System.out.println();
-			System.out.println();
-
+		labResearches = new LabResearch[labResearchRaceNames.length];
+		for(int i = 0; i < labResearchRaceNames.length; i++) {
+			labResearches[i] = new LabResearch(labResearchRaceNames[i]);
 		}
-
+		
 		boolean cont = true;
-
-		System.out.println("|==============================================================================|");
-		System.out.println("|                         STAR FLEET BATTLES UTILITY                           |");
-		System.out.println("|==============================================================================|");
-		System.out.println("|              Java Code by Harrison Weese and D. Brian Weese                  |");
-		System.out.println("|==============================================================================|");
+		
+		System.out.println("|=================================================================================|");
+		System.out.println("|                          STAR FLEET BATTLES UTILITY                             |");
+		System.out.println("|---------------------------------------------------------------------------------|");
+		System.out.println("|               Java Code by Harrison Weese and D. Brian Weese                    |");
+		System.out.println("|=================================================================================|");
 		System.out.println();
-		System.out.print("Would you like to add ships [M]anually or from the [S]hipyard? [RETURN = Main Menu] ");
+		System.out.print("Would you like some pre-first turn reminders? ");
+		String reminder = getInput("YN");
+		
+		if (reminder.equalsIgnoreCase("Y")) {
+			System.out.println();
+			System.out.println("|=================================================================================|");
+			System.out.println("|                            PRE-FIRST TURN REMINDERS                             |");
+			System.out.println("|---------------------------------------------------------------------------------|");
+			System.out.println("|  ENERGIZING PHASERS:                                                            |");
+			System.out.println("|     Phasers must be energized for 1 point total before firing on turn 2.        |");
+			System.out.println("|                                                                                 |");
+			System.out.println("|  FIRE CONTROL SCANNERS:                                                         |");
+			System.out.println("|     Require only 1 point wach turn to operate sensors and sensors.              |");
+			System.out.println("|     If energy is not allocated, that ship may NOT fire this turn.               |");
+			System.out.println("|                                                                                 |");
+			System.out.println("|  BATTERIES:                                                                     |");
+			System.out.println("|     Assumed charged at the beginning of the game unlee the scenario says        |");
+			System.out.println("|         otherwise.                                                              |");
+			System.out.println("|                                                                                 |");
+			System.out.println("|  FRACTIONAL ENERGY POINTS:                                                      |");
+			System.out.println("|     Fractions of energy points may be combined over multiple systems.           |");
+			System.out.println("|     Unused energy can be stored in batteries, up to 1 point per battery,        |");
+			System.out.println("|         otherwise the energy is lost.                                           |");
+			System.out.println("|  SIDESLIP:                                                                      |");
+			System.out.println("|     Ships may \"sideslip\" at a \"slip\" mode of 1, meaning ships must move         |");
+			System.out.println("|         at least 1 hex forward before sideslipping again.                       |");
+			System.out.println("|                                                                                 |");
+			System.out.println("|=================================================================================|");
+		}
+		
+		System.out.println();
+		System.out.print("Would you like to add ships from the [S]hipyard or [P]reload a scenario? [RETURN = Main Menu] ");
+//		System.out.print("Would you like to add ships [M]anually or from the [S]hipyard or [P]reload a scenario? [RETURN = Main Menu] ");
 
-		String userInput2 = Driver.getInput("MS0");
+		String userInput2 = Driver.getInput("SP");
 
 		if (userInput2.equalsIgnoreCase("M")) {
 			boolean cont2 = true;
@@ -100,6 +109,8 @@ public class Driver {
 			}
 		} else if (userInput2.equalsIgnoreCase("S")) {
 			Driver.defaultYard.displayShipyardMenu(1);
+		} else if (userInput2.equalsIgnoreCase("P")) {
+			PreloadScenario();
 		}
 
 		cont = true;
@@ -114,12 +125,14 @@ public class Driver {
 			System.out.println("|            [D]amage Allocation Procedure                                 |");
 			System.out.println("|            [S]hipyard                                                    |");
 			System.out.println("|            [C]hange SSD Numbers (because of Program Crash)               |");
+			System.out.println("|            [P]reload Scenario                                            |");
 			System.out.println("|            [R]ules to Remember                                           |");
+			System.out.println("|            [Z] = Monster Scenario Lab & Damage Check                     |");
 			System.out.println("|==========================================================================|");
 			System.out.println("|                                [Q]uit                                    |");
 			System.out.println("|==========================================================================|");
 
-			String userInput = getInput("MIWDQSCR");
+			String userInput = getInput("MIWDQSCRZ");
 			String userInput3 = "";
 
 			int damageTotal = 0;
@@ -146,8 +159,12 @@ public class Driver {
 			} else if (userInput.equalsIgnoreCase("C")) {
 				// Allow user to ADD ships and tell how many systems left of each type
 				ModifyShipSystems();
+			} else if (userInput.equalsIgnoreCase("P")) {
+				PreloadScenario();
 			} else if (userInput.equalsIgnoreCase("R")) {
 				RulesToRemember();
+			} else if (userInput.equalsIgnoreCase("Z")) {
+				MonsterStuff.MonsterScenarioCheck();
 			} else if (userInput.equalsIgnoreCase("Q")) {
 				System.out.println("Exiting Program...");
 				break;
@@ -159,7 +176,7 @@ public class Driver {
 	}
 
 	public static void ModifyShipSystems() {
-		Scanner keyboard = new Scanner(System.in);
+//		Scanner keyboard = new Scanner(System.in);
 		boolean cont = true;
 
 		while (cont) {
@@ -209,22 +226,35 @@ public class Driver {
 						cont2 = false;
 						// break;
 					} else {
-						System.out.println();
-						System.out.println("Alternate Parts on SSDs include (Annex #7E):");
-						System.out.println("\tFlag Bridge = Security, Web, Displacement Device");
+//						System.out.println();
+//						System.out.println("Alternate Parts on SSDs include (Annex #7E):");
+//						System.out.println("\tFlag Bridge = Security, Web, Displacement Device");
+//						System.out.println(
+//								"\tTorpedo = Photon Torpedo, Disruptor Bolt, Plasma Torpedo, SFG, Fusion Beam, Tractor-Repulsor Beam");
+//						System.out.println("\tDrone = ADD, ESG, Hellbore, Plasmatic Pulsars, Power Absorbers");
+//						System.out.println("\tShuttle = Fighter, Mine Andormedan Hangar");
+//						System.out.println("\tCargo = Repair, Mine");
+//						System.out.println("\tFront/Aft Hull = Repair");
+//						System.out.println();
 						System.out.println(
-								"\tTorpedo = Photon Torpedo, Disruptor Bolt, Plasma Torpedo, SFG, Fusion Beam, Tractor-Repulsor Beam");
-						System.out.println("\tDrone = ADD, ESG, Hellbore, Plasmatic Pulsars, Power Absorbers");
-						System.out.println("\tShuttle = Fighter, Mine Andormedan Hangar");
-						System.out.println("\tCargo = Repair, Mine");
-						System.out.println("\tFront/Aft Hull = Repair");
-						System.out.println();
-						System.out.println(
-								"Please indicate how many boxes are left on the SSD \nfor the following systems (-1 = cancel):");
+								"Please indicate how many boxes are left on the SSD \nfor the following systems (RETURN to cancel):");
 
-						int cancel = 0;
+						int cancel = -1;
 						for (int numPart = 0; numPart <= 24; numPart++) {
-							System.out.print("\t" + currentGameYard.list[shipNumInput - 1].ssd[numPart].name + ": ");
+							if (((Starship) currentGameYard.list[shipNumInput - 1]).ssd[numPart].name == "Flag Bridge") {
+								System.out.println("Flag Bridge = Security, Web, Displacement Device");
+							} else if (((Starship) currentGameYard.list[shipNumInput - 1]).ssd[numPart].name == "Torpedo") {
+								System.out.println("Torpedo = Photon Torpedo, Disruptor Bolt, Plasma Torpedo, SFG, Fusion Beam, Tractor-Repulsor Beam");
+							} else if (((Starship) currentGameYard.list[shipNumInput - 1]).ssd[numPart].name == "Drone") {
+								System.out.println("Drone = ADD, ESG, Hellbore, Plasmatic Pulsars, Power Absorbers");
+							} else if (((Starship) currentGameYard.list[shipNumInput - 1]).ssd[numPart].name == "Shuttle") {
+								System.out.println("Shuttle = Fighter, Mine Andormedan Hangar");
+							} else if (((Starship) currentGameYard.list[shipNumInput - 1]).ssd[numPart].name == "Cargo") {
+								System.out.println("Cargo = Repair, Mine Rack");
+							} else if (((Starship) currentGameYard.list[shipNumInput - 1]).ssd[numPart].name.contains("Hull")) {
+								System.out.println("Front/Aft Hull = Repair");
+							}
+							System.out.print( "\t" + ((Starship) currentGameYard.list[shipNumInput - 1]).ssd[numPart].name + ": ");
 							dummyArray[numPart] = getNumber(0, 100);
 							if (dummyArray[numPart] == -1) {
 								System.out.println("Modification cancelled");
@@ -234,7 +264,7 @@ public class Driver {
 						}
 						if (cancel == 0) {
 							for (int numPart = 0; numPart <= 24; numPart++) {
-								currentGameYard.list[shipNumInput - 1].ssd[numPart].numOfThisPart = dummyArray[numPart];
+								((Starship)currentGameYard.list[shipNumInput - 1]).ssd[numPart].numOfThisPart = dummyArray[numPart];
 							}
 						}
 						System.out.println();
@@ -271,7 +301,8 @@ public class Driver {
 		System.out.println("|   [W]eapons Energy Costs (E0.0 & F0.0)    [S]hield Costs (D3.0)                 |");
 		System.out.println("|   [B]atteries (H7.0)                      [D]amage Control (D9.0)               |");
 		System.out.println("|   [H]igh Energy Turns (C6.0)              [A]nti-Drone & Drone (E5.0 & FD1.0)   |");
-		System.out.println("|   [R]epair Systems (G17.0)                                                      |");
+		System.out.println("|   [R]epair Systems (G17.0)                [P]robes (G5.0)                       |");
+		System.out.println("|   [T]actical Maneuvers (C5.0)             [L]ife Support  (B3.3)                |");
 		System.out.println("|=================================================================================|");
 		System.out.println("|                         RETURN to return to Main Menu                           |");
 		System.out.println("|=================================================================================|");
@@ -279,7 +310,7 @@ public class Driver {
 		System.out.print("What rule would you like to be reminded of? ");
 
 		while (cont) {
-			String userInput2 = Driver.getInput("RAWBSHD");
+			String userInput2 = Driver.getInput("RAWBSHDPTL");
 
 			if (userInput2.equalsIgnoreCase("W")) {
 				System.out.println("|=================================================================================|");
@@ -287,6 +318,7 @@ public class Driver {
 				System.out.println("|---------------------------------------------------------------------------------|");
 				System.out.println("| Rule:  TYPE:                   Energy Cost          Hold Over      Other:       |");
 				System.out.println("|                              (Cost per turn)          Cost                      |");
+				System.out.println("|---------------------------------------------------------------------------------|");
 				System.out.println("| E2.0   Phaser:                                                  1 to energize   |");
 				System.out.println("|          I, II                 1   Any Src             -        before the 1st  |");
 				System.out.println("|          III                  1/2  Any Src             -        turn used in    |");
@@ -329,7 +361,7 @@ public class Driver {
 				System.out.println("|    III      12         25         12          4          1        1             |");
 				System.out.println("|    IV        8          3         24          6          2        0             |");
 				System.out.println("|    I        12          2         24          6          2       1/2            |");
-				System.out.println("|                                                                                 |");
+				System.out.println("|---------------------------------------------------------------------------------|");
 				System.out.println("|  DRONE RACKS: Unless otherwise stated all drone racks are Standard \"A\"          |");
 				System.out.println("|                                                                                 |");
 				System.out.println("|  Rule: Type:         Capacity      Rate of Fire       Restrictions              |");
@@ -388,14 +420,14 @@ public class Driver {
 				System.out.println("|    Size Class 3 (Cruisers)           1 pt      +    1 pt                        |");
 				System.out.println("|    Size Class 4 (Destroyers)                 1 pt                               |");
 				System.out.println("|    Size Class 5 (P/F's)                      1 pt                               |");
-				System.out.println("|                                                                                 |");
+				System.out.println("|---------------------------------------------------------------------------------|");
 				System.out.println("|  GENERAL SHIELD REINFORCEMENT (GSR):                                            |");
 				System.out.println("|    Energy supplied / 2 = GSR available (round down)                             |");
 				System.out.println("|    Reinforce all shields and eliminated before Specific Reinforcement           |");
-				System.out.println("|                                                                                 |");
+				System.out.println("|---------------------------------------------------------------------------------|");
 				System.out.println("|  SPECIFIC SHIELD REINFORCEMENT:                                                 |");
 				System.out.println("|    Energy supplied \"adds\" to the number of SSD boxes for a specific shield    |");
-				System.out.println("|                                                                                 |");
+				System.out.println("|---------------------------------------------------------------------------------|");
 				System.out.println("|  NOTE: A shield that is down cannot be reinforced specifically, but GSR would   |");
 				System.out.println("|    still block fire coming from that direction.                                 |");
 				System.out.println("|=================================================================================|");
@@ -453,29 +485,258 @@ public class Driver {
 				System.out.println("|   Hull                  1  |  Plasma-S          15  |  Web                 6    |");
 				System.out.println("|   Impulse               5  |  Plasmatic Pulsar  15  |  Web Caster         15    |");
 				System.out.println("|=================================================================================|");
+			} else if (userInput2.equalsIgnoreCase("P")) {
+				System.out.println("|=================================================================================|");
+				System.out.println("|                                 PROBES (G5.0):                                  |");
+				System.out.println("|---------------------------------------------------------------------------------|");
+				System.out.println("|  Each SSD box is a probe launcher and contains 5 probes each                    |");
+				System.out.println("|  Each launchers can can launch 1 probe at a time                                |");
+				System.out.println("|---------------------------------------------------------------------------------|");
+				System.out.println("|  FOR INFORMATION: Automatic 20 points of information gained per probe           |");
+				System.out.println("|                   Maximum range = 5 hexes                                       |");
+				System.out.println("|                   Cost = 1+1 (hold cost = 1)                                    |");
+				System.out.println("|---------------------------------------------------------------------------------|");
+				System.out.println("|  AS A WEAPON: Only under extreme circumstances (G5.35)                          |");
+				System.out.println("|               Warhead strength of 8                                             |");
+				System.out.println("|               Cost = 2+2 (no holding over)                                      |");
+				System.out.println("|               Success only if 1d6 >= distance when fired                        |");
+				System.out.println("|=================================================================================|");
+			} else if (userInput2.equalsIgnoreCase("T")) {
+				System.out.println("|=================================================================================|");
+				System.out.println("|                            TACTICAL MANEUVERS (C5.0):                           |");
+				System.out.println("|---------------------------------------------------------------------------------|");
+				System.out.println("|  Defined as making a 60 degree turn in place.                                   |");
+				System.out.println("|  Performed on any impulse after the 1st impulse of the turn.                    |");
+				System.out.println("|---------------------------------------------------------------------------------|");
+				System.out.println("|  Sublight Tactical Maneuver:                                                    |");
+				System.out.println("|      Only 1 turn of this kind per turn.                                         |");
+				System.out.println("|      Cost is 1 energy from impulse only.                                        |");
+				System.out.println("|---------------------------------------------------------------------------------|");
+				System.out.println("|  Warp Tactical Maneuver:                                                        |");
+				System.out.println("|      Only 4 turn of this kind per turn.                                         |");
+				System.out.println("|      Cost is the same as movement cost, per maneuver.                           |");
+				System.out.println("|      Enter the number of manuevers as \"speed\" + 1 for Impulse Procedure         |");
+				System.out.println("|          purposes                                                               |");
+				System.out.println("|      At the scheduled time of movement/maneuver, the ship \"earns\" a             |");
+				System.out.println("|          maneuever point.                                                       |");
+				System.out.println("|      These points must be used before the next instance occurs in the           |");
+				System.out.println("|          Impulse Prodecure, or the maneuver is lost.                            |");
+				System.out.println("|=================================================================================|");
+			} else if (userInput2.equalsIgnoreCase("L")) {
+				System.out.println("|=================================================================================|");
+				System.out.println("|                               LIFE SUPPORT (B3.3):                              |");
+				System.out.println("|---------------------------------------------------------------------------------|");
+				System.out.println("|  LIFE SUPPORT:                                                                  |");
+				System.out.println("|     Energy must be allocated every turn according to size class:                |");
+				System.out.println("|         Size Class      1        2        3        4        5        Emer       |");
+				System.out.println("|         Energy Cost     3      1 1/2      1       1/2       0         0         |");
+				System.out.println("|---------------------------------------------------------------------------------|");
+				System.out.println("|  EMERGENCY LIFE SUPPORT:                                                        |");
+				System.out.println("|      May be used by ships that are crippled:                                    |");
+				System.out.println("|          90% or more warp engines destroyed                                     |");
+				System.out.println("|          50% or more of interior SSD boxes destroyed                            |");
+				System.out.println("|          Any Excess Damage taken                                                |");
+				System.out.println("|          All control boxes destroyed                                            |");
+				System.out.println("|          All weapons destroyed                                                  |");
+				System.out.println("|      Only 1 of these conditions need to be met for a ship to be considered      |");
+				System.out.println("|          crippled                                                               |");
+				System.out.println("|=================================================================================|");
 			} else if (userInput2.equalsIgnoreCase("")) {
 				// break
 				cont = false;
 			}
 			if (!(userInput2.equalsIgnoreCase(""))) {
-				PrintShortRulesMenu();
+				System.out.println("|  [W]eapons   [E]nergy Alloc    [H]ET      [D]amage Control      [A]DD & Drone   |");
+				System.out.println("|  [S]hields   [R]epair System   [P]robes   [T]actical Maneuvers  [L]ife Support  |");
+				System.out.println("|---------------------------------------------------------------------------------|");
+				System.out.println("|                            [RETURN] to the Main Menu                            |");
+				System.out.println("|=================================================================================|");
+				System.out.println();
+			}
+		}
+	}
+
+	public static void PreloadScenario() {
+		System.out.println();
+		System.out.println("|=================================================================================|");
+		System.out.println("|                                  PRELOAD MENU:                                  |");
+		System.out.println("|---------------------------------------------------------------------------------|");
+		System.out.println("|  Monster Senarios:                              Other Ships:                    |");
+		System.out.println("|      1. The Planet Crusher       (SM1.0)           Fed-CC                       |");
+		System.out.println("|      2. The Space Amoeba         (SM2.0)           Fed-CC                       |");
+		System.out.println("|      3. The Moray Eel of Space   (SM3.0)                                        |");
+		System.out.println("|      4. The Cosmic Cloud         (SM4.0)                                        |");
+		System.out.println("|      5. The Sunsnake             (SM5.0)                                        |");
+		System.out.println("|      6. The Mind Monster         (SM6.0)                                        |");
+		System.out.println("|      7. The Space Dragon         (SM7.0)                                        |");
+		System.out.println("|      8. The Combining of Arastoz (CL#2)            Fed-CC                       |");
+		System.out.println("|      9.                                                                         |");
+		System.out.println("|     10.                                                                         |");
+		System.out.println("|                                                                                 |");
+		System.out.println("|  2-PLAYER:                                                                      |");
+		System.out.println("|     21.                                                                         |");
+		System.out.println("|     22.                                                                         |");
+		System.out.println("|     23.                                                                         |");
+		System.out.println("|     24.                                                                         |");
+		System.out.println("|     25.                                                                         |");
+		System.out.println("|     26.                                                                         |");
+		System.out.println("|     27.                                                                         |");
+		System.out.println("|     28.                                                                         |");
+		System.out.println("|     29.                                                                         |");
+		System.out.println("|     30.                                                                         |");
+		if (Driver.TESTING) {
+			System.out.println("|                                                                                 |");
+			System.out.println("|  RANDOM SHIPS FOR TESTING:                                                      |");
+			System.out.println("|    101.  2 Federation, 2 Kligon, 2 Random Monsters                              |");
+			System.out.println("|    102.  1 Federation, 1 Gorn, Civilian Freighter                               |");
+			System.out.println("|    103.  1 Federation, 1 Klingon, 1 Hydran                                      |");
+			System.out.println("|    104.  1 Romulan, 1 Tholian, Civilian Freighter                               |");
+			System.out.println("|    105.  5 Random Monsters                                                      |");
+			System.out.println("|=================================================================================|");
+		}
+		
+		boolean scenarioLoaded = false; 
+		
+		while (scenarioLoaded == false) {
+			System.out.print("What scenario to load? ");
+			int scenario = getNumber(1,200);
+		
+			if (scenario == 1) {
+				scenarioLoaded = true;
+				currentGameYard.addShipToShipyard(defaultYard.list[337]);				//  Planet Crusher
+				currentGameYard.list[0].speed = 6;
+				
+				currentGameYard.addShipToShipyard(defaultYard.list[3]);					//  Federation CC
+				currentGameYard.list[1].speed = DamageAllocation.rollDice(1, 10) + 1;
+				
+			} else if (scenario == 2) {
+				scenarioLoaded = true;
+				currentGameYard.addShipToShipyard(defaultYard.list[338]);				//  Space Amoeba
+				currentGameYard.list[0].speed = 4;
+				
+				currentGameYard.addShipToShipyard(defaultYard.list[3]);					//  Federation CC
+				currentGameYard.list[1].speed = DamageAllocation.rollDice(1, 10) + 1;
+				
+			} else if (scenario == 3) {
+				scenarioLoaded = true;
+				currentGameYard.addShipToShipyard(defaultYard.list[339]);				//  Moray Eel of Space
+				currentGameYard.list[0].speed = 6;
+				
+			} else if (scenario == 4) {
+				scenarioLoaded = true;
+				currentGameYard.addShipToShipyard(defaultYard.list[340]);				//  Cosmic CLoud
+				currentGameYard.list[0].speed = 4;
+				
+			} else if (scenario == 5) {
+				scenarioLoaded = true;
+				currentGameYard.addShipToShipyard(defaultYard.list[341]);				//  Sunsnake
+				currentGameYard.list[0].speed = 3;
+				
+			} else if (scenario == 6) {
+				scenarioLoaded = true;
+				currentGameYard.addShipToShipyard(defaultYard.list[342]);				//  Mind Monster
+				currentGameYard.list[0].speed = 6;
+				
+			} else if (scenario == 8) {
+				scenarioLoaded = true;
+				currentGameYard.addShipToShipyard(defaultYard.list[347]);				//  Arastoz 1x
+				currentGameYard.list[0].speed = 14;
+				currentGameYard.list[0].name = "Arastoz A";
+				
+				currentGameYard.addShipToShipyard(defaultYard.list[347]);				//  Arastoz 1x
+				currentGameYard.list[1].speed = 14;
+				currentGameYard.list[1].name = "Arastoz B";
+				
+				currentGameYard.addShipToShipyard(defaultYard.list[347]);				//  Arastoz 1x
+				currentGameYard.list[2].speed = 14;
+				currentGameYard.list[2].name = "Arastoz C";
+				
+				currentGameYard.addShipToShipyard(defaultYard.list[347]);				//  Arastoz 1x
+				currentGameYard.list[3].speed = 14;
+				currentGameYard.list[3].name = "Arastoz D";
+				
+				currentGameYard.addShipToShipyard(defaultYard.list[3]);					//  Federation CC
+				currentGameYard.list[4].speed = DamageAllocation.rollDice(1, 5) + 1;
+				
+			} else if (scenario == 101) {
+				scenarioLoaded = true;
+				currentGameYard.addShipToShipyard(defaultYard.list[0]);					//  Federation DN
+				currentGameYard.list[0].speed = DamageAllocation.rollDice(1, 10) + 1;
+				
+				currentGameYard.addShipToShipyard(defaultYard.list[3]);					//  Federation CC
+				currentGameYard.list[1].speed = DamageAllocation.rollDice(1, 10) + 1;
+				
+				currentGameYard.addShipToShipyard(defaultYard.list[54]);				//  Klingon B10
+				currentGameYard.list[2].speed = DamageAllocation.rollDice(1, 10) + 1;
+				
+				currentGameYard.addShipToShipyard(defaultYard.list[65]);				//  Klingon D7C
+				currentGameYard.list[3].speed = DamageAllocation.rollDice(1, 10) + 1;
+				
+				currentGameYard.addShipToShipyard(defaultYard.list[336 + DamageAllocation.rollDice(1, 6)]);				//  Random Monster
+				currentGameYard.list[4].speed = DamageAllocation.rollDice(1, 6);
+				
+				currentGameYard.addShipToShipyard(defaultYard.list[336 + DamageAllocation.rollDice(1, 6)]);				//  Random Monster
+				currentGameYard.list[5].speed = DamageAllocation.rollDice(1, 6);
+				
+			} else if (scenario == 102) {
+				scenarioLoaded = true;
+				currentGameYard.addShipToShipyard(defaultYard.list[18]);				//  Federation NCL
+				currentGameYard.list[0].speed = DamageAllocation.rollDice(1, 10) + 1;
+				
+				currentGameYard.addShipToShipyard(defaultYard.list[194]);				//  Gorn CC
+				currentGameYard.list[1].speed = DamageAllocation.rollDice(1, 10) + 1;
+				
+				currentGameYard.addShipToShipyard(defaultYard.list[320]);				//  Civilian Freighter Large
+				currentGameYard.list[2].speed = DamageAllocation.rollDice(1, 5) + 1;
+				
+			} else if (scenario == 103) {
+				scenarioLoaded = true;
+				currentGameYard.addShipToShipyard(defaultYard.list[3]);					//  Federation CC
+				currentGameYard.list[0].speed = DamageAllocation.rollDice(1, 10) + 1;
+				
+				currentGameYard.addShipToShipyard(defaultYard.list[65]);				//  Klingon D7C
+				currentGameYard.list[1].speed = DamageAllocation.rollDice(1, 10) + 1;
+				
+				currentGameYard.addShipToShipyard(defaultYard.list[256]);				//  Hydran CVA
+				currentGameYard.list[2].speed = DamageAllocation.rollDice(1, 10) + 1;
+				
+			} else if (scenario == 104) {
+				scenarioLoaded = true;
+				currentGameYard.addShipToShipyard(defaultYard.list[228]);				//  Tholian DD
+				currentGameYard.list[0].speed = DamageAllocation.rollDice(1, 10) + 1;
+				
+				currentGameYard.addShipToShipyard(defaultYard.list[121]);				//  Romulan SpH-A
+				currentGameYard.list[1].speed = DamageAllocation.rollDice(1, 10) + 1;
+				
+				currentGameYard.addShipToShipyard(defaultYard.list[320]);				//  Civilian Freighter Large
+				currentGameYard.list[2].speed = DamageAllocation.rollDice(1, 5) + 1;
+			} else if (scenario == 105) {
+				scenarioLoaded = true;
+				int numMonsters = DamageAllocation.rollDice(1, 3)+2;
+				for (int i = 0; i <= numMonsters-1; i++) {
+					int randMonster = DamageAllocation.rollDice(1, 8);
+					if (randMonster > 6) {
+						randMonster = randMonster + 4;
+					}
+					currentGameYard.addShipToShipyard(defaultYard.list[336 + randMonster]);				//  Tholian DD
+					currentGameYard.list[i].speed = DamageAllocation.rollDice(1, 10) + 1;
+					
+				}
 			}
 		}
 
-	}
-
-	public static void PrintShortRulesMenu() {
-		System.out.println("|   [W]eapons   [E]nergy Alloc   [H]ET   [D]amage Control   [A]DD & Drone         |");
-		System.out.println("|   [S]hields   [R]epair System   [ ]         [ ]           [RETURN]              |");
-		System.out.println("|=================================================================================|");
+		System.out.println();
+		ShipSetup.SortCurrentShipyard();
+		ShipSetup.PrintCurrentShipsInGame();
 		System.out.println();
 	}
-
+	
+	
 	// GET LETTER AS INPUT THAT IS IN PASSED STRING
 	public static String getInput(String word) {
-		Scanner keyboard = new Scanner(System.in);
+//		Scanner keyboard = new Scanner(System.in);
 
-		boolean cont = true;
+//		boolean cont = true;
 
 		String inputLetter = "";
 		int location = -2;
@@ -497,9 +758,9 @@ public class Driver {
 
 	// GET LETTER AS INPUT THAT IS IN PASSED STRING
 	public static String getInputNoCancel(String word) {
-		Scanner keyboard = new Scanner(System.in);
+//		Scanner keyboard = new Scanner(System.in);
 
-		boolean cont = true;
+//		boolean cont = true;
 
 		String inputLetter = "";
 		int location = -1;
@@ -521,7 +782,7 @@ public class Driver {
 
 	// GET NUMBER AS INPUT THAT IS BETWEEN PASSED SMALL/BIG
 	public static int getNumber(int small, int big) {
-		Scanner keyboard = new Scanner(System.in);
+//		Scanner keyboard = new Scanner(System.in);
 
 		boolean cont = true;
 		int input = 0;
@@ -553,9 +814,9 @@ public class Driver {
 	}
 
 	public static int getNumberNoCancel(int small, int big) {
-		Scanner keyboard = new Scanner(System.in);
+//		Scanner keyboard = new Scanner(System.in);
 
-		boolean cont = true;
+//		boolean cont = true;
 		int input = -1;
 		String userInput = "";
 
