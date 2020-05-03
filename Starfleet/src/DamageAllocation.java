@@ -58,7 +58,8 @@ public class DamageAllocation {
 		System.out.println("|==========================================================================|");
 		
 		ShipSetup.SortCurrentShipyard();														// Always SORT ships before printing to screen
-		ShipSetup.PrintCurrentShipsInGameThatHaveSSD();
+		ShipSetup.PrintCurrentNonMonstersInGameThatHaveSSD();
+//		ShipSetup.PrintCurrentShipsInGameThatHaveSSD();
 		System.out.println();
 		
 		System.out.print("Deal damage to which ship? [RETURN to cancel] ");
@@ -71,6 +72,14 @@ public class DamageAllocation {
 		}
 		
 		currentShip = Driver.currentGameYard.list[input-1];
+		
+		if(currentShip.race == "Monster") {				//  If defending object is a monster then pass through damage to "monster damage" method
+			System.out.println();
+			System.out.println("***  In the future hit [M] to deal damage to a monster from a ship.  ***");
+			System.out.println();
+			MonsterStuff.MonsterDamageFromShip(num);  
+			return;
+		}
 		
 		int totalDamage = 0;
 		
@@ -245,14 +254,17 @@ public class DamageAllocation {
 					currentShip.ssd[number].remaining = 0;		//  to user hit "N" to "destroyed" all of those systems with that name.
 					damageCount--;
 				}
+				if (damageCount + armorDamage + allShieldDamage == 20) { 
+					RollForCriticalHit();
+				}
 			}
 			
-			if (damageCount + armorDamage + allShieldDamage == 20) { 
-				RollForCriticalHit();
-			}
 		}
 			
 		System.out.println();
+		System.out.println("Damage Allocation Finished.  [C]ontinue");
+		String userInput = Driver.getInputNoCancel("Cc");
+
 		if (num == -1) {
 			System.out.println("Press RETURN to return to Main Menu");
 		} else {
