@@ -9,11 +9,10 @@ public class WeaponsDamage {
 	public static void WeaponsDam (int impulseNumber) {   //  If yes > 0 then in the middle of an Impulse Movement Procedure
 		int totalDamage = 0;
 		
-		System.out.println();
-
 		boolean reset = false;
 		while (!reset) {
 
+			System.out.println();
 			ShipSetup.SortCurrentShipyard();														// Always SORT ships before printing to screen
 			ShipSetup.PrintCurrentNonMonstersInGameThatHaveSSD();
 //		ShipSetup.PrintCurrentShipsInGameThatHaveSSD();
@@ -25,6 +24,8 @@ public class WeaponsDamage {
 			shipNumFiring = Driver.getNumber(1, Driver.currentGameYard.numStarships);				//  Get a new input
 	
 			if(shipNumFiring == -1) {
+				System.out.println();
+				PhaseCalculation.PrintImpulseHeader();
 				return;
 			}
 			
@@ -206,7 +207,8 @@ public class WeaponsDamage {
 				} else if(weaponInput.equalsIgnoreCase("M")) {
 					System.out.print("Deal damage to a Monster\t");
 					totalDamage = MonsterStuff.MonsterDamageFromShip(totalDamage);
-	//				cont = false;
+					reset = false;
+					cont = false;
 					
 				} else if(weaponInput.equalsIgnoreCase("A")) {
 					System.out.print("Gathering Lab Research Data\t");
@@ -215,12 +217,11 @@ public class WeaponsDamage {
 				} else if(weaponInput.equalsIgnoreCase("I")) {
 					System.out.println();
 					PhaseCalculation.PrintImpulseHeader();
-
-					reset = false;
+					reset = true;
 //					break;
 				
 				} else if(weaponInput.equalsIgnoreCase("R")) {
-					reset = false;
+					reset = true;
 //					break;
 					
 				}
