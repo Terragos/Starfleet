@@ -1,7 +1,9 @@
+import org.omg.PortableInterceptor.SYSTEM_EXCEPTION;
 
 public class MonsterStuff {
 
 	public static Starship currentMonster;
+	public static Starship currentPLanet;
 
 	public static int labResearch[][] = {{ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9,10},   //  distance
 										 {10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 0},   //  die roll 1 
@@ -171,6 +173,19 @@ public class MonsterStuff {
 		return damage;
 	}
 							
+	public static int MindMonsterAttacksPlanet() {			//  Returns mind wipe data as damage to planet
+		int damage = 0;
+		int die = DamageAllocation.rollDice(1,6);
+		System.out.print("Planet's closest distance to Mind Monster this turn [RETURN to cancel]: ");
+		int dist = Driver.getNumber(0, 10);
+		if (dist >=0 ) {
+			damage = mindWipe[die][dist];
+			System.out.println("Mind Monster mind wipes " + damage + " crew units.");
+		}
+		
+		return damage;
+	}
+
 	public static int SpaceDragon() {
 		int damage = 0;
 		int die = DamageAllocation.rollDice(1,6);
@@ -379,7 +394,7 @@ public class MonsterStuff {
 			System.out.println(currentMonster.name + " takes " + damageToMonster + " damage points.");
 
 			currentMonster.ssd[24].remaining = currentMonster.ssd[24].remaining - damageToMonster;
-			System.out.println(currentMonster.name + " has " + currentMonster.ssd[24].remaining + " remaning health points.");
+			System.out.println(currentMonster.name + " has " + currentMonster.ssd[24].remaining + " remaining health points.");
 			if (currentMonster.ssd[24].remaining <= 0) {
 				System.out.println(currentMonster.name + " has been defeated.");
 				Driver.currentGameYard.removeShipFromShipyard(whichMonster);
@@ -389,6 +404,46 @@ public class MonsterStuff {
 		return damageToMonster;
 	}
 	
+	public static int MonsterAttacksPlanet(int damageToPlanet) {
+		int whichPlanet = -5;
+		
+		while (whichPlanet < 0) {
+			System.out.println();
+			
+			//  Print Current Planets In Game
+			System.out.println("\tPlanet\tHit Points");
+			System.out.println("\tName\tRemaining");
+			System.out.println();
+			for (int p = 0; p <= Driver.currentGameYard.numShips; p++) {
+				if (Driver.currentGameYard.list[p].shipType == "Planet") {
+					System.out.println(" " + p + "\t" + Driver.currentGameYard.list[p].name + "\t" + Driver.currentGameYard.list[p].ssd[24].remaining);
+				}
+			}
+			
+			
+			System.out.println();
+			System.out.print("Which planet to deal damage to? [RETURN to cancel] ");
+			whichPlanet = -5;
+
+			whichPlanet = Driver.getNumber(1, Driver.currentGameYard.numShips);
+
+			if(whichPlanet == -1) {
+				break;
+			}
+			
+			System.out.println(Driver.currentGameYard.list[whichPlanet].name + " takes " + damageToPlanet + " damage points.");
+
+			Driver.currentGameYard.list[whichPlanet].ssd[24].remaining = Driver.currentGameYard.list[whichPlanet].ssd[24].remaining - damageToPlanet;
+			System.out.println(Driver.currentGameYard.list[whichPlanet].name + " has " + Driver.currentGameYard.list[whichPlanet].ssd[24].remaining + " remaining health points.");
+			if (Driver.currentGameYard.list[whichPlanet].ssd[24].remaining <= 0) {
+				System.out.println(Driver.currentGameYard.list[whichPlanet].name + " has been destroyed.  Gave Over!");
+				Driver.currentGameYard.removeShipFromShipyard(whichPlanet);
+			}
+			damageToPlanet = 0;
+		}
+		return damageToPlanet;
+	}
+
 	public static void MonsterScenarioCheck() {
 		System.out.println("==============================");
 		System.out.println("Monster Name\tHealth");
@@ -461,9 +516,15 @@ public class MonsterStuff {
 			}
 			suffix = "";
 		}
-
+		if (count != 0) {
+			for (int i = 1; i <= 5-count; i++) {
+				System.out.print("|               ");
+			}
+			System.out.println("|");
+		}
 		
 		System.out.println("|===============================================================================|");
+		System.out.println();
 		System.out.println("     Ship\tShip\t");
 		System.out.println("     Name\tSpeed\t");
 		System.out.println();
@@ -477,7 +538,7 @@ public class MonsterStuff {
 				Driver.currentGameYard.list[i-1].name = Driver.currentGameYard.list[i-1].name + "   ";
 			}
 			
-			if(Driver.currentGameYard.list[i-1].hasSSD && Driver.currentGameYard.list[i-1].race != "Monster") {
+			if(Driver.currentGameYard.list[i-1].hasSSD && Driver.currentGameYard.list[i-1].race != "Monster" & Driver.currentGameYard.list[i-1].race != "Other") {
 				System.out.print(extraSpace + i + ")  " + Driver.currentGameYard.list[i-1].name);
 				ShipSetup.getExtraSpaces(i, 2);
 				System.out.print("\t " + extraSpace + Driver.currentGameYard.list[i-1].speed + "\t ");
