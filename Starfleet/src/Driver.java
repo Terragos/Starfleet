@@ -5,7 +5,7 @@ import java.util.Scanner;
 
 public class Driver {
 
-	public final static boolean TESTING = true;
+	public final static boolean TESTING = false;
 	public static int labResearchAquired = 0;
 	public static int numImpulses = 0;
 	public static Shipyard currentGameYard = new Shipyard("Current Game Shipyard");
@@ -584,7 +584,7 @@ public class Driver {
 		System.out.println("|     28.                                                                         |");
 		System.out.println("|     29.                                                                         |");
 		System.out.println("|     30.                                                                         |");
-		if (Driver.TESTING) {
+//		if (Driver.TESTING) {
 			System.out.println("|                                                                                 |");
 			System.out.println("|  RANDOM SHIPS FOR TESTING:                                                      |");
 			System.out.println("|    101.  2 Federation, 2 Kligon, 2 Random Monsters                              |");
@@ -593,7 +593,7 @@ public class Driver {
 			System.out.println("|    104.  1 Romulan, 1 Tholian, Civilian Freighter                               |");
 			System.out.println("|    105.  5 Random Monsters                                                      |");
 			System.out.println("|=================================================================================|");
-		}
+//		}
 		
 		boolean scenarioLoaded = false; 
 		
@@ -643,15 +643,15 @@ public class Driver {
 				currentGameYard.list[0].speed = 14;
 				currentGameYard.list[0].name = "Arastoz A";
 				
-				currentGameYard.addShipToShipyard(defaultYard.list[347]);				//  Arastoz 1x
+				currentGameYard.addShipToShipyard(defaultYard.list[348]);				//  Arastoz 1x
 				currentGameYard.list[1].speed = 14;
 				currentGameYard.list[1].name = "Arastoz B";
 				
-				currentGameYard.addShipToShipyard(defaultYard.list[347]);				//  Arastoz 1x
+				currentGameYard.addShipToShipyard(defaultYard.list[349]);				//  Arastoz 1x
 				currentGameYard.list[2].speed = 14;
 				currentGameYard.list[2].name = "Arastoz C";
 				
-				currentGameYard.addShipToShipyard(defaultYard.list[347]);				//  Arastoz 1x
+				currentGameYard.addShipToShipyard(defaultYard.list[350]);				//  Arastoz 1x
 				currentGameYard.list[3].speed = 14;
 				currentGameYard.list[3].name = "Arastoz D";
 				
@@ -714,7 +714,7 @@ public class Driver {
 				scenarioLoaded = true;
 				int numMonsters = DamageAllocation.rollDice(1, 3)+2;
 				for (int i = 0; i <= numMonsters-1; i++) {
-					int randMonster = DamageAllocation.rollDice(1, 8);
+					int randMonster = DamageAllocation.rollDice(1, 7);
 					if (randMonster > 6) {
 						randMonster = randMonster + 4;
 					}
@@ -742,10 +742,8 @@ public class Driver {
 		int location = -2;
 		while (location < 0) {
 			inputLetter = keyboard.nextLine().toUpperCase();
-			location = word.indexOf(inputLetter); // Getting position of user's input of the "word" string passed
-													// through
-			if (inputLetter.equalsIgnoreCase("AA") || inputLetter.equalsIgnoreCase("AAA")
-					|| inputLetter.equalsIgnoreCase("AAAA")) {
+			location = word.indexOf(inputLetter); // Getting position of user's input of the "word" string passed through
+			if (inputLetter.equalsIgnoreCase("AA") || inputLetter.equalsIgnoreCase("AAA") || inputLetter.equalsIgnoreCase("AAAA")) {
 				location = 0;
 			} else if (location == -1) { // location = -1 if character is not found in "word" string
 				for (int d = 0; d <= word.length() - 1; d++) {
@@ -766,10 +764,8 @@ public class Driver {
 		int location = -1;
 		while (location < 0 || inputLetter.contentEquals("")) {
 			inputLetter = keyboard.nextLine().toUpperCase();
-			location = word.indexOf(inputLetter); // Getting position of user's input of the "word" string passed
-													// through
-			if (inputLetter.equalsIgnoreCase("AA") || inputLetter.equalsIgnoreCase("AAA")
-					|| inputLetter.equalsIgnoreCase("AAAA")) {
+			location = word.indexOf(inputLetter); // Getting position of user's input of the "word" string passed through
+			if (inputLetter.equalsIgnoreCase("AA") || inputLetter.equalsIgnoreCase("AAA") || inputLetter.equalsIgnoreCase("AAAA")) {
 				location = 0;
 			} else if (location == -1 || inputLetter.contentEquals("")) { // location = -1 if character is not found in "word" string
 				for (int d = 0; d <= word.length() - 1; d++) {
