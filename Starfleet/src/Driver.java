@@ -13,7 +13,7 @@ public class Driver {
 	public static Shipyard defaultYard = Shipyard.setupDefaultShipyard();
 	public static Scanner keyboard = new Scanner(System.in);
 
-	public static String[] labResearchRaceNames = {"Federation", "Klingon", "Romulan", "Kzinti", "Gorn", "Tholian", "Orion", "Hydran", "Lyran", "WYN", "Andromedan", "Frax", "Seltorian"};
+	public static String[] labResearchRaceNames = {"Federation", "Klingon", "Romulan", "Kzinti", "Gorn", "Tholian", "Orion", "Hydran", "Lyran", "WYN", "Andromedan", "Frax", "Seltorian, ISC"};
 	//public static int[] labResearchTotalPoints = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
 	public static LabResearch[] labResearches;
 	
