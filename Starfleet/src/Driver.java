@@ -125,6 +125,7 @@ public class Driver {
 			System.out.println("|            [W]eapon Damage Procedure                                     |");
 			System.out.println("|            [D]amage Allocation Procedure                                 |");
 			System.out.println("|            [S]hipyard                                                    |");
+			System.out.println("|            [F]ilter Shipyard by BPV, etc                                 |");
 			System.out.println("|            [C]hange SSD Numbers (because of Program Crash)               |");
 			System.out.println("|            [P]reload Scenario                                            |");
 			System.out.println("|            [R]ules to Remember                                           |");
@@ -133,7 +134,7 @@ public class Driver {
 			System.out.println("|                                [Q]uit                                    |");
 			System.out.println("|==========================================================================|");
 
-			String userInput = getInput("MIWDQSCRZ");
+			String userInput = getInput("MIWDFQSCRZ");
 			String userInput3 = "";
 
 			int damageTotal = 0;
@@ -164,6 +165,8 @@ public class Driver {
 				PreloadScenario();
 			} else if (userInput.equalsIgnoreCase("R")) {
 				RulesToRemember();
+			} else if (userInput.equalsIgnoreCase("F")) {
+				FilterShipyard();
 			} else if (userInput.equalsIgnoreCase("Z")) {
 				MonsterStuff.MonsterScenarioCheck();
 			} else if (userInput.equalsIgnoreCase("Q")) {
@@ -174,6 +177,75 @@ public class Driver {
 			System.out.println();
 			System.out.println();
 		}
+	}
+	
+	public static void FilterShipyard() {
+		System.out.println();
+		System.out.println("=============================================================================================================");
+		System.out.println("                                           FILTER SHIPYARD BY BPV                                            ");
+		System.out.println("=============================================================================================================");
+		System.out.print("[E]conomic or [C]ombat value? ");
+		String economicCombat = getInput ("EC");
+		System.out.print("Min BPV: ");
+		int minBPV = getNumber(0,500);
+		System.out.print("Max BPV: ");
+		int maxBPV = getNumber(0,500);
+
+		String hasSSD = "";
+		System.out.println("=============================================================================================================");
+		System.out.println("ShpYrd\tRace\tShip\tCrew\tBrdg\tBPV\tBreak\tMove\tSpare\tSize\tTurn\tRule\tYear in");
+		System.out.println("Number\t\tType\tUnits\tParties\t\tDown\tCost\tShtls\tClass\tMode\tNumber\tService");
+		System.out.println("-------------------------------------------------------------------------------------------------------------");
+		
+		for (int i = 0; i < defaultYard.numShips; i++) {
+			
+			int adjust = 0;
+			if (defaultYard.list[i].race == "Romulan") {
+				adjust = 1;
+			} else {
+				adjust = 0;
+			}
+			
+			int actualBPV = 0;
+			String convertedBPV = "";
+			String thisBPV = defaultYard.list[i].BPV;
+			if (economicCombat.equalsIgnoreCase("E")) {
+				if (thisBPV.contains("-")) {
+					convertedBPV = "0";
+					actualBPV = Integer.parseInt(convertedBPV);
+				} else if (thisBPV.contains("/")) {
+					int slashLocation = thisBPV.indexOf("/");
+					convertedBPV = defaultYard.list[i].BPV.substring(0, slashLocation);
+					actualBPV = Integer.parseInt(convertedBPV);
+				} else {
+					convertedBPV = defaultYard.list[i].BPV.substring(0, defaultYard.list[i].BPV.length()-adjust);
+					actualBPV = Integer.parseInt(convertedBPV);
+				}
+			} else if (economicCombat.equalsIgnoreCase("C")) {
+				if (thisBPV.contains("-")) {
+					convertedBPV = "0";
+					actualBPV = Integer.parseInt(convertedBPV);
+				} else if (thisBPV.contains("/")) {
+					int slashLocation = thisBPV.indexOf("/");
+					convertedBPV = defaultYard.list[i].BPV.substring(slashLocation+1, defaultYard.list[i].BPV.length()-adjust);
+					actualBPV = Integer.parseInt(convertedBPV);
+				} else {
+					convertedBPV = defaultYard.list[i].BPV.substring(0, defaultYard.list[i].BPV.length()-adjust);
+					actualBPV = Integer.parseInt(convertedBPV);
+				}
+			}
+			
+			hasSSD = "";
+			String extraSpaces = ShipSetup.getExtraSpaces(i, 3);
+			if (defaultYard.list[i].hasSSD == true) {
+				hasSSD = " *";
+			}
+			if (actualBPV >= minBPV && actualBPV <= maxBPV) {
+				System.out.print(extraSpaces + i + ")" + hasSSD + "\t" + defaultYard.list[i].toString());
+				System.out.println();
+			}
+		}
+		System.out.println("=============================================================================================================");
 	}
 
 	public static void ModifyShipSystems() {
@@ -238,24 +310,24 @@ public class Driver {
 //						System.out.println("\tFront/Aft Hull = Repair");
 //						System.out.println();
 						System.out.println(
-								"Please indicate how many boxes are left on the SSD \nfor the following systems (RETURN to cancel):");
+								"Please indicate how many boxes are left on the SSD for the following systems [RETURN to cancel]:");
 
 						int cancel = -1;
 						for (int numPart = 0; numPart <= 24; numPart++) {
-							if (((Starship) currentGameYard.list[shipNumInput - 1]).ssd[numPart].name == "Flag Bridge") {
+							if (currentGameYard.list[shipNumInput - 1].ssd[numPart].name == "Flag Bridge") {
 								System.out.println("Flag Bridge = Security, Web, Displacement Device");
-							} else if (((Starship) currentGameYard.list[shipNumInput - 1]).ssd[numPart].name == "Torpedo") {
+							} else if (currentGameYard.list[shipNumInput - 1].ssd[numPart].name == "Torpedo") {
 								System.out.println("Torpedo = Photon Torpedo, Disruptor Bolt, Plasma Torpedo, SFG, Fusion Beam, Tractor-Repulsor Beam");
-							} else if (((Starship) currentGameYard.list[shipNumInput - 1]).ssd[numPart].name == "Drone") {
+							} else if (currentGameYard.list[shipNumInput - 1].ssd[numPart].name == "Drone") {
 								System.out.println("Drone = ADD, ESG, Hellbore, Plasmatic Pulsars, Power Absorbers");
-							} else if (((Starship) currentGameYard.list[shipNumInput - 1]).ssd[numPart].name == "Shuttle") {
+							} else if (currentGameYard.list[shipNumInput - 1].ssd[numPart].name == "Shuttle") {
 								System.out.println("Shuttle = Fighter, Mine Andormedan Hangar");
-							} else if (((Starship) currentGameYard.list[shipNumInput - 1]).ssd[numPart].name == "Cargo") {
+							} else if (currentGameYard.list[shipNumInput - 1].ssd[numPart].name == "Cargo") {
 								System.out.println("Cargo = Repair, Mine Rack");
-							} else if (((Starship) currentGameYard.list[shipNumInput - 1]).ssd[numPart].name.contains("Hull")) {
+							} else if (currentGameYard.list[shipNumInput - 1].ssd[numPart].name.contains("Hull")) {
 								System.out.println("Front/Aft Hull = Repair");
 							}
-							System.out.print( "\t" + ((Starship) currentGameYard.list[shipNumInput - 1]).ssd[numPart].name + ": ");
+							System.out.print( "\t" + currentGameYard.list[shipNumInput - 1].ssd[numPart].name + ": ");
 							dummyArray[numPart] = getNumber(0, 100);
 							if (dummyArray[numPart] == -1) {
 								System.out.println("Modification cancelled");
@@ -265,7 +337,7 @@ public class Driver {
 						}
 						if (cancel == 0) {
 							for (int numPart = 0; numPart <= 24; numPart++) {
-								((Starship)currentGameYard.list[shipNumInput - 1]).ssd[numPart].numOfThisPart = dummyArray[numPart];
+								currentGameYard.list[shipNumInput - 1].ssd[numPart].numOfThisPart = dummyArray[numPart];
 							}
 						}
 						System.out.println();
@@ -565,11 +637,11 @@ public class Driver {
 		System.out.println("|  Monster Senarios:                              Other Ships:                    |");
 		System.out.println("|      1. The Planet Crusher       (SM1.0)           Fed-CC           Planet      |");
 		System.out.println("|      2. The Space Amoeba         (SM2.0)           Fed-CC                       |");
-		System.out.println("|      3. The Moray Eel of Space   (SM3.0)                                        |");
-		System.out.println("|      4. The Cosmic Cloud         (SM4.0)                                        |");
-		System.out.println("|      5. The Sunsnake             (SM5.0)                                        |");
-		System.out.println("|      6. The Mind Monster         (SM6.0)                                        |");
-		System.out.println("|      7. The Space Dragon         (SM7.0)                                        |");
+		System.out.println("|      3. The Moray Eel of Space   (SM3.0)           Fed-CC                       |");
+		System.out.println("|      4. The Cosmic Cloud         (SM4.0)           Fed-CC                       |");
+		System.out.println("|      5. The Sunsnake             (SM5.0)           Fed-CC                       |");
+		System.out.println("|      6. The Mind Monster         (SM6.0)           Fed-CC           Planet      |");
+		System.out.println("|      7. The Space Dragon         (SM7.0)           Fed-CC                       |");
 		System.out.println("|      8. The Combining of Arastoz (CL#2)            Fed-CC                       |");
 		System.out.println("|      9.                                                                         |");
 		System.out.println("|     10.                                                                         |");
@@ -588,7 +660,7 @@ public class Driver {
 //		if (Driver.TESTING) {
 			System.out.println("|                                                                                 |");
 			System.out.println("|  RANDOM SHIPS FOR TESTING:                                                      |");
-			System.out.println("|    101.  2 Federation, 2 Kligon, 2 Random Monsters                              |");
+			System.out.println("|    101.  2 Federation, 2 Kligon, 2  Monsters                                    |");
 			System.out.println("|    102.  1 Federation, 1 Gorn, Civilian Freighter                               |");
 			System.out.println("|    103.  1 Federation, 1 Klingon, 1 Hydran                                      |");
 			System.out.println("|    104.  1 Romulan, 1 Tholian, Civilian Freighter                               |");
@@ -599,149 +671,180 @@ public class Driver {
 		boolean scenarioLoaded = false; 
 		
 		while (scenarioLoaded == false) {
-			System.out.print("What scenario to load? ");
+			System.out.print("What scenario to load? [RETURN to cancel] ");
 			int scenario = getNumber(1,200);
 		
 			if (scenario == 1) {
 				MonsterScenario = 1;
 				scenarioLoaded = true;
-
-				currentGameYard.addShipToShipyard(defaultYard.list[337]);				//  Planet Crusher
+//				currentGameYard.addShipToShipyard(defaultYard.list[364]);				//  Planet Crusher
+				InstallSpecificShip("Monster", "Planet Crusher");
 				currentGameYard.list[0].speed = 6;
+				currentGameYard.list[0].name = "Planet Crusher";
 				
-				currentGameYard.addShipToShipyard(defaultYard.list[354]);				//  Planet
-				currentGameYard.list[1].speed = DamageAllocation.rollDice(1, 10) + 1;
+//				currentGameYard.addShipToShipyard(defaultYard.list[381]);				//  Planet
+				InstallSpecificShip("Other", "Planet");
 				currentGameYard.list[1].speed = 0;
 				currentGameYard.list[1].name = "Sheboygen III";
 				
-				currentGameYard.addShipToShipyard(defaultYard.list[3]);					//  Federation CC
+//				currentGameYard.addShipToShipyard(defaultYard.list[3]);					//  Federation CC
+				InstallSpecificShip("Federation", "CC");
 				currentGameYard.list[2].speed = DamageAllocation.rollDice(1, 10) + 1;
 				
 			} else if (scenario == 2) {
 				MonsterScenario = 2;
 				scenarioLoaded = true;
-				currentGameYard.addShipToShipyard(defaultYard.list[338]);				//  Space Amoeba
+//				currentGameYard.addShipToShipyard(defaultYard.list[365]);				//  Space Amoeba
+				InstallSpecificShip("Monster", "Space Amoeba");
 				currentGameYard.list[0].speed = 4;
 				
-				currentGameYard.addShipToShipyard(defaultYard.list[3]);					//  Federation CC
+//				currentGameYard.addShipToShipyard(defaultYard.list[3]);					//  Federation CC
+				InstallSpecificShip("Federation", "CC");
 				currentGameYard.list[1].speed = DamageAllocation.rollDice(1, 10) + 1;
 				
 			} else if (scenario == 3) {
 				MonsterScenario = 3;
 				scenarioLoaded = true;
-				currentGameYard.addShipToShipyard(defaultYard.list[339]);				//  Moray Eel of Space
+//				currentGameYard.addShipToShipyard(defaultYard.list[366]);				//  Moray Eel of Space
+				InstallSpecificShip("Monster", "Moray Eel");
 				currentGameYard.list[0].speed = 6;
-				
+
+//				currentGameYard.addShipToShipyard(defaultYard.list[3]);					//  Federation CC
+				InstallSpecificShip("Federation", "CC");
+				currentGameYard.list[1].speed = DamageAllocation.rollDice(1, 10) + 1;
+
 			} else if (scenario == 4) {
 				MonsterScenario = 4;
 				scenarioLoaded = true;
-				currentGameYard.addShipToShipyard(defaultYard.list[340]);				//  Cosmic CLoud
+//				currentGameYard.addShipToShipyard(defaultYard.list[367]);				//  Cosmic Cloud
+				InstallSpecificShip("Monster", "Cosmic Cloud");
 				currentGameYard.list[0].speed = 4;
-				
+
+//				currentGameYard.addShipToShipyard(defaultYard.list[3]);					//  Federation CC
+				InstallSpecificShip("Federation", "CC");
+				currentGameYard.list[1].speed = DamageAllocation.rollDice(1, 10) + 1;
+
 			} else if (scenario == 5) {
 				MonsterScenario = 5;
 				scenarioLoaded = true;
-				currentGameYard.addShipToShipyard(defaultYard.list[341]);				//  Sunsnake
+//				currentGameYard.addShipToShipyard(defaultYard.list[368]);				//  Sunsnake
+				InstallSpecificShip("Monster", "Sunsnake");
 				currentGameYard.list[0].speed = 3;
-				
+
+//				currentGameYard.addShipToShipyard(defaultYard.list[3]);					//  Federation CC
+				InstallSpecificShip("Federation", "CC");
+				currentGameYard.list[1].speed = DamageAllocation.rollDice(1, 10) + 1;
+
 			} else if (scenario == 6) {
 				MonsterScenario = 6;
 				scenarioLoaded = true;
-				currentGameYard.addShipToShipyard(defaultYard.list[342]);				//  Mind Monster
+//				currentGameYard.addShipToShipyard(defaultYard.list[368]);				//  Mind Monster
+				InstallSpecificShip("Monster", "Mind Monster");
 				currentGameYard.list[0].speed = 6;
 
-				currentGameYard.addShipToShipyard(defaultYard.list[354]);				//  Planet
+//				currentGameYard.addShipToShipyard(defaultYard.list[381]);				//  Planet
+				InstallSpecificShip("Other", "Planet");
 				currentGameYard.list[1].speed = DamageAllocation.rollDice(1, 10) + 1;
 				currentGameYard.list[1].speed = 0;
 				currentGameYard.list[1].name = "Libraria IV";
 				currentGameYard.list[1].ssd[24].remaining = 75;
 
+//				currentGameYard.addShipToShipyard(defaultYard.list[3]);					//  Federation CC
+				InstallSpecificShip("Federation", "CC");
+				currentGameYard.list[2].speed = DamageAllocation.rollDice(1, 10) + 1;
+
 			} else if (scenario == 8) {
 				MonsterScenario = 8;
 				scenarioLoaded = true;
-				currentGameYard.addShipToShipyard(defaultYard.list[347]);				//  Arastoz 1x
+				int firstArastozNum = FindMonsterLocation("Monster", "Arastoz 1x");
+				currentGameYard.addShipToShipyard(defaultYard.list[firstArastozNum]);				//  Arastoz 1x
 				currentGameYard.list[0].speed = 14;
 				currentGameYard.list[0].name = "Arastoz A";
 				
-				currentGameYard.addShipToShipyard(defaultYard.list[348]);				//  Arastoz 1x
+				currentGameYard.addShipToShipyard(defaultYard.list[firstArastozNum + 1]);				//  Arastoz 1x
 				currentGameYard.list[1].speed = 14;
 				currentGameYard.list[1].name = "Arastoz B";
 				
-				currentGameYard.addShipToShipyard(defaultYard.list[349]);				//  Arastoz 1x
+				currentGameYard.addShipToShipyard(defaultYard.list[firstArastozNum + 2]);				//  Arastoz 1x
 				currentGameYard.list[2].speed = 14;
 				currentGameYard.list[2].name = "Arastoz C";
 				
-				currentGameYard.addShipToShipyard(defaultYard.list[350]);				//  Arastoz 1x
+				currentGameYard.addShipToShipyard(defaultYard.list[firstArastozNum + 3]);				//  Arastoz 1x
 				currentGameYard.list[3].speed = 14;
 				currentGameYard.list[3].name = "Arastoz D";
 				
-				currentGameYard.addShipToShipyard(defaultYard.list[3]);					//  Federation CC
+//				currentGameYard.addShipToShipyard(defaultYard.list[3]);					//  Federation CC
+				InstallSpecificShip("Federation", "CC");
 				currentGameYard.list[4].speed = DamageAllocation.rollDice(1, 5) + 1;
 				
 			} else if (scenario == 101) {
 				scenarioLoaded = true;
-				currentGameYard.addShipToShipyard(defaultYard.list[0]);					//  Federation DN
+				InstallSpecificShip("Federation", "DN");
 				currentGameYard.list[0].speed = DamageAllocation.rollDice(1, 10) + 1;
 				
-				currentGameYard.addShipToShipyard(defaultYard.list[3]);					//  Federation CC
+				InstallSpecificShip("Federation", "CC");
 				currentGameYard.list[1].speed = DamageAllocation.rollDice(1, 10) + 1;
 				
-				currentGameYard.addShipToShipyard(defaultYard.list[54]);				//  Klingon B10
+				InstallSpecificShip("Klingon", "B10");
 				currentGameYard.list[2].speed = DamageAllocation.rollDice(1, 10) + 1;
 				
-				currentGameYard.addShipToShipyard(defaultYard.list[65]);				//  Klingon D7C
+				InstallSpecificShip("Klingon", "D7C");
 				currentGameYard.list[3].speed = DamageAllocation.rollDice(1, 10) + 1;
 				
-				currentGameYard.addShipToShipyard(defaultYard.list[336 + DamageAllocation.rollDice(1, 6)]);				//  Random Monster
-				currentGameYard.list[4].speed = DamageAllocation.rollDice(1, 6);
-				
-				currentGameYard.addShipToShipyard(defaultYard.list[336 + DamageAllocation.rollDice(1, 6)]);				//  Random Monster
-				currentGameYard.list[5].speed = DamageAllocation.rollDice(1, 6);
-				
+				int firstMonsterNum = FindMonsterLocation("Monster", "Planet Crusher");
+				int randMonster = DamageAllocation.rollDice(1, 7);
+				currentGameYard.addShipToShipyard(defaultYard.list[firstMonsterNum + randMonster]);
+				currentGameYard.list[4].speed = DamageAllocation.rollDice(1, 10) + 1;
+					
+				randMonster = DamageAllocation.rollDice(1, 7);
+				currentGameYard.addShipToShipyard(defaultYard.list[firstMonsterNum + randMonster]);
+				currentGameYard.list[5].speed = DamageAllocation.rollDice(1, 10) + 1;
+								
 			} else if (scenario == 102) {
 				scenarioLoaded = true;
-				currentGameYard.addShipToShipyard(defaultYard.list[18]);				//  Federation NCL
+				InstallSpecificShip("Federation", "NCL");
 				currentGameYard.list[0].speed = DamageAllocation.rollDice(1, 10) + 1;
 				
-				currentGameYard.addShipToShipyard(defaultYard.list[194]);				//  Gorn CC
+				InstallSpecificShip("Gorn", "CC");
 				currentGameYard.list[1].speed = DamageAllocation.rollDice(1, 10) + 1;
 				
-				currentGameYard.addShipToShipyard(defaultYard.list[320]);				//  Civilian Freighter Large
+				InstallSpecificShip("Civilian", "F-L");
 				currentGameYard.list[2].speed = DamageAllocation.rollDice(1, 5) + 1;
 				
 			} else if (scenario == 103) {
 				scenarioLoaded = true;
-				currentGameYard.addShipToShipyard(defaultYard.list[3]);					//  Federation CC
+				InstallSpecificShip("Federation", "CC");
 				currentGameYard.list[0].speed = DamageAllocation.rollDice(1, 10) + 1;
 				
-				currentGameYard.addShipToShipyard(defaultYard.list[65]);				//  Klingon D7C
+				InstallSpecificShip("Klingon", "D7C");
 				currentGameYard.list[1].speed = DamageAllocation.rollDice(1, 10) + 1;
 				
-				currentGameYard.addShipToShipyard(defaultYard.list[256]);				//  Hydran CVA
+				InstallSpecificShip("Hydran", "CVA");
 				currentGameYard.list[2].speed = DamageAllocation.rollDice(1, 10) + 1;
 				
 			} else if (scenario == 104) {
 				scenarioLoaded = true;
-				currentGameYard.addShipToShipyard(defaultYard.list[228]);				//  Tholian DD
+				InstallSpecificShip("Tholian", "DD");
 				currentGameYard.list[0].speed = DamageAllocation.rollDice(1, 10) + 1;
 				
-				currentGameYard.addShipToShipyard(defaultYard.list[121]);				//  Romulan SpH-A
+				InstallSpecificShip("Romulan", "SpH-A");
 				currentGameYard.list[1].speed = DamageAllocation.rollDice(1, 10) + 1;
 				
-				currentGameYard.addShipToShipyard(defaultYard.list[320]);				//  Civilian Freighter Large
+				InstallSpecificShip("Civilian", "F-L");
 				currentGameYard.list[2].speed = DamageAllocation.rollDice(1, 5) + 1;
+				
 			} else if (scenario == 105) {
 				scenarioLoaded = true;
-				int numMonsters = DamageAllocation.rollDice(1, 3)+2;
-				for (int i = 0; i <= numMonsters-1; i++) {
+				
+				int firstMonsterNum = FindMonsterLocation("Monster", "Planet Crusher");
+				for (int i = 0; i <= 4; i++) {
 					int randMonster = DamageAllocation.rollDice(1, 7);
-					if (randMonster > 6) {
-						randMonster = randMonster + 4;
-					}
-					currentGameYard.addShipToShipyard(defaultYard.list[336 + randMonster]);				//  Tholian DD
+					currentGameYard.addShipToShipyard(defaultYard.list[firstMonsterNum + randMonster]);
 					currentGameYard.list[i].speed = DamageAllocation.rollDice(1, 10) + 1;
 					
 				}
+			} else if (scenario == -1) {
+				scenarioLoaded = true;
 			}
 		}
 
@@ -751,6 +854,24 @@ public class Driver {
 		System.out.println();
 	}
 	
+	public static void InstallSpecificShip(String race, String shipType) {
+		for (int i = 0; i <= defaultYard.numShips-1; i++) {
+			if (defaultYard.list[i].race == race && defaultYard.list[i].shipType == shipType) {
+				currentGameYard.addShipToShipyard(defaultYard.list[i]);
+			}
+		}
+	}
+
+	public static int FindMonsterLocation(String race, String shipType) {
+		int firstMonsterNum = 0;
+		for (int i = 0; i <= defaultYard.numShips-1; i++) {
+			if (defaultYard.list[i].race == race & defaultYard.list[i].shipType == shipType) {
+				firstMonsterNum = i; 
+				break;
+			}
+		}
+		return firstMonsterNum;
+	}
 	
 	// GET LETTER AS INPUT THAT IS IN PASSED STRING
 	public static String getInput(String word) {
