@@ -62,7 +62,12 @@ public class Shipyard {
 		
 		// Shipyard with 1 ship in it.
 		
-		ship = new Starship("Federation", "DN+", "50", "14", "180", "3-6", "1.5", "4", "2", "E", "R2.2", "168");
+		ship = new Starship("Federation", "DN+", "52", "14", "205", "3-6", "1.5", "4", "2", "E", "R2.17", "175");
+		se = new int[]{6, 6, 6, 6, 5, 4, 3, 2, 1, 0};
+		sc = new int[]{0, 0, 0, 0, 1, 2, 3, 4, 5, 9};
+		da = new int[]{6, 6, 4, 4, 4, 2, 2, 2, 0};
+//		ship.setupSSD(B, F, E, A, P,  T, C,  L,  R,  I, A, B, TS,TC,P, S, D, L,  C, FH,AF,DA,SE,SC,EX,sensNums, scanNums, damConNums);
+		ship.setupSSD(2, 2, 2, 2, 12, 6, 15, 15, 15, 6, 4, 5, 6, 3, 1, 8, 1, 10, 0, 22, 6, 9, 10, 10, 12, se, sc, da);
 		defaultYard.addShipToShipyard(ship);
 		
 		// Shipyard with 2 ships in it.
@@ -81,7 +86,11 @@ public class Shipyard {
 		ship.setupSSD(2, 2, 2, 2, 8, 4, 0, 15, 15, 4, 2, 4, 2, 2, 1, 4, 0, 8, 0, 12, 4, 6, 6, 6, 6, se, sc, da);
 		defaultYard.addShipToShipyard(ship);
 		
-		ship = new Starship("Federation", "CC+", "45", "10", "145", "5-6", "1", "3", "3", "D", "R2.3", "165");
+		ship = new Starship("Federation", "CC+", "45", "10", "145", "5-6", "1", "3", "3", "D", "R2.3/.7", "165");
+		se = new int[]{6, 6, 5, 3, 1, 0};
+		sc = new int[]{0, 0, 1, 3, 5, 9};
+		da = new int[]{4, 4, 2, 2, 2, 0};
+		ship.setupSSD(2, 2, 2, 2, 10, 4, 0, 15, 15, 4, 2, 4, 2, 2, 1, 4, 1, 8, 0, 12, 4, 6, 6, 6, 6, se, sc, da);
 		defaultYard.addShipToShipyard(ship);
 		
 		ship = new Starship("Federation", "CA", "43", "10", "125", "5-6", "1", "3", "3", "D", "R2.4", "65");
@@ -91,18 +100,27 @@ public class Shipyard {
 		ship.setupSSD(2, 0, 2, 2, 6, 4, 0, 15, 15, 4, 0, 4, 2, 2, 1, 4, 0, 8, 0, 12, 4, 6, 6, 6, 6, se, sc, da);
 		defaultYard.addShipToShipyard(ship);
 		
-		ship = new Starship("Federation", "CA+", "43", "10", "137", "5-6", "1", "3", "3", "D", "R2.4", "165");
+		ship = new Starship("Federation", "CA+", "43", "10", "137", "5-6", "1", "3", "3", "D", "R2.4/.7", "165");
+		se = new int[]{6, 6, 5, 3, 1, 0};
+		sc = new int[]{0, 0, 1, 3, 5, 9};
+		da = new int[]{4, 4, 2, 2, 2, 0};
+		ship.setupSSD(2, 0, 2, 2, 8, 4, 0, 15, 15, 4, 2, 4, 2, 2, 1, 4, 1, 8, 0, 12, 4, 6, 6, 6, 6, se, sc, da);
 		defaultYard.addShipToShipyard(ship);
 		
-		ship = new Starship("Federation", "CVA", "49", "10", "172/150", "4-6", "1", "2+4", "2", "R2.D", "13", "171");
+		ship = new Starship("Federation", "CVA", "49", "10", "172/150", "4-6", "1", "2+4", "2", "D", "R2.13/.7", "171");
 		se = new int[]{6, 6, 6, 5, 3, 1, 0};
 		sc = new int[]{0, 0, 0, 1, 3, 5, 9};
 		da = new int[]{6, 4, 4, 2, 2, 0};
 		ship.setupSSD(2, 2, 2, 2, 10, 14, 0, 18, 18, 4, 5, 5, 4, 3, 1, 28, 2, 4, 0, 14, 6, 6, 7, 7, 7, se, sc, da);
 		defaultYard.addShipToShipyard(ship);
 		
-		ship = new Starship("Federation", "CVA+", "49", "10", "182/160", "4-6", "1", "2+4", "2", "R2.D", "13", "175");
+		ship = new Starship("Federation", "CVA+", "49", "10", "182/160", "4-6", "1", "2+4", "2", "D", "R2.13/.7", "175");
+		se = new int[]{6, 6, 6, 5, 3, 1, 0};
+		sc = new int[]{0, 0, 0, 1, 3, 5, 9};
+		da = new int[]{6, 4, 4, 2, 2, 0};
+		ship.setupSSD(2, 2, 2, 2, 10, 14, 0, 18, 18, 4, 5, 5, 4, 3, 1, 28, 4, 4, 0, 14, 6, 6, 7, 7, 7, se, sc, da);
 		defaultYard.addShipToShipyard(ship);
+		
 		ship = new Starship("Federation", "CVS", "46", "10", "142", "5-6", "1", "2+4", "3", "D", "R2.29", "168");
 		defaultYard.addShipToShipyard(ship);
 		
@@ -113,8 +131,13 @@ public class Shipyard {
 		ship.setupSSD(2, 0, 2, 2, 12, 2, 0, 15, 15, 4, 2, 6, 7, 2, 2, 8, 1, 10, 10, 12, 4, 7, 7, 7, 6, se, sc, da);
 		defaultYard.addShipToShipyard(ship);
 		
-		ship = new Starship("Federation", "GSC+", "45", "12", "150/130", "5-6", "1", "2", "3", "D", "R2.16", "175");
+		ship = new Starship("Federation", "GSC+", "45", "12", "150/130", "5-6", "1", "2", "3", "D", "R2.16/.7", "175");
+		se = new int[]{6, 6, 6, 5, 3, 1, 0};
+		sc = new int[]{0, 0, 0, 1, 3, 5, 9};
+		da = new int[]{6, 4, 4, 2, 2, 2, 0};
+		ship.setupSSD(2, 0, 2, 2, 12, 2, 0, 15, 15, 4, 2, 6, 7, 2, 2, 8, 3, 10, 10, 12, 4, 7, 7, 7, 6, se, sc, da);
 		defaultYard.addShipToShipyard(ship);
+		
 		ship = new Starship("Federation", "GS(CVL)", "44", "6", "133", "5-6", "1", "1+2", "3", "D", "R2.16", "170");
 		defaultYard.addShipToShipyard(ship);
 		ship = new Starship("Federation", "GS(CVL+)", "44", "6", "143", "5-6", "1", "1+2", "3", "D", "R2.16", "175");
@@ -135,8 +158,13 @@ public class Shipyard {
 		ship.setupSSD(2, 0, 1, 2, 6, 4, 0, 12, 12, 4, 4, 2, 2, 2, 1, 4, 1, 4, 0, 5, 5, 6, 6, 6, 6, se, sc, da);
 		defaultYard.addShipToShipyard(ship);
 		
-		ship = new Starship("Federation", "NCL+", "36", "8", "120", "4-6", "0.67", "2", "3", "C", "R2.18", "175");
+		ship = new Starship("Federation", "NCL+", "36", "8", "120", "4-6", "0.67", "2", "3", "C", "R2.18/.7", "175");
+		se = new int[]{6, 6, 5, 3, 1, 0};
+		sc = new int[]{0, 0, 1, 3, 5, 9};
+		da = new int[]{4, 4, 2, 2, 2, 0};
+		ship.setupSSD(2, 0, 1, 2, 8, 4, 0, 12, 12, 4, 4, 2, 2, 2, 1, 4, 1, 4, 0, 5, 5, 6, 6, 6, 6, se, sc, da);
 		defaultYard.addShipToShipyard(ship);
+		
 		ship = new Starship("Federation", "NSC", "32", "8", "120/100", "4-6", "0.67", "2", "3", "C", "R2.19", "176");
 		defaultYard.addShipToShipyard(ship);
 		ship = new Starship("Federation", "NSC+", "32", "8", "124/104", "4-6", "0.67", "2", "3", "C", "R2.19", "180");
@@ -152,6 +180,10 @@ public class Shipyard {
 		defaultYard.addShipToShipyard(ship);
 		
 		ship = new Starship("Federation", "DD+", "20", "6", "106", "3-6", "0.5", "1", "4", "C", "R2.6", "165");
+		se = new int[]{6, 6, 5, 3, 1, 0};
+		sc = new int[]{0, 0, 1, 3, 5, 9};
+		da = new int[]{2, 2, 2, 0};
+		ship.setupSSD(2, 0, 1, 2, 8, 4, 15, 0, 0, 4, 2, 2, 2, 2, 1, 2, 1, 8, 0, 5, 5, 4, 6, 6, 4, se, sc, da);
 		defaultYard.addShipToShipyard(ship);
 		ship = new Starship("Federation", "DDL", "22", "6", "94", "3-6", "0.5", "1", "4", "C", "R2.27", "160");
 		defaultYard.addShipToShipyard(ship);
@@ -169,7 +201,11 @@ public class Shipyard {
 		ship.setupSSD(2, 0, 1, 2, 2, 0, 15, 0, 0, 4, 0, 2, 2, 2, 1, 2, 0, 8, 0, 5, 5, 4, 6, 6, 4, se, sc, da);
 		defaultYard.addShipToShipyard(ship);
 		
-		ship = new Starship("Federation", "SC+", "19", "6", "150/120", "3-6", "0.5", "1", "4", "C", "R2.7", "165");
+		ship = new Starship("Federation", "SC+", "19", "6", "150/120", "3-6", "0.5", "1", "4", "C", "R2.7/.7", "165");
+		se = new int[]{6, 6, 5, 3, 1, 0};
+		sc = new int[]{0, 0, 1, 3, 5, 9};
+		da = new int[]{2, 2, 2, 0};
+		ship.setupSSD(2, 0, 1, 2, 4, 0, 15,0, 0, 4, 2, 2, 2, 2, 1, 2, 1, 8, 0, 5, 5, 4, 6, 6, 4, se, sc, da);
 		defaultYard.addShipToShipyard(ship);
 		ship = new Starship("Federation", "MS(CL)", "30", "6", "94/80", "4-6", "0.75", "2", "3", "C", "R2.21", "158");
 		defaultYard.addShipToShipyard(ship);
@@ -952,13 +988,13 @@ public class Shipyard {
 		ship = new Starship("WYN", "WYN AxC", "8", "4", "65", "3-6", "0.33", "-", "4", "C", "R12.6", "140");
 		defaultYard.addShipToShipyard(ship);
 		ship = new Starship("WYN", "WYN AxCV", "8", "2", "75/50", "3-6", "0.33", "0+2", "4", "C", "R12.7", "170");
+		defaultYard.addShipToShipyard(ship);
 
 		//  ANDROMEDAN  =============================================================================================
 
-		defaultYard.addShipToShipyard(ship);
 		ship = new Starship("Andromedan", "Dom", "38", "20", "450", "5-6", "1.5", "-", "2", "D", "R13.2", "184");
 		defaultYard.addShipToShipyard(ship);
-		ship = new Starship("Andromedan", "Intrucer", "24", "10", "250", "6", "1", "-", "3", "C", "R13.3", "166");
+		ship = new Starship("Andromedan", "Intruder", "24", "10", "250", "6", "1", "-", "3", "C", "R13.3", "166");
 		defaultYard.addShipToShipyard(ship);
 		ship = new Starship("Andromedan", "Cobra", "14", "8", "90", "6", "0.5", "-", "4", "A", "R13.4", "166");
 		defaultYard.addShipToShipyard(ship);
@@ -968,6 +1004,64 @@ public class Shipyard {
 		defaultYard.addShipToShipyard(ship);
 		ship = new Starship("Andromedan", "E-Mod", "0", "0", "40", "-", "*", "-", "4", "-", "R13.7", "184");
 		defaultYard.addShipToShipyard(ship);
+		
+		//  FRAX  =============================================================================================
+		
+		ship = new Starship("Frax", "BB", "65", "26", "350", "3-6", "2", "2+2", "2", "E", "R91.08", "184");
+		defaultYard.addShipToShipyard(ship);
+		ship = new Starship("Frax", "DN", "55", "20", "210", "4-6", "105", "2", "2", "D", "R91.02", "167");
+		defaultYard.addShipToShipyard(ship);
+		ship = new Starship("Frax", "CC", "45", "14", "153", "5-6", "1", "2", "3", "C", "R91.09", "143");
+		defaultYard.addShipToShipyard(ship);
+		ship = new Starship("Frax", "CA", "45", "14", "140", "5-6", "1", "2", "3", "C", "R91.03", "122");
+		defaultYard.addShipToShipyard(ship);
+		ship = new Starship("Frax", "CV", "45", "14", "140/100", "5-6", "1", "2+4", "3", "C", "R91.18", "167");
+		defaultYard.addShipToShipyard(ship);
+		ship = new Starship("Frax", "CW", "40", "10", "120", "5-6", "0.67", "2", "3", "B", "R91.04", "168");
+		defaultYard.addShipToShipyard(ship);
+		ship = new Starship("Frax", "CWV", "44", "10", "120/100", "5-6", "0.67", "2+4", "3", "B", "R91.05", "170");
+		defaultYard.addShipToShipyard(ship);
+		ship = new Starship("Frax", "PFT", "40", "10", "120/80", "5-6", "0.67", "2", "3", "B", "R91.06", "179");
+		defaultYard.addShipToShipyard(ship);
+		ship = new Starship("Frax", "CWE", "40", "10", "140", "5-6", "0.67", "2", "3", "B", "R91.07", "170");
+		defaultYard.addShipToShipyard(ship);
+		ship = new Starship("Frax", "CWA", "40", "10", "152", "5-6", "0.67", "2", "3", "B", "R91.07A", "175");
+		defaultYard.addShipToShipyard(ship);
+		ship = new Starship("Frax", "DW", "28", "8", "90", "5-6", "0.5", "1", "4", "B", "R91.10", "135");
+		defaultYard.addShipToShipyard(ship);
+		ship = new Starship("Frax", "DWD", "28", "8", "93", "5-6", "0.5", "1", "4", "B", "R91.11", "137");
+		defaultYard.addShipToShipyard(ship);
+		ship = new Starship("Frax", "DWS", "28", "8", "100/80", "5-6", "0.5", "1", "4", "B", "R91.12", "138");
+		defaultYard.addShipToShipyard(ship);
+		ship = new Starship("Frax", "DWM", "28", "8", "100/80", "5-6", "0.5", "1", "4", "B", "R91.13", "168");
+		defaultYard.addShipToShipyard(ship);
+		ship = new Starship("Frax", "DWE", "28", "8", "97", "5-6", "0.5", "1", "4", "B", "R91.14", "167");
+		defaultYard.addShipToShipyard(ship);
+		ship = new Starship("Frax", "DWA", "28", "8", "102", "5-6", "0.5", "1", "4", "B", "R91.15", "175");
+		defaultYard.addShipToShipyard(ship);
+		ship = new Starship("Frax", "DWC", "32", "28", "109/79", "5-6", "0.5", "1", "4", "B", "R91.17", "155");
+		defaultYard.addShipToShipyard(ship);
+		ship = new Starship("Frax", "MDW", "28", "8", "93", "5-6", "0.5", "1", "4", "B", "R91.16", "170");
+		defaultYard.addShipToShipyard(ship);
+		ship = new Starship("Frax", "Tug", "45", "10", "140/80", "3-6", "*", "2", "3", "*", "R91.19", "124");
+		defaultYard.addShipToShipyard(ship);
+		ship = new Starship("Frax", "FF", "20", "6", "75", "5-6", "0.33", "1", "4", "A", "R91.20", "121");
+		defaultYard.addShipToShipyard(ship);
+		ship = new Starship("Frax", "SFF", "10", "4", "60", "6", "0.33", "-", "4", "A", "R91.21", "121");
+		defaultYard.addShipToShipyard(ship);
+		ship = new Starship("Frax", "SDD", "14", "6", "80", "5-6", "0.5", "-", "4", "B", "R91.22", "135");
+		defaultYard.addShipToShipyard(ship);
+		ship = new Starship("Frax", "SCW", "19", "10", "110", "5-6", "0.67", "1", "3", "B", "R91.23", "168");
+		defaultYard.addShipToShipyard(ship);
+		ship = new Starship("Frax", "SCL", "19", "10", "110", "5-6", "0.67", "1", "3", "B", "R91.25", "168");
+		defaultYard.addShipToShipyard(ship);
+		ship = new Starship("Frax", "SCG", "28", "12", "150", "5-6", "1", "1", "3", "C", "R91.24", "170");
+		defaultYard.addShipToShipyard(ship);
+		ship = new Starship("Frax", "PF", "3", "1", "20/30", "6", "0.2", "-", "5", "AA", "R91.PF1", "179");
+		defaultYard.addShipToShipyard(ship);
+		ship = new Starship("Frax", "PFD", "3", "1", "20/30", "6", "0.2", "-", "5", "AA", "R91.PF2", "179");
+		defaultYard.addShipToShipyard(ship);
+
 		
 		//  CIVILIAN  =============================================================================================
 
@@ -1010,7 +1104,7 @@ public class Shipyard {
 		ship = new Starship("All Fleets", "PFBay", "8", "-", "12", "-", "*", "-", "-", "-", "R1.17", "180");
 		defaultYard.addShipToShipyard(ship);
 
-		ship = new Starship("All Fleets", "Rpr Dck", "80", "12", "200/50", "-", "*", "2", "2", "-", "R1.10", "75");
+		ship = new Starship("All Fleets", "FRD", "80", "12", "200/50", "-", "*", "2", "2", "-", "R1.10", "75");
 		se = new int[]{6, 0};
 		sc = new int[]{0, 9};
 		da = new int[]{6, 6, 6, 6, 4, 4, 4, 2, 0};
@@ -1075,18 +1169,6 @@ public class Shipyard {
 		ship.setupSSD(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 199, se, sc, da);
 		defaultYard.addShipToShipyard(ship);
 
-		ship = new Starship("Monster", "Space Dragon Young", "-", "-", "-", "-", "-", "-", "-", "-", "SM7.0", "-");
-		defaultYard.addShipToShipyard(ship);
-
-		ship = new Starship("Monster", "Space Dragon Adult", "-", "-", "-", "-", "-", "-", "-", "-", "SM7.0", "-");
-		defaultYard.addShipToShipyard(ship);
-
-		ship = new Starship("Monster", "Space Dragon Old", "-", "-", "-", "-", "-", "-", "-", "-", "SM7.0", "-");
-		defaultYard.addShipToShipyard(ship);
-
-		ship = new Starship("Monster", "Space Dragon Ancient", "-", "-", "-", "-", "-", "-", "-", "-", "SM7.0", "-");
-		defaultYard.addShipToShipyard(ship);
-
 		ship = new Starship("Monster", "Arastoz 1x", "-", "-", "-", "-", "-", "-", "-", "-", "SL49.0", "-");
 		se = new int[]{6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6};
 		sc = new int[]{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
@@ -1136,6 +1218,18 @@ public class Shipyard {
 		ship.setupSSD(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 799, se, sc, da);
 		defaultYard.addShipToShipyard(ship);
 
+		ship = new Starship("Monster", "Space Dragon Young", "-", "-", "-", "-", "-", "-", "-", "-", "SM7.0", "-");
+		defaultYard.addShipToShipyard(ship);
+		
+		ship = new Starship("Monster", "Space Dragon Adult", "-", "-", "-", "-", "-", "-", "-", "-", "SM7.0", "-");
+		defaultYard.addShipToShipyard(ship);
+		
+		ship = new Starship("Monster", "Space Dragon Old", "-", "-", "-", "-", "-", "-", "-", "-", "SM7.0", "-");
+		defaultYard.addShipToShipyard(ship);
+		
+		ship = new Starship("Monster", "Space Dragon Ancient", "-", "-", "-", "-", "-", "-", "-", "-", "SM7.0", "-");
+		defaultYard.addShipToShipyard(ship);
+		
 		//  OTHER  =============================================================================================
 
 		ship = new Starship("Other", "Planet", "-", "-", "-", "-", "-", "-", "-", "-", "-", "-");
@@ -1169,32 +1263,33 @@ public class Shipyard {
 			System.out.println();
 			System.out.println();
 			System.out.println("|===========================================================================================================|");
-			System.out.println("|                              THE SHIPYARD                                |");
-			System.out.println("-------------------------------------------------------------------------------------------------------------");
+			System.out.println("|                                              THE SHIPYARD                                                 |");
+			System.out.println("|-----------------------------------------------------------------------------------------------------------|");
 			if (showOnlySSDs == true) {
-				System.out.println("|                       Show ONLY ships with SSDs                          |");
+				System.out.println("|                                       Show ONLY ships with SSDs                                           |");
 			} else {
-				System.out.println("|                 Show ALL ships (with AND without SSDs)                   |");
+				System.out.println("|                                 Show ALL ships (with AND without SSDs)                                    |");
 			}
 			System.out.println("|===========================================================================================================|");
-			System.out.println("|   Races Available in the Shipyard:                                                  [S]how SSD Toggle     |");
-			System.out.println("|       [F]ederation       [O]rion         [A]ndromedan         Fra[X]                                      |");
-			System.out.println("|       [K]lingon          [G]orn          [W]YN                [I]SC                 [M]onsters            |");
-			System.out.println("|       [R]omulan          [T]holian       [L]yran              [ ]                   [C]ivilian Ships      |");
-			System.out.println("|       K[Z]inti           [H]ydran        [S]eltorian          [ ]                   [Q] All Fleets        |");
+			System.out.println("|   Races Available in the Shipyard:                                                   [*] Show SSD Toggle  |");
+			System.out.println("|       [F]ederation       [L]yran            Fra[X]              [ ]                                       |");
+			System.out.println("|       [K]lingon          [G]orn             [W]YN               [ ]                  [M]onsters           |");
+			System.out.println("|       [R]omulan          [T]holian          [I]SC               [ ]                  Oth[E]r              |");
+			System.out.println("|       K[Z]inti           [H]ydran           [S]eltorian         [C]ivilian Ships                          |");
+			System.out.println("|       [O]rion            [A]ndromedan       [ ]                 [Q] All Fleets                            |");
 			System.out.println("|===========================================================================================================|");
 			
 			if (pass == -1) {
-				System.out.println("|       Display ships from what race?               RETURN to go back to Main Menu        |");
+				System.out.println("|   Display ships from what race?                                    RETURN to go back to Main Menu         |");
 			}
 			if (pass == 1) {
-				System.out.println("|       Display ships from what race?        RETURN to go back to Modify Ships Menu       |");
+				System.out.println("|   Display ships from what race?                             RETURN to go back to Modify Ships Menu        |");
 			}
 			System.out.println("|===========================================================================================================|");
 	
-			userRace = Driver.getInput("FKGRZTOHLQAWCSM");
+			userRace = Driver.getInput("FKRZOGTHAWLSXIMCQ*");
 			
-			if (userRace.contentEquals("S")) {
+			if (userRace.contentEquals("*")) {
 				showOnlySSDs = !showOnlySSDs;
 			} else {
 				if (userRace.contentEquals("")) {
@@ -1375,6 +1470,8 @@ public class Shipyard {
 			race = "All Fleets";
 		} else if (r.equalsIgnoreCase("M")) {
 			race = "Monster";
+		} else if (r.equalsIgnoreCase("O")) {
+			race = "Other";
 		}
 		return race;
 	}
