@@ -264,6 +264,7 @@ public class MonsterStuff {
 					arastoz2BaseStrength = Integer.parseInt(Driver.currentGameYard.list[arastozNum2].shipType.substring(8,9));
 
 					String newSuffix = "";
+					String letterSuffix = "";
 					if (arastozNum1 != arastozNum2) {
 						int combinedStrength = 0;
 						
@@ -271,25 +272,30 @@ public class MonsterStuff {
 //							System.out.println("Combining 1+1");
 							combinedStrength = arastoz1RemainingHP + arastoz2RemainingHP;		//  100+100 = 200 - any damage so far
 							newSuffix = "2x";
+							letterSuffix = Driver.currentGameYard.list[arastozNum2].name.substring(8, Driver.currentGameYard.list[arastozNum2].name.length());
 							
 						} else if (arastoz1BaseStrength + arastoz2BaseStrength == 3) {
 //							System.out.println("Combining 1+2");
 							combinedStrength = 100 + arastoz1RemainingHP + arastoz2RemainingHP;  //  100+200 = 400 (yes 400) - any damage so far
 							newSuffix = "4x";
+							letterSuffix = Driver.currentGameYard.list[arastozNum2].name.substring(8, Driver.currentGameYard.list[arastozNum2].name.length());
 							
 						} else if (arastoz1BaseStrength + arastoz2BaseStrength == 4) {
 //							System.out.println("Combining 2+2");
 							combinedStrength = 400 + arastoz1RemainingHP + arastoz2RemainingHP;  //  200+200 or 100+300 = 800 - any damage so far
 							newSuffix = "8x";
+							letterSuffix = Driver.currentGameYard.list[arastozNum2].name.substring(8, Driver.currentGameYard.list[arastozNum2].name.length());
 
 						} else if (arastoz1BaseStrength + arastoz2BaseStrength == 5) {
 //							System.out.println("Combining 1+4");
 							combinedStrength = 300 + arastoz1RemainingHP + arastoz2RemainingHP;  //  200+200 or 100+300 = 800 - any damage so far
 							newSuffix = "8x";
+							letterSuffix = Driver.currentGameYard.list[arastozNum2].name.substring(8, Driver.currentGameYard.list[arastozNum2].name.length());
 						}
 						
 						Driver.currentGameYard.list[arastozNum1].ssd[24].remaining = combinedStrength;  //  Combine piece 1 and 2 into #1's spot  
 						Driver.currentGameYard.list[arastozNum1].shipType = "Arastoz " + newSuffix;
+						Driver.currentGameYard.list[arastozNum1].name = Driver.currentGameYard.list[arastozNum1].name + letterSuffix;
 						if (newSuffix == "2x") {
 							Driver.currentGameYard.list[arastozNum1].speed = 12;
 						} else if (newSuffix == "4x") {
@@ -333,6 +339,7 @@ public class MonsterStuff {
 						arastozNum1 = -2;
 					}
 					if (newSuffix == "8x") {
+						Driver.currentGameYard.list[arastozNum1].name = "Arastoz ABCD";
 						System.out.println();
 						System.out.println("*** Arastoz is fully combined! ***");
 						break;
