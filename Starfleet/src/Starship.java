@@ -130,8 +130,8 @@ public class Starship {
 		if (this.race == "Monster") {
 			this.name = this.shipType;
 		}
-		if(this.name.length() > 10)
-			this.name = this.name.substring(0, 10);
+//		if(this.name.length() > 10)
+//			this.name = this.name.substring(0, 10);
 		this.speed = 0;
 		this.spi = 0.0;
 		this.distrv = 0.0;
