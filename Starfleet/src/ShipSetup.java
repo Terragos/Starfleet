@@ -19,14 +19,13 @@ public class ShipSetup {
 				System.out.println("|==========================================================================|");
 				System.out.println();
 
-				SortCurrentShipyard();														// Always SORT ships before printing to screen
 				PrintCurrentShipsInGame();
 				
 				System.out.println();
 			}
 						
 			System.out.println("|==========================================================================|");
-			System.out.println("|               [A]dd Ship    [M]odify Ship    [R]emove Ship               |");
+			System.out.println("|       Add Ship from [S]hipyard    [M]odify Speeds    [R]emove Ship       |");
 			if (goToImpProc == "Y") { 																 	 // Print this line only if coming
 				System.out.println("|                    RETURN to go to Impulse Procedure                     |");   // from the Impulse Procedure 
 			} else if (goToImpProc == "N") {
@@ -34,94 +33,30 @@ public class ShipSetup {
 			}																						 	 // from the Main Menu
 			System.out.println("|==========================================================================|");
 
-			String userInput = Driver.getInput("AMR");
+			String userInput = Driver.getInput("SMR");
 			
 			if (userInput.contentEquals("")) {
 				//break;
 				cont = false;
 
-			} else if (userInput.equalsIgnoreCase("A")) {
-			
-				System.out.println("Would you like to add ships [M]anually or from the [S]hipyard? ");
-				String userInput2 = Driver.getInput("MS");
-				
-				if (userInput2.equalsIgnoreCase("M")) {
-					boolean cont2 = true;
-					while(cont2) {
-						Starship star = new Starship();		
-						System.out.print("Ship " + (Driver.currentGameYard.numShips + 1) + " Name     : ");
-				
-						String nameInput = keyboard.nextLine();
-						if (nameInput.contentEquals("")) {
-						//break;
-							cont2 = false;
-						} else {
-							if(nameInput.length() > 10)
-								nameInput = nameInput.substring(0, 10);
-							star.name = nameInput;
-	
-							System.out.print("Ship " + (Driver.currentGameYard.numShips + 1) + " Speed    : ");
-							int speedInput = Driver.getNumberNoCancel(0, 32);
-							star.speed = speedInput;
-	
-							System.out.print("Ship " + (Driver.currentGameYard.numShips + 1) + " Turn Mode: ");
-							String turnModeInput = Driver.getInput("AABCDEFXY");
-							star.turnMode = turnModeInput.toUpperCase();
-
-							System.out.print("Ship " + (Driver.currentGameYard.numShips + 1) + " Break Down [?-6] ('-' = n/a): ");
-							String breakDownString = "-";
-							String breakDownInput = Driver.getInput("-123456");
-							if (breakDownInput == "-") {
-								breakDownString = "-";
-							} else {
-								breakDownString = breakDownInput.concat("-6");
-							}
-							star.breakDown = breakDownString;
-							System.out.println();
-							
-							Driver.currentGameYard.addShipToShipyard(star);
-						}	
-					}
-				} else if (userInput2.equalsIgnoreCase("S")) {
-					Driver.defaultYard.displayShipyardMenu(1);
-				}
+			} else if (userInput.equalsIgnoreCase("S")) {
+				Driver.defaultYard.displayShipyardMenu(1);
 
 			} else if (userInput.equalsIgnoreCase("M")) {
 				boolean cont2 = true;
 				while (cont2) {
 					
-					System.out.print("Modify which ship? [RETURN to cancel]");
+					System.out.print("Modify which ship's speed? [RETURN to cancel]");
 				
 					int modifyInput = Driver.getNumber(1, Driver.currentGameYard.numShips);	
 
 					if(modifyInput == -1) {
 						cont2 = false;
 						//break;
-					}else {
-					
-						System.out.print("[N]ame, [S]peed, [T]urn Mode or [A]ll? [RETURN to cancel] ");
-						String nameSpeedBoth = Driver.getInput("NSTA");
-						
-						if(nameSpeedBoth.equalsIgnoreCase("N") || nameSpeedBoth.equalsIgnoreCase("A")) {
-							System.out.print("Ship " + (modifyInput) + " NEW Name : ");
-							String nameInput = keyboard.nextLine();
-							if(nameInput.length() > 10)
-								nameInput = nameInput.substring(0, 10);
-							Driver.currentGameYard.list[modifyInput-1].name = nameInput;
-						}
-						if(nameSpeedBoth.equalsIgnoreCase("S") || nameSpeedBoth.equalsIgnoreCase("A")) {
-							System.out.print("Ship " + (modifyInput) + " NEW Speed: ");
-							int speedInput = Driver.getNumberNoCancel(0, 32);
-							Driver.currentGameYard.list[modifyInput-1].speed = speedInput;
-						}
-						if(nameSpeedBoth.equalsIgnoreCase("T") || nameSpeedBoth.equalsIgnoreCase("A")) {
-							System.out.print("Ship " + (modifyInput) + " Turn Mode: ");
-							String turnModeInput = Driver.getInput("ABCDEF");
-							Driver.currentGameYard.list[modifyInput-1].turnMode = turnModeInput.toUpperCase();
-						}
-						if(nameSpeedBoth.equalsIgnoreCase("")) {
-							//continue;
-						}
+					} else {
+						System.out.print("Ship " + Driver.currentGameYard.list[modifyInput-1].name + "'s NEW Speed: ");
+						int speedInput = Driver.getNumberNoCancel(0, 32);
+						Driver.currentGameYard.list[modifyInput-1].speed = speedInput;
 						System.out.println();
 					}
 				}
@@ -141,8 +76,7 @@ public class ShipSetup {
 		}
 	}
 	
-	// Sort ships by speed, fastest first
-	public static void SortCurrentShipyard() {
+	public static void SortCurrentShipyard() {			// Sort ships by speed, fastest first
 		Starship temp = new Starship();
 		Driver.currentGameYard.list[Driver.currentGameYard.numShips] = temp;
 
@@ -158,21 +92,19 @@ public class ShipSetup {
 		}
 	}
 	
-	// PRINT MODIFIED LIST OF SHIPS TO SCREEN
 	public static void PrintCurrentShipsInGame() {
-		System.out.println("     \t\t\t\tHexes  \tH.E.T.\t\tScanner");
-		System.out.println("     Ship\tShip\tTurn   Before\tBreak\tSensor\tDist");
-		System.out.println("     Name\tSpeed\tMode   Turning\tDown\tLock-On\tMod");
+		ShipSetup.SortCurrentShipyard();														// Always SORT ships before printing to screen
+
+		System.out.println("     \t\t\t\t\tHexes  \tH.E.T.\t");
+		System.out.println("     Ship\t\tShip\tTurn   Before\tBreak\tSensor\tScanner");
+		System.out.println("     Name\t\tSpeed\tMode   Turning\tDown\tLock-On\tDist Mod");
 		System.out.println();
 		
 		LockOnCalculations();    // Roll for Sensor Lock-On and determine Scanner resolution number 
 		
 		for (int i = 1; i <= Driver.currentGameYard.numShips; i++) {
 
-			Starship ship = ((Starship) Driver.currentGameYard.list[i-1]);
-//			boolean hasSSD = ship.hasSSD;
-//			Part[] ssd = ship.ssd;
-//			Part sensor = ssd[22];
+			Starship ship = Driver.currentGameYard.list[i-1];
 			
 			int HexMinToTurn = PhaseCalculation.FindHexMinToTurn(ship.turnMode, ship.speed);
 			String HexMin = Integer.toString(HexMinToTurn);
@@ -182,12 +114,15 @@ public class ShipSetup {
 
 			String extraSpace = getExtraSpaces(i, 2);
 			
-			if (ship.name.length() <=3 ) {
-				ship.name = ship.name + "   ";
+			String spacer = "";
+			if (ship.name.length() < 18) {
+				for (int x = 1; x <= 18-ship.name.length(); x++) {
+					spacer = spacer + " ";
+				}
 			}
-			System.out.print(extraSpace + (i) + ")  " + ship.name);
-
-			getExtraSpaces(i-1, 2);
+			System.out.print(extraSpace + (i) + ")  " + ship.name + spacer);
+			
+			extraSpace = getExtraSpaces(i-1, 1);
 	        
 			// Sets up the display variable for 
 			// whether or not ship is locked on 
@@ -220,6 +155,28 @@ public class ShipSetup {
 		}
 
 	}
+
+	public static void PrintCurrentShipsInGameNameOnly() {
+		ShipSetup.SortCurrentShipyard();														// Always SORT ships before printing to screen
+
+		System.out.println("     Ship Name");
+		System.out.println();
+		
+		for (int i = 1; i <= Driver.currentGameYard.numShips; i++) {
+
+			Starship ship = Driver.currentGameYard.list[i-1];
+			
+			String extraSpace = getExtraSpaces(i, 2);
+			
+			if (ship.name.length() <=3 ) {
+				ship.name = ship.name + "   ";
+			}
+			
+			if (ship.race != "Monster") {
+				System.out.println(extraSpace + (i) + ")  " + ship.name);
+			}
+		}
+	}
 	
 	public static void LockOnCalculations() {
 		
@@ -243,10 +200,10 @@ public class ShipSetup {
 			if(Driver.currentGameYard.list[i].hasSSD && Driver.currentGameYard.list[i].ssd[22].remaining > 0) {
 				//number = Driver.currentGameYard.list[i].ssd[22].numOfThisPart - Driver.currentGameYard.list[i].ssd[22].remaining;
 				die = DamageAllocation.rollDice(1,6);
-				int minNeededRoll = ((Starship) Driver.currentGameYard.list[i]).sensorNums[((Starship) Driver.currentGameYard.list[i]).ssd[22].numOfThisPart - ((Starship) Driver.currentGameYard.list[i]).ssd[22].remaining];
-				((Starship) Driver.currentGameYard.list[i]).lockedOn = false;
+				int minNeededRoll = Driver.currentGameYard.list[i].sensorNums[Driver.currentGameYard.list[i].ssd[22].numOfThisPart - Driver.currentGameYard.list[i].ssd[22].remaining];
+				Driver.currentGameYard.list[i].lockedOn = false;
 				if (die <= minNeededRoll) {
-					((Starship) Driver.currentGameYard.list[i]).lockedOn = true;
+					Driver.currentGameYard.list[i].lockedOn = true;
 				}
 			}
 		}
@@ -254,6 +211,7 @@ public class ShipSetup {
 	}
 
 	public static void PrintCurrentNonMonstersInGameThatHaveSSD() {
+		ShipSetup.SortCurrentShipyard();
 		System.out.println("     Ship\tShip\t");
 		System.out.println("     Name\tSpeed\t");
 		System.out.println();
@@ -266,7 +224,7 @@ public class ShipSetup {
 				Driver.currentGameYard.list[i-1].name = Driver.currentGameYard.list[i-1].name + "   ";
 			}
 			
-			if(Driver.currentGameYard.list[i-1].hasSSD && Driver.currentGameYard.list[i-1].race != "Monster" && Driver.currentGameYard.list[i-1].race != "Other") {
+			if (Driver.currentGameYard.list[i-1].hasSSD && Driver.currentGameYard.list[i-1].race != "Monster" && Driver.currentGameYard.list[i-1].race != "Other") {
 				System.out.print(extraSpace + i + ")  " + Driver.currentGameYard.list[i-1].name);
 				getExtraSpaces(i, 2);
 				System.out.print("\t " + extraSpace + Driver.currentGameYard.list[i-1].speed + "\t ");
@@ -276,6 +234,8 @@ public class ShipSetup {
 	}
 	
 	public static void PrintCurrentShipsInGameThatHaveSSD() {
+		ShipSetup.SortCurrentShipyard();														// Always SORT ships before printing to screen
+
 		System.out.println("     Ship\tShip\t");
 		System.out.println("     Name\tSpeed\t");
 		System.out.println();
@@ -297,6 +257,26 @@ public class ShipSetup {
 		}
 	}
 	
+	public static String getExtraSpaces (int num, int maxDigits) {
+
+		String extraSpace = "";
+		int digitCount = 0;
+		
+        if (num == 0) {
+        	digitCount = 1;
+        } else {
+        	while(num != 0) {
+        		num /= 10;
+        		++digitCount;
+        	}
+        }
+        for (int i = 1; i <= maxDigits-digitCount; i++) {
+        	extraSpace = extraSpace + " ";
+        }
+        return extraSpace;
+    } 
+}
+
 //	public static void PrintCurrentSpecificRaceInGame(String printWhichRace, String printWhichShipType) {
 //		System.out.println("     Name\tSpeed\t");
 //		System.out.println();
@@ -335,23 +315,3 @@ public class ShipSetup {
 //			}
 //		}
 //	}
-
-	public static String getExtraSpaces (int num, int maxDigits) {
-
-		String extraSpace = "";
-		int digitCount = 0;
-		
-        if (num == 0) {
-        	digitCount = 1;
-        } else {
-        	while(num != 0) {
-        		num /= 10;
-        		++digitCount;
-        	}
-        }
-        for (int i = 1; i <= maxDigits-digitCount; i++) {
-        	extraSpace = extraSpace + " ";
-        }
-        return extraSpace;
-    } 
-}
