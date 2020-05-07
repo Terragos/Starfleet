@@ -13,9 +13,7 @@ public class WeaponsDamage {
 		while (!reset) {
 
 			System.out.println();
-			ShipSetup.SortCurrentShipyard();														// Always SORT ships before printing to screen
 			ShipSetup.PrintCurrentNonMonstersInGameThatHaveSSD();
-//		ShipSetup.PrintCurrentShipsInGameThatHaveSSD();
 			
 			System.out.println();
 			System.out.print("Which ship is firing? [RETURN to cancel] ");
