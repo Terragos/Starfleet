@@ -57,9 +57,7 @@ public class DamageAllocation {
 		System.out.println("|                     DAMAGE ALLOCATION PROCEDURE                          |");
 		System.out.println("|==========================================================================|");
 		
-		ShipSetup.SortCurrentShipyard();														// Always SORT ships before printing to screen
 		ShipSetup.PrintCurrentNonMonstersInGameThatHaveSSD();
-//		ShipSetup.PrintCurrentShipsInGameThatHaveSSD();
 		System.out.println();
 		
 		System.out.print("Deal damage to which ship? [RETURN to cancel] ");
@@ -154,7 +152,7 @@ public class DamageAllocation {
 		for(int damageCount = 1; damageCount <= totalDamage;) {
 			
 			if(damageDealt == true) {
-				die = rollDice(2, 6);
+				die = DamageAllocation.rollDice(2, 6);
 				extraSpace = ShipSetup.getExtraSpaces(damageCount, 3);
 				if(Driver.TESTING) {
 					System.out.print("\t  " + extraSpace + damageCount + "\t" + die + "/");
@@ -172,7 +170,7 @@ public class DamageAllocation {
 			String searchVal = "";
 			if(systemName[die][col].equals("Any Warp Engine")) {				
 				if(currentShip.ssd[7].remaining > 0 && currentShip.ssd[6].remaining > 0 && currentShip.ssd[8].remaining > 0) {
-					int superCoolNumber = rollDice(1,3);
+					int superCoolNumber = DamageAllocation.rollDice(1,3);
 					if (superCoolNumber == 1) {
 						searchVal = "Left Warp Engine";
 					} else if (superCoolNumber == 2) {
@@ -189,7 +187,7 @@ public class DamageAllocation {
 				}
 			}else if(systemName[die][col].equals("Any Weapon")) {				
 				if(currentShip.ssd[4].remaining > 0 && currentShip.ssd[5].remaining > 0) {
-					if(rollDice(1,2) == 1) {
+					if(DamageAllocation.rollDice(1,2) == 1) {
 						searchVal = "Phaser";
 					}else {
 						searchVal = "Torpedo";
@@ -274,7 +272,7 @@ public class DamageAllocation {
 	}
 	
 	public static void RollForCriticalHit () {
-		int die = rollDice(2, 6);
+		int die = DamageAllocation.rollDice(2, 6);
 		System.out.println();
 		System.out.println("===========================================================================");
 		if (die == 2) {
@@ -347,6 +345,11 @@ public class DamageAllocation {
 			dieRoll = randomGenerator.nextInt(numOfSides) + 1;
 			totalDieRoll += dieRoll;
 		}
+		
+		if(numOfDice == 0) {
+			System.out.println("Please use more than zero dice rolls.");
+		}
+		
 		return totalDieRoll;
 	}
 
