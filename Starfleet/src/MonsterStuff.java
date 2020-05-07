@@ -358,6 +358,8 @@ public class MonsterStuff {
 	}
 	
 	public static void PrintCurrentMonstersInGame() {
+		ShipSetup.SortCurrentShipyard();
+		
 		System.out.println();
 		System.out.println("     Name\tRemaining");                   //  Print only Arastoz monster list
 		System.out.println("     Name\tHit Pts");                   //  Print only Arastoz monster list
@@ -532,8 +534,7 @@ public class MonsterStuff {
 		
 		System.out.println("|===============================================================================|");
 		System.out.println();
-		System.out.println("     Ship\tShip\t");
-		System.out.println("     Name\tSpeed\t");
+		System.out.println("     Ship Name");
 		System.out.println();
 		
 		for (int i = 1; i <= Driver.currentGameYard.numShips; i++) {
@@ -546,10 +547,7 @@ public class MonsterStuff {
 			}
 			
 			if(Driver.currentGameYard.list[i-1].hasSSD && Driver.currentGameYard.list[i-1].race != "Monster" & Driver.currentGameYard.list[i-1].race != "Other") {
-				System.out.print(extraSpace + i + ")  " + Driver.currentGameYard.list[i-1].name);
-				ShipSetup.getExtraSpaces(i, 2);
-				System.out.print("\t " + extraSpace + Driver.currentGameYard.list[i-1].speed + "\t ");
-				System.out.println();
+				System.out.println(extraSpace + i + ")  " + Driver.currentGameYard.list[i-1].name);
 			}
 		}
 
