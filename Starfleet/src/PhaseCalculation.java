@@ -8,32 +8,8 @@ public class PhaseCalculation {
 	
 	public static void PhaseCalc() {
 
-		System.out.println();
-		System.out.println();
-		System.out.println("|==========================================================================|");
-		System.out.println("|                       IMPULSE MOVEMENT PRCOEDURE                         |");
-		System.out.println("|==========================================================================|");
-		System.out.println("|                  Current ship, object and monster list:                  |");
-		System.out.println("|==========================================================================|");
-		System.out.println();
-		
-		ShipSetup.SortCurrentShipyard();															// Always SORT ships before printing to screen
+		ShipModifyPreImpulseProcedure();
 
-		ShipSetup.PrintCurrentShipsInGame();
-		
-		System.out.println();
-		System.out.println("|==========================================================================|");
-		System.out.println("|             Do you need to modify the ship list in any way?              |");
-		System.out.println("|                 RETURN to continue to Impulse Procedure                  |");
-		System.out.println("|==========================================================================|");
-		System.out.println();
-		
-		String doModify = Driver.getInput("YN");         //  ALLOW USER TO MODIFY CURRENT SHIPS IF NEEDED	
-
-		if (doModify.equalsIgnoreCase("Y")) {		
-			ShipSetup.ShipSetupOrModify("Y");         // Pass "Y" to go on to Impulse Procedure ("n" to NOT go on...)
-		}
-		
 		//  START IMPULSE PROCEDURE
 	
 		Driver.numImpulses = 32;
@@ -91,28 +67,21 @@ public class PhaseCalculation {
 						//  NEED CODE TO EMPTY OUT KEYBOARD BUFFER  ???
 					} else if (userInput.equalsIgnoreCase("D")) {
 						AddDrone();
+						PrintImpulseHeader();
 					} else if (userInput.equalsIgnoreCase("S")) {
 						AddShuttle();
+						PrintImpulseHeader();
 					} else if (userInput.equalsIgnoreCase("F")) {
 						AddFighter();
+						PrintImpulseHeader();
 					} else if (userInput.equalsIgnoreCase("R")) {                   // Remove destroyed ship/monster
 						System.out.println();
-						ShipSetup.PrintCurrentShipsInGame();
-						System.out.print("Remove which ship? [RETURN to cancel] ");
-						int removeInput = -1;
-						removeInput = Driver.getNumber(1, Driver.currentGameYard.numShips);
-						if (removeInput > 0) {
-							System.out.print("Are you sure you want to remove: " + Driver.currentGameYard.list[removeInput-1].name);
-							String yesOrNo = Driver.getInput("YN");
-							if (yesOrNo.contentEquals("Y")) {
-								Driver.currentGameYard.removeShipFromShipyard(removeInput);
-							}
-						}
+						Driver.RemoveShip(true);
+						PrintImpulseHeader();
 					} else if (userInput.equalsIgnoreCase("A")) {  					// Add ship/monster
 						System.out.print("Add \"Add ship code\" here.");
 					} 
 				}
-				
 			} else {
 				for(int k = 0; k < Driver.currentGameYard.numShips; k++) {	
 					Driver.currentGameYard.list[k].distrv += Driver.currentGameYard.list[k].spi;
@@ -160,7 +129,6 @@ public class PhaseCalculation {
 		}
 		
 		boolean ArastozInGame = false;
-		
 		for (int i = 1; i <= Driver.currentGameYard.numShips; i++) {
 			if (Driver.currentGameYard.list[i-1].shipType.contains("Arastoz")) {
 				ArastozInGame = true;
@@ -192,6 +160,69 @@ public class PhaseCalculation {
 					System.out.println();
 					MonsterStuff.MonsterAttacksPlanet(monsterDamage);
 				}
+			}
+		}
+	}
+	
+	public static void ShipModifyPreImpulseProcedure() {
+	
+		boolean cont = true;
+		while(cont) {
+			System.out.println();
+			System.out.println();
+			System.out.println("|==========================================================================|");
+			System.out.println("|                         SHIP MODIFICATION MENU                           |");
+	
+			if (Driver.currentGameYard.numShips > 0) {
+				System.out.println("|==========================================================================|");
+				System.out.println("|                  Current ship, object and monster list:                  |");
+				System.out.println("|==========================================================================|");
+				System.out.println();
+	
+				ShipSetup.PrintCurrentShipsInGame();
+				
+				System.out.println();
+			}
+						
+			System.out.println("|==========================================================================|");
+			System.out.println("|       Add Ship from [S]hipyard    [M]odify Speeds    [R]emove Ship       |");
+			System.out.println("|                    RETURN to go to Impulse Procedure                     |"); 
+			System.out.println("|==========================================================================|");
+	
+			String userInput = Driver.getInput("AMR");
+			
+			if (userInput.contentEquals("")) {
+				//break;
+				cont = false;
+	
+			} else if (userInput.equalsIgnoreCase("S")) {
+				Driver.defaultYard.displayShipyardMenu(1);
+	
+			} else if (userInput.equalsIgnoreCase("M")) {
+				ModifyShipSpeeds();
+				
+			} else if (userInput.equalsIgnoreCase("R")) {
+				Driver.RemoveShip(false);
+			}
+		}
+	}
+	
+	public static void ModifyShipSpeeds() {
+		boolean cont2 = true;
+		while (cont2) {
+			
+			System.out.print("Modify which ship's speed? [RETURN to cancel]");
+		
+			int modifyInput = Driver.getNumber(1, Driver.currentGameYard.numShips);	
+
+			if(modifyInput == -1) {
+				cont2 = false;
+				//break;
+			} else {
+				System.out.print(Driver.currentGameYard.list[modifyInput-1].name + "'s NEW Speed: ");
+				int speedInput = Driver.getNumberNoCancel(0, 32);
+				Driver.currentGameYard.list[modifyInput-1].speed = speedInput;
+				System.out.println();
 			}
 		}
 	}
@@ -343,35 +374,6 @@ public class PhaseCalculation {
 		System.out.print("=======================");
 	}
 	
-	
-	// ROLL DICE METHOD
-	public static int rollDice(int numOfDice, int numOfSides, boolean print)
-	{
-		Random randomGenerator = new Random();
-		int dieRoll;
-		int totalDieRoll = 0;
-		
-		for(int i = 0; i < numOfDice; i++) {
-			dieRoll = randomGenerator.nextInt(numOfSides) + 1;
-			totalDieRoll += dieRoll;
-		}
-		
-		if(numOfDice == 0) {
-			System.out.println("Please use more than zero dice rolls.");
-		}
-		else if(print == true && numOfDice == 1) {
-			System.out.println("Die Roll: " + totalDieRoll);
-		}
-		else if(print == true){
-			System.out.println("Total Dice Roll: " + totalDieRoll);
-		}
-		else {
-			//Nothing since print is false
-		}
-		
-		return totalDieRoll;
-	}	
-
 	// FIND TURN MODE NUMBER BASED ON TURN MODE LETTER
 	public static int FindHexMinToTurn(String mode, int speed) {
 		int numHexes = 0; 
@@ -511,7 +513,7 @@ public class PhaseCalculation {
 
 	// ADD DRONE METHOD - ON-THE-FLY
 	public static void AddDrone() {		
-		System.out.print("Drone Name : ");
+		System.out.print("\nDrone Name : ");
 		String droneName = keyboard.nextLine();
 		
 		System.out.println("|==============================================================================|");
@@ -559,7 +561,7 @@ public class PhaseCalculation {
 
 	// ADD SHUTTLE METHOD - ON-THE-FLY	
 	public static void AddShuttle() {	
-		System.out.print("Shuttle Name [RETURN to cancel]: ");
+		System.out.print("\nShuttle Name [RETURN to cancel]: ");
 		String shuttleName = keyboard.nextLine();
 
 		if (shuttleName.length() > 0) {
@@ -573,7 +575,7 @@ public class PhaseCalculation {
 
 	// ADD FIGHTER METHOD - ON-THE-FLY
 	public static void AddFighter() {		
-		System.out.print("Fighter Name [RETURN to cancel]: ");
+		System.out.print("\nFighter Name [RETURN to cancel]: ");
 		String fighterName = keyboard.nextLine();
 		
 		if (fighterName.length() > 0) {
