@@ -1054,13 +1054,10 @@ public class Shipyard {
 		
 		ship = new Starship("Frax", "CWV", "44", "10", "120/100", "5-6", "0.67", "2+4", "3", "B", "R91.05", "170");
 		defaultYard.addShipToShipyard(ship);
-		
 		ship = new Starship("Frax", "PFT", "40", "10", "120/80", "5-6", "0.67", "2", "3", "B", "R91.06", "179");
 		defaultYard.addShipToShipyard(ship);
-		
 		ship = new Starship("Frax", "CWE", "40", "10", "140", "5-6", "0.67", "2", "3", "B", "R91.07", "170");
 		defaultYard.addShipToShipyard(ship);
-		
 		ship = new Starship("Frax", "CWA", "40", "10", "152", "5-6", "0.67", "2", "3", "B", "R91.07A", "175");
 		defaultYard.addShipToShipyard(ship);
 		
@@ -1073,25 +1070,18 @@ public class Shipyard {
 		
 		ship = new Starship("Frax", "DWD", "28", "8", "93", "5-6", "0.5", "1", "4", "B", "R91.11", "137");
 		defaultYard.addShipToShipyard(ship);
-		
 		ship = new Starship("Frax", "DWS", "28", "8", "100/80", "5-6", "0.5", "1", "4", "B", "R91.12", "138");
 		defaultYard.addShipToShipyard(ship);
-		
 		ship = new Starship("Frax", "DWM", "28", "8", "100/80", "5-6", "0.5", "1", "4", "B", "R91.13", "168");
 		defaultYard.addShipToShipyard(ship);
-		
 		ship = new Starship("Frax", "DWE", "28", "8", "97", "5-6", "0.5", "1", "4", "B", "R91.14", "167");
 		defaultYard.addShipToShipyard(ship);
-		
 		ship = new Starship("Frax", "DWA", "28", "8", "102", "5-6", "0.5", "1", "4", "B", "R91.15", "175");
 		defaultYard.addShipToShipyard(ship);
-		
 		ship = new Starship("Frax", "DWC", "32", "28", "109/79", "5-6", "0.5", "1", "4", "B", "R91.17", "155");
 		defaultYard.addShipToShipyard(ship);
-		
 		ship = new Starship("Frax", "MDW", "28", "8", "93", "5-6", "0.5", "1", "4", "B", "R91.16", "170");
 		defaultYard.addShipToShipyard(ship);
-		
 		ship = new Starship("Frax", "Tug", "45", "10", "140/80", "3-6", "*", "2", "3", "*", "R91.19", "124");
 		defaultYard.addShipToShipyard(ship);
 		
@@ -1104,22 +1094,16 @@ public class Shipyard {
 		
 		ship = new Starship("Frax", "SFF", "10", "4", "60", "6", "0.33", "-", "4", "A", "R91.21", "121");
 		defaultYard.addShipToShipyard(ship);
-		
 		ship = new Starship("Frax", "SDD", "14", "6", "80", "5-6", "0.5", "-", "4", "B", "R91.22", "135");
 		defaultYard.addShipToShipyard(ship);
-		
 		ship = new Starship("Frax", "SCW", "19", "10", "110", "5-6", "0.67", "1", "3", "B", "R91.23", "168");
 		defaultYard.addShipToShipyard(ship);
-		
 		ship = new Starship("Frax", "SCL", "19", "10", "110", "5-6", "0.67", "1", "3", "B", "R91.25", "168");
 		defaultYard.addShipToShipyard(ship);
-		
 		ship = new Starship("Frax", "SCG", "28", "12", "150", "5-6", "1", "1", "3", "C", "R91.24", "170");
 		defaultYard.addShipToShipyard(ship);
-		
 		ship = new Starship("Frax", "PF", "3", "1", "20/30", "6", "0.2", "-", "5", "AA", "R91.PF1", "179");
 		defaultYard.addShipToShipyard(ship);
-		
 		ship = new Starship("Frax", "PFD", "3", "1", "20/30", "6", "0.2", "-", "5", "AA", "R91.PF2", "179");
 		defaultYard.addShipToShipyard(ship);
 
