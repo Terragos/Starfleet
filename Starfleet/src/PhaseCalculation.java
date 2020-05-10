@@ -64,7 +64,6 @@ public class PhaseCalculation {
 						System.out.println();
 					} else if (userInput.equalsIgnoreCase("T")) {						
 						AddOrRemoveTorpedo();
-						//  NEED CODE TO EMPTY OUT KEYBOARD BUFFER  ???
 					} else if (userInput.equalsIgnoreCase("D")) {
 						AddDrone();
 						PrintImpulseHeader();
@@ -96,7 +95,7 @@ public class PhaseCalculation {
 		//  End of Impulse Procedure Things
 		
 		System.out.println();
-		System.out.print("Are any ships repairing system with Damage Control? ");
+		System.out.print("Are any ships repairing a system(s) with Damage Control? ");
 		String yesOrNo = Driver.getInputNoCancel("YN");
 		if (yesOrNo.contentEquals("Y")) {
 			AdjustForDamageControl();
@@ -124,7 +123,9 @@ public class PhaseCalculation {
 			if (yesOrNo.contentEquals("Y")) {
 				monsterDamage = MonsterStuff.MonsterDamage();
 				System.out.println();
-				DamageAllocation.DamageAlloc(monsterDamage);
+				if (monsterDamage > 0) {
+					DamageAllocation.DamageAlloc(monsterDamage);
+				}
 			}
 		}
 		
@@ -136,7 +137,14 @@ public class PhaseCalculation {
 			}
 		}
 
-		if (ArastozInGame == true) {
+		int ArastozCount = 0;
+		for (int i = 1; i <= Driver.currentGameYard.numShips; i++) {
+			if (Driver.currentGameYard.list[i-1].shipType.contains("Arastoz")) {
+				ArastozCount++;
+			}
+		}
+
+		if (ArastozInGame == true && ArastozCount > 1) {
 			MonsterStuff.DidArastozCombine();
 		}
 		
@@ -171,25 +179,17 @@ public class PhaseCalculation {
 			System.out.println();
 			System.out.println();
 			System.out.println("|==========================================================================|");
-			System.out.println("|                         SHIP MODIFICATION MENU                           |");
+			System.out.println("|              PRE-IMPULSE PROCEDURE SHIP MODIFICATION MENU                |");
+			System.out.println("|==========================================================================|");
 	
-			if (Driver.currentGameYard.numShips > 0) {
-				System.out.println("|==========================================================================|");
-				System.out.println("|                  Current ship, object and monster list:                  |");
-				System.out.println("|==========================================================================|");
-				System.out.println();
-	
-				ShipSetup.PrintCurrentShipsInGame();
-				
-				System.out.println();
-			}
+			ShipSetup.PrintCurrentThingsInGame("Ship Monster Other", "Speed");
 						
 			System.out.println("|==========================================================================|");
 			System.out.println("|       Add Ship from [S]hipyard    [M]odify Speeds    [R]emove Ship       |");
 			System.out.println("|                    RETURN to go to Impulse Procedure                     |"); 
 			System.out.println("|==========================================================================|");
 	
-			String userInput = Driver.getInput("AMR");
+			String userInput = Driver.getInput("SMR");
 			
 			if (userInput.contentEquals("")) {
 				//break;
@@ -205,33 +205,30 @@ public class PhaseCalculation {
 				Driver.RemoveShip(false);
 			}
 		}
+
+		ShipSetup.PrintCurrentShipsInGame();
+		
+		System.out.println("|==========================================================================|");
+		System.out.println("|                    RETURN to go to Impulse Procedure                     |"); 
+		System.out.println("|==========================================================================|");
 	}
 	
 	public static void ModifyShipSpeeds() {
-		boolean cont2 = true;
-		while (cont2) {
-			
-			System.out.print("Modify which ship's speed? [RETURN to cancel]");
-		
-			int modifyInput = Driver.getNumber(1, Driver.currentGameYard.numShips);	
 
-			if(modifyInput == -1) {
-				cont2 = false;
-				//break;
-			} else {
-				System.out.print(Driver.currentGameYard.list[modifyInput-1].name + "'s NEW Speed: ");
-				int speedInput = Driver.getNumberNoCancel(0, 32);
-				Driver.currentGameYard.list[modifyInput-1].speed = speedInput;
-				System.out.println();
+		System.out.println("Type in new speeds for each ship.  RETURN to go to next ship.  (Current speed)");
+		for (int i = 0; i < Driver.currentGameYard.numShips; i++) {
+			System.out.print("New speed for " + Driver.currentGameYard.list[i].name + " (" + Driver.currentGameYard.list[i].speed + "): ");
+			int speedInput = Driver.getNumber(0, 32);
+			if (speedInput >= 0) {
+				Driver.currentGameYard.list[i].speed = speedInput;
 			}
-		}
+		}	
 	}
 	
 	public static void AdjustForDamageControl() {
 
 		boolean cont = true;
 		
-		System.out.println();
 		System.out.println();
 		System.out.println("|===============================================================================================|");
 		System.out.println("|                             END OF TURN DAMAGE CONTROL REPAIR:                                |");
@@ -262,33 +259,46 @@ public class PhaseCalculation {
 		System.out.println("|===============================================================================================|");
 		System.out.println();
 
-		ShipSetup.PrintCurrentShipsInGame();
-
+		int print = ShipSetup.PrintCurrentThingsInGame("SHIP", "");
+		System.out.println("print: " + print);
+		System.out.println();
+		
 		int shipNumToRepair = -1;
 
 		while (cont) {
 			System.out.print("Which ship to repair damage? [RETURN for cancel] ");
-			shipNumToRepair = Driver.getNumber(0, Driver.currentGameYard.numStarships);
+			shipNumToRepair = ShipSetup.GetAdjustedInput(print, "SHIP", "");
+			System.out.println("shipNumToRepair: " + shipNumToRepair);
 
-			if(shipNumToRepair > 0) {
-				System.out.print("Which system to repair? ");
-				int systemToRepair = Driver.getNumberNoCancel(1,24);
-				
-				if (systemToRepair >= 1 && systemToRepair <= 24) {
-					System.out.print("How many of that system to repair? ");
-					int quantity = Driver.getNumberNoCancel(0,10);
-
-					if (quantity >= 0) {
-						Driver.currentGameYard.list[shipNumToRepair-1].ssd[systemToRepair-1].remaining = Driver.currentGameYard.list[shipNumToRepair-1].ssd[systemToRepair-1].remaining + quantity;
-						System.out.println();
-					}
+			if (shipNumToRepair > 0) {
+				int quantity = 1;
+				while (quantity > 0) {
+					System.out.print(Driver.currentGameYard.list[shipNumToRepair].name + ": Which system to repair? ");
+					int systemToRepair = Driver.getNumber(1,24);
 					
-					if(Driver.TESTING) {
-						System.out.println();
-						for (int i = 0; i <= 24; i++) {
-							System.out.print(Driver.currentGameYard.list[shipNumToRepair-1].ssd[i].name.charAt(0) + ":" + Driver.currentGameYard.list[shipNumToRepair-1].ssd[i].remaining + " ");
+					if (systemToRepair >= 1 && systemToRepair <= 24) {
+						System.out.print(Driver.currentGameYard.list[shipNumToRepair].name + ": How many " + Driver.currentGameYard.list[shipNumToRepair].ssd[systemToRepair-1].name + " systems to repair? ");
+						quantity = Driver.getNumberNoCancel(0,10);
+						
+						if (quantity > 0) {
+							Driver.currentGameYard.list[shipNumToRepair].ssd[systemToRepair-1].remaining = Driver.currentGameYard.list[shipNumToRepair].ssd[systemToRepair-1].remaining + quantity;
+							System.out.println(Driver.currentGameYard.list[shipNumToRepair].name + ": " + Driver.currentGameYard.list[shipNumToRepair].ssd[systemToRepair-1].name + " now at " + Driver.currentGameYard.list[shipNumToRepair].ssd[systemToRepair-1].remaining + " boxes");
+							System.out.println();
+						} else {
+							System.out.println();
+							quantity = -1;
 						}
+						
+						if(Driver.TESTING) {
+							System.out.println();
+							for (int i = 0; i <= 24; i++) {
+								System.out.print(Driver.currentGameYard.list[shipNumToRepair].ssd[i].name.charAt(0) + ":" + Driver.currentGameYard.list[shipNumToRepair].ssd[i].remaining + " ");
+							}
+							System.out.println();
+						}
+					} else {
 						System.out.println();
+						quantity = -1;
 					}
 				}
 			}
@@ -475,7 +485,7 @@ public class PhaseCalculation {
 			} else if (speed >= 25) {
 				numHexes = 4;
 			}
-		} else if (mode.equalsIgnoreCase("Y")) {
+		} else if (mode.equalsIgnoreCase("AAA")) {
 			if (speed <= 11) {
 				numHexes = 1;
 			} else if (speed >= 12 && speed <= 23) {
@@ -483,7 +493,7 @@ public class PhaseCalculation {
 			} else if (speed >= 24) {
 				numHexes = 3;
 			}			
-		} else if (mode.equalsIgnoreCase("X")) {
+		} else if (mode.equalsIgnoreCase("AAAA")) {
 			numHexes = 1;
 		}
 		return numHexes;
