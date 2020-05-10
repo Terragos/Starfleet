@@ -1,7 +1,7 @@
 
 public class Starship {
 
-	enum Ship { TORPEDO, DRONE, SHUTTLE, FIGHTER, STARSHIP }
+	enum Ship { TORPEDO, DRONE, SHUTTLE, FIGHTER, STARSHIP, MONSTER, PLANET }
 	
 	public static String[] partNames = {"Bridge", "Flag Bridge", "Emergency Bridge", "Aux Control", "Phaser", "Torpedo", "Center Warp Engine", 
 			"Left Warp Engine", "Right Warp Engine", "Impulse", "APR", "Battery", "Transporter", "Tractor Beam", "Probe", 
@@ -114,7 +114,12 @@ public class Starship {
 			String breakDown, String moveCost, String spareShuttles, String sizeClass, 
 			String turnMode, String ruleNum, String yearInService) {
 		this.race = race;
-		this.shipType = type;
+		
+		if (type.equals("Planet"))
+			this.name = "Planet";
+		else
+			this.shipType = type;
+		
 		this.crewUnits = crewUnits;
 		this.boardingParties = boardingParties;
 		this.BPV = BPV;
@@ -135,7 +140,14 @@ public class Starship {
 		this.speed = 0;
 		this.spi = 0.0;
 		this.distrv = 0.0;
-		this.kindOfShip = Ship.STARSHIP;
+		
+		if (this.race.equals("Monster"))
+			this.kindOfShip = Ship.MONSTER;
+		else if (this.name.equals("Planet"))
+			this.kindOfShip = Ship.PLANET;
+		else
+			this.kindOfShip = Ship.STARSHIP;
+		
 		this.ssd = new Part[25];
 	}
 	
@@ -158,7 +170,10 @@ public class Starship {
 		this.spi = spi;
 		this.distrv = distrv;
 		this.name = race.substring(0,3) + "-" + type;
-		this.kindOfShip = Ship.STARSHIP;
+		if (this.race == "Monster")
+			this.kindOfShip = Ship.MONSTER;
+		else
+			this.kindOfShip = Ship.STARSHIP;
 		this.ssd = new Part[25];
 	}
 	
