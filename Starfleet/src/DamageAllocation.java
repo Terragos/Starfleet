@@ -57,19 +57,24 @@ public class DamageAllocation {
 		System.out.println("|                     DAMAGE ALLOCATION PROCEDURE                          |");
 		System.out.println("|==========================================================================|");
 		
-		ShipSetup.PrintCurrentNonMonstersInGameThatHaveSSD();
-		System.out.println();
 		
+		System.out.println();
+		int print = ShipSetup.PrintCurrentThingsInGame("SHIP", "");
+		System.out.println();
 		System.out.print("Deal damage to which ship? [RETURN to cancel] ");
 		int input = -5;
-
-		input = Driver.getNumber(1, Driver.currentGameYard.numShips);				//  Get a new input
+		input = ShipSetup.GetAdjustedInput(print, "SHIP", "");
+		System.out.println("input: " + input);
+		System.out.println("ship being damaged: " + Driver.currentGameYard.list[input].name);
+		
+		
+		
 
 		if(input == -1) {
 			return;
 		}
 		
-		currentShip = Driver.currentGameYard.list[input-1];
+		currentShip = Driver.currentGameYard.list[input];
 		
 		if(currentShip.race == "Monster") {				//  If defending object is a monster then pass through damage to "monster damage" method
 			System.out.println();
@@ -261,7 +266,7 @@ public class DamageAllocation {
 			
 		System.out.println();
 		System.out.println("Damage Allocation Finished.  [C]ontinue");
-		String userInput = Driver.getInputNoCancel("Cc");
+		String userInput = Driver.getInputNoCancel("C");
 
 		if (num == -1) {
 			System.out.println("Press RETURN to return to Main Menu");
@@ -283,7 +288,6 @@ public class DamageAllocation {
 			System.out.println();
 			System.out.println("Roll one d6 at end of turn (one time only).  A roll of \"6\" always fails.");
 			System.out.println("If die roll is less than highest Damage Control number, then the weapons trcking systems are repaired.");
-			System.out.println();
 			
 		} else if (die == 3) {
 			System.out.println("Critical Hit!");
@@ -291,7 +295,6 @@ public class DamageAllocation {
 			System.out.println();
 			System.out.println("Roll one d6 at end of turn (one time only).  A roll of \"6\" always fails.");
 			System.out.println("If die roll is less than highest Damage Control number, then the weapons trcking systems are repaired.");
-			System.out.println();
 			
 		} else if (die == 4) {
 			System.out.println("Critical Hit!");
@@ -299,7 +302,6 @@ public class DamageAllocation {
 			System.out.println();
 			System.out.println("Roll one d6 at end of turn (one time only).  A roll of \"6\" always fails.");
 			System.out.println("If die roll is less than highest Damage Control number, then the weapons trcking systems are repaired.");
-			System.out.println();
 			
 		} else if (die >= 5 && die <= 9) {
 			System.out.println("No critical hit!");
@@ -310,7 +312,6 @@ public class DamageAllocation {
 			System.out.println();
 			System.out.println("Roll one d6 at end of turn (one time only).  A roll of \"6\" always fails.");
 			System.out.println("If die roll is less than highest Damage Control number, then the weapons trcking systems are repaired.");
-			System.out.println();
 			
 		} else if (die == 11) {
 			System.out.println("Critical Hit!");
@@ -318,7 +319,6 @@ public class DamageAllocation {
 			System.out.println();
 			System.out.println("Roll one d6 at end of turn (one time only).  A roll of \"6\" always fails.");
 			System.out.println("If die roll is less than highest Damage Control number, then the weapons trcking systems are repaired.");
-			System.out.println();
 			
 		} else if (die == 12) {
 			System.out.println("Critical Hit!");
@@ -328,7 +328,6 @@ public class DamageAllocation {
 			System.out.println();
 			System.out.println("Roll one d6 at end of turn (one time only).  A roll of \"6\" always fails.");
 			System.out.println("If die roll is less than highest Damage Control number, then the weapons trcking systems are repaired.");
-			System.out.println();
 			
 		}
 		System.out.println("============================================================================");
