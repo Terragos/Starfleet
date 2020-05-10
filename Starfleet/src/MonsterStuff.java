@@ -1,4 +1,5 @@
-import org.omg.PortableInterceptor.SYSTEM_EXCEPTION;
+
+import java.math.*;
 
 public class MonsterStuff {
 
@@ -37,21 +38,21 @@ public class MonsterStuff {
 		
 		int totalMonsterDamage = 0;
 		int monsterDamage = 0;
-		int whichMonster = -5;
-		
+		int whichMonster = -1;
 		
 		while (whichMonster < 0) {
 			System.out.println();
-			PrintCurrentMonstersInGame();
+			int print = ShipSetup.PrintCurrentThingsInGame("MONSTER", "");
+			System.out.println();
 			System.out.print("Which monster attacked? [RETURN to cancel] ");
-			whichMonster = -5;
-			whichMonster = Driver.getNumber(1, Driver.currentGameYard.numShips);
+//			whichMonster = -5;
+			whichMonster = ShipSetup.GetAdjustedInput(print, "MONSTER", "");
 
-			if(whichMonster == -1) {
+			if(whichMonster == 0) {
 				break;
 			}
 
-			currentMonster =  Driver.currentGameYard.list[whichMonster-1];
+			currentMonster =  Driver.currentGameYard.list[whichMonster];
 			
 			if (currentMonster.name == "Planet Crusher") {						//  SM1.0 - PLANET CRUSHER
 				monsterDamage = PlanetCrusher();
@@ -82,7 +83,7 @@ public class MonsterStuff {
 			whichMonster = -1;
 			totalMonsterDamage = totalMonsterDamage + monsterDamage;
 
-			System.out.println("Total Monster Damage: " + (totalMonsterDamage));
+			System.out.println("Total Monster Damage: " + totalMonsterDamage);
 		}
 		return totalMonsterDamage;
 	}
@@ -92,7 +93,10 @@ public class MonsterStuff {
 		int damage = PlanetCrusherDamage[die];
 		System.out.println();
 		System.out.println("Planet Crusher does " + damage + " points of damage.  Apply as normal weapon damage.");
-		
+
+		DamageAllocation.DamageAlloc(damage);
+		damage = 0;
+
 		return damage;
 	}
 		
@@ -105,6 +109,9 @@ public class MonsterStuff {
 			damage = labResearch[die][dist] * 2;
 			System.out.println();
 			System.out.println("Space Amoeba does " + damage + " points of damage.  Apply as normal weapon damage.");
+		
+			DamageAllocation.DamageAlloc(damage);
+			damage = 0;
 			}
 		
 		return damage;
@@ -115,6 +122,9 @@ public class MonsterStuff {
 		int damage = MorayEelDamage[die];
 		System.out.println();
 		System.out.println("Moray Eel does " + damage + " points of damage.  Damage BYPASSES shields.");
+
+		DamageAllocation.DamageAlloc(damage);
+		damage = 0;
 
 		return damage;
 	}
@@ -136,6 +146,7 @@ public class MonsterStuff {
 			System.out.println("Cosmic Clouds kills " + damage + " crew units.  No ship damage.");
 		}
 		
+		damage = 0;
 		return damage;
 	}
 					
@@ -144,7 +155,10 @@ public class MonsterStuff {
 		int damage = MorayEelDamage[die];
 		System.out.println();
 		System.out.println("Sunsnake does " + damage + " points of damage.  Apply as normal weapon damage.");
-		
+
+		DamageAllocation.DamageAlloc(damage);
+		damage = 0;
+
 		return damage;
 	}
 						
@@ -167,9 +181,10 @@ public class MonsterStuff {
 			}
 			damage = mindWipe[die][dist] * multiplier;
 			System.out.println();
-			System.out.println("Mind Monster mind wipes " + damage + " crew units.  No ship damage.");
+			System.out.println("Mind Monster mind-wipes " + damage + " crew units.  No ship damage.");
 		}
 		
+		damage = 0;
 		return damage;
 	}
 							
@@ -242,12 +257,16 @@ public class MonsterStuff {
 				}
 			}
 			
-			int arastoz1RemainingHP = 0;
-			int arastoz1BaseStrength = 0;
-			int arastoz2RemainingHP = 0;
-			int arastoz2BaseStrength = 0;
-			boolean answerSame = true;
+//			int arastoz1RemainingHP = 0;
+			int arastoz1DamageSoFar = 0;
+			int arastoz1SizeClass = 0;
+//			int arastoz2RemainingHP = 0;
+			int arastoz2DamageSoFar = 0;
+			int arastoz2SizeClass = 0;
+			int newCombinedSizeClass = 0;
+//			boolean answerSame = true;
 			int arastozNum1 = 0;
+			
 			while (arastozNum1 != -1) {
 				System.out.println();
 				System.out.println("Which 2 Arastoz Monsters have combined? [RETURN to cancel]");
@@ -255,94 +274,67 @@ public class MonsterStuff {
 				arastozNum1 = Driver.getNumber(1, 4);
 				if (arastozNum1 != -1) {
 					arastozNum1--;
-					arastoz1RemainingHP = Driver.currentGameYard.list[arastozNum1].ssd[24].remaining;
-					arastoz1BaseStrength = Integer.parseInt(Driver.currentGameYard.list[arastozNum1].shipType.substring(8,9));
 					System.out.print("#2: ");
 					int arastozNum2 = Driver.getNumber(1, 4);
-					arastozNum2--;
-					arastoz2RemainingHP = Driver.currentGameYard.list[arastozNum2].ssd[24].remaining;
-					arastoz2BaseStrength = Integer.parseInt(Driver.currentGameYard.list[arastozNum2].shipType.substring(8,9));
 
-					String newSuffix = "";
-					String letterSuffix = "";
-					if (arastozNum1 != arastozNum2) {
-						int combinedStrength = 0;
+					if (arastozNum2 != -1) {
+						arastozNum2--;
+						arastoz1SizeClass = Integer.parseInt(Driver.currentGameYard.list[arastozNum1].sizeClass);
+						arastoz1DamageSoFar = Driver.currentGameYard.list[arastozNum1].ssd[24].numOfThisPart - Driver.currentGameYard.list[arastozNum1].ssd[24].remaining;
+						arastoz2SizeClass = Integer.parseInt(Driver.currentGameYard.list[arastozNum2].sizeClass);
+						arastoz2DamageSoFar = Driver.currentGameYard.list[arastozNum2].ssd[24].numOfThisPart - Driver.currentGameYard.list[arastozNum2].ssd[24].remaining;
 						
-						if (arastoz1BaseStrength + arastoz2BaseStrength == 2) {
-//							System.out.println("Combining 1+1");
-							combinedStrength = arastoz1RemainingHP + arastoz2RemainingHP;		//  100+100 = 200 - any damage so far
-							newSuffix = "2x";
+						String newSuffix = "";
+						String letterSuffix = "";
+						if (arastozNum1 != arastozNum2) {
+							int combinedDamageSoFar = arastoz1DamageSoFar + arastoz2DamageSoFar;
+							newCombinedSizeClass = arastoz1SizeClass + arastoz2SizeClass;
+							int newCombinedHP = ((int) Math.round(Math.pow(2, newCombinedSizeClass-1) * 100 * Driver.MonsterBPVModifier)) - combinedDamageSoFar;
+							
+							
+							newSuffix = Integer.toString(newCombinedSizeClass) + "x";
 							letterSuffix = Driver.currentGameYard.list[arastozNum2].name.substring(8, Driver.currentGameYard.list[arastozNum2].name.length());
 							
-						} else if (arastoz1BaseStrength + arastoz2BaseStrength == 3) {
-//							System.out.println("Combining 1+2");
-							combinedStrength = 100 + arastoz1RemainingHP + arastoz2RemainingHP;  //  100+200 = 400 (yes 400) - any damage so far
-							newSuffix = "4x";
-							letterSuffix = Driver.currentGameYard.list[arastozNum2].name.substring(8, Driver.currentGameYard.list[arastozNum2].name.length());
+							//  Combine piece 1 and 2 into #1's spot
+							Driver.currentGameYard.list[arastozNum1].ssd[24].remaining = newCombinedHP;   
+							Driver.currentGameYard.list[arastozNum1].ssd[24].numOfThisPart = (int) Math.round(Math.pow(2.0, newCombinedSizeClass-1) * 100 * Driver.MonsterBPVModifier);
+							Driver.currentGameYard.list[arastozNum1].shipType = "Arastoz " + newSuffix;
+							Driver.currentGameYard.list[arastozNum1].sizeClass = Integer.toString(newCombinedSizeClass);
+							Driver.currentGameYard.list[arastozNum1].name = Driver.currentGameYard.list[arastozNum1].name + letterSuffix;
+							Driver.currentGameYard.list[arastozNum1].speed = 16 - (2 * newCombinedSizeClass);
 							
-						} else if (arastoz1BaseStrength + arastoz2BaseStrength == 4) {
-//							System.out.println("Combining 2+2");
-							combinedStrength = 400 + arastoz1RemainingHP + arastoz2RemainingHP;  //  200+200 or 100+300 = 800 - any damage so far
-							newSuffix = "8x";
-							letterSuffix = Driver.currentGameYard.list[arastozNum2].name.substring(8, Driver.currentGameYard.list[arastozNum2].name.length());
+							RemoveMonsterFromGame(arastozNum2);									//  Remove #2 piece 
 
-						} else if (arastoz1BaseStrength + arastoz2BaseStrength == 5) {
-//							System.out.println("Combining 1+4");
-							combinedStrength = 300 + arastoz1RemainingHP + arastoz2RemainingHP;  //  200+200 or 100+300 = 800 - any damage so far
-							newSuffix = "8x";
-							letterSuffix = Driver.currentGameYard.list[arastozNum2].name.substring(8, Driver.currentGameYard.list[arastozNum2].name.length());
-						}
-						
-						Driver.currentGameYard.list[arastozNum1].ssd[24].remaining = combinedStrength;  //  Combine piece 1 and 2 into #1's spot  
-						Driver.currentGameYard.list[arastozNum1].shipType = "Arastoz " + newSuffix;
-						Driver.currentGameYard.list[arastozNum1].name = Driver.currentGameYard.list[arastozNum1].name + letterSuffix;
-						if (newSuffix == "2x") {
-							Driver.currentGameYard.list[arastozNum1].speed = 12;
-						} else if (newSuffix == "4x") {
-							Driver.currentGameYard.list[arastozNum1].speed = 10;
-						} else if (newSuffix == "8x") {
-							Driver.currentGameYard.list[arastozNum1].speed = 8;
-						}
-//						System.out.println("--------------------------------------------------------------");
-//						System.out.println("arastoz1BaseStrength: " + arastoz1BaseStrength);
-//						System.out.println("arastoz2BaseStrength: " + arastoz2BaseStrength);
-//						System.out.println("arastoz1RemainingHP: " + arastoz1RemainingHP);
-//						System.out.println("arastoz2RemainingHP: " + arastoz2RemainingHP);
-//						System.out.println("combinedStrength: " + combinedStrength);
-//						System.out.println("Driver.currentGameYard.list[arastozNum1].ssd[24].remaining: " + Driver.currentGameYard.list[arastozNum1].ssd[24].remaining);
-//						System.out.println("Driver.currentGameYard.list[arastozNum1].shipType: " + Driver.currentGameYard.list[arastozNum1].shipType);
-//						System.out.println("newSuffix: " + newSuffix);
-//						System.out.println("arastozNum1: " + arastozNum1);
-//						System.out.println("arastozNum2: " + arastozNum2);
-//						System.out.println("--------------------------------------------------------------");
-
-						RemoveMonsterFromGame(arastozNum2);						//  Remove #2 piece 
-						System.out.println();
-						System.out.println("     Name\t\tBase\tRemaining");                   //  Print only Arastoz monster list
-						System.out.println("     Name\tSpeed\tStr\tHit Pts");                   //  Print only Arastoz monster list
-						System.out.println();
-						for (int i = 1; i <= Driver.currentGameYard.numShips; i++) {
-							String extraSpace = ShipSetup.getExtraSpaces(i, 2);
-							
-							if(Driver.currentGameYard.list[i-1].shipType.contains("Arastoz")) {
-								System.out.print(extraSpace + i + ")  " + Driver.currentGameYard.list[i-1].name);
-								ShipSetup.getExtraSpaces(i, 2);
-								System.out.print("\t " + Driver.currentGameYard.list[i-1].speed + "\t " + Driver.currentGameYard.list[i-1].shipType.substring(8,10) + "\t  " + Driver.currentGameYard.list[i-1].ssd[24].remaining);
+							if (newCombinedSizeClass == 4) {
+								Driver.currentGameYard.list[arastozNum1].name = "Arastoz ABCD";
 								System.out.println();
+								System.out.println("*** Arastoz is fully combined! ***");
 							}
+							
+							System.out.println();
+							System.out.println("     \t\t\t\tBase\tRemaining");					//  Print only Arastoz monster list
+							System.out.println("     Name\t\tSpeed\tStr\tHit Pts");				//  Print only Arastoz monster list
+							System.out.println();
+							for (int i = 1; i <= Driver.currentGameYard.numShips; i++) {
+								String extraSpace = ShipSetup.getExtraSpaces(i, 2);
+								
+								if(Driver.currentGameYard.list[i-1].shipType.contains("Arastoz")) {
+									System.out.print(extraSpace + i + ")  " + Driver.currentGameYard.list[i-1].name + "    ");
+									ShipSetup.getExtraSpaces(i, 2);
+									System.out.print("\t " + Driver.currentGameYard.list[i-1].speed + "\t " + Driver.currentGameYard.list[i-1].shipType.substring(8,10) + "\t  " + Driver.currentGameYard.list[i-1].ssd[24].remaining);
+									System.out.println();
+								}
+							}
+							arastozNum1 = -2;
+							
+						} else {
+							System.out.println();
+							System.out.println("*** An Arastoz unit cannot self-combine!  Try again. ***");
+							arastozNum1 = -2;
 						}
-						arastozNum1 = -2;
-						
-					} else {
-						System.out.println();
-						System.out.println("*** An Arastoz unit can't combine with itself!  Try again. ***");
-						arastozNum1 = -2;
-					}
-					if (newSuffix == "8x") {
-						Driver.currentGameYard.list[arastozNum1].name = "Arastoz ABCD";
-						System.out.println();
-						System.out.println("*** Arastoz is fully combined! ***");
-						break;
+						if (newCombinedSizeClass == 4) {
+							arastozNum1 = -1;
+						}
 					}
 				}
 			}
@@ -357,48 +349,44 @@ public class MonsterStuff {
 		Driver.currentGameYard.numShips--;
 	}
 	
-	public static void PrintCurrentMonstersInGame() {
-		ShipSetup.SortCurrentShipyard();
-		
-		System.out.println();
-		System.out.println("     Name\tRemaining");                   //  Print only Arastoz monster list
-		System.out.println("     Name\tHit Pts");                   //  Print only Arastoz monster list
-		System.out.println();
-		for (int i = 1; i <= Driver.currentGameYard.numShips; i++) {
-			String extraSpace = ShipSetup.getExtraSpaces(i, 2);
-			
-			if (Driver.currentGameYard.list[i-1].name.length() <=3 ) {
-				Driver.currentGameYard.list[i-1].name = Driver.currentGameYard.list[i-1].name + "   ";
-			}
-			if(Driver.currentGameYard.list[i-1].race.contains("Monster")) {
-				System.out.print(extraSpace + i + ")  " + Driver.currentGameYard.list[i-1].name);
-				ShipSetup.getExtraSpaces(i, 2);
-				System.out.print("\t  " + extraSpace + Driver.currentGameYard.list[i-1].ssd[24].remaining);
-				System.out.println();
-			}
-		}
-	}
+//	public static void PrintCurrentMonstersInGame() {
+//		ShipSetup.SortCurrentShipyard();
+//		
+//		System.out.println();
+//		System.out.println("     Name\tRemaining");                   //  Print only Arastoz monster list
+//		System.out.println("     Name\tHit Pts");                   //  Print only Arastoz monster list
+//		System.out.println();
+//		for (int i = 1; i <= Driver.currentGameYard.numShips; i++) {
+//			String extraSpace = ShipSetup.getExtraSpaces(i, 2);
+//			
+//			if (Driver.currentGameYard.list[i-1].name.length() <=3 ) {
+//				Driver.currentGameYard.list[i-1].name = Driver.currentGameYard.list[i-1].name + "   ";
+//			}
+//			if(Driver.currentGameYard.list[i-1].race.contains("Monster")) {
+//				System.out.print(extraSpace + i + ")  " + Driver.currentGameYard.list[i-1].name);
+//				ShipSetup.getExtraSpaces(i, 2);
+//				System.out.print("\t  " + extraSpace + Driver.currentGameYard.list[i-1].ssd[24].remaining);
+//				System.out.println();
+//			}
+//		}
+//	}
 	
 	public static int MonsterDamageFromShip(int damageToMonster) {
 		int whichMonster = -5;
 		
 		while (whichMonster < 0) {
 			System.out.println();
-			System.out.println();
-			
-			PrintCurrentMonstersInGame();
-			
+			int print = ShipSetup.PrintCurrentThingsInGame("MONSTER", "HEALTH");
 			System.out.println();
 			System.out.print("Which monster to deal damage to? [RETURN to cancel] ");
 			whichMonster = -5;
-
-			whichMonster = Driver.getNumber(1, Driver.currentGameYard.numShips);
-
+			whichMonster = ShipSetup.GetAdjustedInput(print, "MONSTER", "");
+			
 			if(whichMonster == -1) {
 				break;
 			}
 			
-			currentMonster = Driver.currentGameYard.list[whichMonster-1];
+			currentMonster = Driver.currentGameYard.list[whichMonster];
 
 			System.out.println(currentMonster.name + " takes " + damageToMonster + " damage points.");
 
@@ -423,12 +411,11 @@ public class MonsterStuff {
 			System.out.println("\tPlanet\tHit Points");
 			System.out.println("\tName\tRemaining");
 			System.out.println();
-			for (int p = 0; p <= Driver.currentGameYard.numShips; p++) {
-				if (Driver.currentGameYard.list[p].shipType == "Planet") {
+			for (int p = 1; p < Driver.currentGameYard.numShips; p++) {
+				if (Driver.currentGameYard.list[p-1].shipType == "Planet") {
 					System.out.println(" " + p + "\t" + Driver.currentGameYard.list[p].name + "\t" + Driver.currentGameYard.list[p].ssd[24].remaining);
 				}
 			}
-			
 			
 			System.out.println();
 			System.out.print("Which planet to deal damage to? [RETURN to cancel] ");
@@ -454,22 +441,14 @@ public class MonsterStuff {
 	}
 
 	public static void MonsterScenarioCheck() {
-		System.out.println("==============================");
-		System.out.println("Monster Name\tHealth");
-		System.out.println("------------------------------");
-		
-		for (int i = 0; i <= Driver.currentGameYard.numShips-1; i++) {
-			if (Driver.currentGameYard.list[i].race == "Monster") {
-				System.out.println(Driver.currentGameYard.list[i].shipType + "\t" + Driver.currentGameYard.list[i].ssd[24].remaining);
-			}
-		}
-		System.out.println("==============================");
+		ShipSetup.PrintCurrentThingsInGame("Monster", "Health");
+
 
 		System.out.println();
-		System.out.println("==============================");
+		System.out.println("--------------------------------");
 		System.out.println("Race\t\tLab Points");
 		System.out.println("\t\tAcquired");
-		System.out.println("------------------------------");
+		System.out.println("--------------------------------");
 		
 		String extraTab = "";
 		int totalPoints = 0;
@@ -485,7 +464,7 @@ public class MonsterStuff {
 		if (totalPoints == 0) {
 			System.out.println("None\t\tNone");
 		}
-		System.out.println("==============================");
+		System.out.println("--------------------------------");
 	}
 
 	public static void labResearchPoints() {
@@ -533,23 +512,9 @@ public class MonsterStuff {
 		}
 		
 		System.out.println("|===============================================================================|");
-		System.out.println();
-		System.out.println("     Ship Name");
-		System.out.println();
 		
-		for (int i = 1; i <= Driver.currentGameYard.numShips; i++) {
-//		for (int i = 1, print = 1; i <= Driver.currentGameYard.numShips; i++) {
-
-			String extraSpace = ShipSetup.getExtraSpaces(i, 2);
-
-			if (Driver.currentGameYard.list[i-1].name.length() <=3 ) {
-				Driver.currentGameYard.list[i-1].name = Driver.currentGameYard.list[i-1].name + "   ";
-			}
-			
-			if(Driver.currentGameYard.list[i-1].hasSSD && Driver.currentGameYard.list[i-1].race != "Monster" & Driver.currentGameYard.list[i-1].race != "Other") {
-				System.out.println(extraSpace + i + ")  " + Driver.currentGameYard.list[i-1].name);
-			}
-		}
+		System.out.println();
+		int print = ShipSetup.PrintCurrentThingsInGame("SHIP", "");
 
 		int shipResearching = -1;
 
@@ -557,11 +522,12 @@ public class MonsterStuff {
 		while (cont) {
 			System.out.println();
 			System.out.print("Which ship is collecting research data? [RETURN for cancel] ");
-			shipResearching = Driver.getNumber(1, Driver.currentGameYard.numStarships);
-			if(shipResearching > 0) {
-				String raceOfCurrentShip = Driver.currentGameYard.list[shipResearching-1].race;
+			shipResearching = ShipSetup.GetAdjustedInput(print, "SHIP", "");
+			if(shipResearching != -1) {
+//				System.out.println(Driver.currentGameYard.list[shipResearching].name);
+				String raceOfCurrentShip = Driver.currentGameYard.list[shipResearching].race;
 				String raceOfCurrentShipMain = raceOfCurrentShip;
-				String nameOfCurrentShip = Driver.currentGameYard.list[shipResearching-1].name;
+				String nameOfCurrentShip = Driver.currentGameYard.list[shipResearching].name;
 				raceNum = -1;
 				for (int i = 0; i <= Driver.labResearches.length-1; i++) {
 					if (raceOfCurrentShip == Driver.labResearches[i].race) {
@@ -587,7 +553,7 @@ public class MonsterStuff {
 		
 				if (researchType.equalsIgnoreCase("L")) {
 					die = DamageAllocation.rollDice(1,6);
-					numLabs = Driver.currentGameYard.list[shipResearching-1].ssd[17].remaining;
+					numLabs = Driver.currentGameYard.list[shipResearching].ssd[17].remaining;
 					//  Find race in LabResearch array
 					
 					System.out.print("Closest distance this turn [0-9, RETURN to cancel]: ");
