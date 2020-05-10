@@ -7,6 +7,7 @@ public class Driver {
 	public static int labResearchAquired = 0;
 	public static int MonsterScenario = 0;
 	public static double MonsterBPVModifier = 1.0;
+	public static boolean MonsterBPVModifierApplied = false;
 	public static int numImpulses = 0;
 	public static Shipyard currentGameYard = new Shipyard("Current Game Shipyard");
 	public static Shipyard defaultYard = Shipyard.setupDefaultShipyard();
@@ -117,51 +118,70 @@ public class Driver {
 	public static void ModifyMonsterBPV () {
 		MonsterBPVModifier = 1;
 	
-		double totalShipBPV = 0;
-		
-		for (int i = 0; i < Driver.currentGameYard.numShips; i++) {
+		if (MonsterBPVModifierApplied == true) {
+			System.out.println("Monster Modifier already applied!!!  Cannot repeat!!!");
+
+		} else {
+			double totalShipBPV = 0;
 			
-			if (Driver.currentGameYard.list[i].kindOfShip == Starship.Ship.STARSHIP) {
-				int adjust = 0;
-				if (Driver.currentGameYard.list[i].race == "Romulan") {
-					adjust = 1;
-				} else {
-					adjust = 0;
-				}
-				int actualBPV = 0;
-				String convertedBPV = "";
-				String thisBPV = Driver.currentGameYard.list[i].BPV;
-				if (Driver.currentGameYard.list[i].BPV.length() > 0) {
-					if (thisBPV.contains("-")) {
-						convertedBPV = "0";
-						actualBPV = Integer.parseInt(convertedBPV);
-					} else if (thisBPV.contains("/")) {
-						int slashLocation = thisBPV.indexOf("/");
-						convertedBPV = defaultYard.list[i].BPV.substring(0, slashLocation);
-						actualBPV = Integer.parseInt(convertedBPV);
+			for (int i = 0; i < Driver.currentGameYard.numShips; i++) {
+				
+				if (Driver.currentGameYard.list[i].kindOfShip == Starship.Ship.STARSHIP) {
+					int adjust = 0;
+					if (Driver.currentGameYard.list[i].race == "Romulan") {
+						adjust = 1;
 					} else {
-						convertedBPV = defaultYard.list[i].BPV.substring(0, defaultYard.list[i].BPV.length()-adjust);
-						actualBPV = Integer.parseInt(convertedBPV);
+						adjust = 0;
+					}
+					
+					int intBPV = 0;
+					String stringBPV = "";
+					String thisBPV = Driver.currentGameYard.list[i].BPV;
+					
+					if (Driver.currentGameYard.list[i].BPV.length() > 0) {
+						if (thisBPV.contains("-")) {
+							intBPV = 0;
+						} else if (thisBPV.contains("/")) {
+							int slashLocation = thisBPV.indexOf("/");
+							stringBPV = Driver.currentGameYard.list[i].BPV.substring(0, slashLocation);
+							intBPV = Integer.parseInt(stringBPV);
+						} else {
+							stringBPV = Driver.currentGameYard.list[i].BPV.substring(0, Driver.currentGameYard.list[i].BPV.length()-adjust);
+							intBPV = Integer.parseInt(stringBPV);
+						}
+					}
+					totalShipBPV = totalShipBPV + intBPV;
+				}
+			}
+			
+			System.out.println("Current Starship BPVs:");
+			ShipSetup.PrintCurrentThingsInGame ("SHIP", "BPV");
+			System.out.println("Starship(s) total BPV:\t" + (int) totalShipBPV);
+			MonsterBPVModifier = totalShipBPV / 125.0;
+			System.out.println("Monster Modifier:\t" + MonsterBPVModifier + " (" + (int) totalShipBPV + "/125)");
+			System.out.println();
+			
+			System.out.println("Current Monster HPs:");
+			ShipSetup.PrintCurrentThingsInGame ("MONSTER", "HEALTH");
+			System.out.println();
+			System.out.println("Apply Monster BPV Modifier? ");
+			String yesOrNo = getInput ("YN");
+			
+			if (yesOrNo.equalsIgnoreCase("Y")) {
+				for (int i = 0; i < Driver.currentGameYard.numShips; i++) {
+					if (Driver.currentGameYard.list[i].kindOfShip == Starship.Ship.MONSTER) {
+						Driver.currentGameYard.list[i].ssd[24].numOfThisPart = (int) Math.round(Driver.currentGameYard.list[i].ssd[24].numOfThisPart * MonsterBPVModifier);
+						Driver.currentGameYard.list[i].ssd[24].remaining = (int) Math.round(Driver.currentGameYard.list[i].ssd[24].remaining * MonsterBPVModifier);
 					}
 				}
-				totalShipBPV = totalShipBPV + actualBPV;
-				System.out.println("actualBPV: " + actualBPV);
+				System.out.println();
+				System.out.println("Modified Monster HPs:");
+				ShipSetup.PrintCurrentThingsInGame ("MONSTER", "HEALTH");
+				MonsterBPVModifierApplied = true;
+			} else {
+				System.out.println("Monster HPs have NOT been modified");
 			}
 		}
-		System.out.println("totalShipBPV: " + totalShipBPV);
-		MonsterBPVModifier = totalShipBPV / 125;
-		System.out.println("MonsterBPVModifier: " + MonsterBPVModifier);
-		
-		ShipSetup.PrintCurrentThingsInGame("Monster", "Health");
-		
-		for (int i = 0; i < Driver.currentGameYard.numShips; i++) {
-			if (Driver.currentGameYard.list[i].kindOfShip == Starship.Ship.MONSTER) {
-				Driver.currentGameYard.list[i].ssd[24].numOfThisPart = (int) Math.round(Driver.currentGameYard.list[i].ssd[24].numOfThisPart * MonsterBPVModifier);
-				Driver.currentGameYard.list[i].ssd[24].remaining = (int) Math.round(Driver.currentGameYard.list[i].ssd[24].remaining * MonsterBPVModifier);
-			}
-		}
-		
-		ShipSetup.PrintCurrentThingsInGame("Monster", "Health");
 	}
 	
 	public static void RemoveShip(boolean print) {
@@ -894,7 +914,7 @@ public class Driver {
 				randMonster = DamageAllocation.rollDice(1, 7);
 				currentGameYard.addShipToShipyard(defaultYard.list[firstMonsterNum + randMonster]);
 				currentGameYard.list[5].speed = DamageAllocation.rollDice(1, 10) + 1;
-								
+												
 			} else if (scenario == 102) {
 				Driver.currentGameYard.numShips = 0;
 				scenarioLoaded = true;
@@ -946,7 +966,7 @@ public class Driver {
 		}
 
 		System.out.println();
-		ShipSetup.PrintCurrentThingsInGame("Ship Monster Other", "Speed");
+		ShipSetup.PrintCurrentThingsInGame("SHIP MONSTER OTHER", "SPEED");
 		System.out.println();
 	}
 	
