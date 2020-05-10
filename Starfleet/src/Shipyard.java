@@ -1230,49 +1230,49 @@ public class Shipyard {
 		ship.setupSSD(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 199, se, sc, da);
 		defaultYard.addShipToShipyard(ship);
 
-		ship = new Starship("Monster", "Arastoz 1x", "-", "-", "-", "-", "-", "-", "-", "-", "SL49.0", "-");
+		ship = new Starship("Monster", "Arastoz 1x", "-", "-", "-", "-", "-", "-", "1", "-", "SL49.0", "-");
 		se = new int[]{6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6};
 		sc = new int[]{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
 		da = new int[]{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
 		ship.setupSSD(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 99, se, sc, da);
 		defaultYard.addShipToShipyard(ship);
 
-		ship = new Starship("Monster", "Arastoz 1x", "-", "-", "-", "-", "-", "-", "-", "-", "SL49.0", "-");
+		ship = new Starship("Monster", "Arastoz 1x", "-", "-", "-", "-", "-", "-", "1", "-", "SL49.0", "-");
 		se = new int[]{6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6};
 		sc = new int[]{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
 		da = new int[]{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
 		ship.setupSSD(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 99, se, sc, da);
 		defaultYard.addShipToShipyard(ship);
 
-		ship = new Starship("Monster", "Arastoz 1x", "-", "-", "-", "-", "-", "-", "-", "-", "SL49.0", "-");
+		ship = new Starship("Monster", "Arastoz 1x", "-", "-", "-", "-", "-", "-", "1", "-", "SL49.0", "-");
 		se = new int[]{6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6};
 		sc = new int[]{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
 		da = new int[]{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
 		ship.setupSSD(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 99, se, sc, da);
 		defaultYard.addShipToShipyard(ship);
 
-		ship = new Starship("Monster", "Arastoz 1x", "-", "-", "-", "-", "-", "-", "-", "-", "SL49.0", "-");
+		ship = new Starship("Monster", "Arastoz 1x", "-", "-", "-", "-", "-", "-", "1", "-", "SL49.0", "-");
 		se = new int[]{6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6};
 		sc = new int[]{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
 		da = new int[]{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
 		ship.setupSSD(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 99, se, sc, da);
 		defaultYard.addShipToShipyard(ship);
 
-		ship = new Starship("Monster", "Arastoz 2x", "-", "-", "-", "-", "-", "-", "-", "-", "SL49.0", "-");
+		ship = new Starship("Monster", "Arastoz 2x", "-", "-", "-", "-", "-", "-", "2", "-", "SL49.0", "-");
 		se = new int[]{6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6};
 		sc = new int[]{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
 		da = new int[]{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
 		ship.setupSSD(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 199, se, sc, da);
 		defaultYard.addShipToShipyard(ship);
 
-		ship = new Starship("Monster", "Arastoz 4x", "-", "-", "-", "-", "-", "-", "-", "-", "SL49.0", "-");
+		ship = new Starship("Monster", "Arastoz 4x", "-", "-", "-", "-", "-", "-", "3", "-", "SL49.0", "-");
 		se = new int[]{6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6};
 		sc = new int[]{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
 		da = new int[]{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
 		ship.setupSSD(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 399, se, sc, da);
 		defaultYard.addShipToShipyard(ship);
 
-		ship = new Starship("Monster", "Arastoz 8x", "-", "-", "-", "-", "-", "-", "-", "-", "SL49.0", "-");
+		ship = new Starship("Monster", "Arastoz 8x", "-", "-", "-", "-", "-", "-", "4", "-", "SL49.0", "-");
 		se = new int[]{6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6};
 		sc = new int[]{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
 		da = new int[]{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
