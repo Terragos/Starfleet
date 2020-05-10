@@ -13,21 +13,22 @@ public class WeaponsDamage {
 		while (!reset) {
 
 			System.out.println();
-			ShipSetup.PrintCurrentNonMonstersInGameThatHaveSSD();
-			
+			int print = ShipSetup.PrintCurrentThingsInGame("SHIP", "");
 			System.out.println();
 			System.out.print("Which ship is firing? [RETURN to cancel] ");
 			int shipNumFiring = -5;
 	
-			shipNumFiring = Driver.getNumber(1, Driver.currentGameYard.numStarships);				//  Get a new input
-	
+			shipNumFiring = ShipSetup.GetAdjustedInput(print, "SHIP", "");
+			System.out.println("shipNumFiring: " + shipNumFiring);
+			
 			if(shipNumFiring == -1) {
 				System.out.println();
 				PhaseCalculation.PrintImpulseHeader();
 				return;
 			}
+			System.out.println("Driver.currentGameYard.list[shipNumFiring].name: " + Driver.currentGameYard.list[shipNumFiring].name);
 			
-			currentShip = Driver.currentGameYard.list[shipNumFiring-1];
+			currentShip = Driver.currentGameYard.list[shipNumFiring];
 	
 			boolean monsterInGame = false;
 			for (int i = 0; i <= Driver.currentGameYard.numShips-1; i++) {
@@ -48,7 +49,7 @@ public class WeaponsDamage {
 					System.out.println("|  Type [2] Phaser  P[L]asma Torpedo [R/2/G/F]  [T]ractor-Repulsor Beam    |");
 					System.out.println("|  Type [3] Phaser  [F]usion Beam [S/O/X]       [S]uicide Shuttle (Admin)  |");
 					System.out.println("|  Type [4] Phaser  [H]ellbore [S/O/D]          Dro[N]e                    |");
-					System.out.println("|  Pr[O]be          L[A]b                                                  |");
+					System.out.println("|  Pr[O]be                                                                 |");
 					System.out.println("|==========================================================================|");
 					System.out.println("|                        Go to [D]amage Allocation                         |");
 					if (monsterInGame == true) {
@@ -67,7 +68,7 @@ public class WeaponsDamage {
 	
 				String weaponInput = "";
 				while (weaponInput.length() == 0) {                           //  Do NOT accept RETURN as a valid answer
-					weaponInput = Driver.getInput("1234PLFHDTQIRSNAOM");
+					weaponInput = Driver.getInput("1234PLFHDBTQIRSNOM");
 				}
 				
 				int typeInput = 0;
@@ -79,7 +80,7 @@ public class WeaponsDamage {
 					System.out.print("Photon Type [S]tandard [P]roximity [O]verload:   ");
 					String weaponTypeInput = Driver.getInput("SPO");
 					String options = "SPO"; 
-					typeInput = options.indexOf(weaponTypeInput);            // Getting number: S=1, P=2, O=3
+					typeInput = options.indexOf(weaponTypeInput) + 1;            // Getting number: S=1, P=2, O=3
 					
 					if (typeInput == 3) {
 						System.out.print("Total Energy [5-8]:   ");          //  If type=3 then get energy allocated value
@@ -92,7 +93,7 @@ public class WeaponsDamage {
 					System.out.print("Plasma Type [R] [2]G [G] [F]:   ");
 					String weaponTypeInput = Driver.getInput("R2GF");
 					String options = "R2GF"; 
-					typeInput = options.indexOf(weaponTypeInput);           // Getting number: R=1, 2=2, G=3, F=4 
+					typeInput = options.indexOf(weaponTypeInput) + 1;           // Getting number: R=1, 2=2, G=3, F=4 
 				}
 	
 				//  Asking what type of Fusion Beam	
@@ -100,7 +101,7 @@ public class WeaponsDamage {
 					System.out.print("Type [S]tandard [O]verloaded [X]suicide:   ");
 					String weaponTypeInput = Driver.getInput("SOX");
 					String options = "SOX"; 
-					typeInput = options.indexOf(weaponTypeInput)-1;         // Getting number: O=1, X=2 
+					typeInput = options.indexOf(weaponTypeInput) + 1;         // Getting number: O=1, X=2 
 				}
 					
 				//  Asking what type of Hellbore
@@ -108,12 +109,12 @@ public class WeaponsDamage {
 					System.out.print("Type [S]tandard [O]verloaded [D]irect-Fire:   ");
 					String weaponTypeInput = Driver.getInput("SOD");
 					String options = "SOD"; 
-					typeInput = options.indexOf(weaponTypeInput);           // Getting number: S=1, O=2, D=3 
+					typeInput = options.indexOf(weaponTypeInput) + 1;           // Getting number: S=1, O=2, D=3 
 				}
 				
 				int distanceInput = 0;
 				int numberInput = 0;
-				if ("1234PLFHTQO".contains(weaponInput)) {
+				if ("1234PLBFHTQO".contains(weaponInput)) {
 					System.out.print("Distance: ");
 					distanceInput = Driver.getNumber(0, MAXDIST);
 					
@@ -124,7 +125,7 @@ public class WeaponsDamage {
 					
 					// MODIFY DISTANCE FOR SCANNER NUMBER
 					int nextScannerNum = currentShip.ssd[23].numOfThisPart - currentShip.ssd[23].remaining;
-					distanceInput += currentShip.scannerNums[nextScannerNum];
+					distanceInput = distanceInput + currentShip.scannerNums[nextScannerNum];
 					if (currentShip.race != "Monster" && (currentShip.lockedOn == false || nextScannerNum > 0)) {
 						System.out.println("New Distance " + distanceInput + " (modified due to Sensor Lock-on failure and/or Scanner resolution number)");
 					}
@@ -155,19 +156,19 @@ public class WeaponsDamage {
 						
 					} else if(weaponInput.equalsIgnoreCase("P")) {
 						System.out.print("Photon Torpedo\t");
-						totalDamage = photonTorpedo(typeInput, energyInput, numberInput, distanceInput, totalDamage);
+						totalDamage = photonTorpedo(typeInput, photonEnergyInput, numberInput, distanceInput, totalDamage);
 						
 					} else if(weaponInput.equalsIgnoreCase("L")) {
 						System.out.print("Plasma Torpedo\t");
 						totalDamage = plasmaTorpedo(typeInput, numberInput, distanceInput, totalDamage);
 						
-					} else if(weaponInput.equalsIgnoreCase("F")) {
+					} else if(weaponInput.equalsIgnoreCase("F") && typeInput == 1) {
 						System.out.print("Fusion Beam\t");
 						totalDamage = fusionBeam(numberInput, distanceInput, totalDamage);
 						
-	//				} else if(weaponInput.equalsIgnoreCase("O")) {
-	//					System.out.println("Overloaded Fusion Beam");
-	//					totalDamage = fusionBeamOverloaded(typeInput, numberInput, distanceInput, totalDamage);
+					} else if(weaponInput.equalsIgnoreCase("F") && typeInput > 1) {
+						System.out.println("Overloaded Fusion Beam");
+						totalDamage = fusionBeamOverloaded(typeInput, numberInput, distanceInput, totalDamage);
 						
 					} else if(weaponInput.equalsIgnoreCase("B")) {
 						System.out.print("Disruptor Bolt\t");
@@ -208,15 +209,15 @@ public class WeaponsDamage {
 					reset = false;
 					cont = false;
 					
-				} else if(weaponInput.equalsIgnoreCase("A")) {
-					System.out.print("Gathering Lab Research Data\t");
-					MonsterStuff.labResearchPoints();
+//				} else if(weaponInput.equalsIgnoreCase("A")) {
+//					System.out.print("Gathering Lab Research Data\t");
+//					MonsterStuff.labResearchPoints();
 				
 				} else if(weaponInput.equalsIgnoreCase("I")) {
 					System.out.println();
 					PhaseCalculation.PrintImpulseHeader();
 					reset = true;
-//					break;
+					break;
 				
 				} else if(weaponInput.equalsIgnoreCase("R")) {
 					reset = true;
@@ -224,7 +225,7 @@ public class WeaponsDamage {
 					
 				}
 				
-				if("1234PLFHTQSNO".contains(weaponInput)) {
+				if("1234PLFBHTQSNO".contains(weaponInput)) {
 					System.out.println("\tTotal Damage: " + totalDamage);
 				}
 			}
@@ -361,6 +362,12 @@ public class WeaponsDamage {
 							 {0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 4, 4, 4, 3, 0},   //  Proximity (int type = 2) 
 							 {6, 6, 5, 4, 4, 3, 3, 3, 3, 0, 0, 0, 0, 0, 0}};  //  Overloaded (int type = 3)
 
+//		System.out.println("type: " + type);
+//		System.out.println("energy: " + energy);
+//		System.out.println("num: " + num);
+//		System.out.println("dist: " + dist);
+//		System.out.println("total: " + total);
+		
 		int photonDamage = 0;
 		if (type == 1) {
 			photonDamage = 8;
@@ -379,20 +386,25 @@ public class WeaponsDamage {
 		int feedbackDamage = 0;
 		int startTotal = total;
 		for(int i = 0; i < num; i++) {
+			int damage = 0;
 			int die = DamageAllocation.rollDice(1,6);
+//			System.out.println("die: " + die + "\tintPhoton[type][dist]: " + intPhoton[type][dist]);
 			if (die <= intPhoton[type][dist]) {
-				int damage =+ photonDamage;
-				total += damage;
+				damage = damage + photonDamage;
+				total = total + damage;
 			} else {
 			}
 		}
+
 		if (type == 3 && dist <= 1) {
 			feedbackDamage = num * (energy - 4);
-			System.out.println("");
+			System.out.println();
 			System.out.println("Feedback Damage: " + feedbackDamage);
-			System.out.println("");
+			System.out.println();
 		}
+		
 		System.out.print("Volley Damage: " + (total-startTotal));
+		
 		return total;
 	}
 	
@@ -412,7 +424,7 @@ public class WeaponsDamage {
 		int startTotal = total;
 		for(int i = 0; i < num; i++) {
 			int damage = intPlasma[type][dist];
-			total += damage;
+			total = total + damage;
 		}
 		if (dist <= 1) {
 			feedbackDamage = total/4;
@@ -435,7 +447,7 @@ public class WeaponsDamage {
 							 { 8, 4, 2, 0, 0, 0, 0}};  //  die roll 6
 		if (dist >=3 && dist <=10) {
 			dist = 3;
-		} else if (dist >= 1 && dist <= 15) {
+		} else if (dist >= 11 && dist <= 15) {
 			dist = 4;			
 		} else if (dist >= 16 && dist <= 24) {
 			dist = 5;			
@@ -447,13 +459,13 @@ public class WeaponsDamage {
 		for(int i = 0; i < num; i++) {
 			int die = DamageAllocation.rollDice(1,6);
 			int damage = intFusion[die][dist];
-			total += damage;
+			total = total + damage;
 		}
 		System.out.print("Volley Damage: " + (total-startTotal));
 		return total;
 	}
 	
-	//  FUSION BEAM OVERLOADED (int type 1) / SUICIDE (int type 2)
+	//  FUSION BEAM OVERLOADED (int type 2) / SUICIDE (int type 3)
 	public static int fusionBeamOverloaded(int type, int num, int dist, int total) {
 		int intFusionOver[][] = {{ 0, 1, 2, 3, 9},   //  distance
 							     {19,12, 9, 6, 0},   //  die roll 1
@@ -471,12 +483,16 @@ public class WeaponsDamage {
 		for(int i = 0; i < num; i++) {
 			int die = DamageAllocation.rollDice(1,6);
 			int damage = intFusionOver[die][dist] * type;
-			total += damage;
+			total = total + damage;
 		}
 		
-		if (type == 2) {
+		if (type == 3) {
+			String plural = "";
+			if (num > 1) {
+				plural = "s";
+			}
 			System.out.println("");
-			System.out.println(num + "Fusion Beam Destroyed AND " + num + " points internal damage");
+			System.out.println(num + " Fusion Beam" + plural +" destroyed AND " + num + " point" + plural + " internal damage");
 			System.out.println("");
 		}
 		
@@ -510,8 +526,9 @@ public class WeaponsDamage {
 		for(int i = 0; i < num; i++) {
 			int die = DamageAllocation.rollDice(1,6);
 			int damage = intDisruptor[die][dist];
-			total += damage;
+			total = total + damage;
 		}
+		
 		System.out.print("Volley Damage: " + (total-startTotal));
 		return total;
 	}
@@ -536,7 +553,8 @@ public class WeaponsDamage {
 		for(int i = 0; i < num; i++) {
 			int die = DamageAllocation.rollDice(1,6);
 			int damage = intTracRep[die][dist];
-			total += damage;
+//			System.out.println("die: " + die + "dist: " + dist + "\tintTracRep[die][dist]: " + intTracRep[die][dist]);
+			total = total + damage;
 		}
 		System.out.print("Volley Damage: " + (total-startTotal));
 		return total;
@@ -562,11 +580,11 @@ public class WeaponsDamage {
 		int startTotal = total;
 		for(int i = 0; i < num; i++) {
 			int die = DamageAllocation.rollDice(1,11) + 1;
-			System.out.println("Die roll: " + die);
+//			System.out.println("Die roll: " + die);
 			if (die <= hellbore[4][dist]) {
 				int damage = hellbore[type][dist];
-				System.out.println("Damage: " + hellbore[type][dist]);
-				total += damage;
+//				System.out.println("Damage: " + hellbore[type][dist]);
+				total = total + damage;
 			}
 		}
 		
@@ -604,13 +622,16 @@ public class WeaponsDamage {
 			System.out.print("Drone Type : ");
 			int droneType = Driver.getNumber(0, 5);
 
-			if (droneType == -1) {
+			if (droneType != -1) {
 				if (droneType == 0) {
-					droneDamage =+ 8;
+//					System.out.println("Drone type 0");
+					droneDamage = droneDamage + 8;
 				} else if (droneType >= 1 && droneType <= 3) {
-					droneDamage =+ 12;
+//					System.out.println("Drone type 1/2/3");
+					droneDamage = droneDamage + 12;
 				} else if (droneType == 4 || droneType == 5) {
-					droneDamage =+ 24;
+//					System.out.println("Drone type 4/5");
+					droneDamage = droneDamage + 24;
 				}
 				total = total + droneDamage;
 			}
