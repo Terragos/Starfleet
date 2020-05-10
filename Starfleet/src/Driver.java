@@ -1,13 +1,12 @@
 import java.util.Scanner;
-
-//TODO, NEED CODE TO EMPTY OUT KEYBOARD BUFFER  ???  In Impulse procedure after toggling TORPEDO, maybe ???  (there is an extra space)
-//TODO, IS it possible to change the name of "PhaseCalculation" to "ImpulseCalculation"?  Everywhere "Phase" --> "Impulse" ???
+import java.math.*;
 
 public class Driver {
 
 	public final static boolean TESTING = false;
 	public static int labResearchAquired = 0;
 	public static int MonsterScenario = 0;
+	public static double MonsterBPVModifier = 1.0;
 	public static int numImpulses = 0;
 	public static Shipyard currentGameYard = new Shipyard("Current Game Shipyard");
 	public static Shipyard defaultYard = Shipyard.setupDefaultShipyard();
@@ -39,57 +38,6 @@ public class Driver {
 		if (reminder.equalsIgnoreCase("Y")) {
 			PreGameReminders();
 		}
-		
-//		System.out.println();
-//		System.out.print("Would you like to add ships from the [S]hipyard or [P]reload a scenario? [RETURN = Main Menu] ");
-////		System.out.print("Would you like to add ships [M]anually or from the [S]hipyard or [P]reload a scenario? [RETURN = Main Menu] ");
-//
-//		String userInput2 = Driver.getInput("SP");
-//
-//		if (userInput2.equalsIgnoreCase("M")) {
-////			boolean cont2 = true;
-////			while (cont2) {
-////				Starship star = new Starship();
-////				System.out.print("Ship " + (Driver.currentGameYard.numShips + 1) + " Name     : ");
-////
-////				String nameInput = keyboard.nextLine();
-////
-////				if (nameInput.contentEquals("")) {
-////					// break;
-////					cont2 = false;
-////				} else {
-////					if (nameInput.length() > 10)
-////						nameInput = nameInput.substring(0, 10);
-////					star.name = nameInput;
-////
-////					System.out.print("Ship " + (Driver.currentGameYard.numShips + 1) + " Speed    : ");
-////					int speedInput = Driver.getNumberNoCancel(0, 32);
-////					star.speed = speedInput;
-////
-////					System.out.print("Ship " + (Driver.currentGameYard.numShips + 1) + " Turn Mode: ");
-////					String turnModeInput = Driver.getInput("ABCDEF-");
-////					star.turnMode = turnModeInput.toUpperCase();
-////
-////					System.out
-////							.print("Ship " + (Driver.currentGameYard.numShips + 1) + " Break Down [?-6] ('-' = n/a): ");
-////					String breakDownString = "-";
-////					String breakDownInput = Driver.getInput("-123456");
-////					if (breakDownInput == "-") {
-////						breakDownString = "-";
-////					} else {
-////						breakDownString = breakDownInput.concat("-6");
-////					}
-////					star.breakDown = breakDownString;
-////					System.out.println();
-////
-////					Driver.currentGameYard.addShipToShipyard(star);
-////				}
-////			}
-//		} else if (userInput2.equalsIgnoreCase("S")) {
-//			Driver.defaultYard.displayShipyardMenu(1);
-//		} else if (userInput2.equalsIgnoreCase("P")) {
-//			PreloadScenario();
-//		}
 
 		cont = true;
 		while (cont) {
@@ -97,6 +45,8 @@ public class Driver {
 			System.out.println("|==========================================================================|");
 			System.out.println("|                             SFB MAIN MENU                                |");
 			System.out.println("|==========================================================================|");
+			System.out.println("|            [V]iew All Ships in the Current Game                          |");
+			System.out.println("|                                                                          |");
 			System.out.println("|            [I]mpulse Movement Procedure                                  |");
 			System.out.println("|            [W]eapon Damage Procedure                                     |");
 			System.out.println("|            [D]amage Allocation Procedure                                 |");
@@ -108,13 +58,14 @@ public class Driver {
 			System.out.println("|            [C]hange SSD Numbers (some or all)                            |");
 			System.out.println("|                                                                          |");
 			System.out.println("|            [P]reload Scenario                                            |");
+			System.out.println("|            [M]onster Modification based on BPV Adjustment                |");
 			System.out.println("|            [L]ab & Damage Check for Monster Scenarios                    |");
 			System.out.println("|            [Z] = Rules to Remember                                       |");
 			System.out.println("|==========================================================================|");
 			System.out.println("|                                [Q]uit                                    |");
 			System.out.println("|==========================================================================|");
 
-			String userInput = getInput("IWDSRFCPLZ");
+			String userInput = getInput("IWDSRFCPLZVM");
 			String userInput3 = "";
 
 			int damageTotal = 0;
@@ -126,12 +77,16 @@ public class Driver {
 							"You have no ships assigned to the current game.  Add some ships?");
 					userInput3 = getInput("YN");
 					if (userInput3.equalsIgnoreCase("Y")) {
-						ShipSetup.ShipSetupOrModify("N");
+						defaultYard.displayShipyardMenu(-1);
 					}
 				}
 				System.out.println();
+			} else if (userInput.equalsIgnoreCase("V")) {
+				ShipSetup.PrintCurrentThingsInGame("Ship Monster Other", "Speed");
 			} else if (userInput.equalsIgnoreCase("W")) {
 				WeaponsDamage.WeaponsDam(-1);
+			} else if (userInput.equalsIgnoreCase("M")) {
+				ModifyMonsterBPV();
 			} else if (userInput.equalsIgnoreCase("D")) {
 				DamageAllocation.DamageAlloc(-1);
 			} else if (userInput.equalsIgnoreCase("S")) {
@@ -159,9 +114,59 @@ public class Driver {
 		}
 	}
 	
+	public static void ModifyMonsterBPV () {
+		MonsterBPVModifier = 1;
+	
+		double totalShipBPV = 0;
+		
+		for (int i = 0; i < Driver.currentGameYard.numShips; i++) {
+			
+			if (Driver.currentGameYard.list[i].kindOfShip == Starship.Ship.STARSHIP) {
+				int adjust = 0;
+				if (Driver.currentGameYard.list[i].race == "Romulan") {
+					adjust = 1;
+				} else {
+					adjust = 0;
+				}
+				int actualBPV = 0;
+				String convertedBPV = "";
+				String thisBPV = Driver.currentGameYard.list[i].BPV;
+				if (Driver.currentGameYard.list[i].BPV.length() > 0) {
+					if (thisBPV.contains("-")) {
+						convertedBPV = "0";
+						actualBPV = Integer.parseInt(convertedBPV);
+					} else if (thisBPV.contains("/")) {
+						int slashLocation = thisBPV.indexOf("/");
+						convertedBPV = defaultYard.list[i].BPV.substring(0, slashLocation);
+						actualBPV = Integer.parseInt(convertedBPV);
+					} else {
+						convertedBPV = defaultYard.list[i].BPV.substring(0, defaultYard.list[i].BPV.length()-adjust);
+						actualBPV = Integer.parseInt(convertedBPV);
+					}
+				}
+				totalShipBPV = totalShipBPV + actualBPV;
+				System.out.println("actualBPV: " + actualBPV);
+			}
+		}
+		System.out.println("totalShipBPV: " + totalShipBPV);
+		MonsterBPVModifier = totalShipBPV / 125;
+		System.out.println("MonsterBPVModifier: " + MonsterBPVModifier);
+		
+		ShipSetup.PrintCurrentThingsInGame("Monster", "Health");
+		
+		for (int i = 0; i < Driver.currentGameYard.numShips; i++) {
+			if (Driver.currentGameYard.list[i].kindOfShip == Starship.Ship.MONSTER) {
+				Driver.currentGameYard.list[i].ssd[24].numOfThisPart = (int) Math.round(Driver.currentGameYard.list[i].ssd[24].numOfThisPart * MonsterBPVModifier);
+				Driver.currentGameYard.list[i].ssd[24].remaining = (int) Math.round(Driver.currentGameYard.list[i].ssd[24].remaining * MonsterBPVModifier);
+			}
+		}
+		
+		ShipSetup.PrintCurrentThingsInGame("Monster", "Health");
+	}
+	
 	public static void RemoveShip(boolean print) {
 		if (print == true) {
-			ShipSetup.PrintCurrentShipsInGame();
+			ShipSetup.PrintCurrentThingsInGame("Ship Monster Other", "");
 		}
 		System.out.println();
 		System.out.print("Remove which ship? [RETURN to cancel] ");
@@ -274,81 +279,110 @@ public class Driver {
 	}
 
 	public static void ModifyShipSystems() {
-//		Scanner keyboard = new Scanner(System.in);
 		boolean cont = true;
 
 		while (cont) {
 			System.out.println();
 			System.out.println("|==========================================================================|");
 			System.out.println("|                    SHIP SSD CHANGE/MODIFICATION MENU                     |");
-
-			if (Driver.currentGameYard.numShips > 0) {
-				System.out.println("|==========================================================================|");
-				System.out.println("|                  Current ship, object and monster list:                  |");
-				System.out.println("|==========================================================================|");
-				System.out.println();
-
-				ShipSetup.PrintCurrentShipsInGameNameOnly();
-
-				System.out.println();
-			}
-
+//			System.out.println("|--------------------------------------------------------------------------|");
+//			System.out.println("|               Modify [S]ome or [A]ll SSD boxes for a ship                |");
+//			System.out.println("|                      RETURN to return to Main Menu                       |");
 			System.out.println("|==========================================================================|");
-			System.out.println("|       Add Ship from [S]hipyard   [M]odify Systems   [R]emove Ship        |");
-			System.out.println("|                      RETURN to return to Main Menu                       |");
-			System.out.println("|==========================================================================|");
- 
-			String userInput = Driver.getInput("SMR");
-
-			if (userInput.contentEquals("")) {
-				// break;
-				cont = false;
-
-			} else if (userInput.equalsIgnoreCase("S")) {
-				Driver.defaultYard.displayShipyardMenu(1);
-
-			} else if (userInput.equalsIgnoreCase("M")) {
-				System.out.print("Modify [S]ome or [A]ll SSD boxes for a ship?");
-				String someOrAll = Driver.getInput("SA");
-				if (someOrAll.equalsIgnoreCase("A")) {
-					ChangeAllShipSSDSystems();
-					
-				} else if (someOrAll.equalsIgnoreCase("S")) {
-					ChangeSomeShipSSDSystems();
-				}
+			System.out.println();
+			
+			int print = ShipSetup.PrintCurrentThingsInGame("SHIP", "");
+			System.out.print("\nWhich ship to modify SSB boxes? [RETURN to cancel] ");
+			int shipNum = ShipSetup.GetAdjustedInput(print, "SHIP", "");
+			System.out.print("Modify [S]ome or [A]ll SSD boxes for " + Driver.currentGameYard.list[shipNum].name + ": ");
+			String someOrAll = Driver.getInput("SA");
+			
+			if (someOrAll.equalsIgnoreCase("A")) {
+				ChangeAllShipSSDSystems(shipNum);
 				
-			} else if (userInput.equalsIgnoreCase("R")) {
-
-				System.out.print("Remove which ship? [RETURN to cancel] ");
-				int removeInput = -1;
-
-				removeInput = Driver.getNumber(1, Driver.currentGameYard.numShips); // Get a new input
-
-				if (removeInput > 0) {
-					System.out.print("Are you sure you want to remove: " + Driver.currentGameYard.list[removeInput-1].name);
-					String yesOrNo = Driver.getInput("YN");
-					if (yesOrNo.contentEquals("Y")) {
-						Driver.currentGameYard.removeShipFromShipyard(removeInput);
-					}
-				}
+			} else if (someOrAll.equalsIgnoreCase("S")) {
+				ChangeSomeShipSSDSystems(shipNum);
+				
+			} else {
+				cont = false;
 			}
+				
 		}
 	}
 
-	public static void ChangeAllShipSSDSystems() {
+//	public static void ModifyShipSystems() {
+//		boolean cont = true;
+//
+//		while (cont) {
+//			System.out.println();
+//			System.out.println("|==========================================================================|");
+//			System.out.println("|                    SHIP SSD CHANGE/MODIFICATION MENU                     |");
+//
+//			if (Driver.currentGameYard.numShips > 0) {
+//				System.out.println("|==========================================================================|");
+//				System.out.println("|                  Current ship, object and monster list:                  |");
+//				System.out.println("|==========================================================================|");
+//				System.out.println();
+//
+//				ShipSetup.PrintCurrentThingsInGame("Ship", "");
+//
+//				System.out.println();
+//
+//			}
+//
+//			System.out.println("|==========================================================================|");
+//			System.out.println("|       Add Ship from [S]hipyard   [M]odify Systems   [R]emove Ship        |");
+//			System.out.println("|                      RETURN to return to Main Menu                       |");
+//			System.out.println("|==========================================================================|");
+// 
+//			String userInput = Driver.getInput("SMR");
+//
+//			if (userInput.contentEquals("")) {
+//				// break;
+//				cont = false;
+//
+//			} else if (userInput.equalsIgnoreCase("S")) {
+//				Driver.defaultYard.displayShipyardMenu(1);
+//
+//			} else if (userInput.equalsIgnoreCase("M")) {
+//				System.out.print("Modify [S]ome or [A]ll SSD boxes for a ship?");
+//				String someOrAll = Driver.getInput("SA");
+//				if (someOrAll.equalsIgnoreCase("A")) {
+//					ChangeAllShipSSDSystems();
+//					
+//				} else if (someOrAll.equalsIgnoreCase("S")) {
+//					ChangeSomeShipSSDSystems();
+//				}
+//				
+//			} else if (userInput.equalsIgnoreCase("R")) {
+//
+//				System.out.print("Remove which ship? [RETURN to cancel] ");
+//				int removeInput = -1;
+//
+//				removeInput = Driver.getNumber(1, Driver.currentGameYard.numShips); // Get a new input
+//
+//				if (removeInput > 0) {
+//					System.out.print("Are you sure you want to remove: " + Driver.currentGameYard.list[removeInput-1].name);
+//					String yesOrNo = Driver.getInput("YN");
+//					if (yesOrNo.contentEquals("Y")) {
+//						Driver.currentGameYard.removeShipFromShipyard(removeInput);
+//					}
+//				}
+//			}
+//		}
+//	}
+//
+	public static void ChangeAllShipSSDSystems(int shipNumInput) {
 		boolean cont = true;
 		while (cont) {
 
 			int dummyArray[] = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
-			System.out.print("Modify systems of which ship? [RETURN to cancel]");
-	
-			int shipNumInput = Driver.getNumber(1, Driver.currentGameYard.numShips);
-	
+
 			if (shipNumInput == -1) {
 				cont = false;
 			} else {
 				System.out.println();
-				System.out.println("Please indicate how many boxes are left on the SSD for the following systems:");
+				System.out.println("Please indicate how many boxes are left on the " + currentGameYard.list[shipNumInput - 1].name + " SSD for the following systems:");
 				System.out.println();
 				
 				for (int numPart = 0; numPart <= 24; numPart++) {
@@ -377,13 +411,13 @@ public class Driver {
 				}
 				
 				System.out.println();
-				ShipSetup.PrintCurrentShipsInGame();
+				ShipSetup.PrintCurrentThingsInGame("Ship", "Speed");
 				System.out.println();
 			}
 		}
 	}
 			
-	public static void ChangeSomeShipSSDSystems() {
+	public static void ChangeSomeShipSSDSystems(int shipNumInput) {
 		boolean cont = true;
 		int systemNumToChange = 0;
 		int newAmount = 0;
@@ -392,10 +426,6 @@ public class Driver {
 
 		while (cont) {
 
-			System.out.print("Modify systems of which ship? [RETURN to cancel]");
-	
-			int shipNumInput = Driver.getNumber(1, Driver.currentGameYard.numShips);
-	
 			if (shipNumInput == -1) {
 				cont = false;
 			} else {
@@ -916,7 +946,7 @@ public class Driver {
 		}
 
 		System.out.println();
-		ShipSetup.PrintCurrentShipsInGame();
+		ShipSetup.PrintCurrentThingsInGame("Ship Monster Other", "Speed");
 		System.out.println();
 	}
 	
