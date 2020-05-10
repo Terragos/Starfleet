@@ -114,11 +114,10 @@ public class Starship {
 			String breakDown, String moveCost, String spareShuttles, String sizeClass, 
 			String turnMode, String ruleNum, String yearInService) {
 		this.race = race;
+		this.shipType = type;
 		
-		if (type.equals("Planet"))
+		if (shipType.equals("Planet"))
 			this.name = "Planet";
-		else
-			this.shipType = type;
 		
 		this.crewUnits = crewUnits;
 		this.boardingParties = boardingParties;
@@ -132,20 +131,23 @@ public class Starship {
 		this.ruleNum = ruleNum;
 		this.yearInService = yearInService;
 		this.name = race.substring(0,3) + "-" + type;
+		
 		if (this.race == "Monster") {
 			this.name = this.shipType;
+			this.kindOfShip = Ship.MONSTER;
 		}
-//		if(this.name.length() > 10)
-//			this.name = this.name.substring(0, 10);
+		
+		if(this.name.length() > 18)
+			this.name = this.name.substring(0, 18);
+		
 		this.speed = 0;
 		this.spi = 0.0;
 		this.distrv = 0.0;
 		
-		if (this.race.equals("Monster"))
-			this.kindOfShip = Ship.MONSTER;
-		else if (this.name.equals("Planet"))
+		if (this.race.equals("Other") && this.shipType.equals("Planet"))
 			this.kindOfShip = Ship.PLANET;
-		else
+
+		if (this.race != "Monster" && this.race != "Other")
 			this.kindOfShip = Ship.STARSHIP;
 		
 		this.ssd = new Part[25];
