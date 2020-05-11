@@ -229,7 +229,7 @@ public class ShipSetup {
 				}
 			}
 			
-			if (whatToPrint.contains("OTHER")  && Driver.currentGameYard.list[i].kindOfShip == Starship.Ship.PLANET) { 
+			if (whatToPrint.contains("OTHER") && Driver.currentGameYard.list[i].kindOfShip == Starship.Ship.PLANET) { 
 				if(k + 1 == inputNum) { 
 					return i;
 				} else {
@@ -277,6 +277,7 @@ public class ShipSetup {
 			if (whatToPrint.contains("SHIP")) {
 				if (ship.kindOfShip == Starship.Ship.STARSHIP) {
 					System.out.print(extraSpace + (++printNum) + ")  " + ship.name + extraTab);
+//					System.out.println("ship.kindOfShip: " + ship.kindOfShip);
 
 					if (whatAspect1.contains("SPEED")) {
 						System.out.print("\t" + ship.speed);
@@ -293,6 +294,7 @@ public class ShipSetup {
 			if (whatToPrint.contains("MONSTER")) {
 				if (ship.kindOfShip == Starship.Ship.MONSTER) {
 					System.out.print(extraSpace + (++printNum) + ")  " + ship.name + extraTab);
+//					System.out.println("ship.kindOfShip: " + ship.kindOfShip);
 					
 					if (whatAspect1.contains("SPEED")) {
 						System.out.print("\t" + ship.speed);
@@ -309,7 +311,8 @@ public class ShipSetup {
 			if (whatToPrint.contains("OTHER")) {
 				if (ship.kindOfShip == Starship.Ship.PLANET) {
 					System.out.print(extraSpace + (++printNum) + ")  " + ship.name + extraTab);
-
+//					System.out.println("ship.kindOfShip: " + ship.kindOfShip);
+					
 					if (whatAspect1.contains("SPEED")) {
 						System.out.print("\t" + ship.speed);
 					} else if (whatAspect1.contains("HEALTH"))
