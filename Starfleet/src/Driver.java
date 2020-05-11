@@ -5,6 +5,7 @@ public class Driver {
 
 	public final static boolean TESTING = false;
 	public static int labResearchAquired = 0;
+	public static int labResearchRequired = 0;
 	public static int MonsterScenario = 0;
 	public static double MonsterBPVModifier = 1.0;
 	public static boolean MonsterBPVModifierApplied = false;
@@ -61,12 +62,13 @@ public class Driver {
 			System.out.println("|            [P]reload Scenario                                            |");
 			System.out.println("|            [M]onster Modification based on BPV Adjustment                |");
 			System.out.println("|            [L]ab & Damage Check for Monster Scenarios                    |");
+			System.out.println("|            [Y] = Roll for Victory Conditions (Monster Scenarios)         |");
 			System.out.println("|            [Z] = Rules to Remember                                       |");
 			System.out.println("|==========================================================================|");
 			System.out.println("|                                [Q]uit                                    |");
 			System.out.println("|==========================================================================|");
 
-			String userInput = getInput("IWDSRFCPLZVM");
+			String userInput = getInput("IWDSRFCPLZVMY");
 			String userInput3 = "";
 
 			int damageTotal = 0;
@@ -105,6 +107,8 @@ public class Driver {
 				MonsterStuff.MonsterScenarioCheck();
 			} else if (userInput.equalsIgnoreCase("Z")) {
 				RulesToRemember();
+			} else if (userInput.equalsIgnoreCase("Y")) {
+				MonsterStuff.RollForVictoryConditions();
 			} else if (userInput.equalsIgnoreCase("Q")) {
 				System.out.println("Exiting Program...");
 				break;
@@ -127,28 +131,13 @@ public class Driver {
 			for (int i = 0; i < Driver.currentGameYard.numShips; i++) {
 				
 				if (Driver.currentGameYard.list[i].kindOfShip == Starship.Ship.STARSHIP) {
-					int adjust = 0;
-					if (Driver.currentGameYard.list[i].race == "Romulan") {
-						adjust = 1;
-					} else {
-						adjust = 0;
-					}
 					
 					int intBPV = 0;
-					String stringBPV = "";
 					String thisBPV = Driver.currentGameYard.list[i].BPV;
+					String race = Driver.currentGameYard.list[i].race;
 					
 					if (Driver.currentGameYard.list[i].BPV.length() > 0) {
-						if (thisBPV.contains("-")) {
-							intBPV = 0;
-						} else if (thisBPV.contains("/")) {
-							int slashLocation = thisBPV.indexOf("/");
-							stringBPV = Driver.currentGameYard.list[i].BPV.substring(0, slashLocation);
-							intBPV = Integer.parseInt(stringBPV);
-						} else {
-							stringBPV = Driver.currentGameYard.list[i].BPV.substring(0, Driver.currentGameYard.list[i].BPV.length()-adjust);
-							intBPV = Integer.parseInt(stringBPV);
-						}
+						intBPV = Driver.GetEconomicBPV(race, thisBPV);
 					}
 					totalShipBPV = totalShipBPV + intBPV;
 				}
@@ -237,9 +226,9 @@ public class Driver {
 		System.out.print("[E]conomic or [C]ombat value? ");
 		String economicCombat = getInput ("EC");
 		System.out.print("Min BPV: ");
-		int minBPV = getNumber(0,500);
+		int minBPV = getNumberNoCancel(0,500);
 		System.out.print("Max BPV: ");
-		int maxBPV = getNumber(0,500);
+		int maxBPV = getNumberNoCancel(0,500);
 
 		String hasSSD = "";
 		System.out.println("=============================================================================================================");
@@ -249,40 +238,14 @@ public class Driver {
 		
 		for (int i = 0; i < defaultYard.numShips; i++) {
 			
-			int adjust = 0;
-			if (defaultYard.list[i].race == "Romulan") {
-				adjust = 1;
-			} else {
-				adjust = 0;
-			}
-			
-			int actualBPV = 0;
-			String convertedBPV = "";
+			int intBPV = 0;
 			String thisBPV = defaultYard.list[i].BPV;
+			String thisRace = defaultYard.list[i].race;
 			if (economicCombat.equalsIgnoreCase("E")) {
-				if (thisBPV.contains("-")) {
-					convertedBPV = "0";
-					actualBPV = Integer.parseInt(convertedBPV);
-				} else if (thisBPV.contains("/")) {
-					int slashLocation = thisBPV.indexOf("/");
-					convertedBPV = defaultYard.list[i].BPV.substring(0, slashLocation);
-					actualBPV = Integer.parseInt(convertedBPV);
-				} else {
-					convertedBPV = defaultYard.list[i].BPV.substring(0, defaultYard.list[i].BPV.length()-adjust);
-					actualBPV = Integer.parseInt(convertedBPV);
-				}
+				intBPV = GetEconomicBPV(thisRace, thisBPV);
+
 			} else if (economicCombat.equalsIgnoreCase("C")) {
-				if (thisBPV.contains("-")) {
-					convertedBPV = "0";
-					actualBPV = Integer.parseInt(convertedBPV);
-				} else if (thisBPV.contains("/")) {
-					int slashLocation = thisBPV.indexOf("/");
-					convertedBPV = defaultYard.list[i].BPV.substring(slashLocation+1, defaultYard.list[i].BPV.length()-adjust);
-					actualBPV = Integer.parseInt(convertedBPV);
-				} else {
-					convertedBPV = defaultYard.list[i].BPV.substring(0, defaultYard.list[i].BPV.length()-adjust);
-					actualBPV = Integer.parseInt(convertedBPV);
-				}
+				intBPV = GetCombatBPV(thisRace, thisBPV);
 			}
 			
 			hasSSD = "";
@@ -290,14 +253,64 @@ public class Driver {
 			if (defaultYard.list[i].hasSSD == true) {
 				hasSSD = " *";
 			}
-			if (actualBPV >= minBPV && actualBPV <= maxBPV) {
+			if (intBPV >= minBPV && intBPV <= maxBPV) {
 				System.out.print(extraSpaces + i + ")" + hasSSD + "\t" + defaultYard.list[i].toString());
 				System.out.println();
 			}
 		}
 		System.out.println("=============================================================================================================");
 	}
+	
+	public static int GetEconomicBPV (String race, String thisBPV) {
+		int adjust = 0;
+		int intBPV = 0;
+		String stringBPV = "0";
+		
+		if (race == "Romulan") {
+			adjust = 1;
+		} else {
+			adjust = 0;
+		}
+		
+		if (thisBPV.contains("-")) {
+			intBPV = 0;
+		} else if (thisBPV.contains("/")) {
+			int slashLocation = thisBPV.indexOf("/");
+			stringBPV = thisBPV.substring(0, slashLocation);
+			intBPV = Integer.parseInt(stringBPV);
+		} else {
+			stringBPV = thisBPV.substring(0, thisBPV.length()-adjust);
+			intBPV = Integer.parseInt(stringBPV);
+		}
+		
+		return intBPV;
+	}
 
+	public static int GetCombatBPV (String race, String thisBPV) {
+		int adjust = 0;
+		int intBPV = 0;
+		String stringBPV = "0";
+		
+		if (race == "Romulan") {
+			adjust = 1;
+		} else {
+			adjust = 0;
+		}
+		if (thisBPV.contains("-")) {
+			intBPV = 0;
+		} else if (thisBPV.contains("/")) {
+			int slashLocation = thisBPV.indexOf("/");
+			stringBPV = thisBPV.substring(slashLocation+1, thisBPV.length()-adjust);
+			intBPV = Integer.parseInt(stringBPV);
+		} else {
+			stringBPV = thisBPV.substring(0, thisBPV.length()-adjust);
+			intBPV = Integer.parseInt(stringBPV);
+		}
+		
+		return intBPV;
+	}
+
+	
 	public static void ModifyShipSystems() {
 		boolean cont = true;
 
@@ -798,8 +811,10 @@ public class Driver {
 		
 			if (scenario == 1) {
 				MonsterScenario = 1;
+				labResearchRequired = 0;
 				Driver.currentGameYard.numShips = 0;
 				scenarioLoaded = true;
+				
 				InstallSpecificShip("Monster", "Planet Crusher");
 				currentGameYard.list[0].speed = 6;
 				currentGameYard.list[0].name = "Planet Crusher";
@@ -813,8 +828,10 @@ public class Driver {
 				
 			} else if (scenario == 2) {
 				MonsterScenario = 2;
+				labResearchRequired = 400;
 				Driver.currentGameYard.numShips = 0;
 				scenarioLoaded = true;
+				
 				InstallSpecificShip("Monster", "Space Amoeba");
 				currentGameYard.list[0].speed = 4;
 				
@@ -823,8 +840,10 @@ public class Driver {
 				
 			} else if (scenario == 3) {
 				MonsterScenario = 3;
+				labResearchRequired = 0;
 				Driver.currentGameYard.numShips = 0;
 				scenarioLoaded = true;
+				
 				InstallSpecificShip("Monster", "Moray Eel");
 				currentGameYard.list[0].speed = 6;
 
@@ -833,8 +852,10 @@ public class Driver {
 
 			} else if (scenario == 4) {
 				MonsterScenario = 4;
-				Driver.currentGameYard.numShips = 0;
+				labResearchRequired = 400;
 				scenarioLoaded = true;
+				Driver.currentGameYard.numShips = 0;
+
 				InstallSpecificShip("Monster", "Cosmic Cloud");
 				currentGameYard.list[0].speed = 4;
 
@@ -843,6 +864,8 @@ public class Driver {
 
 			} else if (scenario == 5) {
 				MonsterScenario = 5;
+				labResearchRequired = 400;
+
 				Driver.currentGameYard.numShips = 0;
 				scenarioLoaded = true;
 				InstallSpecificShip("Monster", "Sunsnake");
@@ -855,6 +878,8 @@ public class Driver {
 				MonsterScenario = 6;
 				Driver.currentGameYard.numShips = 0;
 				scenarioLoaded = true;
+				labResearchRequired = 400;
+
 				InstallSpecificShip("Monster", "Mind Monster");
 				currentGameYard.list[0].speed = 6;
 
@@ -871,6 +896,8 @@ public class Driver {
 				MonsterScenario = 8;
 				Driver.currentGameYard.numShips = 0;
 				scenarioLoaded = true;
+				labResearchRequired = 0;
+
 				int firstArastozNum = FindMonsterLocation("Monster", "Arastoz 1x");
 				currentGameYard.addShipToShipyard(defaultYard.list[firstArastozNum]);				//  Arastoz 1x
 				currentGameYard.list[0].speed = 14;
