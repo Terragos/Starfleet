@@ -1,6 +1,8 @@
 
 import java.math.*;
 
+import javax.swing.plaf.synth.SynthSeparatorUI;
+
 public class MonsterStuff {
 
 	public static Starship currentMonster;
@@ -441,32 +443,172 @@ public class MonsterStuff {
 	}
 
 	public static void MonsterScenarioCheck() {
-		ShipSetup.PrintCurrentThingsInGame("Monster", "Health");
-
-
-		System.out.println();
-		System.out.println("--------------------------------");
-		System.out.println("Race\t\tLab Points");
-		System.out.println("\t\tAcquired");
-		System.out.println("--------------------------------");
-		
-		String extraTab = "";
-		int totalPoints = 0;
-		for (int i = 0; i <= Driver.labResearches.length-1; i++) {
-			if (Driver.labResearches[i].acquiredPoints > 0) {
-				if (Driver.labResearches[i].race.length() < 5) {
-					extraTab = "\t";
-				}
-				System.out.println(Driver.labResearches[i].race + extraTab + "\t" + Driver.labResearches[i].acquiredPoints);
-				totalPoints = totalPoints + Driver.labResearches[i].acquiredPoints;
+		String monsterName = "";
+		int monsterDamageRemaining = 0;
+		for (int i = 0; i < Driver.currentGameYard.numShips; i++) {
+			if (Driver.currentGameYard.list[i].kindOfShip == Starship.Ship.MONSTER) {
+				monsterName = Driver.currentGameYard.list[i].name;
+				monsterDamageRemaining = Driver.currentGameYard.list[i].ssd[24].remaining;
 			}
 		}
-		if (totalPoints == 0) {
-			System.out.println("None\t\tNone");
+		
+		if (Driver.labResearchRequired == 0) {
+			System.out.println();
+			System.out.println("No Lab research is required to defeat monster.");
+			System.out.println("Defeat monster through normal wepaons damage.");
+			for (int i = 0; i < Driver.currentGameYard.numShips; i++) {
+				if (Driver.currentGameYard.list[i].kindOfShip == Starship.Ship.MONSTER) {
+					System.out.println(Driver.currentGameYard.list[i].name + " has " + Driver.currentGameYard.list[i].ssd[24].remaining + " HP remaining.");
+				}
+			}
 		}
-		System.out.println("--------------------------------");
+		
+		if (monsterName != "" && Driver.labResearchRequired > 0) {
+			System.out.println("Lab Research Points required on");
+			System.out.println(monsterName + " before rolling for");
+			System.out.println("Victory Conditions: " + Driver.labResearchRequired);
+			ShipSetup.PrintCurrentThingsInGame("Monster", "Health");
+			System.out.println();
+			System.out.println("--------------------------------");
+			System.out.println("Race\t\tLab Points");
+			System.out.println("\t\tAcquired");
+			System.out.println("--------------------------------");
+			
+			String extraTab = "";
+			int totalPoints = 0;
+			for (int i = 0; i <= Driver.labResearches.length-1; i++) {
+				if (Driver.labResearches[i].acquiredPoints > 0) {
+					if (Driver.labResearches[i].race.length() < 5) {
+						extraTab = "\t";
+					}
+					System.out.print(Driver.labResearches[i].race + extraTab + "\t" + Driver.labResearches[i].acquiredPoints);
+					if (Driver.labResearches[i].acquiredPoints >= Driver.labResearchRequired) {
+						System.out.print("\t<-- Lab Research complete.  Roll for Victory Conditions in Main Menu.");
+					}
+					System.out.println();
+					totalPoints = totalPoints + Driver.labResearches[i].acquiredPoints;
+				}
+			}
+			if (totalPoints == 0) {
+				System.out.println("None\t\tNone");
+			}
+			System.out.println("--------------------------------");
+			
+		} else if (monsterName == "") {
+			System.out.println();
+			System.out.println("There is no monster in the game to collect lab research on.");
+		}
 	}
 
+	public static void RollForVictoryConditions() {
+		String monsterName = "";
+		for (int i = 0; i < Driver.currentGameYard.numShips; i++) {
+			if (Driver.currentGameYard.list[i].kindOfShip == Starship.Ship.MONSTER) {
+				monsterName = Driver.currentGameYard.list[i].name;
+			}
+		}
+		
+		if (Driver.labResearchRequired == 0) {
+			System.out.println();
+			System.out.println("No Lab research is required to defeat monster.");
+			System.out.println("Defeat monster through normal wepaons damage.");
+			for (int i = 0; i < Driver.currentGameYard.numShips; i++) {
+				if (Driver.currentGameYard.list[i].kindOfShip == Starship.Ship.MONSTER) {
+					System.out.println(Driver.currentGameYard.list[i].name + " has " + Driver.currentGameYard.list[i].ssd[24].remaining + " HP remaining.");
+				}
+			}
+		
+		} else if (monsterName != "" && Driver.labResearchRequired > 0) {
+			System.out.println();
+			System.out.println("|==========================================================================|");
+			System.out.println("|                  MONSTER SCENARIO VICTORY CONDITIONS                     |");		
+			System.out.println("|==========================================================================|");
+			System.out.println("|  DIE ROLL     HOW TO DESTORY MONSTER                                     |");		
+			System.out.println("|--------------------------------------------------------------------------|");
+			System.out.println("|     1    :    Monster can be destroyed by a suicide shuttlecraft.        |");		
+			System.out.println("|                                                                          |");		
+			System.out.println("|     2    :    Monster can be destroyed if a tractor beam is              |");		
+			System.out.println("|                   attached to it.                                        |");		
+			System.out.println("|                                                                          |");		
+			System.out.println("|     3    :    Monster can be destroyed by 200 points of damage with      |");		
+			System.out.println("|                   any weapons.                                           |");		
+			System.out.println("|                                                                          |");		
+			System.out.println("|     4    :    Monster can be destroyed by a probe used a weapon.         |");		
+			System.out.println("|                                                                          |");		
+			System.out.println("|     5    :    Insufficient data.  Acculmulate 100 more points of         |");		
+			System.out.println("|                   lab research data and try again.                       |");		
+			System.out.println("|                                                                          |");		
+			if (Driver.MonsterScenario != 5) {  //  All other monsters except Sunsnake
+				System.out.println("|     6    :    Communication established with monster.  It is friendly,   |");		
+				System.out.println("|                   and you are not required to destroy it.  If you have   |");		
+				System.out.println("|                   scored damage on it, you lose this scenario.           |");
+			} else if (Driver.MonsterScenario == 5) {  //  Sunsnake only
+				System.out.println("|     6    :    Monster cannot be destroyed by forces at your disposal.    |");		
+				System.out.println("|                   Save as many crew on the planet as possible and        |");		
+				System.out.println("|                   leave the system.                                      |");
+			}
+			System.out.println("|==========================================================================|");
+			System.out.println();
+			int die = DamageAllocation.rollDice(1, 6);
+			if (die == 1) {
+				System.out.println("Your Victory Condition:");
+				System.out.println("   Destroy the monster with a suicide shuttlecraft.");
+				
+			} else if (die == 2) {
+				System.out.println("Your Victory Condition:");
+				System.out.println("   Destroy the monster by attaching a tractor beam to it.");
+				
+			} else if (die == 3) {
+				System.out.println("Your Victory Condition:");
+				System.out.println("   Destroy the monster by 200 points of damage from any weapon(s).");
+				for (int i = 0; i < Driver.currentGameYard.numShips; i++) {
+					if (Driver.currentGameYard.list[i].kindOfShip == Starship.Ship.MONSTER) {
+						System.out.println("   " + Driver.currentGameYard.list[i].name + " has " + Driver.currentGameYard.list[i].ssd[24].remaining + " HP remaining.");
+						if (Driver.currentGameYard.list[i].ssd[24].remaining <= 0) {
+							System.out.println();
+							System.out.println("You win the scenario!");
+						}
+					}
+				}
+				
+			} else if (die == 4) {
+				System.out.println("Your Victory Condition:");
+				System.out.println("   Destroy the monster by using a probe as a weapon.");
+				
+			} else if (die == 5) {
+				System.out.println("Insufficient Data:");
+				System.out.println("   Acculmulate 100 more points of lab research data and try again.");
+				Driver.labResearchAquired = 0;
+				Driver.labResearchRequired = 100;
+				
+			} else if (die == 6 && Driver.MonsterScenario != 5) {      //  All other monsters except Sunsnake
+				System.out.println("Your Victory Condition:");
+				System.out.println("   Communication established with monster.");
+				System.out.println("   It is friendly, and you are not required to destroy it.");		
+				int damageTaken = 0;
+				for (int i = 0; i < Driver.currentGameYard.numShips; i++) {
+					if (Driver.currentGameYard.list[i].kindOfShip == Starship.Ship.MONSTER) {
+						damageTaken = damageTaken + Driver.currentGameYard.list[i].ssd[24].numOfThisPart - Driver.currentGameYard.list[i].ssd[24].remaining;
+						System.out.print("   " + Driver.currentGameYard.list[i].name + " has taken " + damageTaken + " damage and ");
+					}
+					if (damageTaken == 0) {
+						System.out.println("you win the scenario!");	
+					} else {
+						System.out.println("you lose the scenario!");
+					}
+				}
+				
+			} else if (die == 6 && Driver.MonsterScenario == 5) {     //  Sunsnake
+				System.out.println("Your Victory Condition:");
+				System.out.println("   Monster cannot be destroyed by forces at your disposal.");		
+				System.out.println("   Save as many crew on the planet as possible and leave the system.");
+			}
+		} else if (monsterName == "") {
+			System.out.println();
+			System.out.println("There is no Monster in the game, so there is no need for Victory Conditions.");
+		}
+	} 
+	
 	public static void labResearchPoints() {
 		//  Also Some Monster Damage
 		int labResearch[][] = {{ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9,10},   //  distance
@@ -595,4 +737,5 @@ public class MonsterStuff {
 			}
 		}
 	}
+	
 }
