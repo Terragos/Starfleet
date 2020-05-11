@@ -1046,10 +1046,10 @@ public class Shipyard {
 		defaultYard.addShipToShipyard(ship);
 		
 		ship = new Starship("Frax", "CW", "40", "10", "120", "5-6", "0.67", "2", "3", "B", "R91.04", "168");
-//		se = new int[]{};
-//		sc = new int[]{};
-//		da = new int[]{};
-//		ship.setupSSD(B, F, E, A, P, T, C, L, R, I, A, B, TS,TC,P, S, D, L, C, FH,AF,DA,SE,SC,EX,sensNums, scanNums, damConNums);
+		se = new int[]{6, 5, 3, 1, 0};
+		sc = new int[]{0, 1, 3, 5, 9};
+		da = new int[]{4, 2, 2, 2, 0};
+		ship.setupSSD(2, 0, 1, 2, 8, 4, 0, 12, 12, 4, 2, 3, 2, 2, 1, 4, 2, 3, 0, 5, 5, 5, 5, 5, 5, se, sc, da);
 		defaultYard.addShipToShipyard(ship);
 		
 		ship = new Starship("Frax", "CWV", "44", "10", "120/100", "5-6", "0.67", "2+4", "3", "B", "R91.05", "170");
