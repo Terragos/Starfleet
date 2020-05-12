@@ -347,8 +347,14 @@ public class Shipyard {
 		defaultYard.addShipToShipyard(ship);
 		ship = new Starship("Klingon", "D6PFB", "44", "8", "117", "5-6", "1", "1", "3", "B", "R3.22", "184");
 		defaultYard.addShipToShipyard(ship);
+		
 		ship = new Starship("Klingon", "D5", "40", "8", "110", "5-6", "0.67", "1", "3", "B", "R3.23", "168");
+		se = new int[]{6, 5, 3, 1, 0};
+		sc = new int[]{0, 1, 3, 5, 9};
+		da = new int[]{4, 2, 2, 2, 0};
+		ship.setupSSD(2, 2, 1, 2, 8, 4, 0, 12, 12, 5, 2, 3, 3, 3, 1, 2, 4, 1, 0, 3, 6, 5, 5, 5, 4, se, sc, da);
 		defaultYard.addShipToShipyard(ship);
+		
 		ship = new Starship("Klingon", "D5A", "40", "8", "118", "5-6", "0.67", "1", "3", "B", "R3.24", "172");
 		defaultYard.addShipToShipyard(ship);
 		ship = new Starship("Klingon", "AD5", "40", "8", "120", "5-6", "0.67", "1", "3", "B", "R3.29", "176");
