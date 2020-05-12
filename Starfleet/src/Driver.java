@@ -147,13 +147,21 @@ public class Driver {
 			ShipSetup.PrintCurrentThingsInGame ("SHIP", "BPV");
 			System.out.println("Starship(s) total BPV:\t" + (int) totalShipBPV);
 			MonsterBPVModifier = totalShipBPV / 125.0;
-			System.out.println("Monster Modifier:\t" + MonsterBPVModifier + " (" + (int) totalShipBPV + "/125)");
 			System.out.println();
 			
 			System.out.println("Current Monster HPs:");
 			ShipSetup.PrintCurrentThingsInGame ("MONSTER", "HEALTH");
+
+			String labResearchBlurb = "";
+			if (Driver.labResearchRequired > 0) {
+				System.out.println("Lab Research pts required to collect: " + Driver.labResearchRequired);
+				labResearchBlurb = "and/or Lab Research ";
+			}
+
 			System.out.println();
-			System.out.println("Apply Monster BPV Modifier? ");
+			System.out.println("Monster Modifier:\t" + MonsterBPVModifier);
+			System.out.println("Apply Monster " + labResearchBlurb + "BPV Modifier? ");
+			
 			String yesOrNo = getInput ("YN");
 			
 			if (yesOrNo.equalsIgnoreCase("Y")) {
@@ -163,15 +171,29 @@ public class Driver {
 						Driver.currentGameYard.list[i].ssd[24].remaining = (int) Math.round(Driver.currentGameYard.list[i].ssd[24].remaining * MonsterBPVModifier);
 					}
 				}
+				Driver.labResearchRequired = (int) Math.round(Driver.labResearchRequired * MonsterBPVModifier);
 				System.out.println();
 				System.out.println("Modified Monster HPs:");
 				ShipSetup.PrintCurrentThingsInGame ("MONSTER", "HEALTH");
 				MonsterBPVModifierApplied = true;
+				
+				if (Driver.labResearchRequired > 0) {
+					System.out.println("Lab Research pts required to collect: " + Driver.labResearchRequired);
+				}
 			} else {
 				System.out.println("Monster HPs have NOT been modified");
 			}
 		}
 	}
+	
+	public static void ZeroOutMonsterAndLabResearchValues() {
+		labResearchAquired = 0;
+		labResearchRequired = 0;
+		MonsterScenario = 0;
+		MonsterBPVModifier = 1.0;
+		MonsterBPVModifierApplied = false;
+	}
+	
 	
 	public static void RemoveShip(boolean print) {
 		if (print == true) {
@@ -810,8 +832,8 @@ public class Driver {
 			int scenario = getNumber(1,200);
 		
 			if (scenario == 1) {
+				ZeroOutMonsterAndLabResearchValues();
 				MonsterScenario = 1;
-				labResearchRequired = 0;
 				Driver.currentGameYard.numShips = 0;
 				scenarioLoaded = true;
 				
@@ -827,6 +849,7 @@ public class Driver {
 				currentGameYard.list[2].speed = DamageAllocation.rollDice(1, 10) + 1;
 				
 			} else if (scenario == 2) {
+				ZeroOutMonsterAndLabResearchValues();
 				MonsterScenario = 2;
 				labResearchRequired = 400;
 				Driver.currentGameYard.numShips = 0;
@@ -839,6 +862,7 @@ public class Driver {
 				currentGameYard.list[1].speed = DamageAllocation.rollDice(1, 10) + 1;
 				
 			} else if (scenario == 3) {
+				ZeroOutMonsterAndLabResearchValues();
 				MonsterScenario = 3;
 				labResearchRequired = 0;
 				Driver.currentGameYard.numShips = 0;
@@ -851,6 +875,7 @@ public class Driver {
 				currentGameYard.list[1].speed = DamageAllocation.rollDice(1, 10) + 1;
 
 			} else if (scenario == 4) {
+				ZeroOutMonsterAndLabResearchValues();
 				MonsterScenario = 4;
 				labResearchRequired = 400;
 				scenarioLoaded = true;
@@ -863,6 +888,7 @@ public class Driver {
 				currentGameYard.list[1].speed = DamageAllocation.rollDice(1, 10) + 1;
 
 			} else if (scenario == 5) {
+				ZeroOutMonsterAndLabResearchValues();
 				MonsterScenario = 5;
 				labResearchRequired = 400;
 
@@ -875,6 +901,7 @@ public class Driver {
 				currentGameYard.list[1].speed = DamageAllocation.rollDice(1, 10) + 1;
 
 			} else if (scenario == 6) {
+				ZeroOutMonsterAndLabResearchValues();
 				MonsterScenario = 6;
 				Driver.currentGameYard.numShips = 0;
 				scenarioLoaded = true;
@@ -893,6 +920,7 @@ public class Driver {
 				currentGameYard.list[2].speed = DamageAllocation.rollDice(1, 10) + 1;
 
 			} else if (scenario == 8) {
+				ZeroOutMonsterAndLabResearchValues();
 				MonsterScenario = 8;
 				Driver.currentGameYard.numShips = 0;
 				scenarioLoaded = true;
@@ -919,6 +947,7 @@ public class Driver {
 				currentGameYard.list[4].speed = DamageAllocation.rollDice(1, 5) + 1;
 				
 			} else if (scenario == 101) {
+				ZeroOutMonsterAndLabResearchValues();
 				Driver.currentGameYard.numShips = 0;
 				scenarioLoaded = true;
 				InstallSpecificShip("Federation", "DN");
@@ -943,6 +972,7 @@ public class Driver {
 				currentGameYard.list[5].speed = DamageAllocation.rollDice(1, 10) + 1;
 												
 			} else if (scenario == 102) {
+				ZeroOutMonsterAndLabResearchValues();
 				Driver.currentGameYard.numShips = 0;
 				scenarioLoaded = true;
 				InstallSpecificShip("Federation", "NCL");
@@ -955,6 +985,7 @@ public class Driver {
 				currentGameYard.list[2].speed = DamageAllocation.rollDice(1, 5) + 1;
 				
 			} else if (scenario == 103) {
+				ZeroOutMonsterAndLabResearchValues();
 				Driver.currentGameYard.numShips = 0;
 				scenarioLoaded = true;
 				InstallSpecificShip("Federation", "CC");
@@ -967,6 +998,7 @@ public class Driver {
 				currentGameYard.list[2].speed = DamageAllocation.rollDice(1, 10) + 1;
 				
 			} else if (scenario == 104) {
+				ZeroOutMonsterAndLabResearchValues();
 				Driver.currentGameYard.numShips = 0;
 				scenarioLoaded = true;
 				InstallSpecificShip("Tholian", "DD");
@@ -979,6 +1011,7 @@ public class Driver {
 				currentGameYard.list[2].speed = DamageAllocation.rollDice(1, 5) + 1;
 				
 			} else if (scenario == 105) {
+				ZeroOutMonsterAndLabResearchValues();
 				Driver.currentGameYard.numShips = 0;
 				scenarioLoaded = true;
 				int firstMonsterNum = FindMonsterLocation("Monster", "Planet Crusher");
