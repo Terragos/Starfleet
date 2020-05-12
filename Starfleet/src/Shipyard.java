@@ -457,7 +457,6 @@ public class Shipyard {
 		sc = new int[]{0, 0, 1, 3, 5, 9};
 		da = new int[]{4, 4, 2, 2, 2, 0};
 		ship.setupSSD(2, 0, 1, 2, 7, 2, 0, 15, 15, 5, 2, 3, 5, 3, 1, 4, 0, 4, 0, 5, 8, 6, 6, 6, 4, se, sc, da);
-//		ship.setupSSD(B, F, E, A, P, T, C, L, R, I, A, B, TS,TC,P, S, D, L, C, FH,AF,DA,SE,SC,EX,sensNums, scanNums, damConNums);
 		defaultYard.addShipToShipyard(ship);
 		
 		ship = new Starship("Romulan", "KRB", "40", "10", "154*", "5-6", "1", "1", "3", "B", "R4.35", "165");
@@ -930,7 +929,12 @@ public class Shipyard {
 		defaultYard.addShipToShipyard(ship);
 		
 		ship = new Starship("Lyran", "CA", "42", "12", "133", "5-6", "1", "1", "3", "C", "R11.4", "68");
+		se = new int[]{6, 6, 5, 3, 1, 0};
+		sc = new int[]{0, 0, 1, 3, 5, 9};
+		da = new int[]{4, 4, 2, 2, 2, 0};
+		ship.setupSSD(3, 1, 1, 3, 10, 4, 0, 15, 15, 3, 4, 4, 4, 4, 1, 2, 2, 4, 0, 8, 8, 6, 6, 6, 6, se, sc, da);
 		defaultYard.addShipToShipyard(ship);
+		
 		ship = new Starship("Lyran", "CX", "45", "12", "272", "5-6", "1", "1", "2", "C", "S2", "-");
 		defaultYard.addShipToShipyard(ship);
 
@@ -943,18 +947,35 @@ public class Shipyard {
 		
 		ship = new Starship("Lyran", "CW", "34", "10", "115", "5-6", "0.67", "1", "3", "B", "N5", "165");
 		defaultYard.addShipToShipyard(ship);
+		
 		ship = new Starship("Lyran", "CL", "34", "9", "92", "5-6", "0.67", "1", "3", "C", "R11.5", "68");
+		se = new int[]{6, 6, 5, 3, 1, 0};
+		sc = new int[]{0, 0, 1, 3, 5, 9};
+		da = new int[]{4, 2, 2, 2, 0};
+		ship.setupSSD(2, 0, 1, 1, 8, 2, 0, 10, 10, 3, 2, 2, 2, 2, 1, 2, 2, 2, 0, 6, 6, 5, 6, 6, 5, se, sc, da);
 		defaultYard.addShipToShipyard(ship);
+		
 		ship = new Starship("Lyran", "DD", "26", "6", "79", "6", "0.5", "1", "4", "B", "R11.6", "68");
+		se = new int[]{6, 6, 4, 2, 0};
+		sc = new int[]{0, 0, 1, 5, 9};
+		da = new int[]{4, 2, 2, 0};
+		ship.setupSSD(2, 0, 1, 1, 8, 2, 0, 8, 8, 2, 2, 2, 2, 2, 1, 2, 1, 2, 0, 5, 5, 4, 5, 5, 4, se, sc, da);
 		defaultYard.addShipToShipyard(ship);
+		
 		ship = new Starship("Lyran", "SC", "25", "6", "100/60", "6", "0.5", "1", "4", "B", "R11.9", "88");
 		defaultYard.addShipToShipyard(ship);
 		ship = new Starship("Lyran", "MS", "22", "4", "80/60", "6", "0.5", "1", "4", "B", "R11.8", "168");
 		defaultYard.addShipToShipyard(ship);
 		ship = new Starship("Lyran", "PFT", "28", "4", "80/50", "6", "0.5", "1", "4", "B", "R11.10", "178");
 		defaultYard.addShipToShipyard(ship);
+
 		ship = new Starship("Lyran", "FF", "18", "4", "63", "6", "0.33", "1", "4", "A", "R11.7", "68");
+		se = new int[]{6, 4, 2, 0};
+		sc = new int[]{0, 1, 5, 9};
+		da = new int[]{2, 2, 0};
+		ship.setupSSD(2, 0, 1, 1, 6, 2, 0, 6, 6, 2, 1, 1, 1, 2, 1, 2, 1, 1, 0, 4, 4, 3, 4, 4, 3, se, sc, da);
 		defaultYard.addShipToShipyard(ship);
+		
 		ship = new Starship("Lyran", "AF", "18", "4", "70", "6", "0.33", "1", "4", "A", "R11.11", "177");
 		defaultYard.addShipToShipyard(ship);
 		ship = new Starship("Lyran", "Tug-P", "34", "6", "121/102", "3-6", "1", "-", "3", "D", "N6", "125");
