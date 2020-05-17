@@ -130,7 +130,7 @@ public class PhaseCalculation {
 		}
 		
 		boolean ArastozInGame = false;
-		for (int i = 1; i <= Driver.currentGameYard.numShips; i++) {
+		for (int i = 1; i <= Driver.currentGameYard.list.length; i++) {
 			if (Driver.currentGameYard.list[i-1].shipType.contains("Arastoz")) {
 				ArastozInGame = true;
 				break;
@@ -138,7 +138,7 @@ public class PhaseCalculation {
 		}
 
 		int ArastozCount = 0;
-		for (int i = 1; i <= Driver.currentGameYard.numShips; i++) {
+		for (int i = 1; i <= Driver.currentGameYard.list.length && ArastozInGame; i++) {
 			if (Driver.currentGameYard.list[i-1].shipType.contains("Arastoz")) {
 				ArastozCount++;
 			}
