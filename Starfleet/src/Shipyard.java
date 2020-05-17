@@ -624,7 +624,8 @@ public class Shipyard {
 		ship.setupSSD(3, 3, 1, 3, 20, 4, 15, 15, 15, 7, 5, 7, 7, 9, 1, 15, 8, 9, 4, 7, 20, 9, 10, 10, 12, se, sc, da);
 		defaultYard.addShipToShipyard(ship);
 		
-		ship = new Starship("Kzinti", "CVA", "65", "20", "215", "4-6", "1.5", "2+6", "2", "E", "R5.25", "173");
+		ship = new Starship("Kzinti", "CVA", "65", "20", "215", "4-6", "1.5", "2+6", "2", "E", ""
+				+ "R5.25", "173");
 		se = new int[]{6, 6, 6, 6, 5, 4, 3, 2, 1, 0};
 		sc = new int[]{0, 0, 0, 0, 1, 2, 3, 4, 5, 9};
 		da = new int[]{6, 6, 4, 4, 4, 2, 2, 2, 0};
@@ -635,10 +636,21 @@ public class Shipyard {
 		defaultYard.addShipToShipyard(ship);
 		ship = new Starship("Kzinti", "CVS", "50", "20", "169", "5-6", "1", "3+3", "3", "E", "R5.7", "170");
 		defaultYard.addShipToShipyard(ship);
+		
 		ship = new Starship("Kzinti", "CVL", "40", "15", "117", "5-6", "1", "2+2", "3", "C", "R5.9", "166");
+		se = new int[]{6, 6, 6, 4, 1, 0};
+		sc = new int[]{0, 1, 2, 3, 5, 9};
+		da = new int[]{4, 4, 2, 2, 2, 0};
+		ship.setupSSD(3, 0, 1, 3, 8, 2, 9, 9, 9, 4, 3, 3, 3, 2, 1, 11, 5, 2, 0, 5, 12, 6, 6, 6, 6, se, sc, da);
 		defaultYard.addShipToShipyard(ship);
+		
 		ship = new Starship("Kzinti", "CVE", "30", "10", "89", "5-6", "0.67", "1+2", "3", "B", "R5.10", "166");
+		se = new int[]{6, 6, 6, 4, 1, 0};
+		sc = new int[]{0, 1, 2, 3, 5, 9};
+		da = new int[]{4, 4, 2, 2, 2, 0};
+		ship.setupSSD(3, 0, 1, 3, 6, 2, 6, 6, 6, 4, 2, 3, 3, 2, 1, 7, 3, 1, 0, 5, 8, 6, 6, 6, 6, se, sc, da);
 		defaultYard.addShipToShipyard(ship);
+		
 		ship = new Starship("Kzinti", "CSX", "41", "18", "264", "5-6", "1", "3", "2", "C", "S2", "-");
 		defaultYard.addShipToShipyard(ship);
 		
@@ -651,7 +663,12 @@ public class Shipyard {
 		
 		ship = new Starship("Kzinti", "BC", "40", "16", "138", "5-6", "1", "2", "3", "C", "R5.3", "160");
 		defaultYard.addShipToShipyard(ship);
+		
 		ship = new Starship("Kzinti", "CS", "40", "16", "116", "5-6", "1", "2", "3", "C", "R5.2", "65");
+		se = new int[]{6, 6, 6, 4, 1, 0};
+		sc = new int[]{0, 1, 2, 3, 5, 9};
+		da = new int[]{4, 4, 2, 2, 2, 0};
+		ship.setupSSD(3, 0, 1, 3, 12, 2, 9, 9, 9, 3, 3, 5, 5, 2, 1, 2, 4, 6, 0, 5, 12, 6, 6, 6, 6, se, sc, da);
 		defaultYard.addShipToShipyard(ship);
 		
 		ship = new Starship("Kzinti", "CM", "33", "12", "110", "5-6", "0.67", "1", "3", "B", "R5.19", "170");
@@ -662,6 +679,11 @@ public class Shipyard {
 		defaultYard.addShipToShipyard(ship);
 		
 		ship = new Starship("Kzinti", "CL", "30", "10", "84", "5-6", "0.67", "1", "3", "B", "R5.5", "65");
+		se = new int[]{6, 6, 6, 4, 1, 0};
+		sc = new int[]{0, 1, 2, 3, 5, 9};
+		da = new int[]{4, 4, 2, 2, 2, 0};
+//		ship.setupSSD(B, F, E, A, P, T, C, L, R, I, A, B, TS,TC,P, S, D, L, C, FH,AF,DA,SE,SC,EX,sensNums, scanNums, damConNums);
+		ship.setupSSD(3, 0, 1, 3, 6, 2, 6, 6, 6, 3, 2, 3, 3, 2, 1, 2, 2, 4, 0, 5, 8, 6, 6, 6, 6, se, sc, da);
 		defaultYard.addShipToShipyard(ship);
 		
 		ship = new Starship("Kzinti", "FF", "20", "6", "62", "5-6", "0.33", "1", "4", "A", "R5.8", "65");
