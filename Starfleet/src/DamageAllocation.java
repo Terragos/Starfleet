@@ -64,15 +64,13 @@ public class DamageAllocation {
 		System.out.print("Deal damage to which ship? [RETURN to cancel] ");
 		int input = -5;
 		input = ShipSetup.GetAdjustedInput(print, "SHIP", "");
-		System.out.println("input: " + input);
-		System.out.println("ship being damaged: " + Driver.currentGameYard.list[input].name);
 		
-		
-		
-
 		if(input == -1) {
 			return;
 		}
+		
+//		System.out.println("input: " + input);
+//		System.out.println("ship being damaged: " + Driver.currentGameYard.list[input].name);
 		
 		currentShip = Driver.currentGameYard.list[input];
 		
@@ -102,19 +100,31 @@ public class DamageAllocation {
 		int shieldDamage = 0;
 		System.out.println();
 		System.out.println("\t(GSR = energy allocated / 2)");				//  Apply Damage to 3 shield types first
-		System.out.print("\tGeneral Shield Reinforcement : ");
-		general = Driver.getNumberNoCancel(0, 100);
-		System.out.print("\tSpecific Shield Reinforcement: ");
-		specific = Driver.getNumberNoCancel(0, 100);
-		System.out.print("\tShield Damage                : ");
-		shieldDamage = Driver.getNumberNoCancel(0, 100);
+		System.out.print("\tGeneral Shield Reinforcement  [RETURN = 0]: ");
+		general = Driver.getNumber(0, 100);
+		if (general == -1) {
+			general = 0;
+		}
+		System.out.print("\tSpecific Shield Reinforcement [RETURN = 0]: ");
+		specific = Driver.getNumber(0, 100);
+		if (specific == -1) {
+			specific = 0;
+		}
+		System.out.print("\tShield Damage                 [RETURN = 0]: ");
+		shieldDamage = Driver.getNumber(0, 100);
+		if (shieldDamage == -1) {
+			shieldDamage = 0;
+		}
 		int allShieldDamage = general + specific + shieldDamage;
 		totalDamage = totalDamage - allShieldDamage;
 		System.out.println();
-		System.out.print("\tTOTAL DAMAGE after accounting for shields: " + totalDamage);
+		System.out.println("\tTOTAL DAMAGE after accounting for shields: " + totalDamage);
 		System.out.println();
-		System.out.print("\tArmor Damage                 : ");
-		int armorDamage = Driver.getNumberNoCancel(0, 100);
+		System.out.print("\tArmor Damage                  [RETURN = 0]: ");
+		int armorDamage = Driver.getNumber(0, 100);
+		if (armorDamage == -1) {
+			armorDamage = 0;
+		}
 		System.out.println();
 		totalDamage = totalDamage - armorDamage;
 		System.out.print("\tTOTAL DAMAGE after accounting for armor : " + totalDamage);
