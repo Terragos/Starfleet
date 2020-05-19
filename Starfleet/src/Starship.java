@@ -68,7 +68,7 @@ public class Starship {
 	}
 	
 	/* Non Regular Starship Constructor */
-	public Starship(Ship kind, int speed, String name) {
+	public Starship(Ship kind, int speed, String name, String type) {
 		int[] fake = {0};
 		if(kind == Ship.TORPEDO) { 
 			this.name = name;
@@ -78,6 +78,7 @@ public class Starship {
 			this.distrv = 0;
 			this.breakDown = "-";
 			this.kindOfShip = kind;
+			this.shipType = type;
 		} else if(kind == Ship.DRONE) {
 			this.name = name;
 			this.speed = speed;
@@ -86,6 +87,7 @@ public class Starship {
 			this.turnMode = "X";
 			this.breakDown = "-";
 			this.kindOfShip = kind;
+			this.shipType = type;
 			this.ssd = new Part[25];
 			this.setupSSD(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5, fake, fake, fake);
 			// Maybe make a drone class
@@ -97,6 +99,7 @@ public class Starship {
 			this.turnMode = "Y";
 			this.breakDown = "*";
 			this.kindOfShip = kind;
+			this.shipType = type;
 			this.ssd = new Part[25];
 			this.setupSSD(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 6, fake, fake, fake);
 		} else if(kind == Ship.FIGHTER) {
@@ -106,6 +109,7 @@ public class Starship {
 			this.distrv = 0;
 			this.turnMode = "Y";
 			this.breakDown = "*";
+			this.shipType = type;
 			this.kindOfShip = kind;	
 		}
 	}
