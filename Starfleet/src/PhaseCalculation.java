@@ -60,7 +60,7 @@ public class PhaseCalculation {
 						cont3 = false;
 					} else if (userInput.equalsIgnoreCase("W")) {
 						WeaponsDamage.WeaponsDam(i);
-						cont3 = false;
+//						cont3 = false;
 						System.out.println();
 					} else if (userInput.equalsIgnoreCase("T")) {						
 						AddOrRemoveTorpedo();
@@ -129,19 +129,17 @@ public class PhaseCalculation {
 			}
 		}
 		
+		int ArastozCount = 0;
 		boolean ArastozInGame = false;
-		for (int i = 1; i <= Driver.currentGameYard.list.length; i++) {
+//		System.out.println("Driver.currentGameYard.numShips: " + Driver.currentGameYard.numShips);
+		for (int i = 1; i <= Driver.currentGameYard.numShips; i++) {
+//			System.out.println("i: " + i + "    Driver.currentGameYard.list[i-1].shipType: " + Driver.currentGameYard.list[i-1].shipType);
 			if (Driver.currentGameYard.list[i-1].shipType.contains("Arastoz")) {
 				ArastozInGame = true;
-				break;
-			}
-		}
-
-		int ArastozCount = 0;
-		for (int i = 1; i <= Driver.currentGameYard.list.length && ArastozInGame; i++) {
-			if (Driver.currentGameYard.list[i-1].shipType.contains("Arastoz")) {
 				ArastozCount++;
 			}
+//			System.out.println("ArastozInGame: " + ArastozInGame);
+//			System.out.println("ArastozCount: " + ArastozCount);
 		}
 
 		if (ArastozInGame == true && ArastozCount > 1) {
@@ -182,7 +180,7 @@ public class PhaseCalculation {
 			System.out.println("|              PRE-IMPULSE PROCEDURE SHIP MODIFICATION MENU                |");
 			System.out.println("|==========================================================================|");
 	
-			ShipSetup.PrintCurrentThingsInGame("Ship Monster Other", "Speed");
+			ShipSetup.PrintCurrentThingsInGame("Ship Monster Other Torpedo Drone Shuttle Fighter", "Speed");
 						
 			System.out.println("|==========================================================================|");
 			System.out.println("|       Add Ship from [S]hipyard    [M]odify Speeds    [R]emove Ship       |");
@@ -505,7 +503,7 @@ public class PhaseCalculation {
 		if(location != -1) {
 			Driver.currentGameYard.removeShipFromShipyard(location + 1);
 		}else {
-			Starship torp = new Starship(Starship.Ship.TORPEDO, 32, "TORP");
+			Starship torp = new Starship(Starship.Ship.TORPEDO, 32, "TORP", "Torpedo");
 			Driver.currentGameYard.addShipToShipyard(torp);
 		}
 	}
@@ -523,77 +521,90 @@ public class PhaseCalculation {
 
 	// ADD DRONE METHOD - ON-THE-FLY
 	public static void AddDrone() {		
-		System.out.print("\nDrone Name : ");
+		System.out.print("\nDrone Name (12 char max) [RETURN to cancel]: ");
 		String droneName = keyboard.nextLine();
+		droneName = capFirstLetter(droneName);
 		
-		System.out.println("|==============================================================================|");
-		System.out.println("|                              DRONE TYPES: (FD1.0)                            |");
-		System.out.println("|------------------------------------------------------------------------------|");
-		System.out.println("|         Type     Speed    Endurance   Warhead     Damage     Space     Cost  |");
-		System.out.println("|                           (in turns)           (to destroy)                  |");
-		System.out.println("|  (0)     IS       12          1          8          3         1/2       0    |");
-		System.out.println("|  (1)     I         8          3         12          4          1        0    |");
-		System.out.println("|  (2)     II       12          2         12          4          1       1/2   |");
-		System.out.println("|  (3)     III      12         25         12          4          1        1    |");
-		System.out.println("|  (4)     IV        8          3         24          6          2        0    |");
-		System.out.println("|  (5)     I        12          2         24          6          2       1/2   |");
-		System.out.println("|==============================================================================|");
-		System.out.print("Drone Type [RETURN to cancel]: ");
-		int droneType = Driver.getNumber(0, 5);
-		if (droneType == 0) {
-			droneName = droneName + " (IS)";  
-		} else if (droneType == 1) {
-			droneName = droneName + " (I)";
-		} else if (droneType == 2) {
-			droneName = droneName + " (II)";
-		} else if (droneType == 3) {
-			droneName = droneName + " (III)";
-		} else if (droneType == 4) {
-			droneName = droneName + " (IV)";
-		} else if (droneType == 5) {
-			droneName = droneName + " (V)";
-		}
-		int droneSpeed = 0;
-
-		if (droneType > -1) {
-			if (droneType == 1 || droneType == 4) {
-				System.out.print("Drone Speed: 8");
-				droneSpeed = 8;
-			} else {
-				System.out.print("Drone Speed: 12");
-				droneSpeed = 12;
+		if (droneName.length() > 0) {
+			System.out.println("|==============================================================================|");
+			System.out.println("|                              DRONE TYPES: (FD1.0)                            |");
+			System.out.println("|------------------------------------------------------------------------------|");
+			System.out.println("|         Type     Speed    Endurance   Warhead     Damage     Space     Cost  |");
+			System.out.println("|                           (in turns)           (to destroy)                  |");
+			System.out.println("|  (0)     IS       12          1          8          3         1/2       0    |");
+			System.out.println("|  (1)     I         8          3         12          4          1        0    |");
+			System.out.println("|  (2)     II       12          2         12          4          1       1/2   |");
+			System.out.println("|  (3)     III      12         25         12          4          1        1    |");
+			System.out.println("|  (4)     IV        8          3         24          6          2        0    |");
+			System.out.println("|  (5)     I        12          2         24          6          2       1/2   |");
+			System.out.println("|==============================================================================|");
+			System.out.print("Drone Type [RETURN to cancel]: ");
+			int droneType = Driver.getNumber(0, 5);
+			if (droneType == 0) {
+				droneName = droneName + " (IS)";  
+			} else if (droneType == 1) {
+				droneName = droneName + " (I)";
+			} else if (droneType == 2) {
+				droneName = droneName + " (II)";
+			} else if (droneType == 3) {
+				droneName = droneName + " (III)";
+			} else if (droneType == 4) {
+				droneName = droneName + " (IV)";
+			} else if (droneType == 5) {
+				droneName = droneName + " (V)";
 			}
-			System.out.println();
-			Starship drone = new Starship(Starship.Ship.DRONE, droneSpeed, droneName);
-			Driver.currentGameYard.addShipToShipyard(drone);
+			int droneSpeed = 0;
+	
+			if (droneType > -1) {
+				if (droneType == 1 || droneType == 4) {
+					System.out.print("Drone Speed: 8");
+					droneSpeed = 8;
+				} else {
+					System.out.print("Drone Speed: 12");
+					droneSpeed = 12;
+				}
+				System.out.println();
+				Starship drone = new Starship(Starship.Ship.DRONE, droneSpeed, droneName, "Drone");
+				Driver.currentGameYard.addShipToShipyard(drone);
+			}
 		}
 	}
 
 	// ADD SHUTTLE METHOD - ON-THE-FLY	
 	public static void AddShuttle() {	
-		System.out.print("\nShuttle Name [RETURN to cancel]: ");
+		System.out.print("\nShuttle Name (16 char max) [RETURN to cancel]: ");
 		String shuttleName = keyboard.nextLine();
 
 		if (shuttleName.length() > 0) {
+			shuttleName = capFirstLetter(shuttleName);
 			System.out.print("Shuttle Speed: ");
 			int shuttleSpeed = Driver.getNumber(-1, 6);
 			
-			Starship shuttle = new Starship(Starship.Ship.SHUTTLE, shuttleSpeed, shuttleName);
+			Starship shuttle = new Starship(Starship.Ship.SHUTTLE, shuttleSpeed, shuttleName, "Shuttle");
 			Driver.currentGameYard.addShipToShipyard(shuttle);
 		}
 	}
 
 	// ADD FIGHTER METHOD - ON-THE-FLY
 	public static void AddFighter() {		
-		System.out.print("\nFighter Name [RETURN to cancel]: ");
+		System.out.print("\nFighter Name (16 char max) [RETURN to cancel]: ");
 		String fighterName = keyboard.nextLine();
 		
 		if (fighterName.length() > 0) {
+			fighterName = capFirstLetter(fighterName);
 			System.out.print("Fighter Speed: ");
 			int fighterSpeed = Driver.getNumber(-1, 32);
 			
-			Starship fighter = new Starship(Starship.Ship.FIGHTER, fighterSpeed, fighterName);
+			Starship fighter = new Starship(Starship.Ship.FIGHTER, fighterSpeed, fighterName, "Fighter");
 			Driver.currentGameYard.addShipToShipyard(fighter);
 		}
-	}	
+	}
+	
+	public static String capFirstLetter(String original) {
+	    if (original == null || original.length() == 0) {
+	        return original;
+	    }
+	    return original.substring(0, 1).toUpperCase() + original.substring(1);
+	}
+	
 }
