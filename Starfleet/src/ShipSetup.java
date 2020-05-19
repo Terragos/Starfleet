@@ -264,8 +264,9 @@ public class ShipSetup {
 		System.out.println();
 		
 		int printNum = 0;
+		
 		for (int i = 1; i <= Driver.currentGameYard.numShips; i++) {
-
+		
 			Starship ship = Driver.currentGameYard.list[i-1];
 			
 			String extraSpace = getExtraSpaces(i, 2);
@@ -278,7 +279,7 @@ public class ShipSetup {
 				if (ship.kindOfShip == Starship.Ship.STARSHIP) {
 					System.out.print(extraSpace + (++printNum) + ")  " + ship.name + extraTab);
 //					System.out.println("ship.kindOfShip: " + ship.kindOfShip);
-
+					
 					if (whatAspect1.contains("SPEED")) {
 						System.out.print("\t" + ship.speed);
 						if (ship.speed == 0) {
@@ -290,7 +291,7 @@ public class ShipSetup {
 					System.out.println();
 				}
 			}
-				
+			
 			if (whatToPrint.contains("MONSTER")) {
 				if (ship.kindOfShip == Starship.Ship.MONSTER) {
 					System.out.print(extraSpace + (++printNum) + ")  " + ship.name + extraTab);
@@ -303,11 +304,11 @@ public class ShipSetup {
 						}
 					} else if (whatAspect1.contains("HEALTH"))
 						System.out.print("\t" + ship.ssd[24].remaining);
-
+					
 					System.out.println();
 				}
 			}
-				
+			
 			if (whatToPrint.contains("OTHER")) {
 				if (ship.kindOfShip == Starship.Ship.PLANET) {
 					System.out.print(extraSpace + (++printNum) + ")  " + ship.name + extraTab);
@@ -317,11 +318,66 @@ public class ShipSetup {
 						System.out.print("\t" + ship.speed);
 					} else if (whatAspect1.contains("HEALTH"))
 						System.out.print("\t" + ship.ssd[24].remaining);
-
+					
 					System.out.println();
 				}
 			}
+			
+			if (whatToPrint.contains("TORPEDO")) {
+				if (ship.kindOfShip == Starship.Ship.TORPEDO) {
+					System.out.print(extraSpace + (++printNum) + ")  " + ship.name + extraTab);
+//					System.out.println("ship.kindOfShip: " + ship.kindOfShip);
+					
+					if (whatAspect1.contains("SPEED")) {
+						System.out.print("\t" + ship.speed);
+					}
+					
+					System.out.println();
+				}
+			}
+			
+			if (whatToPrint.contains("DRONE")) {
+				if (ship.kindOfShip == Starship.Ship.DRONE) {
+					System.out.print(extraSpace + (++printNum) + ")  " + ship.name + extraTab);
+//					System.out.println("ship.kindOfShip: " + ship.kindOfShip);
+					
+					if (whatAspect1.contains("SPEED")) {
+						System.out.print("\t" + ship.speed);
+					}
+					
+					System.out.println();
+				}
+			}
+			
+			if (whatToPrint.contains("SHUTTLE")) {
+				if (ship.kindOfShip == Starship.Ship.SHUTTLE) {
+					System.out.print(extraSpace + (++printNum) + ")  " + ship.name + extraTab);
+//					System.out.println("ship.kindOfShip: " + ship.kindOfShip);
+					
+					if (whatAspect1.contains("SPEED")) {
+						System.out.print("\t" + ship.speed);
+					}
+					
+					System.out.println();
+				}
+			}
+			
+			if (whatToPrint.contains("FIGHTER")) {
+				if (ship.kindOfShip == Starship.Ship.FIGHTER) {
+					System.out.print(extraSpace + (++printNum) + ")  " + ship.name + extraTab);
+//					System.out.println("ship.kindOfShip: " + ship.kindOfShip);
+					
+					if (whatAspect1.contains("SPEED")) {
+						System.out.print("\t" + ship.speed);
+					}
+					
+					System.out.println();
+				}
+			}
+			
+
 		}
+		
 		if (whatAspect1 == "") {
 			System.out.print("-------------------");
 		} else {
