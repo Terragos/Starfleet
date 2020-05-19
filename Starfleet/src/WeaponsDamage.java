@@ -19,14 +19,14 @@ public class WeaponsDamage {
 			int shipNumFiring = -5;
 	
 			shipNumFiring = ShipSetup.GetAdjustedInput(print, "SHIP", "");
-			System.out.println("shipNumFiring: " + shipNumFiring);
+//			System.out.println("shipNumFiring: " + shipNumFiring);
 			
 			if(shipNumFiring == -1) {
 				System.out.println();
 				PhaseCalculation.PrintImpulseHeader();
 				return;
 			}
-			System.out.println("Driver.currentGameYard.list[shipNumFiring].name: " + Driver.currentGameYard.list[shipNumFiring].name);
+//			System.out.println("Driver.currentGameYard.list[shipNumFiring].name: " + Driver.currentGameYard.list[shipNumFiring].name);
 			
 			currentShip = Driver.currentGameYard.list[shipNumFiring];
 	
@@ -221,7 +221,7 @@ public class WeaponsDamage {
 				
 				} else if(weaponInput.equalsIgnoreCase("R")) {
 					reset = true;
-//					break;
+					break;
 					
 				}
 				
