@@ -47,7 +47,7 @@ public class Driver {
 			System.out.println("|==========================================================================|");
 			System.out.println("|                             SFB MAIN MENU                                |");
 			System.out.println("|==========================================================================|");
-			System.out.println("|            [V]iew All Ships in the Current Game                          |");
+			System.out.println("|            [V]iew All Objects in the Current Game                        |");
 			System.out.println("|                                                                          |");
 			System.out.println("|            [I]mpulse Movement Procedure                                  |");
 			System.out.println("|            [W]eapon Damage Procedure                                     |");
@@ -85,7 +85,7 @@ public class Driver {
 				}
 				System.out.println();
 			} else if (userInput.equalsIgnoreCase("V")) {
-				ShipSetup.PrintCurrentThingsInGame("Ship Monster Other", "Speed");
+				ShipSetup.PrintCurrentThingsInGame("Ship Monster Other Torpedo Drone Shuttle Fighter", "Speed");
 			} else if (userInput.equalsIgnoreCase("W")) {
 				WeaponsDamage.WeaponsDam(-1);
 			} else if (userInput.equalsIgnoreCase("M")) {
@@ -196,8 +196,9 @@ public class Driver {
 	
 	
 	public static void RemoveShip(boolean print) {
+		System.out.println("Driver.currentGameYard.numShips: " + Driver.currentGameYard.numShips);
 		if (print == true) {
-			ShipSetup.PrintCurrentThingsInGame("Ship Monster Other", "");
+			ShipSetup.PrintCurrentThingsInGame("Ship Monster Other Torpedo Drone Shuttle Fighter", "");
 		}
 		System.out.println();
 		System.out.print("Remove which ship? [RETURN to cancel] ");
@@ -349,19 +350,22 @@ public class Driver {
 			int print = ShipSetup.PrintCurrentThingsInGame("SHIP", "");
 			System.out.print("\nWhich ship to modify SSB boxes? [RETURN to cancel] ");
 			int shipNum = ShipSetup.GetAdjustedInput(print, "SHIP", "");
-			System.out.print("Modify [S]ome or [A]ll SSD boxes for " + Driver.currentGameYard.list[shipNum].name + ": ");
-			String someOrAll = Driver.getInput("SA");
+			if (shipNum != -1) {
+				System.out.print("Modify [S]ome or [A]ll SSD boxes for " + Driver.currentGameYard.list[shipNum].name + ": ");
+				String someOrAll = Driver.getInput("SA");
 			
-			if (someOrAll.equalsIgnoreCase("A")) {
-				ChangeAllShipSSDSystems(shipNum);
+				if (someOrAll.equalsIgnoreCase("A")) {
+					ChangeAllShipSSDSystems(shipNum);
 				
-			} else if (someOrAll.equalsIgnoreCase("S")) {
-				ChangeSomeShipSSDSystems(shipNum);
+				} else if (someOrAll.equalsIgnoreCase("S")) {
+					ChangeSomeShipSSDSystems(shipNum);
 				
+				} else {
+					cont = false;
+				}
 			} else {
 				cont = false;
 			}
-				
 		}
 	}
 
@@ -656,7 +660,7 @@ public class Driver {
 				System.out.println("|    Reinforce all shields and eliminated before Specific Reinforcement           |");
 				System.out.println("|---------------------------------------------------------------------------------|");
 				System.out.println("|  SPECIFIC SHIELD REINFORCEMENT:                                                 |");
-				System.out.println("|    Energy supplied \"adds\" to the number of SSD boxes for a specific shield    |");
+				System.out.println("|    Energy supplied \"adds\" to the number of SSD boxes for a specific shield      |");
 				System.out.println("|---------------------------------------------------------------------------------|");
 				System.out.println("|  NOTE: A shield that is down cannot be reinforced specifically, but GSR would   |");
 				System.out.println("|    still block fire coming from that direction.                                 |");
@@ -666,7 +670,7 @@ public class Driver {
 				System.out.println("|                            HIGH ENERGY TURNS (C6.0)                             |");
 				System.out.println("|---------------------------------------------------------------------------------|");
 				System.out.println("|  - Cost = 5 * movement cost                                                     |");
-				System.out.println("|  - Defined as a \"snap turn\" to face any adjacent hex regardless of turn mode  |");
+				System.out.println("|  - Defined as a \"snap turn\" to face any adjacent hex regardless of turn mode    |");
 				System.out.println("|  - Does not affect acceleration                                                 |");
 				System.out.println("|  - Cannot be preformed on Impulse 1                                             |");
 				System.out.println("|  - Seeking weapons and fighters may perform 1 HET per turn, never breakdown     |");
@@ -817,7 +821,7 @@ public class Driver {
 //		if (Driver.TESTING) {
 			System.out.println("|                                                                                 |");
 			System.out.println("|  RANDOM SHIPS FOR TESTING:                                                      |");
-			System.out.println("|    101.  2 Federation, 2 Kligon, 2  Monsters                                    |");
+			System.out.println("|    101.  2 Federation, 2 Kligon, 2 Monsters                                     |");
 			System.out.println("|    102.  1 Federation, 1 Gorn, Civilian Freighter                               |");
 			System.out.println("|    103.  1 Federation, 1 Klingon, 1 Hydran                                      |");
 			System.out.println("|    104.  1 Romulan, 1 Tholian, Civilian Freighter                               |");
