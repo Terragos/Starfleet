@@ -12,6 +12,7 @@ public class PhaseCalculation {
 
 		//  START IMPULSE PROCEDURE
 	
+		boolean printAllImpulses = false;
 		Driver.numImpulses = 32;
 		
 		for(int i = 0; i < Driver.currentGameYard.numShips; i++) {	
@@ -31,7 +32,7 @@ public class PhaseCalculation {
 				}
 			} 
 
-			if (move > 0) {
+			if (move > 0 || printAllImpulses == true) {
 
 				if (i < 10) {
 					System.out.print("Impulse 0" + i + ":    ");
@@ -55,7 +56,7 @@ public class PhaseCalculation {
 
 				boolean cont3 = true;
 				while (cont3) {
-					String userInput = Driver.getInput("WTDSFRA");
+					String userInput = Driver.getInput("WTDSFRAI");
 					if (userInput.contentEquals("")) {
 						cont3 = false;
 					} else if (userInput.equalsIgnoreCase("W")) {
@@ -77,6 +78,8 @@ public class PhaseCalculation {
 						System.out.println();
 						Driver.RemoveShip(true);
 						PrintImpulseHeader();
+					} else if (userInput.equalsIgnoreCase("I")) {  					// Toggle ALL impulse or not
+						printAllImpulses = !printAllImpulses;
 					} else if (userInput.equalsIgnoreCase("A")) {  					// Add ship/monster
 						System.out.print("Add \"Add ship code\" here.");
 					} 
@@ -229,81 +232,177 @@ public class PhaseCalculation {
 		
 		System.out.println();
 		System.out.println("|===============================================================================================|");
-		System.out.println("|                             END OF TURN DAMAGE CONTROL REPAIR:                                |");
+		System.out.println("|                                DAMAGE CONTROL REPAIR COSTS:                                   |");
 		System.out.println("|===============================================================================================|");
-		System.out.println("| SSD  System              Repair  | SSD  System         Repair  | SSD  System          Repair  |");
-		System.out.println("|  ##  Name                  Cost  |  ##  Name             Cost  |  ##  Name              Cost  |");
+		System.out.println("|   System                Repair   |   System            Repair  |   System            Repair   |");
+		System.out.println("|   Name                    Cost   |   Name                Cost  |   Name                Cost   |");
 		System.out.println("|----------------------------------+-----------------------------+------------------------------|");
-		System.out.println("|  17. ADD                      3  |  17. Hellbore           15  |  19. Repair Box (Cargo)   6  |");
-		System.out.println("|  11. APR                      4  |  21. Hull, Aft           1  |  20. Repair Box (F Hull)  6  |");
-		System.out.println("|   4. Aux Control              6  |  20. Hull, Front         1  |  21. Repair Box (A Hull)  6  |");
-		System.out.println("|  12. Battery                  2  |  10. Impulse             5  |   2. Security             6  |");
-		System.out.println("|   1. Bridge                   6  |  18. Lab                 5  |  23. Sensor              10  |");
-		System.out.println("|  19. Cargo                    1  |  19. Mine Rack (Cargo)   4  |  24. Scanner             10  |");
-		System.out.println("|  22. Damage Control (per pt)  3  |  16. Mine Rack (Shuttle) 4  |  --  Shield               2  |");
-		System.out.println("|   2. Displacement Device     25  |  17. PA Panel            5  |  16. Shuttle Bay          2  |");
-		System.out.println("|   6. Disruptor: range 40     10  |   5. Phaser-I            5  |   6. Stasis Field Gen    20  |");
-		System.out.println("|   6. Disruptor: range 30      8  |   5. Phaser-II           4  |  ??  Special Sensors     15  |");
-		System.out.println("|   6. Disruptor: range 22      7  |   5. Phaser-III          2  |  14. Tractor Beam         3  |");
-		System.out.println("|   6. Disruptor: range 15      5  |   5. Phaser-IV          10  |   6. Tractor-Repulsor     5  |");
-		System.out.println("|   6. Disruptor: range 10      4  |   6. Phaser-G            6  |  13. Transporter          3  |");
-		System.out.println("|  17. Drone Rack               3  |   6. Photon Torpedo      8  |  ??  Ubitron Interface    4  |");
-		System.out.println("|   3. Emergency Bridge         6  |   6. Plasma-F            5  |   7. Warp Engine, Center 10  |");
-		System.out.println("|  17. Expanding Sphere Gen    15  |   6. Plasma-G           10  |   8. Warp Engine, Left   10  |");
-		System.out.println("|  --  Excess Damage          N/A  |   6. Plasma-R           20  |   9. Warp Engine, Right  10  |");
-		System.out.println("|   2. Flag Bridge              6  |   6. Plasma-S           15  |   7. Warp Reactor         6  |");
-		System.out.println("|   6. Fusion Beam              6  |  17. Plasmatic Pulsar   15  |   2. Web                  6  |");
-		System.out.println("|                                  |  15. Probe               3  |  ??  Web Caster          15  |");
+		System.out.println("|   ADD                        3   |   Hellbore             15   |   Repair Box             6   |");
+		System.out.println("|   APR                        4   |   Hull (Front/Aft)      1   |   Security               6   |");
+		System.out.println("|   Aux Control                6   |   Impulse               5   |   Sensor                10   |");
+		System.out.println("|   Battery                    2   |   Lab                   5   |   Scanner               10   |");
+		System.out.println("|   Bridge                     6   |   Mine Rack             4   |   Shield                 2   |");
+		System.out.println("|   Cargo                      1   |   PA Panel              5   |   Shuttle Bay            2   |");
+		System.out.println("|   Damage Control (per pt)    3   |   Phaser-I              5   |   Stasis Field Gen      20   |");
+		System.out.println("|   Displacement Device       25   |         -II             4   |   Special Sensors       15   |");
+		System.out.println("|   Disruptor: range 40       10   |         -III            2   |   Tractor Beam           3   |");
+		System.out.println("|              range 30        8   |         -IV            10   |   Tractor-Repulsor       5   |");
+		System.out.println("|              range 22        7   |   Phaser-G              6   |   Transporter            3   |");
+		System.out.println("|              range 15        5   |   Photon Torpedo        8   |   Ubitron Interface      4   |");
+		System.out.println("|              range 10        4   |   Plasma-F              5   |   Warp Engine           10   |");
+		System.out.println("|   Drone Rack                 3   |         -G             10   |     (Left/Center/Right)      |");
+		System.out.println("|   Emergency Bridge           6   |         -R             20   |   Warp Reactor           6   |");
+		System.out.println("|   Expanding Sphere Gen      15   |         -S             15   |   Web Generator          6   |");
+		System.out.println("|   Excess Damage            N/A   |   Plasmatic Pulsar     15   |   Web Caster            15   |");
+		System.out.println("|   Flag Bridge                6   |   Probe                 3   |                              |");
+		System.out.println("|   Fusion Beam                6   |                             |                              |");
+		System.out.println("|                                  |                             |                              |");
 		System.out.println("|===============================================================================================|");
 		System.out.println();
-
-		int print = ShipSetup.PrintCurrentThingsInGame("SHIP", "");
-		System.out.println("print: " + print);
-		System.out.println();
-		
-		int shipNumToRepair = -1;
 
 		while (cont) {
+			int print = ShipSetup.PrintCurrentThingsInGame("SHIP", "");
+//			System.out.println("print: " + print);
+//			System.out.println();
+			
+			int shipNumToRepair = -1;
+			
 			System.out.print("Which ship to repair damage? [RETURN for cancel] ");
 			shipNumToRepair = ShipSetup.GetAdjustedInput(print, "SHIP", "");
-			System.out.println("shipNumToRepair: " + shipNumToRepair);
+//			System.out.println("shipNumToRepair: " + shipNumToRepair);
 
-			if (shipNumToRepair > 0) {
+			if (shipNumToRepair >= 0) {
+				int damagedSystems = 0;
+
+				for (int part = 0; part <=24; part++) {
+					if (Driver.currentGameYard.list[shipNumToRepair].ssd[part].numOfThisPart > Driver.currentGameYard.list[shipNumToRepair].ssd[part].remaining) {
+						damagedSystems++;
+					}
+				}
+				
 				int quantity = 1;
+				if (damagedSystems == 0) {
+					System.out.println();
+					System.out.println(Driver.currentGameYard.list[shipNumToRepair].name + " has NO damaged systems.");
+					System.out.println();
+					quantity = -1;
+				}
+
+				if (damagedSystems > 0) {
+					System.out.println();
+					System.out.println(Driver.currentGameYard.list[shipNumToRepair].name + " has these damaged systems (Remaining/Max):");
+					for (int part = 0; part <=23; part++) {
+						int lineLength = 0;
+						if (Driver.currentGameYard.list[shipNumToRepair].ssd[part].numOfThisPart > Driver.currentGameYard.list[shipNumToRepair].ssd[part].remaining) {
+							String extraSpaces = ShipSetup.getExtraSpaces(part+1, 2);
+							System.out.print("   " + extraSpaces +  (part+1) + ". " + Driver.currentGameYard.list[shipNumToRepair].ssd[part].name + " (" + Driver.currentGameYard.list[shipNumToRepair].ssd[part].remaining + "/" + Driver.currentGameYard.list[shipNumToRepair].ssd[part].numOfThisPart + ")");
+							
+							lineLength = FindLength(Driver.currentGameYard.list[shipNumToRepair].ssd[part].name, Driver.currentGameYard.list[shipNumToRepair].ssd[part].numOfThisPart, Driver.currentGameYard.list[shipNumToRepair].ssd[part].remaining);
+							String tabs = "";
+							if (lineLength <= 16) {
+								tabs = "\t\t";
+							} else {
+								tabs = "\t";
+							}
+							
+							if (part+1 == 2) {
+								System.out.println(tabs + "<-- Security, Wed Generator, Displacement Device");
+							} else if (part+1 == 6) {
+								System.out.println(tabs + "<-- Disruptor Bolt, Plasma Torpedo, Tractor-Repulsor Beam, Fusion Beam, SFG");
+							} else if (part+1 == 16) {
+								System.out.println(tabs + "<-- Fighter, Mine Rack, Andromedan Hanger");
+							} else if (part+1 == 17) {
+								System.out.println(tabs + "<-- ADD, Hellbore, ESG, Power Absorbers, Plasmatic Pulsar, Web Caster");
+							} else if (part+1 == 19) {
+								System.out.println(tabs + "<-- Repair, Mine Rack");
+							} else if (part+1 == 20) {
+								System.out.println(tabs + "<-- Repair");
+							} else if (part+1 == 21) {
+								System.out.println(tabs + "<-- Repair");
+							} else {
+								System.out.println();
+							}
+							damagedSystems++;
+						}
+					}
+				}
+				
 				while (quantity > 0) {
-					System.out.print(Driver.currentGameYard.list[shipNumToRepair].name + ": Which system to repair? ");
+					System.out.print(Driver.currentGameYard.list[shipNumToRepair].name + ": Which system to repair? [RETURN to cancel] ");
 					int systemToRepair = Driver.getNumber(1,24);
 					
-					if (systemToRepair >= 1 && systemToRepair <= 24) {
-						System.out.print(Driver.currentGameYard.list[shipNumToRepair].name + ": How many " + Driver.currentGameYard.list[shipNumToRepair].ssd[systemToRepair-1].name + " systems to repair? ");
-						quantity = Driver.getNumberNoCancel(0,10);
-						
-						if (quantity > 0) {
-							Driver.currentGameYard.list[shipNumToRepair].ssd[systemToRepair-1].remaining = Driver.currentGameYard.list[shipNumToRepair].ssd[systemToRepair-1].remaining + quantity;
-							System.out.println(Driver.currentGameYard.list[shipNumToRepair].name + ": " + Driver.currentGameYard.list[shipNumToRepair].ssd[systemToRepair-1].name + " now at " + Driver.currentGameYard.list[shipNumToRepair].ssd[systemToRepair-1].remaining + " boxes");
+					if (systemToRepair > 0) {
+						if (Driver.currentGameYard.list[shipNumToRepair].ssd[systemToRepair-1].numOfThisPart == Driver.currentGameYard.list[shipNumToRepair].ssd[systemToRepair-1].remaining) {
+							System.out.println("You CANNOT repair system beyond their original max number of SSD boxes.");
 							System.out.println();
+						} else if (systemToRepair >= 1 && systemToRepair <= 24) {
+							System.out.print(Driver.currentGameYard.list[shipNumToRepair].name + ": How many " + Driver.currentGameYard.list[shipNumToRepair].ssd[systemToRepair-1].name.toUpperCase() + " systems to repair? ");
+							quantity = Driver.getNumberNoCancel(0,10);
+							
+							if (quantity > 0) {
+								if (Driver.currentGameYard.list[shipNumToRepair].ssd[systemToRepair-1].remaining + quantity > Driver.currentGameYard.list[shipNumToRepair].ssd[systemToRepair-1].numOfThisPart) {
+									System.out.println("You CANNOT repair system beyond their original max number of SSD boxes.");
+									System.out.println();
+								} else {
+									Driver.currentGameYard.list[shipNumToRepair].ssd[systemToRepair-1].remaining = Driver.currentGameYard.list[shipNumToRepair].ssd[systemToRepair-1].remaining + quantity;
+									System.out.println(Driver.currentGameYard.list[shipNumToRepair].name + ": " + Driver.currentGameYard.list[shipNumToRepair].ssd[systemToRepair-1].name + " now at " + Driver.currentGameYard.list[shipNumToRepair].ssd[systemToRepair-1].remaining + " boxes");
+									System.out.println();
+								}
+							} else {
+								System.out.println();
+								quantity = -1;
+							}
+							
+							if(Driver.TESTING) {
+								System.out.println();
+								for (int i = 0; i <= 24; i++) {
+									System.out.print(Driver.currentGameYard.list[shipNumToRepair].ssd[i].name.charAt(0) + ":" + Driver.currentGameYard.list[shipNumToRepair].ssd[i].remaining + " ");
+								}
+								System.out.println();
+							}
 						} else {
 							System.out.println();
 							quantity = -1;
 						}
-						
-						if(Driver.TESTING) {
-							System.out.println();
-							for (int i = 0; i <= 24; i++) {
-								System.out.print(Driver.currentGameYard.list[shipNumToRepair].ssd[i].name.charAt(0) + ":" + Driver.currentGameYard.list[shipNumToRepair].ssd[i].remaining + " ");
-							}
-							System.out.println();
-						}
 					} else {
 						System.out.println();
-						quantity = -1;
+						break;
 					}
+					
 				}
 			}
 			if (shipNumToRepair == -1) {
 				cont = false;
 			}
 		}
+	}
+
+	public static int FindLength(String name, int max, int remain) {
+		int lineLength = 0;
+		int digitCountMax = 0;
+		int digitCountRemain = 0;
+		
+		if (max == 0) {
+			digitCountMax++;
+		}
+		
+		if (remain == 0) {
+			digitCountRemain++;
+		}
+		
+        while(max != 0) {
+        	max /= 10;
+        	digitCountMax++;
+        	}
+
+        while(remain != 0) {
+        	remain /= 10;
+        	digitCountRemain++;
+        	}
+
+        lineLength = name.length() + digitCountMax + digitCountRemain + 4;  //  +4 is for _(/)
+	
+		return lineLength;
 	}
 	
 	public static void PrintImpulseHeader() {
@@ -368,7 +467,7 @@ public class PhaseCalculation {
 		for (int i = 1; i <= ((17 + shipTotal)-29)/2 - 2; i++) {     //  CENTERS TEXT
 			System.out.print(" ");
 		}
-		System.out.print("[W][T][D][S][F][R][A]");		
+		System.out.print("[W][T][D][S][F][R][A][I]");		
 
 		System.out.println();
 		System.out.print("=============");
