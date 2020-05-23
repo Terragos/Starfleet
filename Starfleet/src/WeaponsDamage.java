@@ -67,7 +67,7 @@ public class WeaponsDamage {
 				System.out.print("Weapon:   ");
 	
 				String weaponInput = "";
-				while (weaponInput.length() == 0) {                           //  Do NOT accept RETURN as a valid answer
+				while (weaponInput.length() == 0) {								//  Do NOT accept RETURN as a valid answer
 					weaponInput = Driver.getInput("1234PLFHDBTQIRSNOM");
 				}
 				
@@ -80,12 +80,20 @@ public class WeaponsDamage {
 					System.out.print("Photon Type [S]tandard [P]roximity [O]verload:   ");
 					String weaponTypeInput = Driver.getInput("SPO");
 					String options = "SPO"; 
-					typeInput = options.indexOf(weaponTypeInput) + 1;            // Getting number: S=1, P=2, O=3
+					typeInput = options.indexOf(weaponTypeInput) + 1;			// Getting number: S=1, P=2, O=3
 					
 					if (typeInput == 3) {
-						System.out.print("Total Energy [5-8]:   ");          //  If type=3 then get energy allocated value
+						System.out.print("Total Energy [5-8]:   ");				//  If type=3 then get energy allocated value
 						photonEnergyInput = Driver.getNumberNoCancel(5, 8);
 					} 
+				}
+					
+				//  Asking what type of Disruptor Bolt			
+				if (weaponInput.equalsIgnoreCase("B")) {
+					System.out.print("Photon Type [S]tandard [O]verload [D]ERFACS [U]IM O[V]erload/UIM:   ");
+					String weaponTypeInput = Driver.getInput("SODUV");
+					String options = "SODUV"; 
+					typeInput = options.indexOf(weaponTypeInput) + 1;			// Getting number: S=1, O=2
 				}
 					
 				//  Asking what type of Plasma Torpedo
@@ -93,7 +101,7 @@ public class WeaponsDamage {
 					System.out.print("Plasma Type [R] [2]G [G] [F]:   ");
 					String weaponTypeInput = Driver.getInput("R2GF");
 					String options = "R2GF"; 
-					typeInput = options.indexOf(weaponTypeInput) + 1;           // Getting number: R=1, 2=2, G=3, F=4 
+					typeInput = options.indexOf(weaponTypeInput) + 1;			// Getting number: R=1, 2=2, G=3, F=4 
 				}
 	
 				//  Asking what type of Fusion Beam	
@@ -101,7 +109,7 @@ public class WeaponsDamage {
 					System.out.print("Type [S]tandard [O]verloaded [X]suicide:   ");
 					String weaponTypeInput = Driver.getInput("SOX");
 					String options = "SOX"; 
-					typeInput = options.indexOf(weaponTypeInput) + 1;         // Getting number: O=1, X=2 
+					typeInput = options.indexOf(weaponTypeInput) + 1;			// Getting number: O=1, X=2 
 				}
 					
 				//  Asking what type of Hellbore
@@ -109,7 +117,7 @@ public class WeaponsDamage {
 					System.out.print("Type [S]tandard [O]verloaded [D]irect-Fire:   ");
 					String weaponTypeInput = Driver.getInput("SOD");
 					String options = "SOD"; 
-					typeInput = options.indexOf(weaponTypeInput) + 1;           // Getting number: S=1, O=2, D=3 
+					typeInput = options.indexOf(weaponTypeInput) + 1;			// Getting number: S=1, O=2, D=3 
 				}
 				
 				int distanceInput = 0;
@@ -139,31 +147,31 @@ public class WeaponsDamage {
 				
 				if (distanceInput >= 0 && numberInput > 0) {
 					if (weaponInput.equalsIgnoreCase("1")) {
-						System.out.print("Phaser-I\t");
+						System.out.println("Phaser-I");
 						totalDamage = type1Phaser(numberInput, distanceInput, totalDamage);
 						
 					} else if(weaponInput.equalsIgnoreCase("2")) {
-						System.out.print("Phaser-II\t");
+						System.out.println("Phaser-II");
 						totalDamage = type2Phaser(numberInput, distanceInput, totalDamage);
 						
 					} else if(weaponInput.equalsIgnoreCase("3")) {
-						System.out.print("Phaser-III\t");
+						System.out.println("Phaser-III");
 						totalDamage = type3Phaser(numberInput, distanceInput, totalDamage);
 						
 					} else if(weaponInput.equalsIgnoreCase("4")) {
-						System.out.print("Phaser-IV\t");
+						System.out.println("Phaser-IV");
 						totalDamage = type4Phaser(numberInput, distanceInput, totalDamage);
 						
 					} else if(weaponInput.equalsIgnoreCase("P")) {
-						System.out.print("Photon Torpedo\t");
+						System.out.print("Photon Torpedo:  ");
 						totalDamage = photonTorpedo(typeInput, photonEnergyInput, numberInput, distanceInput, totalDamage);
 						
 					} else if(weaponInput.equalsIgnoreCase("L")) {
-						System.out.print("Plasma Torpedo\t");
+						System.out.println("Plasma Torpedo");
 						totalDamage = plasmaTorpedo(typeInput, numberInput, distanceInput, totalDamage);
 						
 					} else if(weaponInput.equalsIgnoreCase("F") && typeInput == 1) {
-						System.out.print("Fusion Beam\t");
+						System.out.println("Fusion Beam");
 						totalDamage = fusionBeam(numberInput, distanceInput, totalDamage);
 						
 					} else if(weaponInput.equalsIgnoreCase("F") && typeInput > 1) {
@@ -171,27 +179,27 @@ public class WeaponsDamage {
 						totalDamage = fusionBeamOverloaded(typeInput, numberInput, distanceInput, totalDamage);
 						
 					} else if(weaponInput.equalsIgnoreCase("B")) {
-						System.out.print("Disruptor Bolt\t");
-						totalDamage = disruptorBolt(numberInput, distanceInput, totalDamage);
+						System.out.print("Disruptor Bolt:  ");
+						totalDamage = disruptorBolt(typeInput, numberInput, distanceInput, totalDamage);
 						
 					} else if(weaponInput.equalsIgnoreCase("T")) {
-						System.out.print("Tractor-Repulsor Beam\t");
+						System.out.println("Tractor-Repulsor Beam");
 						totalDamage = tractorRepulsorBeam(numberInput, distanceInput, totalDamage);
 						
 					} else if(weaponInput.equalsIgnoreCase("H")) {
-						System.out.print("Hellbore\t");
+						System.out.print("Hellbore:  ");
 						totalDamage = hellbore(typeInput, numberInput, distanceInput, totalDamage);
 						
 					} else if(weaponInput.equalsIgnoreCase("S")) {
-						System.out.print("Suicide Shuttle\t");
+						System.out.println("Suicide Shuttle:  ");
 						totalDamage = adminSuicideShuttle(numberInput, totalDamage);
 						
 					} else if(weaponInput.equalsIgnoreCase("O")) {
-						System.out.print("Probe\t");
+						System.out.print("Probe:  ");
 						totalDamage = probe(numberInput, distanceInput, totalDamage);
 						
 					} else if(weaponInput.equalsIgnoreCase("N")) {
-						System.out.print("Drone\t");
+						System.out.println("Drone:  ");
 						totalDamage = drone(numberInput, totalDamage);
 						
 					}
@@ -261,7 +269,10 @@ public class WeaponsDamage {
 			int damage = intPhaser1[die][dist];
 			total += damage;
 		}
+		
+		System.out.println();
 		System.out.print("Volley Damage: " + (total-startTotal));
+		
 		return total;
 	}
 	
@@ -291,7 +302,10 @@ public class WeaponsDamage {
 			int damage = intPhaser2[die][dist];
 			total += damage;
 		}
+		
+		System.out.println();
 		System.out.print("Volley Damage: " + (total-startTotal));
+		
 		return total;
 	}
 	
@@ -317,7 +331,10 @@ public class WeaponsDamage {
 			int damage = intPhaser3[die][dist];
 			total += damage;
 		}
+		
+		System.out.println();
 		System.out.print("Volley Damage: " + (total-startTotal));
+		
 		return total;
 	}
 	
@@ -351,7 +368,10 @@ public class WeaponsDamage {
 			int damage = intPhaser4[die][dist];
 			total += damage;
 		}
+		
+		System.out.println();
 		System.out.print("Volley Damage: " + (total-startTotal));
+		
 		return total;
 	}
 	
@@ -362,12 +382,6 @@ public class WeaponsDamage {
 							 {0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 4, 4, 4, 3, 0},   //  Proximity (int type = 2) 
 							 {6, 6, 5, 4, 4, 3, 3, 3, 3, 0, 0, 0, 0, 0, 0}};  //  Overloaded (int type = 3)
 
-//		System.out.println("type: " + type);
-//		System.out.println("energy: " + energy);
-//		System.out.println("num: " + num);
-//		System.out.println("dist: " + dist);
-//		System.out.println("total: " + total);
-		
 		int photonDamage = 0;
 		if (type == 1) {
 			photonDamage = 8;
@@ -375,6 +389,12 @@ public class WeaponsDamage {
 			photonDamage = 4;
 		} else {
 			photonDamage = energy * 2;
+		}
+
+		if (Driver.TESTING) {
+			System.out.println("type: " + type);
+			System.out.println("energy: " + energy);
+			System.out.println("photonDamage: " + photonDamage);
 		}
 		
 		if (dist >=13 && dist <=30) {
@@ -388,21 +408,24 @@ public class WeaponsDamage {
 		for(int i = 0; i < num; i++) {
 			int damage = 0;
 			int die = DamageAllocation.rollDice(1,6);
-//			System.out.println("die: " + die + "\tintPhoton[type][dist]: " + intPhoton[type][dist]);
 			if (die <= intPhoton[type][dist]) {
+				System.out.print("HIT!  ");
 				damage = damage + photonDamage;
 				total = total + damage;
 			} else {
+				System.out.print("Miss  ");
 			}
 		}
+		System.out.println();
 
 		if (type == 3 && dist <= 1) {
 			feedbackDamage = num * (energy - 4);
-			System.out.println();
-			System.out.println("Feedback Damage: " + feedbackDamage);
-			System.out.println();
+			System.out.println("---------------------------------------------------------");
+			System.out.println("Feedback Damage: " + feedbackDamage + "  (On facing shield of firing ship)");
+			System.out.println("---------------------------------------------------------");
 		}
 		
+		System.out.println();
 		System.out.print("Volley Damage: " + (total-startTotal));
 		
 		return total;
@@ -428,11 +451,14 @@ public class WeaponsDamage {
 		}
 		if (dist <= 1) {
 			feedbackDamage = total/4;
-			System.out.println("");
-			System.out.println("Feedback Damage: " + feedbackDamage);
-			System.out.println("");
+			System.out.println("---------------------------------------------------------");
+			System.out.println("Feedback Damage: " + feedbackDamage + "  (On facing shield of firing ship)");
+			System.out.println("---------------------------------------------------------");
 		}
+		
+		System.out.println();
 		System.out.print("Volley Damage: " + (total-startTotal));
+		
 		return total;
 	}
 	
@@ -461,7 +487,10 @@ public class WeaponsDamage {
 			int damage = intFusion[die][dist];
 			total = total + damage;
 		}
+		
+		System.out.println();
 		System.out.print("Volley Damage: " + (total-startTotal));
+		
 		return total;
 	}
 	
@@ -491,45 +520,77 @@ public class WeaponsDamage {
 			if (num > 1) {
 				plural = "s";
 			}
-			System.out.println("");
+			System.out.println("---------------------------------------------------------");
 			System.out.println(num + " Fusion Beam" + plural +" destroyed AND " + num + " point" + plural + " internal damage");
-			System.out.println("");
+			System.out.println("---------------------------------------------------------");
 		}
 		
+		System.out.println();
 		System.out.print("Volley Damage: " + (total-startTotal));
+
 		return total;
 	}
 	
 	//  DISRUPTOR BOLT
-	public static int disruptorBolt(int num, int dist, int total) {
-		int intDisruptor[][] = {{0, 1, 2, 3, 4, 9,16,31,51},   //  distance
-				  			    {6, 5, 5, 4, 3, 2, 1, 1, 0},   //  die roll 1
-				  			    {6, 5, 4, 4, 3, 2, 1, 0, 0},   //  die roll 2
-				  			    {6, 4, 4, 4, 1, 1, 0, 0, 0},   //  die roll 3
-				  			    {5, 4, 4, 3, 1, 0, 0, 0, 0},   //  die roll 4
-				  			    {5, 4, 3, 3, 0, 0, 0, 0, 0},   //  die roll 5
-				  			    {5, 3, 3, 3, 0, 0, 0, 0, 0}};  //  die roll 6
-		if (dist >=6 && dist <=8) {
-			dist = 6;
-		} else if (dist >= 9 && dist <= 15) {
-			dist = 7;			
-		} else if (dist >= 16 && dist <= 25) {
-			dist = 8;			
-		} else if (dist >= 26 && dist <= 50) {
-			dist = 9;			
-		} else if (dist >= 51 && dist <= 75) {
-			dist = 10;			
-		} else if (dist >= 76) {
-			dist = 11;			
+	public static int disruptorBolt(int type, int num, int dist, int total) {
+		int intDisruptor[][] = {{0, 1, 2, 3, 4, 5, 6, 7, 8, 9,16,23,31,41},   //  distance
+				  			    {0, 5, 5, 4, 4, 4, 4, 4, 4, 4, 3, 2, 2, 0},   //  Standard (type = 1)
+				  			    {6, 5, 5, 4, 4, 4, 4, 4, 4, 0, 0, 0, 0, 0},   //  Overloaded (type = 2)
+				  			    {0, 5, 5, 4, 4, 4, 4, 4, 4, 4, 3, 3, 2, 0},   //  DERFACS (type = 3)
+				  			    {0, 5, 5, 4, 4, 4, 4, 4, 4, 4, 4, 2, 2, 0},   //  UIM (type = 4)
+				  			    {6, 5, 5, 5, 5, 5, 5, 5, 5, 0, 0, 0, 0, 0}};  //  Overloaded/UIM (type = 5)
+		
+		int intDisruptorDamage[][] = {{ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9,16,23,31,41},   //  distance
+									  { 0, 5, 4, 4, 4, 3, 3, 3, 3, 3, 2, 2, 1, 0},   //  Standard (type = 1)
+									  {10,10, 8, 8, 8, 6, 6, 6, 6, 0, 0, 0, 0, 0}};  //  Overloaded (type = 2)
+		
+		int damageType = 1;
+		if (type == 2 || type == 5) {
+			damageType = 2;
 		}
-		int startTotal = total;
-		for(int i = 0; i < num; i++) {
-			int die = DamageAllocation.rollDice(1,6);
-			int damage = intDisruptor[die][dist];
-			total = total + damage;
+		if (Driver.TESTING) {
+			System.out.println("type: " + type);
+			System.out.println("damageType: " + damageType);
 		}
 		
+		if (dist >=9 && dist <=15) {
+			dist = 9;
+		} else if (dist >= 16 && dist <= 22) {
+			dist = 10;
+		} else if (dist >= 23 && dist <= 30) {
+			dist = 11;
+		} else if (dist >= 31 && dist <= 40) {
+			dist = 12;
+		} else if (dist >= 41) {
+			dist = 13;
+		}
+		
+		int feedbackDamage = 0;
+		int startTotal = total;
+		for(int i = 0; i < num; i++) {
+			int damage = 0;
+			int die = DamageAllocation.rollDice(1,6);
+//			System.out.println("die: " + die + "\tintPhoton[type][dist]: " + intPhoton[type][dist]);
+			if (die <= intDisruptor[type][dist]) {
+				damage = damage + intDisruptorDamage[damageType][dist];
+				System.out.print("HIT!  ");
+				total = total + damage;
+			} else {
+				System.out.print("Miss  ");
+			}
+		}
+		System.out.println();
+		
+		if (damageType == 2 && dist == 0 && total > 0) {
+			feedbackDamage = num * 2;
+			System.out.println("---------------------------------------------------------");
+			System.out.println("Feedback Damage: " + feedbackDamage + "  (On facing shield of firing ship)");
+			System.out.println("---------------------------------------------------------");
+		}
+		
+		System.out.println();
 		System.out.print("Volley Damage: " + (total-startTotal));
+		
 		return total;
 	}
 	
@@ -556,7 +617,10 @@ public class WeaponsDamage {
 //			System.out.println("die: " + die + "dist: " + dist + "\tintTracRep[die][dist]: " + intTracRep[die][dist]);
 			total = total + damage;
 		}
+
+		System.out.println();
 		System.out.print("Volley Damage: " + (total-startTotal));
+		
 		return total;
 	}
 	
@@ -582,33 +646,46 @@ public class WeaponsDamage {
 			int die = DamageAllocation.rollDice(1,11) + 1;
 //			System.out.println("Die roll: " + die);
 			if (die <= hellbore[4][dist]) {
+				System.out.print("HIT!  ");
 				int damage = hellbore[type][dist];
 //				System.out.println("Damage: " + hellbore[type][dist]);
 				total = total + damage;
+			} else {
+				System.out.print("Miss  ");
 			}
 		}
 		
-		if (type >= 1 && type <= 2) {
+		if (type == 1 || type == 2) {
 			System.out.println();
-			System.out.println("Subtract GSR from total Damage done,");
-			System.out.println("then apply 1/2 to weakest shield, 1/2 distributed equally to other shields.");
+			System.out.println("---------------------------------------------------------------------");
+			System.out.println("Subtract GSR from total Damage done, then apply 1/2 damage to");
+			System.out.println("    the weakest shield, and 1/2 distributed equally to other shields.");
+			System.out.println("When calculating weakest shield include Specific Shield Reinforcement");
+			System.out.println("---------------------------------------------------------------------");
 		} else if (type == 3) {
 			System.out.println();
+			System.out.println("---------------------------------------------------------------------");
 			System.out.println("All damage is applied to facing shield (instead of distributed).");
+			System.out.println("---------------------------------------------------------------------");
 		}
 		if (type == 2 && dist == 0) {
-			System.out.println("Attacking ship takes 1 damage to each shield.");
+			System.out.println("Attacking ship takes 1 damage point to each shield.");
+			System.out.println("---------------------------------------------------------------------");
 		}
+		
 		System.out.println();
 		System.out.print("Volley Damage: " + (total-startTotal));
+		
 		return total;
 	}
 	
 	public static int adminSuicideShuttle(int num, int total) {
 		int startTotal = total;
 		total = total + (num * 18);
+		
 		System.out.println();
 		System.out.print("Volley Damage: " + (total - startTotal));
+		
 		return total;
 	}
 	
@@ -616,7 +693,7 @@ public class WeaponsDamage {
 		int startTotal = total;
 		int droneDamage = 0;
 		
-		System.out.println("Drone Types: 0 = IS, 1 = I, 2 = II, 3 = III, 4 = IV, 5 = IV");
+		System.out.println("Drone Types: 0 = IS, 1 = I, 2 = II, 3 = III, 4 = IV, 5 = IV    [RETURN] to cancel");
 		
 		for (int i = 1; i <= num; i++) {
 			System.out.print("Drone Type : ");
@@ -625,19 +702,26 @@ public class WeaponsDamage {
 			if (droneType != -1) {
 				if (droneType == 0) {
 //					System.out.println("Drone type 0");
-					droneDamage = droneDamage + 8;
+					droneDamage = 8;
 				} else if (droneType >= 1 && droneType <= 3) {
 //					System.out.println("Drone type 1/2/3");
-					droneDamage = droneDamage + 12;
+					droneDamage = 12;
 				} else if (droneType == 4 || droneType == 5) {
 //					System.out.println("Drone type 4/5");
-					droneDamage = droneDamage + 24;
+					droneDamage = 24;
 				}
+//				System.out.println("total before: " + total);
+//				System.out.println("droneDamage: " + droneDamage);
 				total = total + droneDamage;
+//				System.out.println("total after: " + total);
+			} else {
+				return 0;
 			}
 		}
+		
 		System.out.println();
 		System.out.print("Volley Damage: " + (total - startTotal));
+		
 		return total;
 	}
 
@@ -649,11 +733,17 @@ public class WeaponsDamage {
 		for (int i = 1; i <= num; i++) {
 			die = DamageAllocation.rollDice(1, 6);
 			if (die >= dist) {
+				System.out.print("HIT!  ");				
 				total = total + 8;
+			} else {
+				System.out.print("Miss  ");
 			}
 		}
 		System.out.println();
+		
+		System.out.println();
 		System.out.print("Volley Damage: " + (total - startTotal));
+		
 		return total;
 	}
 
