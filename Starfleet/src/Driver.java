@@ -3,7 +3,7 @@ import java.math.*;
 
 public class Driver {
 
-	public final static boolean TESTING = false;
+	public static boolean TESTING = false;
 	public static int labResearchAquired = 0;
 	public static int labResearchRequired = 0;
 	public static int MonsterScenario = 0;
@@ -64,11 +64,19 @@ public class Driver {
 			System.out.println("|            [L]ab & Damage Check for Monster Scenarios                    |");
 			System.out.println("|            [Y] = Roll for Victory Conditions (Monster Scenarios)         |");
 			System.out.println("|            [Z] = Rules to Remember                                       |");
+			System.out.println("|                                                                          |");
+			System.out.print("|            [T]oggle On/Off for Testing Purposes ");
+			if (TESTING) {
+				System.out.print("(ON)                     |");
+			} else {
+				System.out.print("(OFF)                    |");
+			}
+			System.out.println();
 			System.out.println("|==========================================================================|");
 			System.out.println("|                                [Q]uit                                    |");
 			System.out.println("|==========================================================================|");
 
-			String userInput = getInput("IWDSRFCPLZVMY");
+			String userInput = getInput("IWDSRFCPLZVMYT");
 			String userInput3 = "";
 
 			int damageTotal = 0;
@@ -109,6 +117,8 @@ public class Driver {
 				RulesToRemember();
 			} else if (userInput.equalsIgnoreCase("Y")) {
 				MonsterStuff.RollForVictoryConditions();
+			} else if (userInput.equalsIgnoreCase("T")) {
+				TESTING = !TESTING;
 			} else if (userInput.equalsIgnoreCase("Q")) {
 				System.out.println("Exiting Program...");
 				break;
@@ -341,14 +351,12 @@ public class Driver {
 			System.out.println();
 			System.out.println("|==========================================================================|");
 			System.out.println("|                    SHIP SSD CHANGE/MODIFICATION MENU                     |");
-//			System.out.println("|--------------------------------------------------------------------------|");
-//			System.out.println("|               Modify [S]ome or [A]ll SSD boxes for a ship                |");
-//			System.out.println("|                      RETURN to return to Main Menu                       |");
 			System.out.println("|==========================================================================|");
 			System.out.println();
 			
 			int print = ShipSetup.PrintCurrentThingsInGame("SHIP", "");
-			System.out.print("\nWhich ship to modify SSB boxes? [RETURN to cancel] ");
+			System.out.println();
+			System.out.print("Which ship to modify SSB boxes? [RETURN to cancel] ");
 			int shipNum = ShipSetup.GetAdjustedInput(print, "SHIP", "");
 			if (shipNum != -1) {
 				System.out.print("Modify [S]ome or [A]ll SSD boxes for " + Driver.currentGameYard.list[shipNum].name + ": ");
@@ -369,158 +377,96 @@ public class Driver {
 		}
 	}
 
-//	public static void ModifyShipSystems() {
-//		boolean cont = true;
-//
-//		while (cont) {
-//			System.out.println();
-//			System.out.println("|==========================================================================|");
-//			System.out.println("|                    SHIP SSD CHANGE/MODIFICATION MENU                     |");
-//
-//			if (Driver.currentGameYard.numShips > 0) {
-//				System.out.println("|==========================================================================|");
-//				System.out.println("|                  Current ship, object and monster list:                  |");
-//				System.out.println("|==========================================================================|");
-//				System.out.println();
-//
-//				ShipSetup.PrintCurrentThingsInGame("Ship", "");
-//
-//				System.out.println();
-//
-//			}
-//
-//			System.out.println("|==========================================================================|");
-//			System.out.println("|       Add Ship from [S]hipyard   [M]odify Systems   [R]emove Ship        |");
-//			System.out.println("|                      RETURN to return to Main Menu                       |");
-//			System.out.println("|==========================================================================|");
-// 
-//			String userInput = Driver.getInput("SMR");
-//
-//			if (userInput.contentEquals("")) {
-//				// break;
-//				cont = false;
-//
-//			} else if (userInput.equalsIgnoreCase("S")) {
-//				Driver.defaultYard.displayShipyardMenu(1);
-//
-//			} else if (userInput.equalsIgnoreCase("M")) {
-//				System.out.print("Modify [S]ome or [A]ll SSD boxes for a ship?");
-//				String someOrAll = Driver.getInput("SA");
-//				if (someOrAll.equalsIgnoreCase("A")) {
-//					ChangeAllShipSSDSystems();
-//					
-//				} else if (someOrAll.equalsIgnoreCase("S")) {
-//					ChangeSomeShipSSDSystems();
-//				}
-//				
-//			} else if (userInput.equalsIgnoreCase("R")) {
-//
-//				System.out.print("Remove which ship? [RETURN to cancel] ");
-//				int removeInput = -1;
-//
-//				removeInput = Driver.getNumber(1, Driver.currentGameYard.numShips); // Get a new input
-//
-//				if (removeInput > 0) {
-//					System.out.print("Are you sure you want to remove: " + Driver.currentGameYard.list[removeInput-1].name);
-//					String yesOrNo = Driver.getInput("YN");
-//					if (yesOrNo.contentEquals("Y")) {
-//						Driver.currentGameYard.removeShipFromShipyard(removeInput);
-//					}
-//				}
-//			}
-//		}
-//	}
-//
 	public static void ChangeAllShipSSDSystems(int shipNumInput) {
-		boolean cont = true;
-		while (cont) {
-
-			int dummyArray[] = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
-
-			if (shipNumInput == -1) {
-				cont = false;
-			} else {
-				System.out.println();
-				System.out.println("Please indicate how many boxes are left on the " + currentGameYard.list[shipNumInput - 1].name + " SSD for the following systems:");
-				System.out.println();
+		int dummyArray[] = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
+			
+		System.out.println("shipNumInput: " + shipNumInput);
+		System.out.println();
+		System.out.println("Indicate how many boxes should be left on the " + currentGameYard.list[shipNumInput].name + " SSD for the following systems");
+		System.out.println("Hit [RETURN] to keep the current number");
+		System.out.println();
+		System.out.println("SYSTEM NAME (REMAINING/MAX)");
 				
-				for (int numPart = 0; numPart <= 24; numPart++) {
-					if (currentGameYard.list[shipNumInput - 1].ssd[numPart].name == "Flag Bridge") {
-						System.out.println("Flag Bridge = Security, Web, Displacement Device");
-					} else if (currentGameYard.list[shipNumInput - 1].ssd[numPart].name == "Torpedo") {
-						System.out.println("Torpedo = Photon Torpedo, Disruptor Bolt, Plasma Torpedo, SFG, Fusion Beam, Tractor-Repulsor Beam");
-					} else if (currentGameYard.list[shipNumInput - 1].ssd[numPart].name == "Drone") {
-						System.out.println("Drone = ADD, ESG, Hellbore, Plasmatic Pulsars, Power Absorbers");
-					} else if (currentGameYard.list[shipNumInput - 1].ssd[numPart].name == "Shuttle") {
-						System.out.println("Shuttle = Fighter, Mine Andormedan Hangar");
-					} else if (currentGameYard.list[shipNumInput - 1].ssd[numPart].name == "Cargo") {
-						System.out.println("Cargo = Repair, Mine Rack");
-					} else if (currentGameYard.list[shipNumInput - 1].ssd[numPart].name.contains("Hull")) {
-						System.out.println("Front/Aft Hull = Repair");
-					}
-					System.out.print("\t" + currentGameYard.list[shipNumInput - 1].ssd[numPart].name + " (" + currentGameYard.list[shipNumInput - 1].ssd[numPart].remaining + "): ");
-					dummyArray[numPart] = getNumber(0, 100);
-					if (dummyArray[numPart] == -1) {
-						dummyArray[numPart] = currentGameYard.list[shipNumInput - 1].ssd[numPart].remaining;
-					}							
-				}
-				for (int numPart = 0; numPart <= 24; numPart++) {
-					currentGameYard.list[shipNumInput - 1].ssd[numPart].numOfThisPart = dummyArray[numPart];
-					currentGameYard.list[shipNumInput - 1].ssd[numPart].remaining = dummyArray[numPart];
-				}
-				
-				System.out.println();
-				ShipSetup.PrintCurrentThingsInGame("Ship", "Speed");
-				System.out.println();
+		for (int numPart = 0; numPart <= 20; numPart++) {  //  Allow changes to all systems except Damage Control, Sensor, Scanner, Excess Damage
+			if (currentGameYard.list[shipNumInput].ssd[numPart].name == "Flag Bridge") {
+				System.out.println("---------------------------------------------------------");
+				System.out.println("Flag Bridge = Security, Web, Displacement Device");
+				System.out.println("---------------------------------------------------------");
+			} else if (currentGameYard.list[shipNumInput].ssd[numPart].name == "Torpedo") {
+				System.out.println("---------------------------------------------------------");
+				System.out.println("Torpedo = Photon Torpedo, Disruptor Bolt, Plasma Torpedo,");
+				System.out.println("          SFG, Fusion Beam, Tractor-Repulsor Beam");
+				System.out.println("---------------------------------------------------------");
+			} else if (currentGameYard.list[shipNumInput].ssd[numPart].name == "Drone") {
+				System.out.println("---------------------------------------------------------");
+				System.out.println("Drone = ADD, ESG, Hellbore, Plasmatic Pulsars,");
+				System.out.println("        Power Absorbers");
+				System.out.println("---------------------------------------------------------");
+			} else if (currentGameYard.list[shipNumInput].ssd[numPart].name == "Shuttle") {
+				System.out.println("---------------------------------------------------------");
+				System.out.println("Shuttle = Fighter, Mine Andormedan Hangar");
+				System.out.println("---------------------------------------------------------");
+			} else if (currentGameYard.list[shipNumInput].ssd[numPart].name == "Cargo") {
+				System.out.println("---------------------------------------------------------");
+				System.out.println("Cargo = Repair, Mine Rack");
+				System.out.println("---------------------------------------------------------");
+			} else if (currentGameYard.list[shipNumInput].ssd[numPart].name.contains("Hull")) {
+				System.out.println("---------------------------------------------------------");
+				System.out.println("Front/Aft Hull = Repair");
+				System.out.println("---------------------------------------------------------");
 			}
+			System.out.print("" + currentGameYard.list[shipNumInput].ssd[numPart].name + " (" + currentGameYard.list[shipNumInput].ssd[numPart].remaining + "/" + currentGameYard.list[shipNumInput].ssd[numPart].numOfThisPart + "): ");
+			dummyArray[numPart] = getNumber(0, 100);
+			if (dummyArray[numPart] == -1) {
+				dummyArray[numPart] = currentGameYard.list[shipNumInput].ssd[numPart].remaining;
+			}							
 		}
+		
+		for (int numPart = 0; numPart <= 20; numPart++) {
+			currentGameYard.list[shipNumInput].ssd[numPart].numOfThisPart = dummyArray[numPart];
+			currentGameYard.list[shipNumInput].ssd[numPart].remaining = dummyArray[numPart];
+		}
+				
+		System.out.println();
+		ShipSetup.PrintCurrentThingsInGame("Ship", "Speed");
+		System.out.println();
 	}
 			
 	public static void ChangeSomeShipSSDSystems(int shipNumInput) {
-		boolean cont = true;
 		int systemNumToChange = 0;
 		int newAmount = 0;
 		String extraSpaces = "";
 		String extraSpaces2 = "";
 
-		while (cont) {
-
-			if (shipNumInput == -1) {
-				cont = false;
-			} else {
-				System.out.println();
-				System.out.println("Current Number of SSD boxes for each system: ");
-				for (int numPart = 0; numPart <= 24; numPart++) {
-					extraSpaces = " " + ShipSetup.getExtraSpaces(numPart+1, 2);
-					extraSpaces2 = ShipSetup.getExtraSpaces(currentGameYard.list[shipNumInput - 1].ssd[numPart].remaining, 2);
-					System.out.print(extraSpaces + (numPart+1) + ")\t" + extraSpaces2 + currentGameYard.list[shipNumInput - 1].ssd[numPart].remaining + "  " + currentGameYard.list[shipNumInput - 1].ssd[numPart].name);
-					if (currentGameYard.list[shipNumInput - 1].ssd[numPart].name == "Flag Bridge") {
-						System.out.print(" = Security, Web, Displacement Device: ");
-					} else if (currentGameYard.list[shipNumInput - 1].ssd[numPart].name == "Torpedo") {
-						System.out.print(" = Photon Torpedo, Disruptor Bolt, Plasma Torpedo, SFG, Fusion Beam, Tractor-Repulsor Beam: ");
-					} else if (currentGameYard.list[shipNumInput - 1].ssd[numPart].name == "Drone") {
-						System.out.print(" = ADD, ESG, Hellbore, Plasmatic Pulsars, Power Absorbers: ");
-					} else if (currentGameYard.list[shipNumInput - 1].ssd[numPart].name == "Shuttle") {
-						System.out.print(" = Fighter, Mine Andormedan Hangar: ");
-					} else if (currentGameYard.list[shipNumInput - 1].ssd[numPart].name == "Cargo") {
-						System.out.print(" = Repair, Mine Rack: ");
-					} else if (currentGameYard.list[shipNumInput - 1].ssd[numPart].name.contains("Hull")) {
-						System.out.print(" = Repair: ");
-					}
-					System.out.println();
-				}
-				while (systemNumToChange != -1) {
-					System.out.println();
-					System.out.print("System number to change: ");
-					systemNumToChange = getNumber(0, 100);
-					if (systemNumToChange != -1) {
-						System.out.print("New number for " + currentGameYard.list[shipNumInput - 1].ssd[systemNumToChange-1].name + " SSD boxes: ");
-						newAmount = getNumber(0, 100);
-						currentGameYard.list[shipNumInput - 1].ssd[systemNumToChange-1].remaining = newAmount;
-					} else {
-						cont = false;
-					}
-				}
+		System.out.println();
+		System.out.println("Current Number of SSD boxes for each system: ");
+		for (int numPart = 0; numPart <= 24; numPart++) {
+			extraSpaces = " " + ShipSetup.getExtraSpaces(numPart+1, 2);
+			extraSpaces2 = ShipSetup.getExtraSpaces(currentGameYard.list[shipNumInput].ssd[numPart].remaining, 2);
+			System.out.print(extraSpaces + (numPart+1) + ")\t" + extraSpaces2 + currentGameYard.list[shipNumInput].ssd[numPart].remaining + "  " + currentGameYard.list[shipNumInput].ssd[numPart].name);
+			if (currentGameYard.list[shipNumInput].ssd[numPart].name == "Flag Bridge") {
+				System.out.print(" = Security, Web, Displacement Device");
+			} else if (currentGameYard.list[shipNumInput].ssd[numPart].name == "Torpedo") {
+				System.out.print(" = Photon Torpedo, Disruptor Bolt, Plasma Torpedo, SFG, Fusion Beam, Tractor-Repulsor Beam");
+			} else if (currentGameYard.list[shipNumInput].ssd[numPart].name == "Drone") {
+				System.out.print(" = ADD, ESG, Hellbore, Plasmatic Pulsars, Power Absorbers");
+			} else if (currentGameYard.list[shipNumInput].ssd[numPart].name == "Shuttle") {
+				System.out.print(" = Fighter, Mine Andormedan Hangar");
+			} else if (currentGameYard.list[shipNumInput].ssd[numPart].name == "Cargo") {
+				System.out.print(" = Repair, Mine Rack");
+			} else if (currentGameYard.list[shipNumInput].ssd[numPart].name.contains("Hull")) {
+				System.out.print(" = Repair");
+			}
+			System.out.println();
+		}
+		while (systemNumToChange != -1) {
+			System.out.println();
+			System.out.print("System number to change [RETURN to cancel]: ");
+			systemNumToChange = getNumber(0, 100);
+			if (systemNumToChange != -1) {
+				System.out.print("New number for " + currentGameYard.list[shipNumInput].ssd[systemNumToChange-1].name + " SSD boxes: ");
+				newAmount = getNumber(0, 100);
+				currentGameYard.list[shipNumInput].ssd[systemNumToChange-1].remaining = newAmount;
 			}
 		}
 	}
@@ -558,16 +504,17 @@ public class Driver {
 				System.out.println("|          III                  1/2  Any Src             -        turn used in    |");
 				System.out.println("|          IV                    2   Any Src             -        the game.       |");
 				System.out.println("|          Gatling (Ph-III)     1/4 (4 shots/box) Any    -                        |");
-				System.out.println("| E3.0   Disrupter Bolt:         1   Any Src             -                        |");
-				System.out.println("|          Overloaded           1+1  Any Src             -                        |");
-				System.out.println("| E4.0   Photon Torpedo:        2+2  Warp Only           1/box/Any source         |");
+				System.out.println("| E3.0   Disrupter Bolt:         2   Any Src             -                        |");
+				System.out.println("|          Overloaded            4   Any Src             -      Fdbck Dmg, dist=0 |");
+				System.out.println("| E4.0   Photon Torpedo:        2+2  Warp Only     1/box/Any source               |");
 				System.out.println("|          Proximity            2+2  Warp Only                                    |");
-				System.out.println("|          Overloaded         2+2+(1-4 extra) Warp Only  2/box/Any source         |");
+				System.out.println("|          Overloaded   2+2+(1-4 extra) Warp Only  2/box/Any source  Fdbk Dmg,d<=1|");
 				System.out.println("| E7.0   Fusion Beam             2   Any Src             -                        |");
-				System.out.println("| E8.0   Mauler                                                                   |");
+				System.out.println("|          Overloaded            4   Any Src             -                        |");
+				System.out.println("| E8.0   Mauler                  X   Any Src             -                        |");
 				System.out.println("| E9.0   Tractor-Repulsor Beam  3+3  Any Src             1      Sub. Tractor Beam |");
 				System.out.println("| E10.0  Hellbore               3+3  Any Src             3      Surrounding Damage|");
-				System.out.println("|          Overloaded           3+6  Any Src             -                        |");
+				System.out.println("|          Overloaded           3+6  Any Src             -      Fdbck Dmg, dist=0 |");
 				System.out.println("| FP1.0  Plasma Torpedo:                                                          |");
 				System.out.println("|          Type-R              2+2+5 Any Src    NO ship/4 starbase  *EPT 2+2+10   |");
 				System.out.println("|          Type-S (G-II)       2+2+4 Any Src             2          *EPT 2+2+8    |");
@@ -614,7 +561,7 @@ public class Driver {
 				System.out.println("|---------------------------------------------------------------------------------|");
 				System.out.println("|   - 1 repair point = 1 unit of power from any source (except reserve power)     |");
 				System.out.println("|   - No more than 5 repair pts can be applied to any 1 system per turn           |");
-				System.out.println("|   - Multiple systems can be in repair simultaneously                            |");
+				System.out.println("|   - Multiple systems can be in repaired simultaneously                          |");
 				System.out.println("|   - Unused repair points cannot be saved                                        |");
 				System.out.println("|   - Bases & FRDs can repair themselves during a scenario, but at 4x the cost    |");
 				System.out.println("|---------------------------------------------------------------------------------|");
@@ -624,16 +571,18 @@ public class Driver {
 				System.out.println("|   Bridge (Any Control)   6  |  Mine Rack          4  |  Scanner            10   |");
 				System.out.println("|   Cargo                  1  |  PA Panel           5  |  Shield              2   |");
 				System.out.println("|   Damage Control         3  |  Phaser-I           5  |  Shuttle Bay         2   |");
-				System.out.println("|   Displacement Device   25  |  Phaser-II          4  |  Stasis Field Gen   20   |");
-				System.out.println("|   Disruptor: range 40    8  |  Phaser-III         2  |  Special Sensors    15   |");
-				System.out.println("|   Disruptor: range 30    3  |  Phaser-IV         10  |  Tractor Beam        3   |");
-				System.out.println("|   Disruptor: range 22   15  |  Phaser-G           6  |  Transporter         3   |");
-				System.out.println("|   Disruptor: range 15    6  |  Photon Torpedo     8  |  Ubitron Interface   4   |");
-				System.out.println("|   Disruptor: range 10   15  |  Plasma-F           5  |  Warp Engine        10   |");
-				System.out.println("|   Drone Rack             3  |  Plasma-G          10  |  Warp Reactor        6   |");
-				System.out.println("|   Expanding Field Gen   15  |  Plasma-R          20  |  Web                 6   |");
-				System.out.println("|   Fusion Beam            6  |  Plasma-S          15  |  Web Caster         15   |");
-				System.out.println("|   Hellbore              15  |  Plasmatic Pulsar  15  |                          |");
+				System.out.println("|   Displacement Device   25  |        -II          4  |  Stasis Field Gen   20   |");
+				System.out.println("|   Disruptor: range 40   10  |        -III         2  |  Special Sensors    15   |");
+				System.out.println("|              range 30    8  |        -IV         10  |  Tractor Beam        3   |");
+				System.out.println("|              range 22    7  |        -G           6  |  Tractor-Repulsor    5   |");
+				System.out.println("|              range 15    5  |  Photon Torpedo     8  |  Transporter         3   |");
+				System.out.println("|              range 10    4  |  Plasma-F           5  |  Ubitron Interface   4   |");
+				System.out.println("|   Drone Rack             3  |        -G          10  |  Warp Engine        10   |");
+				System.out.println("|   Expanding Field Gen   15  |        -R          20  |  Warp Reactor        6   |");
+				System.out.println("|   Fusion Beam            6  |        -S          15  |  Web                 6   |");
+				System.out.println("|   Hellbore              15  |  Plasmatic Pulsar  15  |  Web Caster         15   |");
+				System.out.println("|---------------------------------------------------------------------------------|");
+				System.out.println("|   Damage Point on Fighter or Shuttle  1    damage Point on SWAC   2         3   |");
 				System.out.println("|=================================================================================|");
 			} else if (userInput2.equalsIgnoreCase("B")) {
 				System.out.println("|=================================================================================|");
@@ -674,7 +623,8 @@ public class Driver {
 				System.out.println("|  - Does not affect acceleration                                                 |");
 				System.out.println("|  - Cannot be preformed on Impulse 1                                             |");
 				System.out.println("|  - Seeking weapons and fighters may perform 1 HET per turn, never breakdown     |");
-				System.out.println("|  - Immediately following a HET, roll 1 die to see if breakdown occurs           |");
+				System.out.println("|  - Immediately following a HET, roll 1d6 to see if breakdown occurs. (First     |");
+				System.out.println("|        HET of turn for each player, roll 1d6-2.)                                |");
 				System.out.println("|---------------------------------------------------------------------------------|");
 				System.out.println("|  - BREAKDOWN (C6.54)                                                            |");
 				System.out.println("|      - On the first HET of a turn, 2 is subtracted from the die roll            |");
