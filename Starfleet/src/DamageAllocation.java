@@ -225,14 +225,14 @@ public class DamageAllocation {
 			
 			if(currentShip.ssd[number].remaining >= 1) { // IF REMAINING
 				
-				System.out.print("\t" + searchVal + "\t");
+				System.out.print("\t" + searchVal + " (" + currentShip.ssd[number].numOfThisPart + "/" + currentShip.ssd[number].remaining + ")\t");
 				currentShip.ssd[number].remaining--;
 				
 				if(currentShip.ssd[number].remaining == 0) {
 					if(currentShip.ssd[number].name.equals("Excess Damage")) {
 						System.out.print(" -- " + currentShip.name + " has been DESTROYED!! -- ");
 						System.out.println();
-						Driver.currentGameYard.removeShipFromShipyard(input);
+						Driver.currentGameYard.removeShipFromShipyard(input+1);
 						return;
 					}else {
 						System.out.print(" -- Final " + Starship.partNames[number] + " destroyed. -- ");
@@ -355,10 +355,10 @@ public class DamageAllocation {
 			totalDieRoll += dieRoll;
 		}
 		
-		if(numOfDice == 0) {
-			System.out.println("Please use more than zero dice rolls.");
-		}
 		
+		if (Driver.TESTING) {
+			System.out.println(numOfDice + "d" + numOfSides + ": " + totalDieRoll);
+		}
 		return totalDieRoll;
 	}
 
