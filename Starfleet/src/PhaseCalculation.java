@@ -59,31 +59,55 @@ public class PhaseCalculation {
 					String userInput = Driver.getInput("WTDSFRAI");
 					if (userInput.contentEquals("")) {
 						cont3 = false;
+						
 					} else if (userInput.equalsIgnoreCase("W")) {
 						WeaponsDamage.WeaponsDam(i);
 //						cont3 = false;
 						System.out.println();
+						
+					} else if (userInput.equalsIgnoreCase("A")) {						
+						System.out.println();
+						ShipSetup.PrintCurrentThingsInGame("Ship Monster Other Torpedo Drone Shuttle Fighter", "Speed");
+						ModifyShipSpeeds();
+						System.out.println();
+						PrintImpulseHeader();
+						
 					} else if (userInput.equalsIgnoreCase("T")) {						
 						AddOrRemoveTorpedo();
+						
 					} else if (userInput.equalsIgnoreCase("D")) {
 						AddDrone();
 						PrintImpulseHeader();
+						
 					} else if (userInput.equalsIgnoreCase("S")) {
 						AddShuttle();
 						PrintImpulseHeader();
+						
 					} else if (userInput.equalsIgnoreCase("F")) {
 						AddFighter();
 						PrintImpulseHeader();
+						
 					} else if (userInput.equalsIgnoreCase("R")) {                   // Remove destroyed ship/monster
 						System.out.println();
 						Driver.RemoveShip(true);
 						PrintImpulseHeader();
+						
 					} else if (userInput.equalsIgnoreCase("I")) {  					// Toggle ALL impulse or not
 						printAllImpulses = !printAllImpulses;
-					} else if (userInput.equalsIgnoreCase("A")) {  					// Add ship/monster
-						System.out.print("Add \"Add ship code\" here.");
+						if (printAllImpulses) {
+							System.out.println();
+							System.out.println("[Displaying EVERY impulse]");
+						} else {
+							System.out.println();
+							System.out.println("[Displaying ONLY impulses in which something moves]");
+						}
+						
+//					} else if (userInput.equalsIgnoreCase("A")) {  					// Add ship/monster
+//						System.out.print("Add \"Add ship code\" here.");
+						
 					} 
 				}
+				
 			} else {
 				for(int k = 0; k < Driver.currentGameYard.numShips; k++) {	
 					Driver.currentGameYard.list[k].distrv += Driver.currentGameYard.list[k].spi;
@@ -217,13 +241,17 @@ public class PhaseCalculation {
 	public static void ModifyShipSpeeds() {
 
 		System.out.println("Type in new speeds for each ship.  RETURN to go to next ship.  (Current speed)");
+		
 		for (int i = 0; i < Driver.currentGameYard.numShips; i++) {
 			System.out.print("New speed for " + Driver.currentGameYard.list[i].name + " (" + Driver.currentGameYard.list[i].speed + "): ");
 			int speedInput = Driver.getNumber(0, 32);
 			if (speedInput >= 0) {
 				Driver.currentGameYard.list[i].speed = speedInput;
+				Driver.currentGameYard.list[i].spi = (double) Driver.currentGameYard.list[i].speed / (double) Driver.numImpulses;			
 			}
-		}	
+		}
+		
+		ShipSetup.SortCurrentShipyard();
 	}
 	
 	public static void AdjustForDamageControl() {
