@@ -155,10 +155,10 @@ public class DamageAllocation {
 		System.out.println();
 		if(Driver.TESTING) {
 			System.out.println("\tDamage\tRow/\tSystem");
-			System.out.println("\tCount\t   Col\tName");
+			System.out.println("\tCount\t   Col\tName\t(Max/Remaining)");
 		} else {
 			System.out.println("\tDamage\tSystem");
-			System.out.println("\tCount\tName");
+			System.out.println("\tCount\tName\t(Max/Remaining)");
 		}
 		System.out.println("     ================================");
 		
@@ -224,18 +224,30 @@ public class DamageAllocation {
 			}
 			
 			if(currentShip.ssd[number].remaining >= 1) { // IF REMAINING
+
+				String extraTab = "";
+				if (searchVal.length() < 8) {
+					extraTab = "\t\t\t";
+				} else if (searchVal.length() < 15) {
+					extraTab = "\t\t";
+				} else if (searchVal.length() < 20) {
+					extraTab = "\t";
+				}
 				
-				System.out.print("\t" + searchVal + " (" + currentShip.ssd[number].numOfThisPart + "/" + currentShip.ssd[number].remaining + ")\t");
+				System.out.print("\t" + searchVal + extraTab + "(" + currentShip.ssd[number].numOfThisPart + "/" + (currentShip.ssd[number].remaining-1) + ")\t");
 				currentShip.ssd[number].remaining--;
 				
 				if(currentShip.ssd[number].remaining == 0) {
 					if(currentShip.ssd[number].name.equals("Excess Damage")) {
-						System.out.print(" -- " + currentShip.name + " has been DESTROYED!! -- ");
+						System.out.println();
+						System.out.println();
+						System.out.print("=== " + currentShip.name + " has been DESTROYED!! === ");
+						System.out.println();
 						System.out.println();
 						Driver.currentGameYard.removeShipFromShipyard(input+1);
 						return;
 					}else {
-						System.out.print(" -- Final " + Starship.partNames[number] + " destroyed. -- ");
+						System.out.print("=== FINAL " + Starship.partNames[number] + " destroyed. === ");
 					}
 					hits[die]++;
 				} else if (special[die][col] == 1) {
