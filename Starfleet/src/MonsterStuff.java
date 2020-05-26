@@ -40,9 +40,9 @@ public class MonsterStuff {
 		
 		int totalMonsterDamage = 0;
 		int monsterDamage = 0;
-		int whichMonster = -1;
+		int whichMonster = 1;
 		
-		while (whichMonster < 0) {
+		while (whichMonster != -1) {
 			System.out.println();
 			int print = ShipSetup.PrintCurrentThingsInGame("MONSTER", "");
 			System.out.println();
@@ -50,7 +50,7 @@ public class MonsterStuff {
 //			whichMonster = -5;
 			whichMonster = ShipSetup.GetAdjustedInput(print, "MONSTER", "");
 
-			if(whichMonster == 0) {
+			if(whichMonster == -1) {
 				break;
 			}
 
@@ -82,11 +82,12 @@ public class MonsterStuff {
 				
 			}
 			
-			whichMonster = -1;
+//			whichMonster = -1;
 			totalMonsterDamage = totalMonsterDamage + monsterDamage;
 
-			System.out.println("Total Monster Damage: " + totalMonsterDamage);
+//			System.out.println("Total Monster Damage: " + totalMonsterDamage);
 		}
+		
 		return totalMonsterDamage;
 	}
 
@@ -396,7 +397,7 @@ public class MonsterStuff {
 			System.out.println(currentMonster.name + " has " + currentMonster.ssd[24].remaining + " remaining health points.");
 			if (currentMonster.ssd[24].remaining <= 0) {
 				System.out.println(currentMonster.name + " has been defeated.");
-				Driver.currentGameYard.removeShipFromShipyard(whichMonster);
+				Driver.currentGameYard.removeShipFromShipyard(whichMonster+1);
 			}
 			damageToMonster = 0;
 		}
@@ -737,5 +738,30 @@ public class MonsterStuff {
 			}
 		}
 	}
-	
+
+	public static void AdjustMonsterHP() {
+		String monsterName = "";
+		int monsterDamageRemaining = 0;
+		boolean cont = true;
+		int whichMonsterAdjust = 0;
+		
+		while (cont) {
+			System.out.println();
+			int print = ShipSetup.PrintCurrentThingsInGame("MONSTER", "HEALTH");
+			System.out.print("Which Monster to adjust HP? [RETURN to cancel] ");
+			
+			whichMonsterAdjust = ShipSetup.GetAdjustedInput(print, "MONSTER", "HEALTH");
+			if (whichMonsterAdjust != -1) {
+				currentMonster = Driver.currentGameYard.list[whichMonsterAdjust];
+				
+				System.out.print("What should " + currentMonster.name + "'s HP be? ");
+				monsterDamageRemaining = Driver.getNumber(1, 10000);
+				if (monsterDamageRemaining != -1) {
+					currentMonster.ssd[24].remaining = monsterDamageRemaining;
+				}
+			} else {
+				cont = false;
+			}
+		}
+	}
 }
