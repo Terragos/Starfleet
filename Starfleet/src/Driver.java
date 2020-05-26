@@ -44,37 +44,39 @@ public class Driver {
 		cont = true;
 		while (cont) {
 			System.out.println();
-			System.out.println("|==========================================================================|");
-			System.out.println("|                             SFB MAIN MENU                                |");
-			System.out.println("|==========================================================================|");
-			System.out.println("|            [V]iew All Objects in the Current Game                        |");
-			System.out.println("|                                                                          |");
-			System.out.println("|            [I]mpulse Movement Procedure                                  |");
-			System.out.println("|            [W]eapon Damage Procedure                                     |");
-			System.out.println("|            [D]amage Allocation Procedure                                 |");
-			System.out.println("|                                                                          |");
-			System.out.println("|            [S]hipyard (Add ships from)                                   |");
-			System.out.println("|            [R]emove Ships from Current Game                              |");  
-			System.out.println("|            [F]ilter/View All Ships in Shipyard by BPV                    |");
-			System.out.println("|                                                                          |");
-			System.out.println("|            [C]hange SSD Numbers (some or all)                            |");
-			System.out.println("|                                                                          |");
-			System.out.println("|            [P]reload Scenario                                            |");
-			System.out.println("|            [M]onster Modification based on BPV Adjustment                |");
-			System.out.println("|            [L]ab & Damage Check for Monster Scenarios                    |");
-			System.out.println("|            [Y] = Roll for Victory Conditions (Monster Scenarios)         |");
-			System.out.println("|            [Z] = Rules to Remember                                       |");
-			System.out.println("|                                                                          |");
+			System.out.println("|=================================================================================|");
+			System.out.println("|                                 SFB MAIN MENU                                   |");
+			System.out.println("|=================================================================================|");
+			System.out.println("|            [V]iew All Objects in the Current Game                               |");
+			System.out.println("|                                                                                 |");
+			System.out.println("|            [I]mpulse Movement Procedure                                         |");
+			System.out.println("|            [W]eapon Damage Procedure                                            |");
+			System.out.println("|            [D]amage Allocation Procedure                                        |");
+			System.out.println("|                                                                                 |");
+			System.out.println("|            [S]hipyard (Add ships from)                                          |");
+			System.out.println("|            [R]emove Ships from Current Game                                     |");  
+			System.out.println("|            [F]ilter/View All Ships in Shipyard by BPV                           |");
+			System.out.println("|                                                                                 |");
+			System.out.println("|            [C]hange SSD Numbers (some or all)                                   |");
+			System.out.println("|                                                                                 |");
+			System.out.println("|            [P]reload Scenario                                                   |");
+			System.out.println("|            [M]onster Management                                                 |");
+//			System.out.println("|            [M]onster Modification based on BPV Adjustment                       |");
+//			System.out.println("|            [L]ab & Damage Check for Monster Scenarios                           |");
+//			System.out.println("|            [X] = Monster Damage                |");
+//			System.out.println("|            [Y] = Roll for Victory Conditions (Monster Scenarios)                |");
+			System.out.println("|            [Z] = Rules to Remember                                              |");
+			System.out.println("|                                                                                 |");
 			System.out.print("|            [T]oggle On/Off for Testing Purposes ");
 			if (TESTING) {
-				System.out.print("(ON)                     |");
+				System.out.print("(ON)                            |");
 			} else {
-				System.out.print("(OFF)                    |");
+				System.out.print("(OFF)                           |");
 			}
 			System.out.println();
-			System.out.println("|==========================================================================|");
-			System.out.println("|                                [Q]uit                                    |");
-			System.out.println("|==========================================================================|");
+			System.out.println("|=================================================================================|");
+			System.out.println("|                                [Q]uit                                           |");
+			System.out.println("|=================================================================================|");
 
 			String userInput = getInput("IWDSRFCPLZVMYT");
 			String userInput3 = "";
@@ -97,7 +99,7 @@ public class Driver {
 			} else if (userInput.equalsIgnoreCase("W")) {
 				WeaponsDamage.WeaponsDam(-1);
 			} else if (userInput.equalsIgnoreCase("M")) {
-				ModifyMonsterBPV();
+				MonsterManagementMenu();
 			} else if (userInput.equalsIgnoreCase("D")) {
 				DamageAllocation.DamageAlloc(-1);
 			} else if (userInput.equalsIgnoreCase("S")) {
@@ -111,12 +113,12 @@ public class Driver {
 				ModifyShipSystems();
 			} else if (userInput.equalsIgnoreCase("P")) {
 				PreloadScenario();
-			} else if (userInput.equalsIgnoreCase("L")) {
-				MonsterStuff.MonsterScenarioCheck();
+//			} else if (userInput.equalsIgnoreCase("L")) {
+//				MonsterStuff.MonsterScenarioCheck();
 			} else if (userInput.equalsIgnoreCase("Z")) {
 				RulesToRemember();
-			} else if (userInput.equalsIgnoreCase("Y")) {
-				MonsterStuff.RollForVictoryConditions();
+//			} else if (userInput.equalsIgnoreCase("Y")) {
+//				MonsterStuff.RollForVictoryConditions();
 			} else if (userInput.equalsIgnoreCase("T")) {
 				TESTING = !TESTING;
 			} else if (userInput.equalsIgnoreCase("Q")) {
@@ -220,6 +222,43 @@ public class Driver {
 			String yesOrNo = Driver.getInput("YN");
 			if (yesOrNo.contentEquals("Y")) {
 				Driver.currentGameYard.removeShipFromShipyard(removeInput);
+			}
+		}
+	}
+	
+	public static void MonsterManagementMenu() {
+		boolean cont = true;
+		int monsterDamage = 0;
+		
+		while (cont) {
+			System.out.println();
+			System.out.println("|=================================================================================|");
+			System.out.println("|                            MONSTER MANAGEMENT MENU                              |");
+			System.out.println("|=================================================================================|");
+			System.out.println("|            [A]djust (or View) Monster Hit Points                                |");
+			System.out.println("|            [M]odify Monster Hit Points Based on Ship BPV Adjustment             |");
+			System.out.println("|            [L]ab Research Check                                                 |");
+			System.out.println("|            [D]amage from Monster (then directly to Damage Allocation)           |");
+			System.out.println("|            [R]oll for Victory Conditions                                        |");
+			System.out.println("|=================================================================================|");
+			System.out.println("|                         RETURN to return to Main Menu                           |");
+			System.out.println("|=================================================================================|");
+			
+			String userInput2 = Driver.getInput("AMLDR");
+
+			if (userInput2.equalsIgnoreCase("M")) {
+				ModifyMonsterBPV();
+			} else if (userInput2.equalsIgnoreCase("A")) {
+				MonsterStuff.AdjustMonsterHP();
+			} else if (userInput2.equalsIgnoreCase("L")) {
+				MonsterStuff.MonsterScenarioCheck();
+			} else if (userInput2.equalsIgnoreCase("D")) {
+				monsterDamage = MonsterStuff.MonsterDamage();
+				DamageAllocation.DamageAlloc(monsterDamage);
+			} else if (userInput2.equalsIgnoreCase("R")) {
+				MonsterStuff.RollForVictoryConditions();
+			} else if (userInput2.equalsIgnoreCase("")) {
+				return;
 			}
 		}
 	}
@@ -437,13 +476,15 @@ public class Driver {
 		int newAmount = 0;
 		String extraSpaces = "";
 		String extraSpaces2 = "";
+		String extraSpaces3 = "";
 
 		System.out.println();
 		System.out.println("Current Number of SSD boxes for each system: ");
 		for (int numPart = 0; numPart <= 24; numPart++) {
 			extraSpaces = " " + ShipSetup.getExtraSpaces(numPart+1, 2);
 			extraSpaces2 = ShipSetup.getExtraSpaces(currentGameYard.list[shipNumInput].ssd[numPart].remaining, 2);
-			System.out.print(extraSpaces + (numPart+1) + ")\t" + extraSpaces2 + currentGameYard.list[shipNumInput].ssd[numPart].remaining + "  " + currentGameYard.list[shipNumInput].ssd[numPart].name);
+			extraSpaces3 = ShipSetup.getExtraSpaces(currentGameYard.list[shipNumInput].ssd[numPart].numOfThisPart, 2);
+			System.out.print(extraSpaces + (numPart+1) + ")   " + extraSpaces2 + currentGameYard.list[shipNumInput].ssd[numPart].remaining + " / " + extraSpaces3 + currentGameYard.list[shipNumInput].ssd[numPart].numOfThisPart + "  " + currentGameYard.list[shipNumInput].ssd[numPart].name);
 			if (currentGameYard.list[shipNumInput].ssd[numPart].name == "Flag Bridge") {
 				System.out.print(" = Security, Web, Displacement Device");
 			} else if (currentGameYard.list[shipNumInput].ssd[numPart].name == "Torpedo") {
@@ -881,7 +922,7 @@ public class Driver {
 				labResearchRequired = 0;
 
 				int firstArastozNum = FindMonsterLocation("Monster", "Arastoz 1x");
-				currentGameYard.addShipToShipyard(defaultYard.list[firstArastozNum]);				//  Arastoz 1x
+				currentGameYard.addShipToShipyard(defaultYard.list[firstArastozNum]);					//  Arastoz 1x
 				currentGameYard.list[0].speed = 14;
 				currentGameYard.list[0].name = "Arastoz A";
 				
@@ -898,7 +939,13 @@ public class Driver {
 				currentGameYard.list[3].name = "Arastoz D";
 				
 				InstallSpecificShip("Federation", "CC");
-				currentGameYard.list[4].speed = DamageAllocation.rollDice(1, 5) + 1;
+				currentGameYard.list[4].speed = 6;		//  Speed coming into game
+
+				InstallSpecificShip("Civilian", "F-L");
+				currentGameYard.list[5].speed = 6;		//  Speed coming into game
+
+//				InstallSpecificShip("Lyran", "CA");
+//				currentGameYard.list[6].speed = 6;		//  Speed coming into game
 				
 			} else if (scenario == 101) {
 				ZeroOutMonsterAndLabResearchValues();
