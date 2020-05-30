@@ -3,13 +3,16 @@ import java.math.*;
 
 public class Driver {
 
-	public static boolean TESTING = false;
+	public static boolean TESTING = true;
 	public static int labResearchAquired = 0;
 	public static int labResearchRequired = 0;
 	public static int MonsterScenario = 0;
 	public static double MonsterBPVModifier = 1.0;
 	public static boolean MonsterBPVModifierApplied = false;
 	public static int numImpulses = 0;
+	public static int TurnNumber = 0;
+	public static boolean ElectronicWarfare = false;
+	public static double electronicWarfareNet = 0;
 	public static Shipyard currentGameYard = new Shipyard("Current Game Shipyard");
 	public static Shipyard defaultYard = Shipyard.setupDefaultShipyard();
 	public static Scanner keyboard = new Scanner(System.in);
@@ -388,17 +391,22 @@ public class Driver {
 
 		while (cont) {
 			System.out.println();
-			System.out.println("|==========================================================================|");
-			System.out.println("|                    SHIP SSD CHANGE/MODIFICATION MENU                     |");
-			System.out.println("|==========================================================================|");
+			System.out.println("|=================================================================================|");
+			System.out.println("|                        SHIP SSD CHANGE/MODIFICATION MENU                        |");
+			System.out.println("|=================================================================================|");
 			System.out.println();
 			
 			int print = ShipSetup.PrintCurrentThingsInGame("SHIP", "");
 			System.out.println();
 			System.out.print("Which ship to modify SSB boxes? [RETURN to cancel] ");
 			int shipNum = ShipSetup.GetAdjustedInput(print, "SHIP", "");
+			
 			if (shipNum != -1) {
-				System.out.print("Modify [S]ome or [A]ll SSD boxes for " + Driver.currentGameYard.list[shipNum].name + ": ");
+				
+				PrintSSDsystems(shipNum);
+
+				System.out.println();
+				System.out.print("Modify [S]ome or [A]ll SSD boxes for " + Driver.currentGameYard.list[shipNum].name + " [RETURN to cancel]: ");
 				String someOrAll = Driver.getInput("SA");
 			
 				if (someOrAll.equalsIgnoreCase("A")) {
@@ -416,6 +424,35 @@ public class Driver {
 		}
 	}
 
+	public static void PrintSSDsystems(int shipNumInput) {
+		String extraSpaces = "";
+		String extraSpaces2 = "";
+		String extraSpaces3 = "";
+		
+		System.out.println();
+		System.out.println("Current Number of SSD boxes for each system: ");
+		for (int numPart = 0; numPart <= 24; numPart++) {
+			extraSpaces = " " + ShipSetup.getExtraSpaces(numPart+1, 2);
+			extraSpaces2 = ShipSetup.getExtraSpaces(currentGameYard.list[shipNumInput].ssd[numPart].remaining, 2);
+			extraSpaces3 = ShipSetup.getExtraSpaces(currentGameYard.list[shipNumInput].ssd[numPart].numOfThisPart, 2);
+			System.out.print(extraSpaces + (numPart+1) + ")   " + extraSpaces2 + currentGameYard.list[shipNumInput].ssd[numPart].remaining + " / " + extraSpaces3 + currentGameYard.list[shipNumInput].ssd[numPart].numOfThisPart + "  " + currentGameYard.list[shipNumInput].ssd[numPart].name);
+			if (currentGameYard.list[shipNumInput].ssd[numPart].name == "Flag Bridge") {
+				System.out.print(" = Security, Web, Displacement Device");
+			} else if (currentGameYard.list[shipNumInput].ssd[numPart].name == "Torpedo") {
+				System.out.print(" = Photon Torpedo, Disruptor Bolt, Plasma Torpedo, SFG, Fusion Beam, Tractor-Repulsor Beam");
+			} else if (currentGameYard.list[shipNumInput].ssd[numPart].name == "Drone") {
+				System.out.print(" = ADD, ESG, Hellbore, Plasmatic Pulsars, Power Absorbers");
+			} else if (currentGameYard.list[shipNumInput].ssd[numPart].name == "Shuttle") {
+				System.out.print(" = Fighter, Mine Andormedan Hangar");
+			} else if (currentGameYard.list[shipNumInput].ssd[numPart].name == "Cargo") {
+				System.out.print(" = Repair, Mine Rack");
+			} else if (currentGameYard.list[shipNumInput].ssd[numPart].name.contains("Hull")) {
+				System.out.print(" = Repair");
+			}
+			System.out.println();
+		}
+	}
+	
 	public static void ChangeAllShipSSDSystems(int shipNumInput) {
 		int dummyArray[] = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
 			
@@ -474,32 +511,32 @@ public class Driver {
 	public static void ChangeSomeShipSSDSystems(int shipNumInput) {
 		int systemNumToChange = 0;
 		int newAmount = 0;
-		String extraSpaces = "";
-		String extraSpaces2 = "";
-		String extraSpaces3 = "";
-
-		System.out.println();
-		System.out.println("Current Number of SSD boxes for each system: ");
-		for (int numPart = 0; numPart <= 24; numPart++) {
-			extraSpaces = " " + ShipSetup.getExtraSpaces(numPart+1, 2);
-			extraSpaces2 = ShipSetup.getExtraSpaces(currentGameYard.list[shipNumInput].ssd[numPart].remaining, 2);
-			extraSpaces3 = ShipSetup.getExtraSpaces(currentGameYard.list[shipNumInput].ssd[numPart].numOfThisPart, 2);
-			System.out.print(extraSpaces + (numPart+1) + ")   " + extraSpaces2 + currentGameYard.list[shipNumInput].ssd[numPart].remaining + " / " + extraSpaces3 + currentGameYard.list[shipNumInput].ssd[numPart].numOfThisPart + "  " + currentGameYard.list[shipNumInput].ssd[numPart].name);
-			if (currentGameYard.list[shipNumInput].ssd[numPart].name == "Flag Bridge") {
-				System.out.print(" = Security, Web, Displacement Device");
-			} else if (currentGameYard.list[shipNumInput].ssd[numPart].name == "Torpedo") {
-				System.out.print(" = Photon Torpedo, Disruptor Bolt, Plasma Torpedo, SFG, Fusion Beam, Tractor-Repulsor Beam");
-			} else if (currentGameYard.list[shipNumInput].ssd[numPart].name == "Drone") {
-				System.out.print(" = ADD, ESG, Hellbore, Plasmatic Pulsars, Power Absorbers");
-			} else if (currentGameYard.list[shipNumInput].ssd[numPart].name == "Shuttle") {
-				System.out.print(" = Fighter, Mine Andormedan Hangar");
-			} else if (currentGameYard.list[shipNumInput].ssd[numPart].name == "Cargo") {
-				System.out.print(" = Repair, Mine Rack");
-			} else if (currentGameYard.list[shipNumInput].ssd[numPart].name.contains("Hull")) {
-				System.out.print(" = Repair");
-			}
-			System.out.println();
-		}
+//		String extraSpaces = "";
+//		String extraSpaces2 = "";
+//		String extraSpaces3 = "";
+//
+//		System.out.println();
+//		System.out.println("Current Number of SSD boxes for each system: ");
+//		for (int numPart = 0; numPart <= 24; numPart++) {
+//			extraSpaces = " " + ShipSetup.getExtraSpaces(numPart+1, 2);
+//			extraSpaces2 = ShipSetup.getExtraSpaces(currentGameYard.list[shipNumInput].ssd[numPart].remaining, 2);
+//			extraSpaces3 = ShipSetup.getExtraSpaces(currentGameYard.list[shipNumInput].ssd[numPart].numOfThisPart, 2);
+//			System.out.print(extraSpaces + (numPart+1) + ")   " + extraSpaces2 + currentGameYard.list[shipNumInput].ssd[numPart].remaining + " / " + extraSpaces3 + currentGameYard.list[shipNumInput].ssd[numPart].numOfThisPart + "  " + currentGameYard.list[shipNumInput].ssd[numPart].name);
+//			if (currentGameYard.list[shipNumInput].ssd[numPart].name == "Flag Bridge") {
+//				System.out.print(" = Security, Web, Displacement Device");
+//			} else if (currentGameYard.list[shipNumInput].ssd[numPart].name == "Torpedo") {
+//				System.out.print(" = Photon Torpedo, Disruptor Bolt, Plasma Torpedo, SFG, Fusion Beam, Tractor-Repulsor Beam");
+//			} else if (currentGameYard.list[shipNumInput].ssd[numPart].name == "Drone") {
+//				System.out.print(" = ADD, ESG, Hellbore, Plasmatic Pulsars, Power Absorbers");
+//			} else if (currentGameYard.list[shipNumInput].ssd[numPart].name == "Shuttle") {
+//				System.out.print(" = Fighter, Mine Andormedan Hangar");
+//			} else if (currentGameYard.list[shipNumInput].ssd[numPart].name == "Cargo") {
+//				System.out.print(" = Repair, Mine Rack");
+//			} else if (currentGameYard.list[shipNumInput].ssd[numPart].name.contains("Hull")) {
+//				System.out.print(" = Repair");
+//			}
+//			System.out.println();
+//		}
 		while (systemNumToChange != -1) {
 			System.out.println();
 			System.out.print("System number to change [RETURN to cancel]: ");
@@ -830,7 +867,6 @@ public class Driver {
 				ZeroOutMonsterAndLabResearchValues();
 				MonsterScenario = 1;
 				Driver.currentGameYard.numShips = 0;
-				scenarioLoaded = true;
 				
 				InstallSpecificShip("Monster", "Planet Crusher");
 				currentGameYard.list[0].speed = 6;
@@ -848,7 +884,6 @@ public class Driver {
 				MonsterScenario = 2;
 				labResearchRequired = 400;
 				Driver.currentGameYard.numShips = 0;
-				scenarioLoaded = true;
 				
 				InstallSpecificShip("Monster", "Space Amoeba");
 				currentGameYard.list[0].speed = 4;
@@ -861,7 +896,6 @@ public class Driver {
 				MonsterScenario = 3;
 				labResearchRequired = 0;
 				Driver.currentGameYard.numShips = 0;
-				scenarioLoaded = true;
 				
 				InstallSpecificShip("Monster", "Moray Eel");
 				currentGameYard.list[0].speed = 6;
@@ -873,7 +907,6 @@ public class Driver {
 				ZeroOutMonsterAndLabResearchValues();
 				MonsterScenario = 4;
 				labResearchRequired = 400;
-				scenarioLoaded = true;
 				Driver.currentGameYard.numShips = 0;
 
 				InstallSpecificShip("Monster", "Cosmic Cloud");
@@ -888,7 +921,7 @@ public class Driver {
 				labResearchRequired = 400;
 
 				Driver.currentGameYard.numShips = 0;
-				scenarioLoaded = true;
+
 				InstallSpecificShip("Monster", "Sunsnake");
 				currentGameYard.list[0].speed = 3;
 
@@ -899,7 +932,7 @@ public class Driver {
 				ZeroOutMonsterAndLabResearchValues();
 				MonsterScenario = 6;
 				Driver.currentGameYard.numShips = 0;
-				scenarioLoaded = true;
+
 				labResearchRequired = 400;
 
 				InstallSpecificShip("Monster", "Mind Monster");
@@ -918,7 +951,7 @@ public class Driver {
 				ZeroOutMonsterAndLabResearchValues();
 				MonsterScenario = 8;
 				Driver.currentGameYard.numShips = 0;
-				scenarioLoaded = true;
+
 				labResearchRequired = 0;
 
 				int firstArastozNum = FindMonsterLocation("Monster", "Arastoz 1x");
@@ -950,7 +983,7 @@ public class Driver {
 			} else if (scenario == 101) {
 				ZeroOutMonsterAndLabResearchValues();
 				Driver.currentGameYard.numShips = 0;
-				scenarioLoaded = true;
+
 				InstallSpecificShip("Federation", "DN");
 				currentGameYard.list[0].speed = DamageAllocation.rollDice(1, 10) + 1;
 				
@@ -975,7 +1008,7 @@ public class Driver {
 			} else if (scenario == 102) {
 				ZeroOutMonsterAndLabResearchValues();
 				Driver.currentGameYard.numShips = 0;
-				scenarioLoaded = true;
+
 				InstallSpecificShip("Federation", "NCL");
 				currentGameYard.list[0].speed = DamageAllocation.rollDice(1, 10) + 1;
 				
@@ -988,7 +1021,7 @@ public class Driver {
 			} else if (scenario == 103) {
 				ZeroOutMonsterAndLabResearchValues();
 				Driver.currentGameYard.numShips = 0;
-				scenarioLoaded = true;
+
 				InstallSpecificShip("Federation", "CC");
 				currentGameYard.list[0].speed = DamageAllocation.rollDice(1, 10) + 1;
 				
@@ -1001,7 +1034,7 @@ public class Driver {
 			} else if (scenario == 104) {
 				ZeroOutMonsterAndLabResearchValues();
 				Driver.currentGameYard.numShips = 0;
-				scenarioLoaded = true;
+				
 				InstallSpecificShip("Tholian", "DD");
 				currentGameYard.list[0].speed = DamageAllocation.rollDice(1, 10) + 1;
 				
@@ -1014,7 +1047,6 @@ public class Driver {
 			} else if (scenario == 105) {
 				ZeroOutMonsterAndLabResearchValues();
 				Driver.currentGameYard.numShips = 0;
-				scenarioLoaded = true;
 				int firstMonsterNum = FindMonsterLocation("Monster", "Planet Crusher");
 				for (int i = 0; i <= 4; i++) {
 					int randMonster = DamageAllocation.rollDice(1, 7);
@@ -1022,6 +1054,11 @@ public class Driver {
 					currentGameYard.list[i].speed = DamageAllocation.rollDice(1, 10) + 1;
 				}
 			} else if (scenario == -1) {
+				scenarioLoaded = false;
+			}
+			
+			if (scenario > 0) {
+				TurnNumber = 0;
 				scenarioLoaded = true;
 			}
 		}
