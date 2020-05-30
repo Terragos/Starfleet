@@ -30,6 +30,9 @@ public class Starship {
 	public int[] scannerNums;
 	public int[] damConNums;
 	public boolean lockedOn = true;
+	public boolean cloakOn = false;
+	public double ECM = 0.0;
+	public double ECCM = 0.0;
 /*  LEAVE AS A PERMANENT COMMENT 				
 	public int indexOfNextDamCon = Driver.currentGameYard.list[i].ssd[21].numOfThisPart - Driver.currentGameYard.list[i].ssd[21].remaining; 
 	public int indexOfNextSensor = Driver.currentGameYard.list[i].ssd[22].numOfThisPart - Driver.currentGameYard.list[i].ssd[22].remaining; 
@@ -65,6 +68,9 @@ public class Starship {
 		this.scannerNums = ship.scannerNums;
 		this.damConNums = ship.damConNums;
 		this.lockedOn = ship.lockedOn;
+		this.cloakOn = ship.cloakOn;
+		this.ECM = ship.ECM;
+		this.ECCM = ship.ECCM;
 	}
 	
 	/* Non Regular Starship Constructor */
@@ -111,6 +117,8 @@ public class Starship {
 			this.breakDown = "*";
 			this.shipType = type;
 			this.kindOfShip = kind;	
+			this.ssd = new Part[25];
+			this.setupSSD(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 6, fake, fake, fake);
 		}
 	}
 	
@@ -184,7 +192,7 @@ public class Starship {
 	}
 	
 	public String toString() {
-		return this.race.substring(0,3).toUpperCase() + "\t" + this.shipType + "\t" + this.crewUnits + "\t" + this.boardingParties + "\t"
+		return this.race.substring(0,3) + "\t" + this.shipType + "\t" + this.crewUnits + "\t" + this.boardingParties + "\t"
 				+ this.BPV + "\t" + this.breakDown + "\t" + this.moveCost + "\t" + this.spareShuttles + "\t" + this.sizeClass + "\t" 
 				+ this.turnMode + "\t" + this.ruleNum + "\t" + this.yearInService;
 	}
