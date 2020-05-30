@@ -4,6 +4,7 @@ public class WeaponsDamage {
 	
 	public final static int MAXDIST = 300;
 	public static Starship currentShip;
+	public static Starship targetShip;
 	public static Scanner keyboard = new Scanner(System.in);
 	
 	public static void WeaponsDam (int impulseNumber) {   //  If yes > 0 then in the middle of an Impulse Movement Procedure
@@ -19,16 +20,39 @@ public class WeaponsDamage {
 			int shipNumFiring = -5;
 	
 			shipNumFiring = ShipSetup.GetAdjustedInput(print, "SHIP", "");
-//			System.out.println("shipNumFiring: " + shipNumFiring);
 			
 			if(shipNumFiring == -1) {
 				System.out.println();
 				PhaseCalculation.PrintImpulseHeader();
 				return;
 			}
-//			System.out.println("Driver.currentGameYard.list[shipNumFiring].name: " + Driver.currentGameYard.list[shipNumFiring].name);
 			
+			
+			int shipNumTarget = -5;
+			if (Driver.ElectronicWarfare) {
+				System.out.println();
+				System.out.print("Which ship is being targeted? [RETURN to cancel] ");
+				
+				shipNumTarget = ShipSetup.GetAdjustedInput(print, "SHIP", "");
+				
+				if(shipNumTarget == -1) {
+					System.out.println();
+					PhaseCalculation.PrintImpulseHeader();
+					return;
+				}
+			}
+
 			currentShip = Driver.currentGameYard.list[shipNumFiring];
+			targetShip = Driver.currentGameYard.list[shipNumTarget];
+			
+			Driver.electronicWarfareNet = Math.sqrt(targetShip.ECM - currentShip.ECCM);
+			if (Driver.electronicWarfareNet < 0) {
+				Driver.electronicWarfareNet = 0;
+			}
+			
+			if (Driver.TESTING) {
+				System.out.println("ECCM-ECM: " + Driver.electronicWarfareNet);
+			}
 	
 			boolean monsterInGame = false;
 			for (int i = 0; i <= Driver.currentGameYard.numShips-1; i++) {
@@ -206,18 +230,69 @@ public class WeaponsDamage {
 		return newDistance;
 	}
 	
+	public static int[] GetEWadjustment(int die, int dist, int maxDist) {
+		int EW[] = {0,0};
+		
+		if (Driver.TESTING) {
+			System.out.println();
+			System.out.println("   die: " + die + "\t   dist: " + dist);
+			System.out.println("ECCM-ECM: " + Driver.electronicWarfareNet);
+		}
+
+		int newDie = die + (int) Driver.electronicWarfareNet;
+		int newDist = dist;
+		if (newDie > 6) {
+			newDist = newDist + newDie - 6;
+			if (newDist > maxDist) {
+				newDist = maxDist;
+			}
+			newDie = 6;
+		}
+		
+		EW[0] = newDie;
+		EW[1] = newDist;
+
+		if (Driver.TESTING) {
+			System.out.println("newDie: " + newDie + "\tnewDist: " + newDist);
+		}
+		return EW;
+	}
+
+	public static int AdjustDamageForCloak(int damage) {
+		
+		if (targetShip.cloakOn) {
+			System.out.print("damage: " + damage);
+			int cloakDie = DamageAllocation.rollDice(1,6);
+			if (cloakDie == 1 || cloakDie == 2) {
+				//  no effect
+			} else if (cloakDie == 3 || cloakDie == 4) {
+					damage = (int) (Math.round((double) damage / 2));
+			} else if (cloakDie == 5 || cloakDie == 6) {
+				damage = (int) (Math.round((double) damage / 4));
+			} else if (cloakDie >= 7) {
+				damage = 0;
+			}
+			System.out.print("\tAdjusted damage for cloak: " + damage);
+			System.out.println();
+		}
+		
+		
+		return damage;
+	}
+	
 	public static int type1Phaser(int total) {
-		int intPhaser1[][] = {{0, 1, 2, 3, 4, 5, 6, 9,16,26,51,76},   //  distance
-							  {9, 8, 7, 6, 5, 5, 4, 3, 2, 1, 1, 0},   //  die roll 1 
-							  {8, 7, 6, 5, 5, 4, 3, 2, 1, 1, 0, 0},   //  die roll 2
-							  {7, 5, 5, 4, 4, 4, 3, 1, 0, 0, 0, 0},   //  die roll 3
-							  {6, 4, 4, 4, 4, 3, 2, 0, 0, 0, 0, 0},   //  die roll 4
-							  {5, 4, 4, 4, 3, 3, 1, 0, 0, 0, 0, 0},   //  die roll 5
-							  {4, 4, 3, 3, 2, 2, 0, 0, 0, 0, 0, 0}};  //  die roll 6
+		int intPhaser1[][] = {{0, 1, 2, 3, 4, 5, 6, 7, 8, 9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55,56,57,58,59,60,61,62,63,64,65,66,67,68,69,70,71,72,73,74,75,76},   //  distance
+							  {9, 8, 7, 6, 5, 5, 4, 4, 4, 3, 3, 3, 3, 3, 3, 3, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0},   //  die roll 1 
+							  {8, 7, 6, 5, 5, 4, 3, 3, 3, 2, 2, 2, 2, 2, 2, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},   //  die roll 2
+							  {7, 5, 5, 4, 4, 4, 3, 3, 3, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},   //  die roll 3
+							  {6, 4, 4, 4, 4, 3, 2, 2, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},   //  die roll 4
+							  {5, 4, 4, 4, 3, 3, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},   //  die roll 5
+							  {4, 4, 3, 3, 2, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}};  //  die roll 6
 
 		int startTotal = total;
 		int numberInput = 0;
 		int distanceInput = 0;
+		int effectiveDistance = 0;
 		
 		System.out.println();
 		System.out.println("Phaser-I");
@@ -227,26 +302,21 @@ public class WeaponsDamage {
 
 		System.out.print("Distance: ");
 		distanceInput = Driver.getNumberNoCancel(0, 75);
-		distanceInput = SensorScannerMod(distanceInput);
-
-		if (distanceInput >=6 && distanceInput <=8) {
-			distanceInput = 6;
-		} else if (distanceInput >= 9 && distanceInput <= 15) {
-			distanceInput = 7;			
-		} else if (distanceInput >= 16 && distanceInput <= 25) {
-			distanceInput = 8;			
-		} else if (distanceInput >= 26 && distanceInput <= 50) {
-			distanceInput = 9;			
-		} else if (distanceInput >= 51 && distanceInput <= 75) {
-			distanceInput = 10;			
-		} else if (distanceInput >= 76) {
-			distanceInput = 11;			
-		}
+		effectiveDistance = SensorScannerMod(distanceInput);
 		
+		if (targetShip.cloakOn) {
+			effectiveDistance = effectiveDistance + 5;
+		}
+				
 		for(int i = 0; i < numberInput; i++) {
 			int die = DamageAllocation.rollDice(1,6);
-			int damage = intPhaser1[die][distanceInput];
-			total += damage;
+			int EWadj[] = GetEWadjustment(die, effectiveDistance, 75);
+			int EWadjDie = EWadj[0];
+			int EWadjDist = EWadj[1];
+//			int damage = intPhaser1[die][distanceInput];
+			int damage = intPhaser1[EWadjDie][EWadjDist];	//  EWadj[0]=adj die roll / EWadj[1]=adj distance
+			damage = AdjustDamageForCloak(damage);
+			total = total + damage;
 		}
 		
 		System.out.println();
@@ -256,17 +326,18 @@ public class WeaponsDamage {
 	}
 	
 	public static int type2Phaser(int total) {
-		int intPhaser2[][] = {{0, 1, 2, 3, 4, 9,16,31,51},   //  distance
-							  {6, 5, 5, 4, 3, 2, 1, 1, 0},   //  die roll 1
-							  {6, 5, 4, 4, 3, 2, 1, 0, 0},   //  die roll 2
-							  {6, 4, 4, 4, 1, 1, 0, 0, 0},   //  die roll 3
-							  {5, 4, 4, 3, 1, 0, 0, 0, 0},   //  die roll 4
-							  {5, 4, 3, 3, 0, 0, 0, 0, 0},   //  die roll 5
-							  {5, 3, 3, 3, 0, 0, 0, 0, 0}};  //  die roll 6
+		int intPhaser2[][] = {{0, 1, 2, 3, 4, 5, 6, 7, 8, 9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51},   //  distance
+							  {6, 5, 5, 4, 3, 3, 3, 3, 3, 2, 2, 2, 2, 2, 2, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0},   //  die roll 1
+							  {6, 5, 4, 4, 3, 3, 3, 3, 3, 2, 2, 2, 2, 2, 2, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},   //  die roll 2
+							  {6, 4, 4, 4, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},   //  die roll 3
+							  {5, 4, 4, 3, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},   //  die roll 4
+							  {5, 4, 3, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},   //  die roll 5
+							  {5, 3, 3, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}};  //  die roll 6
 
 		int startTotal = total;
 		int numberInput = 0;
 		int distanceInput = 0;
+		int effectiveDistance = 0;
 		
 		System.out.println();
 		System.out.println("Phaser-II");
@@ -276,24 +347,16 @@ public class WeaponsDamage {
 
 		System.out.print("Distance: ");
 		distanceInput = Driver.getNumberNoCancel(0, 50);
-		distanceInput = SensorScannerMod(distanceInput);
-		
-		if (distanceInput >=4 && distanceInput <=8) {
-			distanceInput = 4;
-		} else if (distanceInput >= 9 && distanceInput <= 15) {
-			distanceInput = 5;			
-		} else if (distanceInput >= 16 && distanceInput <= 30) {
-			distanceInput = 6;			
-		} else if (distanceInput >= 31 && distanceInput <= 50) {
-			distanceInput = 7;			
-		} else if (distanceInput >= 51) {
-			distanceInput = 11;			
-		}
+		effectiveDistance = SensorScannerMod(distanceInput);
 		
 		for(int i = 0; i < numberInput; i++) {
 			int die = DamageAllocation.rollDice(1,6);
-			int damage = intPhaser2[die][distanceInput];
-			total += damage;
+			int EWadj[] = GetEWadjustment(die, distanceInput, 50);
+			int EWadjDie = EWadj[0];
+			int EWadjDist = EWadj[1];
+			int damage = intPhaser2[EWadjDie][EWadjDist];	//  EWadj[0]=adj die roll / EWadj[1]=adj distance
+			damage = AdjustDamageForCloak(damage);
+			total = total + damage;
 		}
 		
 		System.out.println();
@@ -304,17 +367,18 @@ public class WeaponsDamage {
 	
 	//  TYPE 3 PHASER
 	public static int type3Phaser(int total) {
-		int intPhaser3[][] = {{0, 1, 2, 3, 4, 9,16},   //  distanceInputance
-							  {4, 4, 4, 3, 1, 1, 0},   //  die roll 1
-							  {4, 4, 4, 2, 1, 0, 0},   //  die roll 2
-							  {4, 4, 4, 1, 0, 0, 0},   //  die roll 3
-							  {4, 4, 3, 0, 0, 0, 0},   //  die roll 4
-							  {4, 3, 2, 0, 0, 0, 0},   //  die roll 5
-							  {3, 3, 1, 0, 0, 0, 0}};  //  die roll 6
+		int intPhaser3[][] = {{0, 1, 2, 3, 4, 5, 6, 7, 8, 9,10,11,12,13,14,15,16},   //  distanceInputance
+							  {4, 4, 4, 3, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0},   //  die roll 1
+							  {4, 4, 4, 2, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0},   //  die roll 2
+							  {4, 4, 4, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},   //  die roll 3
+							  {4, 4, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},   //  die roll 4
+							  {4, 3, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},   //  die roll 5
+							  {3, 3, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}};  //  die roll 6
 
 		int startTotal = total;
 		int numberInput = 0;
 		int distanceInput = 0;
+		int effectiveDistance = 0;
 		
 		System.out.println();
 		System.out.println("Phaser-III");
@@ -324,20 +388,16 @@ public class WeaponsDamage {
 
 		System.out.print("Distance: ");
 		distanceInput = Driver.getNumberNoCancel(0, 15);
-		distanceInput = SensorScannerMod(distanceInput);
+		effectiveDistance = SensorScannerMod(distanceInput);
 
-		if (distanceInput >=4 && distanceInput <=8) {
-			distanceInput = 4;
-		} else if (distanceInput >= 9 && distanceInput <= 15) {
-			distanceInput = 5;			
-		} else if (distanceInput >= 16) {
-			distanceInput = 6;			
-		}
-		
 		for(int i = 0; i < numberInput; i++) {
 			int die = DamageAllocation.rollDice(1,6);
-			int damage = intPhaser3[die][distanceInput];
-			total += damage;
+			int EWadj[] = GetEWadjustment(die, effectiveDistance, 15);
+			int EWadjDie = EWadj[0];
+			int EWadjDist = EWadj[1];
+			int damage = intPhaser3[EWadjDie][EWadjDist];	//  EWadj[0]=adj die roll / EWadj[1]=adj distance
+			damage = AdjustDamageForCloak(damage);
+			total = total + damage;
 		}
 		
 		System.out.println();
@@ -348,18 +408,19 @@ public class WeaponsDamage {
 	
 	//  TYPE 4 PHASER
 	public static int type4Phaser(int total) {
-		int intPhaser4[][] = {{ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9,10,11,14,18,26,41,71,101},   //  distance
-							  {20,20,20,20,20,20,20,15,12,10, 8, 6, 5, 4, 3, 2, 1,  0},   //  die roll 1
-							  {20,20,20,20,20,20,15,12,11, 9, 8, 6, 4, 3, 2, 1, 0,  0},   //  die roll 2
-							  {20,20,20,20,15,15,12,11,10, 8, 7, 5, 4, 2, 1, 0, 0,  0},   //  die roll 3
-							  {20,20,20,20,15,15,11,10, 9, 8, 6, 4, 3, 1, 0, 0, 0,  0},   //  die roll 4
-							  {15,15,15,15,12,12,10, 9, 8, 7, 5, 3, 2, 0, 0, 0, 0,  0},   //  die roll 5
-							  {15,15,15,15,10,10, 9, 8, 7, 6, 5, 3, 1, 0, 0, 0, 0,  0}};  //  die roll 6
+		int intPhaser4[][] = {{ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55,56,57,58,59,60,61,62,63,64,65,66,67,68,69,70,71,72,73,74,75,76,77,78,79,80,81,82,83,84,85,86,87,88,89,90,91,92,93,94,95,96,97,98,99,100,101},   //  distance
+							  {20,20,20,20,20,20,20,15,12,10, 8, 6, 6, 6, 5, 5, 5, 5, 4, 4, 4, 4, 4, 4, 4, 4, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,  1,  0},   //  die roll 1
+							  {20,20,20,20,20,20,15,12,11, 9, 8, 6, 6, 6, 4, 4, 4, 4, 3, 3, 3, 3, 3, 3, 3, 3, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,  0,  0},   //  die roll 2
+							  {20,20,20,20,15,15,12,11,10, 8, 7, 5, 5, 5, 4, 4, 4, 4, 2, 2, 2, 2, 2, 2, 2, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,  0,  0},   //  die roll 3
+							  {20,20,20,20,15,15,11,10, 9, 8, 6, 4, 4, 4, 3, 3, 3, 3, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,  0,  0},   //  die roll 4
+							  {15,15,15,15,12,12,10, 9, 8, 7, 5, 3, 3, 3, 2, 2, 2, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,  0,  0},   //  die roll 5
+							  {15,15,15,15,10,10, 9, 8, 7, 6, 5, 3, 3, 3, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,  0,  0}};  //  die roll 6
 
 		int startTotal = total;
 		int numberInput = 0;
 		int distanceInput = 0;
-		
+		int effectiveDistance = 0;
+
 		System.out.println();
 		System.out.println("Phaser-IV");
 
@@ -368,28 +429,16 @@ public class WeaponsDamage {
 
 		System.out.print("Distance: ");
 		distanceInput = Driver.getNumberNoCancel(0, 100);
-		distanceInput = SensorScannerMod(distanceInput);
+		effectiveDistance = SensorScannerMod(distanceInput);
 
-		if (distanceInput >=11 && distanceInput <=13) {
-			distanceInput = 11;
-		} else if (distanceInput >= 14 && distanceInput <= 17) {
-			distanceInput = 12;			
-		} else if (distanceInput >= 18 && distanceInput <= 25) {
-			distanceInput = 13;			
-		} else if (distanceInput >= 26 && distanceInput <= 40) {
-			distanceInput = 14;			
-		} else if (distanceInput >= 41 && distanceInput <= 70) {
-			distanceInput = 15;			
-		} else if (distanceInput >= 71 && distanceInput <= 100) {
-			distanceInput = 16;			
-		} else if (distanceInput >= 101) {
-			distanceInput = 17;			
-		}
-		
 		for(int i = 0; i < numberInput; i++) {
 			int die = DamageAllocation.rollDice(1,6);
-			int damage = intPhaser4[die][distanceInput];
-			total += damage;
+			int EWadj[] = GetEWadjustment(die, distanceInput, 100);
+			int EWadjDie = EWadj[0];
+			int EWadjDist = EWadj[1];
+			int damage = intPhaser4[EWadjDie][EWadjDist];	//  EWadj[0]=adj die roll / EWadj[1]=adj distance
+			damage = AdjustDamageForCloak(damage);
+			total = total + damage;
 		}
 		
 		System.out.println();
@@ -400,10 +449,10 @@ public class WeaponsDamage {
 	
 	//  PHOTON TORPEDO
 	public static int photonTorpedo(int total) {
-		int intPhoton[][] = {{0, 1, 2, 3, 4, 5, 6, 7, 8, 9,10,11,12,13,31},   //  distance
-							 {0, 0, 5, 4, 4, 3, 3, 3, 3, 2, 2, 2, 2, 1, 0},   //  Standard (int type = 1)
-							 {0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 4, 4, 4, 3, 0},   //  Proximity (int type = 2) 
-							 {6, 6, 5, 4, 4, 3, 3, 3, 3, 0, 0, 0, 0, 0, 0}};  //  Overloaded (int type = 3)
+		int intPhoton[][] = {{0, 1, 2, 3, 4, 5, 6, 7, 8, 9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31},   //  distance
+							 {0, 0, 5, 4, 4, 3, 3, 3, 3, 2, 2, 2, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0},   //  Standard (int type = 1)
+							 {0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 4, 4, 4, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 0},   //  Proximity (int type = 2) 
+							 {6, 6, 5, 4, 4, 3, 3, 3, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}};  //  Overloaded (int type = 3)
 
 		int startTotal = total;
 		int numberInput = 0;
@@ -411,7 +460,8 @@ public class WeaponsDamage {
 		int photonDamage = 0;
 		int energy = 0;
 		int feedbackDamage = 0;
-
+		int effectiveDistance = 0;
+		
 		System.out.println();
 		System.out.print("Photon Torpedo: ");
 		int weaponTypeNum = GetWeaponType("Type [S]tandard [P]roximity [O]verload", "SPO");
@@ -425,7 +475,7 @@ public class WeaponsDamage {
 
 		System.out.print("Distance: ");
 		distanceInput = Driver.getNumberNoCancel(0, 30);
-		distanceInput = SensorScannerMod(distanceInput);
+		effectiveDistance = SensorScannerMod(distanceInput);
 
 		if (weaponTypeNum == 1) {
 			photonDamage = 8;
@@ -441,16 +491,13 @@ public class WeaponsDamage {
 			System.out.println("photonDamage: " + photonDamage);
 		}
 		
-		if (distanceInput >=13 && distanceInput <=30) {
-			distanceInput = 13;
-		} else if (distanceInput >= 31) {
-			distanceInput = 14;			
-		}
-		
 		for(int i = 0; i < numberInput; i++) {
 			int damage = 0;
 			int die = DamageAllocation.rollDice(1,6);
-			if (die <= intPhoton[weaponTypeNum][distanceInput]) {
+			int EWadj[] = GetEWadjustment(die, effectiveDistance, 30);
+			int EWadjDie = EWadj[0];
+			int EWadjDist = EWadj[1];
+			if (EWadjDie <= intPhoton[weaponTypeNum][EWadjDist]) {
 				System.out.print("HIT!  ");
 				damage = damage + photonDamage;
 				total = total + damage;
@@ -460,7 +507,7 @@ public class WeaponsDamage {
 		}
 		System.out.println();
 
-		if (weaponTypeNum == 3 && distanceInput <= 1) {
+		if (weaponTypeNum == 3 && effectiveDistance <= 1) {
 			feedbackDamage = numberInput * (energy - 4);
 			System.out.println("---------------------------------------------------------");
 			System.out.println("Feedback Damage: " + feedbackDamage + "  (On facing shield of firing ship)");
@@ -520,38 +567,43 @@ public class WeaponsDamage {
 	
 	//  FUSION BEAM
 	public static int fusionBeam(int total) {
-		int intFusion[][] = {{ 0, 1, 2, 3,11,16,25},   //  distance
-							 {13, 8, 6, 4, 3, 2, 0},   //  die roll 1
-							 {11, 8, 5, 3, 2, 1, 0},   //  die roll 2
-							 {10, 7, 4, 2, 1, 0, 0},   //  die roll 3
-							 { 9, 6, 3, 1, 1, 0, 0},   //  die roll 4
-							 { 8, 5, 3, 1, 0, 0, 0},   //  die roll 5
-							 { 8, 4, 2, 0, 0, 0, 0}};  //  die roll 6
+		int intFusion[][] = {{ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25},   //  distance
+							 {13, 8, 6, 4, 4, 4, 4, 4, 4, 4, 4, 3, 3, 3, 3, 3, 2, 2, 2, 2, 2, 2, 2, 2, 2, 0},   //  die roll 1
+							 {11, 8, 5, 3, 3, 3, 3, 3, 3, 3, 3, 2, 2, 2, 2, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0},   //  die roll 2
+							 {10, 7, 4, 2, 2, 2, 2, 2, 2, 2, 2, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},   //  die roll 3
+							 { 9, 6, 3, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},   //  die roll 4
+							 { 8, 5, 3, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},   //  die roll 5
+							 { 8, 4, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}};  //  die roll 6
 
 		int numberInput = 0;
 		int distanceInput = 0;
-		
+		int effectiveDistance = 0;
+	
 		System.out.print("Number:   ");
 		numberInput = Driver.getNumberNoCancel(0, 200);
 
 		System.out.print("Distance: ");
 		distanceInput = Driver.getNumberNoCancel(0, MAXDIST);
-		distanceInput = SensorScannerMod(distanceInput);
+		effectiveDistance = SensorScannerMod(distanceInput);
 
-		if (distanceInput >=3 && distanceInput <=10) {
-			distanceInput = 3;
-		} else if (distanceInput >= 11 && distanceInput <= 15) {
-			distanceInput = 4;			
-		} else if (distanceInput >= 16 && distanceInput <= 24) {
-			distanceInput = 5;			
-		} else if (distanceInput >= 25) {
-			distanceInput = 6;			
+		if (effectiveDistance >=3 && effectiveDistance <=10) {
+			effectiveDistance = 3;
+		} else if (effectiveDistance >= 11 && effectiveDistance <= 15) {
+			effectiveDistance = 4;			
+		} else if (effectiveDistance >= 16 && effectiveDistance <= 24) {
+			effectiveDistance = 5;			
+		} else if (effectiveDistance >= 25) {
+			effectiveDistance = 6;			
 		}
 		
 		int startTotal = total;
 		for(int i = 0; i < numberInput; i++) {
 			int die = DamageAllocation.rollDice(1,6);
-			int damage = intFusion[die][distanceInput];
+			int EWadj[] = GetEWadjustment(die, distanceInput, 24);
+			int EWadjDie = EWadj[0];
+			int EWadjDist = EWadj[1];
+			int damage = intFusion[EWadjDie][EWadjDist];
+			damage = AdjustDamageForCloak(damage);
 			total = total + damage;
 		}
 		
@@ -563,34 +615,32 @@ public class WeaponsDamage {
 	
 	//  FUSION BEAM OVERLOADED (int type 2) / SUICIDE (int type 3)
 	public static int fusionBeamOverloaded(int weaponTypeNum, int total) {
-		int intFusionOver[][] = {{ 0, 1, 2, 3, 9},   //  distance
-							     {19,12, 9, 6, 0},   //  die roll 1
-								 {16,12, 7, 4, 0},   //  die roll 2
-								 {15,10, 6, 3, 0},   //  die roll 3
-								 {13, 9, 4, 1, 0},   //  die roll 4
-								 {12, 7, 4, 1, 0},   //  die roll 5
-								 {12, 6, 3, 0, 0}};  //  die roll 6
+		int intFusionOver[][] = {{ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9},   //  distance
+							     {19,12, 9, 6, 6, 6, 6, 6, 6, 0},   //  die roll 1
+								 {16,12, 7, 4, 4, 4, 4, 4, 4, 0},   //  die roll 2
+								 {15,10, 6, 3, 3, 3, 3, 3, 3, 0},   //  die roll 3
+								 {13, 9, 4, 1, 1, 1, 1, 1, 1, 0},   //  die roll 4
+								 {12, 7, 4, 1, 1, 1, 1, 1, 1, 0},   //  die roll 5
+								 {12, 6, 3, 0, 0, 0, 0, 0, 0, 0}};  //  die roll 6
 
 		int startTotal = total;
 		int numberInput = 0;
 		int distanceInput = 0;
+		int effectiveDistance = 0;
 
 		System.out.print("Number:   ");
 		numberInput = Driver.getNumberNoCancel(0, 200);
 
 		System.out.print("Distance: ");
 		distanceInput = Driver.getNumberNoCancel(0, MAXDIST);
-		distanceInput = SensorScannerMod(distanceInput);
+		effectiveDistance = SensorScannerMod(distanceInput);
 
-		if (distanceInput >=3 && distanceInput <=8) {
-			distanceInput = 3;
-		} else if (distanceInput >= 9) {
-			distanceInput = 4;			
-		}
-		
 		for(int i = 0; i < numberInput; i++) {
 			int die = DamageAllocation.rollDice(1,6);
-			int damage = intFusionOver[die][distanceInput] * (weaponTypeNum-1);  //  Overload=1 (2-1), Suicide=2 (3-1)
+			int EWadj[] = GetEWadjustment(die, effectiveDistance, 8);
+			int EWadjDie = EWadj[0];
+			int EWadjDist = EWadj[1];
+			int damage = intFusionOver[EWadjDie][EWadjDist] * (weaponTypeNum-1);  //  Overload=1 (2-1), Suicide=2 (3-1)
 			total = total + damage;
 		}
 		
@@ -612,19 +662,20 @@ public class WeaponsDamage {
 	
 	//  DISRUPTOR BOLT
 	public static int disruptorBolt(int total) {
-		int intDisruptor[][] = {{0, 1, 2, 3, 4, 5, 6, 7, 8, 9,16,23,31,41},   //  distance
-				  			    {0, 5, 5, 4, 4, 4, 4, 4, 4, 4, 3, 2, 2, 0},   //  Standard (type = 1)
-				  			    {6, 5, 5, 4, 4, 4, 4, 4, 4, 0, 0, 0, 0, 0},   //  Overloaded (type = 2)
-				  			    {0, 5, 5, 4, 4, 4, 4, 4, 4, 4, 3, 3, 2, 0},   //  DERFACS (type = 3)
-				  			    {0, 5, 5, 4, 4, 4, 4, 4, 4, 4, 4, 2, 2, 0},   //  UIM (type = 4)
-				  			    {6, 5, 5, 5, 5, 5, 5, 5, 5, 0, 0, 0, 0, 0}};  //  Overloaded/UIM (type = 5)
+		int intDisruptor[][] = {{0, 1, 2, 3, 4, 5, 6, 7, 8, 9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41},   //  distance
+				  			    {0, 5, 5, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 3, 3, 3, 3, 3, 3, 3, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 0},   //  Standard (type = 1)
+				  			    {6, 5, 5, 4, 4, 4, 4, 4, 4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},   //  Overloaded (type = 2)
+				  			    {0, 5, 5, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 0},   //  DERFACS (type = 3)
+				  			    {0, 5, 5, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 0},   //  UIM (type = 4)
+				  			    {6, 5, 5, 5, 5, 5, 5, 5, 5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}};  //  Overloaded/UIM (type = 5)
 		
-		int intDisruptorDamage[][] = {{ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9,16,23,31,41},   //  distance
-									  { 0, 5, 4, 4, 4, 3, 3, 3, 3, 3, 2, 2, 1, 0},   //  Standard (type = 1)
-									  {10,10, 8, 8, 8, 6, 6, 6, 6, 0, 0, 0, 0, 0}};  //  Overloaded (type = 2)
+		int intDisruptorDamage[][] = {{ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41},   //  distance
+									  { 0, 5, 4, 4, 4, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0},   //  Standard (type = 1)
+									  {10,10, 8, 8, 8, 6, 6, 6, 6, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}};  //  Overloaded (type = 2)
 		
 		int numberInput = 0;
 		int distanceInput = 0;
+		int effectiveDistance = 0;
 		
 		System.out.println();
 		System.out.print("Disruptor Bolt: ");
@@ -635,7 +686,7 @@ public class WeaponsDamage {
 
 		System.out.print("Distance: ");
 		distanceInput = Driver.getNumberNoCancel(0, MAXDIST);
-		distanceInput = SensorScannerMod(distanceInput);
+		effectiveDistance = SensorScannerMod(distanceInput);
 		
 		int damageType = 1;
 		if (weaponTypeNum == 2 || weaponTypeNum == 5) {
@@ -647,30 +698,32 @@ public class WeaponsDamage {
 			System.out.println("damageType: " + damageType);
 		}
 		
-		if (distanceInput >=9 && distanceInput <=15) {
-			distanceInput = 9;
-		} else if (distanceInput >= 16 && distanceInput <= 22) {
-			distanceInput = 10;
-		} else if (distanceInput >= 23 && distanceInput <= 30) {
-			distanceInput = 11;
-		} else if (distanceInput >= 31 && distanceInput <= 40) {
-			distanceInput = 12;
-		} else if (distanceInput >= 41) {
-			distanceInput = 13;
-		}
-		
 		int feedbackDamage = 0;
 		int startTotal = total;
 		for(int i = 0; i < numberInput; i++) {
 			int damage = 0;
 			int die = DamageAllocation.rollDice(1,6);
-//			System.out.println("die: " + die + "\tintPhoton[type][distanceInput]: " + intPhoton[type][distanceInput]);
-			if (die <= intDisruptor[weaponTypeNum][distanceInput]) {
-				damage = damage + intDisruptorDamage[damageType][distanceInput];
-				System.out.print("HIT!  ");
-				total = total + damage;
+			if (targetShip.cloakOn) {
+				if (die <= intDisruptor[weaponTypeNum][effectiveDistance]) {
+					damage = damage + intDisruptorDamage[damageType][effectiveDistance];
+					System.out.print("HIT!  ");
+					total = total + damage;
+				} else {
+					System.out.print("Miss  ");
+				}
 			} else {
-				System.out.print("Miss  ");
+				int EWadj[] = GetEWadjustment(die, effectiveDistance, 40);
+				int EWadjDie = EWadj[0];
+				int EWadjDist = EWadj[1];
+//			System.out.println("die: " + die + "\tintDisruptor[type][distanceInput]: " + intDisruptor[type][distanceInput]);
+				if (EWadjDie <= intDisruptor[weaponTypeNum][EWadjDist]) {
+					damage = damage + intDisruptorDamage[damageType][EWadjDist];
+					System.out.print("HIT!  ");
+					total = total + damage;
+				} else {
+					System.out.print("Miss  ");
+				}
+				
 			}
 		}
 		System.out.println();
@@ -690,17 +743,18 @@ public class WeaponsDamage {
 	
 	//  TRACTOR-REPULSOR BEAM
 	public static int tractorRepulsorBeam(int total) {
-		int intTracRep[][] = {{ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9,10,11,12,13,19,26},   //  distance
-							  {20,20,20,20,20,20,18,18,18,12,12,12,12, 8, 3, 0},   //  die roll 1
-							  {20,20,20,20,20,20,15,15,15, 9, 9, 9, 9, 5, 2, 0},   //  die roll 2
-							  {20,20,20,20,18,18,12,12,12, 6, 6, 6, 6, 3, 1, 0},   //  die roll 3
-							  {20,20,20,20,15,15, 9, 9, 9, 3, 3, 3, 3, 2, 0, 0},   //  die roll 4
-							  {18,18,18,18,12,12, 6, 6, 6, 2, 2, 2, 2, 1, 0, 0},   //  die roll 5
-							  {15,15,15,15, 9, 9, 3, 3, 3, 1, 1, 1, 1, 0, 0, 0}};  //  die roll 6
+		int intTracRep[][] = {{ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26},   //  distance
+							  {20,20,20,20,20,20,18,18,18,12,12,12,12, 8, 8, 8, 8, 8, 8, 3, 3, 3, 3, 3, 3, 3, 0},   //  die roll 1
+							  {20,20,20,20,20,20,15,15,15, 9, 9, 9, 9, 5, 5, 5, 5, 5, 5, 2, 2, 2, 2, 2, 2, 2, 0},   //  die roll 2
+							  {20,20,20,20,18,18,12,12,12, 6, 6, 6, 6, 3, 3, 3, 3, 3, 3, 1, 1, 1, 1, 1, 1, 1, 0},   //  die roll 3
+							  {20,20,20,20,15,15, 9, 9, 9, 3, 3, 3, 3, 2, 2, 2, 2, 2, 2, 0, 0, 0, 0, 0, 0, 0, 0},   //  die roll 4
+							  {18,18,18,18,12,12, 6, 6, 6, 2, 2, 2, 2, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0},   //  die roll 5
+							  {15,15,15,15, 9, 9, 3, 3, 3, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}};  //  die roll 6
 
 		int numberInput = 0;
 		int distanceInput = 0;
-		
+		int effectiveDistance = 0;
+
 		System.out.println();
 		System.out.println("Tractor-Repulsor Beam");
 
@@ -709,19 +763,15 @@ public class WeaponsDamage {
 
 		System.out.print("Distance: ");
 		distanceInput = Driver.getNumberNoCancel(0, MAXDIST);
-		distanceInput = SensorScannerMod(distanceInput);
+		effectiveDistance = SensorScannerMod(distanceInput);
 
-		if (distanceInput >=13 && distanceInput <=18) {
-			distanceInput = 13;
-		} else if (distanceInput >= 19 && distanceInput <= 25) {
-			distanceInput = 14;			
-		} else if (distanceInput >= 26) {
-			distanceInput = 15;			
-		}
 		int startTotal = total;
 		for(int i = 0; i < numberInput; i++) {
 			int die = DamageAllocation.rollDice(1,6);
-			int damage = intTracRep[die][distanceInput];
+			int EWadj[] = GetEWadjustment(die, distanceInput, 25);
+			int EWadjDie = EWadj[0];
+			int EWadjDist = EWadj[1];
+			int damage = intTracRep[EWadjDie][EWadjDist];
 //			System.out.println("die: " + die + "distanceInput: " + distanceInput + "\tintTracRep[die][distanceInput]: " + intTracRep[die][distanceInput]);
 			total = total + damage;
 		}
@@ -801,11 +851,11 @@ public class WeaponsDamage {
 	
 	//  HELLBORE
 	public static int hellbore(int total) {
-		int hellbore[][] = {{ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9,16,23,41},   //  distance
-						    {20,20,17,15,15,13,13,13,13,10, 8, 4, 0},   //  Base (Standard) (int type = 1)
-							{30,30,25,22,22,19,19,19,19, 0, 0, 0, 0},   //  Overloaded (int type = 2)
-						    {10,10, 9, 8, 8, 7, 7, 7, 7, 5, 4, 2, 0},   //  Direct-Fire (int type = 3)
-							{11,11,10, 9, 9, 8, 8, 8, 8, 7, 6, 5, 0}};  //  roll 2d6 <= this number is a hit 
+		int hellbore[][] = {{ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41},   //  distance
+						    {20,20,17,15,15,13,13,13,13,10,10,10,10,10,10,10, 8, 8, 8, 8, 8, 8, 8, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 0},   //  Base (Standard) (int type = 1)
+							{30,30,25,22,22,19,19,19,19, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},   //  Overloaded (int type = 2)
+						    {10,10, 9, 8, 8, 7, 7, 7, 7, 5, 5, 5, 5, 5, 5, 5, 4, 4, 4, 4, 4, 4, 4, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 0},   //  Direct-Fire (int type = 3)
+							{11,11,10, 9, 9, 8, 8, 8, 8, 7, 7, 7, 7, 7, 7, 7, 6, 6, 6, 6, 6, 6, 6, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 0}};  //  roll 2d6 <= this number is a hit 
 
 		int numberInput = 0;
 		int distanceInput = 0;
@@ -821,21 +871,14 @@ public class WeaponsDamage {
 		distanceInput = Driver.getNumberNoCancel(0, MAXDIST);
 		distanceInput = SensorScannerMod(distanceInput);
 
-		if (distanceInput >=9 && distanceInput <=15) {
-			distanceInput = 9;
-		} else if (distanceInput >= 16 && distanceInput <= 22) {
-			distanceInput = 10;			
-		} else if (distanceInput >= 23 && distanceInput <= 40) {
-			distanceInput = 11;			
-		} else if (distanceInput >= 41) {
-			distanceInput = 12;			
-		}
-		
 		int startTotal = total;
 		for(int i = 0; i < numberInput; i++) {
 			int die = DamageAllocation.rollDice(2,6);
+			int EWadj[] = GetEWadjustment(die, distanceInput, 40);
+			int EWadjDie = EWadj[0];
+			int EWadjDist = EWadj[1];
 //			System.out.println("Die roll: " + die);
-			if (die <= hellbore[4][distanceInput]) {
+			if (EWadjDie <= hellbore[4][EWadjDist]) {
 				System.out.print("HIT!  ");
 				int damage = hellbore[weaponTypeNum][distanceInput];
 //				System.out.println("Damage: " + hellbore[type][distanceInput]);
