@@ -18,71 +18,6 @@ public class ShipSetup {
 		}
 	}
 	
-	public static void PrintCurrentShipsInGame() {
-		ShipSetup.SortCurrentShipyard();														// Always SORT ships before printing to screen
-
-		System.out.println("--------------------------------------------------------------------------");
-		System.out.println("     \t\t\t\t\tHexes  \tH.E.T.\t");
-		System.out.println("     \t\t\t\tTurn   Before\tBreak\tSensor\tScanner");
-		System.out.println("     Ship Name\t\tSpeed\tMode   Turning\tDown\tLock-On\tDist Mod");
-		System.out.println("--------------------------------------------------------------------------");
-		
-		LockOnCalculations();    // Roll for Sensor Lock-On and determine Scanner resolution number 
-		
-		for (int i = 1; i <= Driver.currentGameYard.numShips; i++) {
-
-			Starship ship = Driver.currentGameYard.list[i-1];
-			
-			int HexMinToTurn = PhaseCalculation.FindHexMinToTurn(ship.turnMode, ship.speed);
-			String HexMin = Integer.toString(HexMinToTurn);
-			if (ship.turnMode =="*" ) {
-				HexMin = "*";
-			}
-
-			String extraSpace = getExtraSpaces(i, 2);
-			
-			String spacer = "";
-			if (ship.name.length() < 18) {
-				for (int x = 1; x <= 18-ship.name.length(); x++) {
-					spacer = spacer + " ";
-				}
-			}
-			System.out.print(extraSpace + (i) + ")  " + ship.name + spacer);
-			
-			extraSpace = getExtraSpaces(i-1, 1);
-	        
-			// Sets up the display variable for 
-			// whether or not ship is locked on 
-			String locked = "Yes";
-			if(ship.lockedOn == false) {
-				if(ship.hasSSD == false) 
-					locked = "-";
-				else 
-					locked = "No";
-			}
-			int sensorIndex = 0;
-			int scannerIndex = 0;
-			if (ship.hasSSD == true) {
-				sensorIndex = ship.ssd[22].numOfThisPart - ship.ssd[22].remaining;
-				scannerIndex = ship.ssd[23].numOfThisPart - ship.ssd[23].remaining;
-			}
-			
-			System.out.print("\t " + extraSpace + ship.speed + "\t " + ship.turnMode + "\t  " 
-					+ HexMin + "\t " + ship.breakDown + "\t" + locked);
-			
-			if(ship.hasSSD) {
-				System.out.print("\t" + ship.scannerNums[scannerIndex]);
-			}else {
-				System.out.print("\t- ");
-			}
-			if (ship.speed == 0) {
-				System.out.print("\t<--- Speed is ZERO");
-			}
-			System.out.println();
-		}
-
-	}
-	
 	public static int GetAdjustedInput(int printSpecific, String whatToPrint, String whatAspect1) {
 		int inputNum = Driver.getNumber(0, printSpecific);
 		
@@ -265,38 +200,6 @@ public class ShipSetup {
 		return printNum;
 	}
 	
-	public static void LockOnCalculations() {
-		
-		int die = 0;
-		/*
-		for(int i = 0; i < Driver.currentGameYard.numShips; i++) {
-			Starship ship = Driver.currentGameYard.list[i];
-			boolean hasSSD = ship.hasSSD;
-			Part[] ssd = ship.ssd;
-			Part sensor = ssd[22];
-			int remainingSensors = sensor.remaining;
-			
-			if
-		}
-		*/
-		
-		for(int i = 0; i < Driver.currentGameYard.numShips; i++) {
-			//  SENSOR LOCK-ON OR NOT
-//			int indexOfNextSensor = Driver.currentGameYard.list[i].ssd[22].numOfThisPart - Driver.currentGameYard.list[i].ssd[22].remaining;
-			
-			if(Driver.currentGameYard.list[i].hasSSD && Driver.currentGameYard.list[i].ssd[22].remaining > 0) {
-				//number = Driver.currentGameYard.list[i].ssd[22].numOfThisPart - Driver.currentGameYard.list[i].ssd[22].remaining;
-				die = DamageAllocation.rollDice(1,6);
-				int minNeededRoll = Driver.currentGameYard.list[i].sensorNums[Driver.currentGameYard.list[i].ssd[22].numOfThisPart - Driver.currentGameYard.list[i].ssd[22].remaining];
-				Driver.currentGameYard.list[i].lockedOn = false;
-				if (die <= minNeededRoll) {
-					Driver.currentGameYard.list[i].lockedOn = true;
-				}
-			}
-		}
-		
-	}
-
 	public static String getExtraSpaces (int num, int maxDigits) {
 
 		String extraSpace = "";
