@@ -1,8 +1,6 @@
 
 import java.math.*;
 
-import javax.swing.plaf.synth.SynthSeparatorUI;
-
 public class MonsterStuff {
 
 	public static Starship currentMonster;
