@@ -95,7 +95,7 @@ public class MonsterStuff {
 		System.out.println();
 		System.out.println("Planet Crusher does " + damage + " points of damage.  Apply as normal weapon damage.");
 
-		DamageAllocation.DamageAlloc(damage);
+		DamageAllocation.DamageAlloc(-1, damage);
 		damage = 0;
 
 		return damage;
@@ -111,7 +111,7 @@ public class MonsterStuff {
 			System.out.println();
 			System.out.println("Space Amoeba does " + damage + " points of damage.  Apply as normal weapon damage.");
 		
-			DamageAllocation.DamageAlloc(damage);
+			DamageAllocation.DamageAlloc(-1, damage);
 			damage = 0;
 			}
 		
@@ -124,7 +124,7 @@ public class MonsterStuff {
 		System.out.println();
 		System.out.println("Moray Eel does " + damage + " points of damage.  Damage BYPASSES shields.");
 
-		DamageAllocation.DamageAlloc(damage);
+		DamageAllocation.DamageAlloc(-1, damage);
 		damage = 0;
 
 		return damage;
@@ -157,7 +157,7 @@ public class MonsterStuff {
 		System.out.println();
 		System.out.println("Sunsnake does " + damage + " points of damage.  Apply as normal weapon damage.");
 
-		DamageAllocation.DamageAlloc(damage);
+		DamageAllocation.DamageAlloc(-1, damage);
 		damage = 0;
 
 		return damage;
