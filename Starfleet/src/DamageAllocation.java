@@ -41,8 +41,8 @@ public class DamageAllocation {
 		
 	public static Starship currentShip;
 	
-	public static void DamageAlloc(int num) {   //  -1 coming from Main Menu Method / >0 coming from Weapons Damage Method
-		
+	public static void DamageAlloc(int shipNumTarget, int num) {	//  num = -1, coming from Main Menu Method / num > 0 coming from Weapons Damage Method
+																	//  shipNumTarget = -1, no target assigned yet
 		if(num == 0) {
 			System.out.println("No damage to allocate.");
 			return;
@@ -57,22 +57,25 @@ public class DamageAllocation {
 		System.out.println("|                     DAMAGE ALLOCATION PROCEDURE                          |");
 		System.out.println("|==========================================================================|");
 		
-		
-		System.out.println();
-		int print = ShipSetup.PrintCurrentThingsInGame("SHIP", "");
-		System.out.println();
-		System.out.print("Deal damage to which ship? [RETURN to cancel] ");
-		int input = -5;
-		input = ShipSetup.GetAdjustedInput(print, "SHIP", "");
-		
-		if(input == -1) {
-			return;
+		if(shipNumTarget == -1) {
+			System.out.println();
+			int print = ShipSetup.PrintCurrentThingsInGame("SHIP SHUTTLE FIGHTER", "");
+			System.out.println();
+			System.out.print("Deal damage to which ship? [RETURN to cancel] ");
+			shipNumTarget = ShipSetup.GetAdjustedInput(print, "SHIP SHUTTLE FIGHTER", "");
+			
+			if(shipNumTarget == -1) {
+				return;
+			}
+		} else {
+			System.out.println();
+			System.out.print("Dealing damage to " + Driver.currentGameYard.list[shipNumTarget].name);
+			System.out.println();
 		}
-		
 //		System.out.println("input: " + input);
 //		System.out.println("ship being damaged: " + Driver.currentGameYard.list[input].name);
 		
-		currentShip = Driver.currentGameYard.list[input];
+		currentShip = Driver.currentGameYard.list[shipNumTarget];
 		
 		if(currentShip.race == "Monster") {				//  If defending object is a monster then pass through damage to "monster damage" method
 			System.out.println();
@@ -244,7 +247,7 @@ public class DamageAllocation {
 						System.out.print("=== " + currentShip.name + " has been DESTROYED!! === ");
 						System.out.println();
 						System.out.println();
-						Driver.currentGameYard.removeShipFromShipyard(input+1);
+						Driver.currentGameYard.removeShipFromShipyard(shipNumTarget+1);
 						return;
 					}else {
 						System.out.print("=== FINAL " + Starship.partNames[number] + " destroyed. === ");
