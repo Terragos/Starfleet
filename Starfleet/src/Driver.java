@@ -211,8 +211,11 @@ public class Driver {
 	
 	
 	public static void RemoveShip(boolean print) {
-		System.out.println("Driver.currentGameYard.numShips: " + Driver.currentGameYard.numShips);
+		if (Driver.TESTING) {
+			System.out.println("Driver.currentGameYard.numShips: " + Driver.currentGameYard.numShips);
+		}
 		if (print == true) {
+			System.out.println();
 			ShipSetup.PrintCurrentThingsInGame("Ship Monster Other Torpedo Drone Shuttle Fighter", "");
 		}
 		System.out.println();
@@ -221,7 +224,7 @@ public class Driver {
 	
 		removeInput = Driver.getNumber(1, Driver.currentGameYard.numShips);				//  Get a new input
 		if (removeInput > 0) {
-			System.out.print("Are you sure you want to remove: " + Driver.currentGameYard.list[removeInput-1].name);
+			System.out.print("Are you sure you want to remove " + Driver.currentGameYard.list[removeInput-1].name + "? ");
 			String yesOrNo = Driver.getInput("YN");
 			if (yesOrNo.contentEquals("Y")) {
 				Driver.currentGameYard.removeShipFromShipyard(removeInput);
@@ -561,7 +564,7 @@ public class Driver {
 		System.out.println("|   [H]igh Energy Turns (C6.0)              [A]nti-Drone & Drone (E5.0 & FD1.0)   |");
 		System.out.println("|   [R]epair Systems (G17.0)                [P]robes (G5.0)                       |");
 		System.out.println("|   [T]actical Maneuvers (C5.0)             [L]ife Support  (B3.3)                |");
-		System.out.println("|   [C]hanging Speed (C2.2/C12.0)           [L]ife Support  (B3.3)                |");
+		System.out.println("|   [C]hanging Speed (C2.2/C12.0)           Ad[M]in Shuttles                      |");
 		System.out.println("|=================================================================================|");
 		System.out.println("|                         RETURN to return to Main Menu                           |");
 		System.out.println("|=================================================================================|");
@@ -569,7 +572,7 @@ public class Driver {
 		System.out.print("What rule would you like to be reminded of? ");
 
 		while (cont) {
-			String userInput2 = Driver.getInput("RAWBSHDPTLC");
+			String userInput2 = Driver.getInput("RAWBSHDPTLCM");
 
 			if (userInput2.equalsIgnoreCase("W")) {
 				System.out.println("|=================================================================================|");
@@ -634,6 +637,19 @@ public class Driver {
 				System.out.println("|  FD3.5  \"E\":       8 (Type-IS)      4 per turn      8 impulses apart            |");
 				System.out.println("|  FD3.6  \"F\":            4           1 per turn            -                     |");
 				System.out.println("|  FD3.7  \"G\":                                                                    |");
+				System.out.println("|=================================================================================|");
+				
+			} else if (userInput2.equalsIgnoreCase("M")) {
+				System.out.println("|=================================================================================|");
+				System.out.println("|                              ADMIN SHUTTLES (J2.0)                              |");
+				System.out.println("|---------------------------------------------------------------------------------|");
+				System.out.println("|  1 Admin Shuttle per SSD box                                                    |");
+				System.out.println("|  Cost 3+3+3 (3 units each turn for 3 turns) from Warp Energy                    |");
+				System.out.println("|  Hold Cost: 1 from anywhere                                                     |");
+				System.out.println("|  Damage: 18                                                                     |");
+				System.out.println("|  Max speed: 6                                                                   |");
+				System.out.println("|  1 Phaser III                                                                   |");
+				System.out.println("|  6 hits to destroy                                                              |");
 				System.out.println("|=================================================================================|");
 				
 			} else if (userInput2.equalsIgnoreCase("C")) {
