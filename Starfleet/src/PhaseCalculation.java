@@ -73,7 +73,7 @@ public class PhaseCalculation {
 
 				boolean cont3 = true;
 				while (cont3) {
-					String userInput = Driver.getInput("WTDSFRAIC");
+					String userInput = Driver.getInput("WTDSFRAICE");
 					if (userInput.contentEquals("")) {
 						cont3 = false;
 						
@@ -94,6 +94,11 @@ public class PhaseCalculation {
 					} else if (userInput.equalsIgnoreCase("C")) {						
 						ToggleCloakShip();
 						
+					} else if (userInput.equalsIgnoreCase("E")) {						
+						GetElectronicWarfareValues("ONE");
+						System.out.println();
+						PrintImpulseHeader();
+						
 					} else if (userInput.equalsIgnoreCase("D")) {
 						AddDrone();
 						PrintImpulseHeader();
@@ -109,6 +114,7 @@ public class PhaseCalculation {
 					} else if (userInput.equalsIgnoreCase("R")) {                   // Remove destroyed ship/monster
 						System.out.println();
 						Driver.RemoveShip(true);
+						System.out.println();
 						PrintImpulseHeader();
 						
 					} else if (userInput.equalsIgnoreCase("I")) {  					// Toggle ALL impulse or not
@@ -282,7 +288,7 @@ public class PhaseCalculation {
 				ModifyShipSpeeds();
 				
 			} else if (userInput.equalsIgnoreCase("E")) {
-				GetElectronicWarfareValues();
+				GetElectronicWarfareValues("ALL");
 				
 			} else if (userInput.equalsIgnoreCase("R")) {
 				Driver.RemoveShip(false);
@@ -317,30 +323,68 @@ public class PhaseCalculation {
 			System.out.print("No ships have an ECM/ECCM assigned.  Would you like to change this?");
 			String yesOrNo = Driver.getInputNoCancel("YN");
 			if (yesOrNo.contentEquals("Y")) {
-				GetElectronicWarfareValues();
+				GetElectronicWarfareValues("ALL");
 			}
 			System.out.println();
 		}
 	}
 	
-	public static void GetElectronicWarfareValues() {
+	public static void GetElectronicWarfareValues(String howMany) {
 
-		System.out.println("Type in ECM and ECCM for each ship.  RETURN to go to next ship.  (Current speed)");
+		boolean cont = true;
 		
-		for (int i = 0; i < Driver.currentGameYard.numShips; i++) {
-			if (Driver.currentGameYard.list[i].kindOfShip == Starship.Ship.STARSHIP) {
+		if (howMany == "ONE") {
+			
+			System.out.println();
+			int print = ShipSetup.PrintCurrentThingsInGame("SHIP MONSTER SHUTTLE FIGHTER DRONE", "EW");
+			
+			while (cont) {
 				System.out.println();
-				System.out.print(Driver.currentGameYard.list[i].name + " - ECM (" + (int) Driver.currentGameYard.list[i].ECM + "): ");
-				int ECMInput = Driver.getNumber(0, 100);
-				if (ECMInput >= 0) {
-					Driver.currentGameYard.list[i].ECM = ECMInput;
-				}
+				System.out.print("Change ECM/ECCM for which ship? [RETURN to cancel] ");
+				int shipNumEWChange = -5;
 				
-				String SpacesOfNameLength = PrintSpaces(Driver.currentGameYard.list[i].name);
-				System.out.print(SpacesOfNameLength + "   ECCM (" + (int) Driver.currentGameYard.list[i].ECCM + "): ");
-				int ECCMInput = Driver.getNumber(0, 100);
-				if (ECCMInput >= 0) {
-					Driver.currentGameYard.list[i].ECCM = ECCMInput;
+				shipNumEWChange = ShipSetup.GetAdjustedInput(print, "SHIP MONSTER SHUTTLE FIGHTER DRONE", "EW");
+				
+				if (shipNumEWChange >= 0) {
+
+					System.out.println();
+					System.out.print(Driver.currentGameYard.list[shipNumEWChange].name + " - ECM (" + (int) Driver.currentGameYard.list[shipNumEWChange].ECM + "): ");
+					int ECMInput = Driver.getNumber(0, 100);
+					if (ECMInput >= 0) {
+						Driver.currentGameYard.list[shipNumEWChange].ECM = ECMInput;
+					}
+					
+					String SpacesOfNameLength = PrintSpaces(Driver.currentGameYard.list[shipNumEWChange].name);
+					System.out.print(SpacesOfNameLength + "   ECCM (" + (int) Driver.currentGameYard.list[shipNumEWChange].ECCM + "): ");
+					int ECCMInput = Driver.getNumber(0, 100);
+					if (ECCMInput >= 0) {
+						Driver.currentGameYard.list[shipNumEWChange].ECCM = ECCMInput;
+					}
+					
+				} else if (shipNumEWChange == -1) {
+					cont = false;
+				}
+			}
+			
+		} else {		//  howMany = "ALL"
+		
+			System.out.println("Type in ECM and ECCM for each ship.  RETURN to go to next ship.  (Current speed)");
+			
+			for (int i = 0; i < Driver.currentGameYard.numShips; i++) {
+				if (Driver.currentGameYard.list[i].kindOfShip == Starship.Ship.STARSHIP) {
+					System.out.println();
+					System.out.print(Driver.currentGameYard.list[i].name + " - ECM (" + (int) Driver.currentGameYard.list[i].ECM + "): ");
+					int ECMInput = Driver.getNumber(0, 100);
+					if (ECMInput >= 0) {
+						Driver.currentGameYard.list[i].ECM = ECMInput;
+					}
+					
+					String SpacesOfNameLength = PrintSpaces(Driver.currentGameYard.list[i].name);
+					System.out.print(SpacesOfNameLength + "   ECCM (" + (int) Driver.currentGameYard.list[i].ECCM + "): ");
+					int ECCMInput = Driver.getNumber(0, 100);
+					if (ECCMInput >= 0) {
+						Driver.currentGameYard.list[i].ECCM = ECCMInput;
+					}
 				}
 			}
 		}
@@ -596,7 +640,7 @@ public class PhaseCalculation {
 		for (int i = 1; i <= ((17 + shipTotal)-29)/2 - 2; i++) {     //  CENTERS TEXT
 			System.out.print(" ");
 		}
-		System.out.print("[W][T][D][S][F][R][A][I]");		
+		System.out.print("[W/T/D/S/F/R/A/I/E]");		
 
 		System.out.println();
 		System.out.print("=============");
