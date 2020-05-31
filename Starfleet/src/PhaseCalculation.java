@@ -84,8 +84,7 @@ public class PhaseCalculation {
 						
 					} else if (userInput.equalsIgnoreCase("A")) {						
 						System.out.println();
-						ShipSetup.PrintCurrentThingsInGame("Ship Monster Other Torpedo Drone Shuttle Fighter", "Speed");
-						ModifyShipSpeeds();
+						ModifySingleShipSpeed();
 						System.out.println();
 						PrintImpulseHeader();
 						
@@ -171,7 +170,7 @@ public class PhaseCalculation {
 				monsterDamage = MonsterStuff.MonsterDamage();
 				System.out.println();
 				if (monsterDamage > 0) {
-					DamageAllocation.DamageAlloc(monsterDamage);
+					DamageAllocation.DamageAlloc(-1, monsterDamage);
 				}
 			}
 		}
@@ -350,17 +349,96 @@ public class PhaseCalculation {
 	
 	public static void ModifyShipSpeeds() {
 
-		System.out.println("Type in new speeds for each ship.  RETURN to go to next ship.  (Current speed)");
+		int currentSpeed = 0;
+		String currentName = "";
+		int minSpeed = 0;
+		int maxSpeed = 0;
+		
+		System.out.println("Type in new speeds for each ship.  RETURN to go to next ship.");
+		System.out.println();
 		
 		for (int i = 0; i < Driver.currentGameYard.numShips; i++) {
-			System.out.print("New speed for " + Driver.currentGameYard.list[i].name + " (" + Driver.currentGameYard.list[i].speed + "): ");
-			int speedInput = Driver.getNumber(0, 32);
+			
+			currentSpeed = Driver.currentGameYard.list[i].speed;
+			currentName = Driver.currentGameYard.list[i].name;
+			
+			if (currentSpeed + 10 >= currentSpeed * 2) {
+				maxSpeed = currentSpeed + 10;
+			} else {
+				maxSpeed = currentSpeed * 2;
+			}
+			if (maxSpeed > 31) {
+				maxSpeed = 31;
+			}
+			
+			if (currentSpeed - 4 <= currentSpeed / 2) {
+				minSpeed = currentSpeed - 4;
+			} else {
+				minSpeed = currentSpeed / 2;
+			}
+			if (minSpeed < 0) {
+				minSpeed = 0;
+			}
+
+			System.out.print("New speed for " + currentName + " [EmerStop 0, Max " + minSpeed + ", Min " + maxSpeed + "] (Current: " + currentSpeed + "): ");
+			int speedInput = Driver.getNumber(0, 31);
 			if (speedInput >= 0) {
 				Driver.currentGameYard.list[i].speed = speedInput;
 				Driver.currentGameYard.list[i].spi = (double) Driver.currentGameYard.list[i].speed / (double) Driver.numImpulses;			
 			}
 		}
 		
+		ShipSetup.SortCurrentShipyard();
+	}
+	
+	public static void ModifySingleShipSpeed() {
+		boolean cont = true;
+		int currentSpeed = 0;
+		String currentName = "";
+		int minSpeed = 0;
+		int maxSpeed = 0;
+		
+		int print = ShipSetup.PrintCurrentThingsInGame("SHIP MONSTER SHUTTLE FIGHTER DRONE", "SPEED");
+		
+		while (cont) {
+			System.out.println();
+			System.out.print("Change speed for which ship? [RETURN to cancel] ");
+			int shipNumSpeedChange = -5;
+			
+			shipNumSpeedChange = ShipSetup.GetAdjustedInput(print, "SHIP MONSTER SHUTTLE FIGHTER DRONE", "SPEED");
+			
+			if (shipNumSpeedChange >= 0) {
+				currentSpeed = Driver.currentGameYard.list[shipNumSpeedChange].speed;
+				currentName = Driver.currentGameYard.list[shipNumSpeedChange].name;
+				
+				if (currentSpeed + 10 >= currentSpeed * 2) {
+					maxSpeed = currentSpeed + 10;
+				} else {
+					maxSpeed = currentSpeed * 2;
+				}
+				if (maxSpeed > 31) {
+					maxSpeed = 31;
+				}
+				
+				if (currentSpeed - 4 <= currentSpeed / 2) {
+					minSpeed = currentSpeed - 4;
+				} else {
+					minSpeed = currentSpeed / 2;
+				}
+				if (minSpeed < 0) {
+					minSpeed = 0;
+				}
+				
+				System.out.print("New speed for " + currentName + " [EmerStop 0, Max " + minSpeed + ", Min " + maxSpeed + "] (Current: " + currentSpeed + "): ");
+				int speedInput = Driver.getNumber(0, 31);
+				if (speedInput >= 0) {
+					Driver.currentGameYard.list[shipNumSpeedChange].speed = speedInput;
+					Driver.currentGameYard.list[shipNumSpeedChange].spi = (double) Driver.currentGameYard.list[shipNumSpeedChange].speed / (double) Driver.numImpulses;			
+				}
+			} else {
+				cont = false;
+			}
+		}
 		ShipSetup.SortCurrentShipyard();
 	}
 	
@@ -762,7 +840,7 @@ public class PhaseCalculation {
 		if (shuttleName.length() > 0) {
 			shuttleName = capFirstLetter(shuttleName);
 			System.out.print("Shuttle Speed: ");
-			int shuttleSpeed = Driver.getNumber(-1, 6);
+			int shuttleSpeed = Driver.getNumberNoCancel(0, 6);
 			
 			Starship shuttle = new Starship(Starship.Ship.SHUTTLE, shuttleSpeed, shuttleName, "Shuttle");
 			Driver.currentGameYard.addShipToShipyard(shuttle);
@@ -777,7 +855,7 @@ public class PhaseCalculation {
 		if (fighterName.length() > 0) {
 			fighterName = capFirstLetter(fighterName);
 			System.out.print("Fighter Speed: ");
-			int fighterSpeed = Driver.getNumber(-1, 32);
+			int fighterSpeed = Driver.getNumberNoCancel(0, 32);
 			
 			Starship fighter = new Starship(Starship.Ship.FIGHTER, fighterSpeed, fighterName, "Fighter");
 			Driver.currentGameYard.addShipToShipyard(fighter);
