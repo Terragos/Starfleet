@@ -57,6 +57,9 @@ public class ShipSetup {
 
 		whatToPrint = whatToPrint.toUpperCase();
 		whatAspect1 = whatAspect1.toUpperCase();
+		if (whatAspect1.contains("EW")) {
+			whatAspect1 = "ECM / ECCM";
+		}
 //		whatAspect2 = whatAspect2.toUpperCase();
 		
 		ShipSetup.SortCurrentShipyard();
@@ -98,8 +101,13 @@ public class ShipSetup {
 						if (ship.speed == 0) {
 							System.out.print("\t  <--- SPEED IS ZERO!");
 						}
-					} else if (whatAspect1.contains("BPV"))
+					
+					} else if (whatAspect1.contains("BPV")) {
 						System.out.print("\t" + ship.BPV);
+
+					} else if (whatAspect1.contains("ECM")) {
+						System.out.print("\t  " + (int) ship.ECM + " / " + (int) ship.ECCM);
+					}
 					
 					System.out.println();
 				}
@@ -115,8 +123,13 @@ public class ShipSetup {
 						if (ship.speed == 0) {
 							System.out.print("\t  <--- SPEED IS ZERO!");
 						}
-					} else if (whatAspect1.contains("HEALTH"))
+
+					} else if (whatAspect1.contains("HEALTH")) {
 						System.out.print("\t" + ship.ssd[24].remaining);
+
+					} else if (whatAspect1.contains("ECM")) {
+						System.out.print("\t  " + (int) ship.ECM + " / " + (int) ship.ECCM);
+					}
 					
 					System.out.println();
 				}
@@ -129,6 +142,7 @@ public class ShipSetup {
 					
 					if (whatAspect1.contains("SPEED")) {
 						System.out.print("\t" + ship.speed);
+
 					} else if (whatAspect1.contains("HEALTH"))
 						System.out.print("\t" + ship.ssd[24].remaining);
 					
@@ -156,6 +170,10 @@ public class ShipSetup {
 					
 					if (whatAspect1.contains("SPEED")) {
 						System.out.print("\t" + ship.speed);
+
+					} else if (whatAspect1.contains("ECM")) {
+						System.out.print("\t  " + (int) ship.ECM + " / " + (int) ship.ECCM);
+
 					}
 					
 					System.out.println();
@@ -169,6 +187,10 @@ public class ShipSetup {
 					
 					if (whatAspect1.contains("SPEED")) {
 						System.out.print("\t" + ship.speed);
+
+					} else if (whatAspect1.contains("ECM")) {
+						System.out.print("\t  " + (int) ship.ECM + " / " + (int) ship.ECCM);
+					
 					}
 					
 					System.out.println();
@@ -182,13 +204,15 @@ public class ShipSetup {
 					
 					if (whatAspect1.contains("SPEED")) {
 						System.out.print("\t" + ship.speed);
+
+					} else if (whatAspect1.contains("ECM")) {
+						System.out.print("\t  " + (int) ship.ECM + " / " + (int) ship.ECCM);
+
 					}
 					
 					System.out.println();
 				}
 			}
-			
-
 		}
 		
 		if (whatAspect1 == "") {
