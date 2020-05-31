@@ -3,7 +3,7 @@ import java.math.*;
 
 public class Driver {
 
-	public static boolean TESTING = true;
+	public static boolean TESTING = false;
 	public static int labResearchAquired = 0;
 	public static int labResearchRequired = 0;
 	public static int MonsterScenario = 0;
@@ -104,7 +104,7 @@ public class Driver {
 			} else if (userInput.equalsIgnoreCase("M")) {
 				MonsterManagementMenu();
 			} else if (userInput.equalsIgnoreCase("D")) {
-				DamageAllocation.DamageAlloc(-1);
+				DamageAllocation.DamageAlloc(-1, -1);
 			} else if (userInput.equalsIgnoreCase("S")) {
 				defaultYard.displayShipyardMenu(-1);
 			} else if (userInput.equalsIgnoreCase("R")) {
@@ -238,11 +238,11 @@ public class Driver {
 			System.out.println("|=================================================================================|");
 			System.out.println("|                            MONSTER MANAGEMENT MENU                              |");
 			System.out.println("|=================================================================================|");
-			System.out.println("|            [A]djust (or View) Monster Hit Points                                |");
-			System.out.println("|            [M]odify Monster Hit Points Based on Ship BPV Adjustment             |");
-			System.out.println("|            [L]ab Research Check                                                 |");
-			System.out.println("|            [D]amage from Monster (then directly to Damage Allocation)           |");
-			System.out.println("|            [R]oll for Victory Conditions                                        |");
+			System.out.println("|       [A]djust (or View) Monster Hit Points                                     |");
+			System.out.println("|       [D]amage to a ship from Monster (then directly to Damage Allocation)      |");
+			System.out.println("|       [M]odify Monster Hit Points Based on Ship BPV Adjustment                  |");
+			System.out.println("|       [L]ab Research Check                                                      |");
+			System.out.println("|       [R]oll for Victory Conditions                                             |");
 			System.out.println("|=================================================================================|");
 			System.out.println("|                         RETURN to return to Main Menu                           |");
 			System.out.println("|=================================================================================|");
@@ -257,7 +257,7 @@ public class Driver {
 				MonsterStuff.MonsterScenarioCheck();
 			} else if (userInput2.equalsIgnoreCase("D")) {
 				monsterDamage = MonsterStuff.MonsterDamage();
-				DamageAllocation.DamageAlloc(monsterDamage);
+				DamageAllocation.DamageAlloc(-1, monsterDamage);
 			} else if (userInput2.equalsIgnoreCase("R")) {
 				MonsterStuff.RollForVictoryConditions();
 			} else if (userInput2.equalsIgnoreCase("")) {
@@ -561,6 +561,7 @@ public class Driver {
 		System.out.println("|   [H]igh Energy Turns (C6.0)              [A]nti-Drone & Drone (E5.0 & FD1.0)   |");
 		System.out.println("|   [R]epair Systems (G17.0)                [P]robes (G5.0)                       |");
 		System.out.println("|   [T]actical Maneuvers (C5.0)             [L]ife Support  (B3.3)                |");
+		System.out.println("|   [C]hanging Speed (C2.2/C12.0)           [L]ife Support  (B3.3)                |");
 		System.out.println("|=================================================================================|");
 		System.out.println("|                         RETURN to return to Main Menu                           |");
 		System.out.println("|=================================================================================|");
@@ -568,7 +569,7 @@ public class Driver {
 		System.out.print("What rule would you like to be reminded of? ");
 
 		while (cont) {
-			String userInput2 = Driver.getInput("RAWBSHDPTL");
+			String userInput2 = Driver.getInput("RAWBSHDPTLC");
 
 			if (userInput2.equalsIgnoreCase("W")) {
 				System.out.println("|=================================================================================|");
@@ -604,6 +605,7 @@ public class Driver {
 				System.out.println("|        ESG                                                                      |");
 				System.out.println("| J2.22  Admin Shuttles (Suicide) 3+3+3 Warp Only        1 Any Src                |");
 				System.out.println("|=================================================================================|");
+				
 			} else if (userInput2.equalsIgnoreCase("A")) {
 				System.out.println("|=================================================================================|");
 				System.out.println("|                                ANTI-DRONES (E5.0)                               |");
@@ -633,6 +635,19 @@ public class Driver {
 				System.out.println("|  FD3.6  \"F\":            4           1 per turn            -                     |");
 				System.out.println("|  FD3.7  \"G\":                                                                    |");
 				System.out.println("|=================================================================================|");
+				
+			} else if (userInput2.equalsIgnoreCase("C")) {
+				System.out.println("|=================================================================================|");
+				System.out.println("|             CHANGING SPEED (ACCELERATION/DECELERATION) (C2.2/C12.0)             |");
+				System.out.println("|---------------------------------------------------------------------------------|");
+				System.out.println("|  Acceleration: x2 or +10 of previous, whichever is greater                      |");
+				System.out.println("|                                                                                 |");
+				System.out.println("|  Deceleration: ÷2 or -4 of previous, whichever is greater                       |");
+				System.out.println("|                                                                                 |");
+				System.out.println("|  Change of speed may happen 8 impulses apart,                                   |");
+				System.out.println("|       on or after impulse 4, but on or before impulse 28.                       |");
+				System.out.println("|=================================================================================|");
+				
 			} else if (userInput2.equalsIgnoreCase("R")) {
 				System.out.println("|=================================================================================|");
 				System.out.println("|                         REPAIR SYSTEMS   (G17.0 / Annex #9)                     |");
@@ -662,6 +677,7 @@ public class Driver {
 				System.out.println("|---------------------------------------------------------------------------------|");
 				System.out.println("|   Damage Point on Fighter or Shuttle  1    damage Point on SWAC   2         3   |");
 				System.out.println("|=================================================================================|");
+				
 			} else if (userInput2.equalsIgnoreCase("B")) {
 				System.out.println("|=================================================================================|");
 				System.out.println("|                                 BATTERIES (H7.0)                                |");
@@ -670,6 +686,7 @@ public class Driver {
 				System.out.println("|  - Must be recharged after being discharged                                     |");
 				System.out.println("|  - Batteries destroyed in combet are assumed to be those previously discharged  |");
 				System.out.println("|=================================================================================|");
+				
 			} else if (userInput2.equalsIgnoreCase("S")) {
 				System.out.println("|=================================================================================|");
 				System.out.println("|                               SHIELD COSTS (D3.0)                               |");
@@ -692,6 +709,7 @@ public class Driver {
 				System.out.println("|  NOTE: A shield that is down cannot be reinforced specifically, but GSR would   |");
 				System.out.println("|    still block fire coming from that direction.                                 |");
 				System.out.println("|=================================================================================|");
+				
 			} else if (userInput2.equalsIgnoreCase("H")) {
 				System.out.println("|=================================================================================|");
 				System.out.println("|                            HIGH ENERGY TURNS (C6.0)                             |");
@@ -705,19 +723,26 @@ public class Driver {
 				System.out.println("|        HET of turn for each player, roll 1d6-2.)                                |");
 				System.out.println("|---------------------------------------------------------------------------------|");
 				System.out.println("|  - BREAKDOWN (C6.54)                                                            |");
-				System.out.println("|      - On the first HET of a turn, 2 is subtracted from the die roll            |");
+				System.out.println("|      - On the first HET of the SCENARIO, 2 is subtracted from the die roll      |");
 				System.out.println("|      - If breakdown occurs:                                                     |");
 				System.out.println("|          - Immediate stop                                                       |");
-				System.out.println("|          - Destroyed: 1/5 of warp boxes & 1/3 crew units (round down)           |");
+				System.out.println("|          - Cannot move for 16 impulses (post-breakdown period)                  |");
+				System.out.println("|          - Roll 1d6 and face ship that direction                                |");
+				System.out.println("|          - All movement energy is lost                                          |");
+				System.out.println("|          - Destroyed: 1/5 of warp boxes (distribute as evenly as possible)      |");
+				System.out.println("|          - Killed: 1/3 crew units & 1/4 borading parties (1/4 enemy BP too)     |");
 				System.out.println("|          - 2 internal hits via DAC                                              |");
+				System.out.println("|          - All repairs aborted; incomplete repairs lost                         |");
 				System.out.println("|          - Breakdown rating reduced by 1                                        |");
 				System.out.println("|          - Stasis fields, Expanding Spheres, Tractor Beams released             |");
 				System.out.println("|          - For 8 Impulses, or the rest of the turn (whichever is less):         |");
 				System.out.println("|              - No weapons may be fired (inc. seeking wepaons)                   |");
 				System.out.println("|              - No shuttles/fighters may be launched/recovered                   |");
 				System.out.println("|              - No tractor beams/transporters may be used                        |");
-				System.out.println("|      - Ship may resume \"normal\" operations at the beginning of the next turn    |");
+				System.out.println("|      - Ship may resume \"normal\" operations after the 16 impulse post-           |");
+				System.out.println("|             breakdown peroid has ended                                          |");
 				System.out.println("|=================================================================================|");
+				
 			} else if (userInput2.equalsIgnoreCase("D")) {
 				System.out.println("|=================================================================================|");
 				System.out.println("|                                DAMAGE CONTROL:                                  |");
@@ -747,6 +772,7 @@ public class Driver {
 				System.out.println("|   Hull                  1  |  Plasma-S          15  |  Web                 6    |");
 				System.out.println("|   Impulse               5  |  Plasmatic Pulsar  15  |  Web Caster         15    |");
 				System.out.println("|=================================================================================|");
+				
 			} else if (userInput2.equalsIgnoreCase("P")) {
 				System.out.println("|=================================================================================|");
 				System.out.println("|                                 PROBES (G5.0):                                  |");
@@ -763,6 +789,7 @@ public class Driver {
 				System.out.println("|               Cost = 2+2 (no holding over)                                      |");
 				System.out.println("|               Success only if 1d6 >= distance when fired                        |");
 				System.out.println("|=================================================================================|");
+				
 			} else if (userInput2.equalsIgnoreCase("T")) {
 				System.out.println("|=================================================================================|");
 				System.out.println("|                            TACTICAL MANEUVERS (C5.0):                           |");
@@ -784,6 +811,7 @@ public class Driver {
 				System.out.println("|      These points must be used before the next instance occurs in the           |");
 				System.out.println("|          Impulse Prodecure, or the maneuver is lost.                            |");
 				System.out.println("|=================================================================================|");
+				
 			} else if (userInput2.equalsIgnoreCase("L")) {
 				System.out.println("|=================================================================================|");
 				System.out.println("|                               LIFE SUPPORT (B3.3):                              |");
@@ -803,6 +831,7 @@ public class Driver {
 				System.out.println("|      Only 1 of these conditions need to be met for a ship to be considered      |");
 				System.out.println("|          crippled                                                               |");
 				System.out.println("|=================================================================================|");
+				
 			} else if (userInput2.equalsIgnoreCase("")) {
 				// break
 				cont = false;
@@ -1164,10 +1193,69 @@ public class Driver {
 		return input;
 	}
 
-	public static int getNumberNoCancel(int small, int big) {
-//		Scanner keyboard = new Scanner(System.in);
+//	public static double getNumberDoubleNoCancel(double small, double big) {
+//		double input = -1.0;
+//		String userInput = "";
+//
+//		while (input == -1.0) {
+//			userInput = keyboard.nextLine().toUpperCase();
+//			if (userInput.length() >= 0) {
+//
+//				if (!userInput.contains(".")) {
+//					try {
+//						input = Integer.parseInt(userInput);
+//					} catch (NumberFormatException e) {
+//						input = -1;
+//					}
+//				} else {
+//					try {
+//						int decimalLocation = userInput.indexOf(".");
+//						int integerPart = Integer.parseInt(userInput.substring(0, decimalLocation));
+//						int decimalPart = Integer.parseInt(userInput.substring(decimalLocation, userInput.length()));
+//						input = (double) integerPart + ( (double) decimalPart / 10);
+//					} catch (NumberFormatException e) {
+//						input = -1;
+//					}
+//				}
+//				
+//				if (input < small || input > big) {
+//					System.out.print("[" + (small) + "-" + big + "]"); // Remind user what number range is being looked
+//					input = -1;
+//				}
+//			}
+//		}
+//		return input;
+//	}
+	
+	public static double getNumberDoubleNoCancel(double small, double big) {
+		double input = -1.0;
+		String userInput = "";
 
-//		boolean cont = true;
+		while (input == -1.0) {
+			userInput = keyboard.nextLine().toUpperCase();
+			if (userInput.length() >= 0) {
+				try {
+					input = Double.parseDouble(userInput);
+				} catch (NumberFormatException e) {
+					input = -1.0;
+				}
+
+				double decimalPart = (double)Math.round((input - (int) input) * 10) / 10; 
+				
+				if (!(decimalPart == 0 || decimalPart == 0.5)) {
+					input = -1.0;
+				}
+				
+				if (input < small || input > big) {
+					System.out.print("[" + (small) + "-" + big + "]"); // Remind user what number range is being looked
+					input = -1.0;
+				}
+			}
+		}
+		return input;
+	}
+
+	public static int getNumberNoCancel(int small, int big) {
 		int input = -1;
 		String userInput = "";
 
@@ -1184,14 +1272,7 @@ public class Driver {
 					System.out.print("[" + (small) + "-" + big + "]"); // Remind user what number range is being looked
 					input = -1;
 				}
-																		// for
-					// This line and
-					// keyboard.nextLine(); // this line prevent a very bad infinite loop
 			}
-//			else {
-//				input = -1; // user Input is "", returns -1
-//				cont = false;
-//			}
 		}
 		return input;
 	}
