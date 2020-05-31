@@ -14,32 +14,36 @@ public class WeaponsDamage {
 		while (!reset) {
 
 			System.out.println();
-			int print = ShipSetup.PrintCurrentThingsInGame("SHIP", "");
+			int print = ShipSetup.PrintCurrentThingsInGame("SHIP SHUTTLE MONSTER", "");
 			System.out.println();
 			System.out.print("Which ship is firing? [RETURN to cancel] ");
 			int shipNumFiring = -5;
-	
-			shipNumFiring = ShipSetup.GetAdjustedInput(print, "SHIP", "");
+			shipNumFiring = ShipSetup.GetAdjustedInput(print, "SHIP SHUTTLE MONSTER", "");
+			System.out.println("shipNumFiring: " + shipNumFiring);
 			
 			if(shipNumFiring == -1) {
 				System.out.println();
 				PhaseCalculation.PrintImpulseHeader();
 				return;
 			}
+			System.out.println("Firing Ship: " + Driver.currentGameYard.list[shipNumFiring].name);
 			
 			
+			System.out.println();
+			System.out.print("Which ship is being targeted? [RETURN to cancel] ");
 			int shipNumTarget = -5;
-			if (Driver.ElectronicWarfare) {
+			shipNumTarget = ShipSetup.GetAdjustedInput(print, "SHIP SHUTTLE MONSTER", "");
+			System.out.println("shipNumTarget: " + shipNumTarget);
+			System.out.println("Target Ship: " + Driver.currentGameYard.list[shipNumTarget].name);
+			
+			if(shipNumTarget == -1) {
 				System.out.println();
-				System.out.print("Which ship is being targeted? [RETURN to cancel] ");
-				
-				shipNumTarget = ShipSetup.GetAdjustedInput(print, "SHIP", "");
-				
-				if(shipNumTarget == -1) {
-					System.out.println();
-					PhaseCalculation.PrintImpulseHeader();
-					return;
-				}
+				PhaseCalculation.PrintImpulseHeader();
+				return;
+			}
+			
+			if(Driver.currentGameYard.list[shipNumTarget].cloakOn) {
+				System.out.println("Targetted ship is CLOAKED.");
 			}
 
 			currentShip = Driver.currentGameYard.list[shipNumFiring];
@@ -157,7 +161,7 @@ public class WeaponsDamage {
 					totalDamage = ESG(totalDamage);
 					
 				} else if(weaponInput.equalsIgnoreCase("D")) {
-					DamageAllocation.DamageAlloc(totalDamage);
+					DamageAllocation.DamageAlloc(shipNumTarget, totalDamage);
 					totalDamage = 0;
 					reset = false;
 					cont = false;
@@ -458,7 +462,7 @@ public class WeaponsDamage {
 		int numberInput = 0;
 		int distanceInput = 0;
 		int photonDamage = 0;
-		int energy = 0;
+		double energy = 0;
 		int feedbackDamage = 0;
 		int effectiveDistance = 0;
 		
@@ -466,8 +470,8 @@ public class WeaponsDamage {
 		System.out.print("Photon Torpedo: ");
 		int weaponTypeNum = GetWeaponType("Type [S]tandard [P]roximity [O]verload", "SPO");
 		if (weaponTypeNum == 3) {
-			System.out.print("Total Energy [5-8]:   ");				//  If type=3 then get energy allocated value
-			energy = Driver.getNumberNoCancel(5, 8);
+			System.out.print("Total Energy [4.5-8.0]:   ");				//  If type=3 then get energy allocated value
+			energy = Driver.getNumberDoubleNoCancel(4.5, 8.0);
 		} 
 
 		System.out.print("Number:   ");
@@ -482,7 +486,7 @@ public class WeaponsDamage {
 		} else if (weaponTypeNum == 2) {
 			photonDamage = 4;
 		} else if (weaponTypeNum == 3) {
-			photonDamage = energy * 2;
+			photonDamage = (int) (energy * 2);
 		}
 		
 		if (Driver.TESTING) {
@@ -508,7 +512,7 @@ public class WeaponsDamage {
 		System.out.println();
 
 		if (weaponTypeNum == 3 && effectiveDistance <= 1) {
-			feedbackDamage = numberInput * (energy - 4);
+			feedbackDamage = (int) ((double) numberInput * (energy - 4));
 			System.out.println("---------------------------------------------------------");
 			System.out.println("Feedback Damage: " + feedbackDamage + "  (On facing shield of firing ship)");
 			System.out.println("---------------------------------------------------------");
@@ -526,14 +530,15 @@ public class WeaponsDamage {
 				  			 {50,50,50,50,50,50,50,50,50,50,50,35,35,35,35,35,25,25,25,25,25,20,20,20,20,20,10,10,10, 5, 1, 0},   //  Type R
 				  			 {30,30,30,30,30,30,30,30,30,30,30,22,22,22,22,22,15,15,15,15,15,10,10,10, 5, 1, 0, 0, 0, 0, 0, 0},   //  Type GII
 				  			 {20,20,20,20,20,20,20,20,20,20,20,15,15,15,15,15,10,10,10, 5, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},   //  Type G
-				  			 {20,20,20,20,20,20,15,15,15,15,15,10,10, 5, 5, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}};  //  Type F
+				  			 {20,20,20,20,20,20,15,15,15,15,15,10,10, 5, 5, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},  //  Type F
+							 {10,10,10,10,10,10, 8, 8, 8, 8, 8, 5, 5, 3, 3, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}};  //  Type D (fighters)
 
 		int numberInput = 0;
 		int distanceInput = 0;
 		
 		System.out.println();
 		System.out.print("Plasma Torpedo: ");
-		int weaponTypeNum = GetWeaponType("Type [R] [2]G [G] [F]", "R2GF");
+		int weaponTypeNum = GetWeaponType("Type [R] [2]G [G] [F] [D]", "R2GFD");
 
 		System.out.print("Number:   ");
 		numberInput = Driver.getNumberNoCancel(0, 200);
