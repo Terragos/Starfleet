@@ -32,11 +32,34 @@ public class PhaseCalculation {
 			Driver.currentGameYard.list[i].spi = (double) Driver.currentGameYard.list[i].speed / (double) Driver.numImpulses;			
 		}
 
+		System.out.println();
+		System.out.println();
 		PrintImpulseHeader();  // PRINTS FANCY HEADER
 		System.out.println();
 		
 		//  BEGIN ACTUAL IMPULSE MOVEMENT PROCEDURE
 		for(int i = 1; i <= Driver.numImpulses; i++) {
+
+			if(TerrainStuff.TerrainTypeList.contains("B") || TerrainStuff.TerrainTypeList.contains("D") || TerrainStuff.TerrainTypeList.contains("V")) {
+				if(i == 1) {
+					System.out.println();
+					System.out.println("(Printing ALL Impulses due to Terrain)");
+					System.out.println();
+				}
+				printAllImpulses = true;
+			}
+
+			if(TerrainStuff.TerrainTypeList.contains("B") || TerrainStuff.TerrainTypeList.contains("G") || TerrainStuff.TerrainTypeList.contains("D") || TerrainStuff.TerrainTypeList.contains("N") || TerrainStuff.TerrainTypeList.contains("V")) {
+				TerrainStuff.CheckForBlackHoleMovement(i);
+				TerrainStuff.CheckForGravityWave(i);
+				TerrainStuff.DustCloudDamge(i);
+				TerrainStuff.NebulaeRandomMovement(i);
+				TerrainStuff.PulsarDamage(i);
+				if (TerrainStuff.EmptyLinePrinted) {
+					System.out.println();
+					TerrainStuff.EmptyLinePrinted = false;
+				}
+			}
 			
 			int move = 0;
 			for(int m = 0; m < Driver.currentGameYard.numShips; m++) {	
@@ -45,7 +68,7 @@ public class PhaseCalculation {
 				}
 			} 
 
-			if (move > 0 || printAllImpulses == true) {
+			if(move > 0 || printAllImpulses == true) {
 
 				if (i < 10) {
 					System.out.print("Impulse 0" + i + ":    ");
@@ -73,7 +96,7 @@ public class PhaseCalculation {
 
 				boolean cont3 = true;
 				while (cont3) {
-					String userInput = Driver.getInput("WTDSFRAICE");
+					String userInput = Driver.getInput("WTDSFRMICENG");
 					if (userInput.contentEquals("")) {
 						cont3 = false;
 						
@@ -82,7 +105,7 @@ public class PhaseCalculation {
 //						cont3 = false;
 						System.out.println();
 						
-					} else if (userInput.equalsIgnoreCase("A")) {						
+					} else if (userInput.equalsIgnoreCase("M")) {						
 						System.out.println();
 						ModifySingleShipSpeed();
 						System.out.println();
@@ -93,6 +116,11 @@ public class PhaseCalculation {
 						
 					} else if (userInput.equalsIgnoreCase("C")) {						
 						ToggleCloakShip();
+						
+					} else if (userInput.equalsIgnoreCase("N")) {						
+						System.out.println();
+						TerrainStuff.TerrainDamage();
+						PrintImpulseHeader();
 						
 					} else if (userInput.equalsIgnoreCase("E")) {						
 						GetElectronicWarfareValues("ONE");
@@ -142,10 +170,20 @@ public class PhaseCalculation {
 					} 
 				}
 			}
+			
+//			if (terrainPrint1 || terrainPrint2 || terrainPrint3) {
+//				System.out.println(terrainPrint1 + " " + terrainPrint2 + " " + terrainPrint3);
+//			}
+
 		} 
 		
 		//  End of Impulse Procedure Things
-		
+
+		System.out.println();
+		System.out.println("|=================================================================================|");
+		System.out.println("|                           POST-IMPULSE PROCEDURES                               |");
+		System.out.println("|=================================================================================|");
+
 		System.out.println();
 		System.out.print("Are any ships repairing a system(s) with Damage Control? ");
 		String yesOrNo = Driver.getInputNoCancel("YN");
@@ -168,16 +206,22 @@ public class PhaseCalculation {
 		}
 		
 		if (monsterInGame == true) {
+			boolean cont = true;
 			System.out.println();
-			System.out.print("Were any monsters in range to do damage to a ship? ");
-			yesOrNo = Driver.getInputNoCancel("YN");
-			int monsterDamage = 0;
-			if (yesOrNo.contentEquals("Y")) {
-				monsterDamage = MonsterStuff.MonsterDamage();
-				System.out.println();
-				if (monsterDamage > 0) {
-					DamageAllocation.DamageAlloc(-1, monsterDamage);
+			while(cont) {
+				System.out.print("Were any monsters in range to do damage to a ship? ");
+				yesOrNo = Driver.getInputNoCancel("YN");
+				int monsterDamage = 0;
+				if (yesOrNo.contentEquals("Y")) {
+					monsterDamage = MonsterStuff.MonsterDamage();
+					System.out.println();
+					if (monsterDamage > 0) {
+						DamageAllocation.DamageAlloc(-1, monsterDamage);
+					}
+				} else {
+					cont = false;
 				}
+				
 			}
 		}
 		
@@ -202,7 +246,7 @@ public class PhaseCalculation {
 			System.out.println();
 			if (Driver.MonsterScenario == 1) {
 				System.out.print("Did the Planet Crusher attack the planet? ");
-				String yesNo = Driver.getInput("YN");
+				String yesNo = Driver.getInputNoCancel("YN");
 				int monsterDamage = 0;
 				if (yesNo.equalsIgnoreCase("Y")) {
 					monsterDamage = MonsterStuff.PlanetCrusher();
@@ -211,7 +255,7 @@ public class PhaseCalculation {
 				}
 			} else if (Driver.MonsterScenario == 6) {
 				System.out.print("Did the Mind Monster attack the planet? ");
-				String yesNo = Driver.getInput("YN");
+				String yesNo = Driver.getInputNoCancel("YN");
 				int monsterDamage = 0;
 				if (yesNo.equalsIgnoreCase("Y")) {
 					monsterDamage = MonsterStuff.MindMonsterAttacksPlanet();		//  Calculate mind wipe damage as planet damage
@@ -263,7 +307,10 @@ public class PhaseCalculation {
 			System.out.println("|=================================================================================|");
 			System.out.println("|                 PRE-IMPULSE PROCEDURE SHIP MODIFICATION MENU                    |");
 			System.out.println("|=================================================================================|");
-	
+			System.out.print(" ");
+			TerrainStuff.PrintTerrain();
+			System.out.println(" ---------------------------------------------------------------------------------");
+			
 			PrintCurrentShipsInGame();
 						
 			System.out.println("|=================================================================================|");
@@ -640,7 +687,7 @@ public class PhaseCalculation {
 		for (int i = 1; i <= ((17 + shipTotal)-29)/2 - 2; i++) {     //  CENTERS TEXT
 			System.out.print(" ");
 		}
-		System.out.print("[W/T/D/S/F/R/A/I/E]");		
+		System.out.print("[W/T/D/S/F/R/M/I/E/N/G]");		
 
 		System.out.println();
 		System.out.print("=============");
