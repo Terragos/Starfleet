@@ -36,21 +36,16 @@ public class MonsterStuff {
 	
 	public static int MonsterDamage() {
 		
-		int totalMonsterDamage = 0;
 		int monsterDamage = 0;
 		int whichMonster = 1;
 		
-		while (whichMonster != -1) {
+		if (whichMonster != -1) {
 			System.out.println();
 			int print = ShipSetup.PrintCurrentThingsInGame("MONSTER", "");
 			System.out.println();
 			System.out.print("Which monster attacked? [RETURN to cancel] ");
 //			whichMonster = -5;
 			whichMonster = ShipSetup.GetAdjustedInput(print, "MONSTER", "");
-
-			if(whichMonster == -1) {
-				break;
-			}
 
 			currentMonster =  Driver.currentGameYard.list[whichMonster];
 			
@@ -80,13 +75,10 @@ public class MonsterStuff {
 				
 			}
 			
-//			whichMonster = -1;
-			totalMonsterDamage = totalMonsterDamage + monsterDamage;
-
 //			System.out.println("Total Monster Damage: " + totalMonsterDamage);
 		}
 		
-		return totalMonsterDamage;
+		return monsterDamage;
 	}
 
 	public static int PlanetCrusher() {
@@ -95,8 +87,8 @@ public class MonsterStuff {
 		System.out.println();
 		System.out.println("Planet Crusher does " + damage + " points of damage.  Apply as normal weapon damage.");
 
-		DamageAllocation.DamageAlloc(-1, damage);
-		damage = 0;
+//		DamageToPlanet(-1, damage);
+//		damage = 0;
 
 		return damage;
 	}
@@ -111,8 +103,8 @@ public class MonsterStuff {
 			System.out.println();
 			System.out.println("Space Amoeba does " + damage + " points of damage.  Apply as normal weapon damage.");
 		
-			DamageAllocation.DamageAlloc(-1, damage);
-			damage = 0;
+//			DamageAllocation.DamageAlloc(-1, damage);
+//			damage = 0;
 			}
 		
 		return damage;
@@ -124,8 +116,8 @@ public class MonsterStuff {
 		System.out.println();
 		System.out.println("Moray Eel does " + damage + " points of damage.  Damage BYPASSES shields.");
 
-		DamageAllocation.DamageAlloc(-1, damage);
-		damage = 0;
+//		DamageAllocation.DamageAlloc(-1, damage);
+//		damage = 0;
 
 		return damage;
 	}
@@ -157,8 +149,8 @@ public class MonsterStuff {
 		System.out.println();
 		System.out.println("Sunsnake does " + damage + " points of damage.  Apply as normal weapon damage.");
 
-		DamageAllocation.DamageAlloc(-1, damage);
-		damage = 0;
+//		DamageAllocation.DamageAlloc(-1, damage);
+//		damage = 0;
 
 		return damage;
 	}
@@ -350,44 +342,19 @@ public class MonsterStuff {
 		Driver.currentGameYard.numShips--;
 	}
 	
-//	public static void PrintCurrentMonstersInGame() {
-//		ShipSetup.SortCurrentShipyard();
-//		
-//		System.out.println();
-//		System.out.println("     Name\tRemaining");                   //  Print only Arastoz monster list
-//		System.out.println("     Name\tHit Pts");                   //  Print only Arastoz monster list
-//		System.out.println();
-//		for (int i = 1; i <= Driver.currentGameYard.numShips; i++) {
-//			String extraSpace = ShipSetup.getExtraSpaces(i, 2);
-//			
-//			if (Driver.currentGameYard.list[i-1].name.length() <=3 ) {
-//				Driver.currentGameYard.list[i-1].name = Driver.currentGameYard.list[i-1].name + "   ";
-//			}
-//			if(Driver.currentGameYard.list[i-1].race.contains("Monster")) {
-//				System.out.print(extraSpace + i + ")  " + Driver.currentGameYard.list[i-1].name);
-//				ShipSetup.getExtraSpaces(i, 2);
-//				System.out.print("\t  " + extraSpace + Driver.currentGameYard.list[i-1].ssd[24].remaining);
-//				System.out.println();
-//			}
-//		}
-//	}
-	
-	public static int MonsterDamageFromShip(int damageToMonster) {
-		int whichMonster = -5;
+	public static int MonsterDamageFromShip(int numMonster, int damageToMonster) {
+//		int whichMonster = -5;
 		
-		while (whichMonster < 0) {
+		if (numMonster < 0) {
 			System.out.println();
 			int print = ShipSetup.PrintCurrentThingsInGame("MONSTER", "HEALTH");
 			System.out.println();
 			System.out.print("Which monster to deal damage to? [RETURN to cancel] ");
-			whichMonster = -5;
-			whichMonster = ShipSetup.GetAdjustedInput(print, "MONSTER", "");
-			
-			if(whichMonster == -1) {
-				break;
-			}
-			
-			currentMonster = Driver.currentGameYard.list[whichMonster];
+			numMonster = ShipSetup.GetAdjustedInput(print, "MONSTER", "");
+		}
+		
+		if (numMonster >= 0) {
+			currentMonster = Driver.currentGameYard.list[numMonster];
 
 			System.out.println(currentMonster.name + " takes " + damageToMonster + " damage points.");
 
@@ -395,11 +362,38 @@ public class MonsterStuff {
 			System.out.println(currentMonster.name + " has " + currentMonster.ssd[24].remaining + " remaining health points.");
 			if (currentMonster.ssd[24].remaining <= 0) {
 				System.out.println(currentMonster.name + " has been defeated.");
-				Driver.currentGameYard.removeShipFromShipyard(whichMonster+1);
+				Driver.currentGameYard.removeShipFromShipyard(numMonster+1);
 			}
 			damageToMonster = 0;
 		}
 		return damageToMonster;
+	}
+	
+	public static int DamageToPlanet(int numPlanet, int damageToPlanet) {
+//		int whichPlanet = -5;
+		
+		if (numPlanet < 0) {
+			System.out.println();
+			int print = ShipSetup.PrintCurrentThingsInGame("OTHER", "HEALTH");
+			System.out.println();
+			System.out.print("Which planet to deal damage to? [RETURN to cancel] ");
+			numPlanet = ShipSetup.GetAdjustedInput(print, "OTHER", "");
+		}
+
+		if (numPlanet >= 0) {
+			currentPlanet = Driver.currentGameYard.list[numPlanet];
+			
+			System.out.println(currentPlanet.name + " takes " + damageToPlanet + " damage points.");
+			
+			currentPlanet.ssd[24].remaining = currentPlanet.ssd[24].remaining - damageToPlanet;
+			System.out.println(currentMonster.name + " has " + currentPlanet.ssd[24].remaining + " remaining health points.");
+			if (currentPlanet.ssd[24].remaining <= 0) {
+				System.out.println(currentPlanet.name + " has been destroyed.");
+				Driver.currentGameYard.removeShipFromShipyard(numPlanet+1);
+			}
+			damageToPlanet = 0;
+		}
+		return damageToPlanet;
 	}
 	
 	public static int MonsterAttacksPlanet(int damageToPlanet) {
@@ -409,20 +403,13 @@ public class MonsterStuff {
 			System.out.println();
 			
 			//  Print Current Planets In Game
-			System.out.println("\tPlanet\tHit Points");
-			System.out.println("\tName\tRemaining");
-			System.out.println();
-			for (int p = 1; p < Driver.currentGameYard.numShips; p++) {
-				if (Driver.currentGameYard.list[p-1].shipType == "Planet") {
-					System.out.println(" " + p + "\t" + Driver.currentGameYard.list[p].name + "\t" + Driver.currentGameYard.list[p].ssd[24].remaining);
-				}
-			}
 			
+			int print = ShipSetup.PrintCurrentThingsInGame("OTHER", "HEALTH");
 			System.out.println();
 			System.out.print("Which planet to deal damage to? [RETURN to cancel] ");
 			whichPlanet = -5;
-
-			whichPlanet = Driver.getNumber(1, Driver.currentGameYard.numShips);
+			whichPlanet = ShipSetup.GetAdjustedInput(print, "OTHER", "");
+			System.out.println("whichPlanet: " + whichPlanet);
 
 			if(whichPlanet == -1) {
 				break;
@@ -762,4 +749,80 @@ public class MonsterStuff {
 			}
 		}
 	}
+	
+	public static void ModifyMonsterBPV () {
+		Driver.MonsterBPVModifier = 1;
+	
+		if (Driver.MonsterBPVModifierApplied == true) {
+			System.out.println("Monster Modifier already applied!!!  Cannot repeat!!!");
+
+		} else {
+			double totalShipBPV = 0;
+			
+			for (int i = 0; i < Driver.currentGameYard.numShips; i++) {
+				
+				if (Driver.currentGameYard.list[i].kindOfShip == Starship.Ship.STARSHIP) {
+					
+					int intBPV = 0;
+					String thisBPV = Driver.currentGameYard.list[i].BPV;
+					String race = Driver.currentGameYard.list[i].race;
+					
+					if (Driver.currentGameYard.list[i].BPV.length() > 0) {
+						intBPV = Driver.GetEconomicBPV(race, thisBPV);
+					}
+					totalShipBPV = totalShipBPV + intBPV;
+				}
+			}
+			
+			System.out.println("Current Starship BPVs:");
+			ShipSetup.PrintCurrentThingsInGame ("SHIP", "BPV");
+			System.out.println("Starship(s) total BPV:\t" + (int) totalShipBPV);
+			Driver.MonsterBPVModifier = totalShipBPV / 125.0;
+			System.out.println();
+			
+			System.out.println("Current Monster HPs:");
+			ShipSetup.PrintCurrentThingsInGame ("MONSTER", "HEALTH");
+
+			String labResearchBlurb = "";
+			if (Driver.labResearchRequired > 0) {
+				System.out.println("Lab Research pts required to collect: " + Driver.labResearchRequired);
+				labResearchBlurb = "and/or Lab Research ";
+			}
+
+			System.out.println();
+			System.out.println("Monster Modifier:\t" + Driver.MonsterBPVModifier);
+			System.out.println("Apply Monster " + labResearchBlurb + "BPV Modifier? ");
+			
+			String yesOrNo = Driver.getInput ("YN");
+			
+			if (yesOrNo.equalsIgnoreCase("Y")) {
+				for (int i = 0; i < Driver.currentGameYard.numShips; i++) {
+					if (Driver.currentGameYard.list[i].kindOfShip == Starship.Ship.MONSTER) {
+						Driver.currentGameYard.list[i].ssd[24].numOfThisPart = (int) Math.round(Driver.currentGameYard.list[i].ssd[24].numOfThisPart * Driver.MonsterBPVModifier);
+						Driver.currentGameYard.list[i].ssd[24].remaining = (int) Math.round(Driver.currentGameYard.list[i].ssd[24].remaining * Driver.MonsterBPVModifier);
+					}
+				}
+				Driver.labResearchRequired = (int) Math.round(Driver.labResearchRequired * Driver.MonsterBPVModifier);
+				System.out.println();
+				System.out.println("Modified Monster HPs:");
+				ShipSetup.PrintCurrentThingsInGame ("MONSTER", "HEALTH");
+				Driver.MonsterBPVModifierApplied = true;
+				
+				if (Driver.labResearchRequired > 0) {
+					System.out.println("Lab Research pts required to collect: " + Driver.labResearchRequired);
+				}
+			} else {
+				System.out.println("Monster HPs have NOT been modified");
+			}
+		}
+	}
+	
+	public static void ZeroOutMonsterAndLabResearchValues() {
+		Driver.labResearchAquired = 0;
+		Driver.labResearchRequired = 0;
+		Driver.MonsterScenario = 0;
+		Driver.MonsterBPVModifier = 1.0;
+		Driver.MonsterBPVModifierApplied = false;
+	}
+	
 }
