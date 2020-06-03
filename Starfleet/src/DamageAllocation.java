@@ -61,7 +61,7 @@ public class DamageAllocation {
 			System.out.println();
 			int print = ShipSetup.PrintCurrentThingsInGame("SHIP SHUTTLE FIGHTER", "");
 			System.out.println();
-			System.out.print("Deal damage to which ship? [RETURN to cancel] ");
+			System.out.print("Deal damage (" + num + ") to which ship? [RETURN to cancel] ");
 			shipNumTarget = ShipSetup.GetAdjustedInput(print, "SHIP SHUTTLE FIGHTER", "");
 			
 			if(shipNumTarget == -1) {
@@ -69,7 +69,7 @@ public class DamageAllocation {
 			}
 		} else {
 			System.out.println();
-			System.out.print("Dealing damage to " + Driver.currentGameYard.list[shipNumTarget].name);
+			System.out.print("Dealing damage (" + num + ") to " + Driver.currentGameYard.list[shipNumTarget].name);
 			System.out.println();
 		}
 //		System.out.println("input: " + input);
@@ -77,13 +77,22 @@ public class DamageAllocation {
 		
 		currentShip = Driver.currentGameYard.list[shipNumTarget];
 		
-		if(currentShip.race == "Monster") {				//  If defending object is a monster then pass through damage to "monster damage" method
-			System.out.println();
-			System.out.println("***  In the future hit [M] to deal damage to a monster from a ship.  ***");
-			System.out.println();
-			MonsterStuff.MonsterDamageFromShip(num);  
-			return;
-		}
+//		if(currentShip.race == "Monster") {				//  If defending object is a monster then pass through damage to "monster damage" method
+//			System.out.println();
+//			System.out.println("***  In the future hit [M] to deal damage to a MONSTER from a ship.  ***");
+//			System.out.println();
+//			MonsterStuff.MonsterDamageFromShip(shipNumTarget, num);  
+//			return;
+//		}
+//		
+//		if(currentShip.shipType == "Planet") {			//  If  object is a Planet then pass through damage to "Planet damage" method
+//			System.out.println();
+//			System.out.println("***  In the future hit [???] to deal damage to a PLANET from a ship.  ***");
+//			System.out.println();
+//			MonsterStuff.DamageToPlanet(shipNumTarget, num);  
+//			return;
+//		}
+
 		
 		int totalDamage = 0;
 		
