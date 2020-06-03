@@ -34,13 +34,13 @@ public class WeaponsDamage {
 			int shipNumTarget = -5;
 			shipNumTarget = ShipSetup.GetAdjustedInput(print, "SHIP SHUTTLE MONSTER", "");
 			System.out.println("shipNumTarget: " + shipNumTarget);
-			System.out.println("Target Ship: " + Driver.currentGameYard.list[shipNumTarget].name);
 			
 			if(shipNumTarget == -1) {
 				System.out.println();
 				PhaseCalculation.PrintImpulseHeader();
 				return;
 			}
+			System.out.println("Target Ship: " + Driver.currentGameYard.list[shipNumTarget].name);
 			
 //			Driver.electronicWarfareNet = GetEWshift(shipNumFiring, shipNumTarget);
 			
@@ -383,7 +383,8 @@ public class WeaponsDamage {
 
 		System.out.print("Distance: ");
 		distanceInput = Driver.getNumberNoCancel(0, 50);
-		effectiveDistance = SensorScannerMod(distanceInput);
+//		effectiveDistance = SensorScannerMod(distanceInput);
+		effectiveDistance = distanceInput;
 		
 		for(int i = 0; i < numberInput; i++) {
 			int die = DamageAllocation.rollDice(1,6);
@@ -391,7 +392,7 @@ public class WeaponsDamage {
 			int EWadjDie = EWadj[0];
 			int EWadjDist = EWadj[1];
 			int damage = intPhaser2[EWadjDie][EWadjDist];	//  EWadj[0]=adj die roll / EWadj[1]=adj distance
-			damage = AdjustDamageForCloak(damage);
+//			damage = AdjustDamageForCloak(damage);
 			total = total + damage;
 		}
 		
@@ -424,7 +425,8 @@ public class WeaponsDamage {
 
 		System.out.print("Distance: ");
 		distanceInput = Driver.getNumberNoCancel(0, 15);
-		effectiveDistance = SensorScannerMod(distanceInput);
+//		effectiveDistance = SensorScannerMod(distanceInput);
+		effectiveDistance = distanceInput;
 
 		for(int i = 0; i < numberInput; i++) {
 			int die = DamageAllocation.rollDice(1,6);
@@ -432,7 +434,7 @@ public class WeaponsDamage {
 			int EWadjDie = EWadj[0];
 			int EWadjDist = EWadj[1];
 			int damage = intPhaser3[EWadjDie][EWadjDist];	//  EWadj[0]=adj die roll / EWadj[1]=adj distance
-			damage = AdjustDamageForCloak(damage);
+//			damage = AdjustDamageForCloak(damage);
 			total = total + damage;
 		}
 		
@@ -465,7 +467,8 @@ public class WeaponsDamage {
 
 		System.out.print("Distance: ");
 		distanceInput = Driver.getNumberNoCancel(0, 100);
-		effectiveDistance = SensorScannerMod(distanceInput);
+//		effectiveDistance = SensorScannerMod(distanceInput);
+		effectiveDistance = distanceInput;
 
 		for(int i = 0; i < numberInput; i++) {
 			int die = DamageAllocation.rollDice(1,6);
@@ -473,7 +476,7 @@ public class WeaponsDamage {
 			int EWadjDie = EWadj[0];
 			int EWadjDist = EWadj[1];
 			int damage = intPhaser4[EWadjDie][EWadjDist];	//  EWadj[0]=adj die roll / EWadj[1]=adj distance
-			damage = AdjustDamageForCloak(damage);
+//			damage = AdjustDamageForCloak(damage);
 			total = total + damage;
 		}
 		
@@ -511,7 +514,8 @@ public class WeaponsDamage {
 
 		System.out.print("Distance: ");
 		distanceInput = Driver.getNumberNoCancel(0, 30);
-		effectiveDistance = SensorScannerMod(distanceInput);
+//		effectiveDistance = SensorScannerMod(distanceInput);
+		effectiveDistance = distanceInput;
 
 		if (weaponTypeNum == 1) {
 			photonDamage = 8;
@@ -567,6 +571,7 @@ public class WeaponsDamage {
 
 		int numberInput = 0;
 		int distanceInput = 0;
+		int effectiveDistance = 0;
 		
 		System.out.println();
 		System.out.print("Plasma Torpedo: ");
@@ -577,19 +582,20 @@ public class WeaponsDamage {
 
 		System.out.print("Distance: ");
 		distanceInput = Driver.getNumberNoCancel(0, MAXDIST);
-		distanceInput = SensorScannerMod(distanceInput);
+//		effectiveDistance = SensorScannerMod(distanceInput);
+		effectiveDistance = distanceInput;
 
-		if (distanceInput >= 31) {
-			distanceInput = 31;			
+		if (effectiveDistance >= 31) {
+			effectiveDistance = 31;			
 		}
 
 		int feedbackDamage = 0;
 		int startTotal = total;
 		for(int i = 0; i < numberInput; i++) {
-			int damage = intPlasma[weaponTypeNum][distanceInput];
+			int damage = intPlasma[weaponTypeNum][effectiveDistance];
 			total = total + damage;
 		}
-		if (distanceInput <= 1) {
+		if (effectiveDistance <= 1) {
 			feedbackDamage = total/4;
 			System.out.println("---------------------------------------------------------");
 			System.out.println("Feedback Damage: " + feedbackDamage + "  (On facing shield of firing ship)");
@@ -621,7 +627,8 @@ public class WeaponsDamage {
 
 		System.out.print("Distance: ");
 		distanceInput = Driver.getNumberNoCancel(0, MAXDIST);
-		effectiveDistance = SensorScannerMod(distanceInput);
+//		effectiveDistance = SensorScannerMod(distanceInput);
+		effectiveDistance = distanceInput;
 
 		if (effectiveDistance >=3 && effectiveDistance <=10) {
 			effectiveDistance = 3;
@@ -640,7 +647,7 @@ public class WeaponsDamage {
 			int EWadjDie = EWadj[0];
 			int EWadjDist = EWadj[1];
 			int damage = intFusion[EWadjDie][EWadjDist];
-			damage = AdjustDamageForCloak(damage);
+//			damage = AdjustDamageForCloak(damage);
 			total = total + damage;
 		}
 		
@@ -670,7 +677,8 @@ public class WeaponsDamage {
 
 		System.out.print("Distance: ");
 		distanceInput = Driver.getNumberNoCancel(0, MAXDIST);
-		effectiveDistance = SensorScannerMod(distanceInput);
+//		effectiveDistance = SensorScannerMod(distanceInput);
+		effectiveDistance = distanceInput;
 
 		for(int i = 0; i < numberInput; i++) {
 			int die = DamageAllocation.rollDice(1,6);
@@ -723,7 +731,8 @@ public class WeaponsDamage {
 
 		System.out.print("Distance: ");
 		distanceInput = Driver.getNumberNoCancel(0, MAXDIST);
-		effectiveDistance = SensorScannerMod(distanceInput);
+//		effectiveDistance = SensorScannerMod(distanceInput);
+		effectiveDistance = distanceInput;
 		
 		int damageType = 1;
 		if (weaponTypeNum == 2 || weaponTypeNum == 5) {
@@ -800,12 +809,13 @@ public class WeaponsDamage {
 
 		System.out.print("Distance: ");
 		distanceInput = Driver.getNumberNoCancel(0, MAXDIST);
-		effectiveDistance = SensorScannerMod(distanceInput);
+//		effectiveDistance = SensorScannerMod(distanceInput);
+		effectiveDistance = distanceInput;
 
 		int startTotal = total;
 		for(int i = 0; i < numberInput; i++) {
 			int die = DamageAllocation.rollDice(1,6);
-			int EWadj[] = GetEWadjustment(die, distanceInput, 25);
+			int EWadj[] = GetEWadjustment(die, effectiveDistance, 25);
 			int EWadjDie = EWadj[0];
 			int EWadjDist = EWadj[1];
 			int damage = intTracRep[EWadjDie][EWadjDist];
@@ -896,6 +906,7 @@ public class WeaponsDamage {
 
 		int numberInput = 0;
 		int distanceInput = 0;
+		int effectiveDistance = 0;
 		
 		System.out.println();
 		System.out.print("Hellbore: ");
@@ -906,18 +917,19 @@ public class WeaponsDamage {
 
 		System.out.print("Distance: ");
 		distanceInput = Driver.getNumberNoCancel(0, MAXDIST);
-		distanceInput = SensorScannerMod(distanceInput);
+//		effectiveDistance = SensorScannerMod(distanceInput);
+		effectiveDistance = distanceInput;
 
 		int startTotal = total;
 		for(int i = 0; i < numberInput; i++) {
 			int die = DamageAllocation.rollDice(2,6);
-			int EWadj[] = GetEWadjustment(die, distanceInput, 40);
+			int EWadj[] = GetEWadjustment(die, effectiveDistance, 40);
 			int EWadjDie = EWadj[0];
 			int EWadjDist = EWadj[1];
 //			System.out.println("Die roll: " + die);
 			if (EWadjDie <= hellbore[4][EWadjDist]) {
 				System.out.print("HIT!  ");
-				int damage = hellbore[weaponTypeNum][distanceInput];
+				int damage = hellbore[weaponTypeNum][effectiveDistance];
 //				System.out.println("Damage: " + hellbore[type][distanceInput]);
 				total = total + damage;
 			} else {
@@ -1016,6 +1028,7 @@ public class WeaponsDamage {
 		int die = 0;
 		int numberInput = 0;
 		int distanceInput = 0;
+		int effectiveDistance = 0;
 		
 		System.out.println();
 		System.out.print("Probe:");
@@ -1025,11 +1038,12 @@ public class WeaponsDamage {
 
 		System.out.print("Distance: ");
 		distanceInput = Driver.getNumberNoCancel(0, MAXDIST);
-		distanceInput = SensorScannerMod(distanceInput);
+//		effectiveDistance = SensorScannerMod(distanceInput);
+		effectiveDistance = distanceInput;
 
 		for (int i = 1; i <= numberInput; i++) {
 			die = DamageAllocation.rollDice(1, 6);
-			if (die >= distanceInput) {
+			if (die >= effectiveDistance) {
 				System.out.print("HIT!  ");				
 				total = total + 8;
 			} else {
