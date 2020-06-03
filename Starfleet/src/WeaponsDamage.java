@@ -42,22 +42,8 @@ public class WeaponsDamage {
 				return;
 			}
 			
-			if(Driver.currentGameYard.list[shipNumTarget].cloakOn) {
-				System.out.println("Targetted ship is CLOAKED.");
-			}
-
-			currentShip = Driver.currentGameYard.list[shipNumFiring];
-			targetShip = Driver.currentGameYard.list[shipNumTarget];
+//			Driver.electronicWarfareNet = GetEWshift(shipNumFiring, shipNumTarget);
 			
-			Driver.electronicWarfareNet = Math.sqrt(targetShip.ECM - currentShip.ECCM);
-			if (Driver.electronicWarfareNet < 0) {
-				Driver.electronicWarfareNet = 0;
-			}
-			
-			if (Driver.TESTING) {
-				System.out.println("ECCM-ECM: " + Driver.electronicWarfareNet);
-			}
-	
 			boolean monsterInGame = false;
 			for (int i = 0; i <= Driver.currentGameYard.numShips-1; i++) {
 				if (Driver.currentGameYard.list[i].race == "Monster") {
@@ -161,14 +147,22 @@ public class WeaponsDamage {
 					totalDamage = ESG(totalDamage);
 					
 				} else if(weaponInput.equalsIgnoreCase("D")) {
-					DamageAllocation.DamageAlloc(shipNumTarget, totalDamage);
+					
+					if (Driver.currentGameYard.list[shipNumTarget].kindOfShip == Starship.Ship.MONSTER) {
+						MonsterStuff.MonsterDamageFromShip(shipNumTarget, totalDamage);
+					} else if (Driver.currentGameYard.list[shipNumTarget].kindOfShip == Starship.Ship.PLANET) {
+						MonsterStuff.DamageToPlanet(shipNumTarget, totalDamage);
+					} else if (Driver.currentGameYard.list[shipNumTarget].kindOfShip == Starship.Ship.STARSHIP) {
+						DamageAllocation.DamageAlloc(shipNumTarget, totalDamage);
+					}
+
 					totalDamage = 0;
 					reset = false;
 					cont = false;
 					
 				} else if(weaponInput.equalsIgnoreCase("M")) {
 					System.out.print("Deal damage to a Monster\t");
-					totalDamage = MonsterStuff.MonsterDamageFromShip(totalDamage);
+					totalDamage = MonsterStuff.MonsterDamageFromShip(shipNumTarget, totalDamage);
 					reset = false;
 					cont = false;
 					
@@ -189,6 +183,42 @@ public class WeaponsDamage {
 				}
 			}
 		}
+	}
+	
+	public static double GetEWshift(int shipNumFiring, int shipNumTarget) {
+		int asteroidECM = 0;
+		if(TerrainStuff.TerrainTypeList.contains("A")) {
+			System.out.print("How many Asteroid hexes are being fired through (+ECM modifier for target)? ");
+			asteroidECM = Driver.getNumberNoCancel(1,100);
+		}
+		
+		int nebluaeECM = 0;
+		if(TerrainStuff.TerrainTypeList.contains("N")) {
+			System.out.println("Nebulae +ECM modifier for target)");
+			nebluaeECM = 9;
+		}
+		
+		int cloakECM = 0;
+		if(Driver.currentGameYard.list[shipNumTarget].cloakOn) {
+			System.out.println("Targetted ship is CLOAKED. (+ECM modifier for target)");
+			cloakECM = 5;
+		}
+
+		currentShip = Driver.currentGameYard.list[shipNumFiring];
+		targetShip = Driver.currentGameYard.list[shipNumTarget];
+		
+		int terrainECM = asteroidECM + cloakECM + nebluaeECM;
+		
+		Driver.electronicWarfareNet = Math.sqrt(targetShip.ECM + terrainECM - currentShip.ECCM);
+		if (Driver.electronicWarfareNet < 0) {
+			Driver.electronicWarfareNet = 0;
+		}
+		
+		if (Driver.TESTING) {
+			System.out.println("ECCM + terrain - ECM: " + Driver.electronicWarfareNet);
+		}
+		
+		return Driver.electronicWarfareNet;
 	}
 	
 	public static int GetWeaponType(String text, String options) {
@@ -243,6 +273,8 @@ public class WeaponsDamage {
 			System.out.println("ECCM-ECM: " + Driver.electronicWarfareNet);
 		}
 
+//		Driver.electronicWarfareNet = GetEWshift(shipNumFiring, shipNumTarget);
+
 		int newDie = die + (int) Driver.electronicWarfareNet;
 		int newDist = dist;
 		if (newDie > 6) {
@@ -279,8 +311,7 @@ public class WeaponsDamage {
 			System.out.print("\tAdjusted damage for cloak: " + damage);
 			System.out.println();
 		}
-		
-		
+
 		return damage;
 	}
 	
@@ -306,11 +337,12 @@ public class WeaponsDamage {
 
 		System.out.print("Distance: ");
 		distanceInput = Driver.getNumberNoCancel(0, 75);
-		effectiveDistance = SensorScannerMod(distanceInput);
+//		effectiveDistance = SensorScannerMod(distanceInput);
+		effectiveDistance = distanceInput;
 		
-		if (targetShip.cloakOn) {
-			effectiveDistance = effectiveDistance + 5;
-		}
+//		if (targetShip.cloakOn) {
+//			effectiveDistance = effectiveDistance + 5;
+//		}
 				
 		for(int i = 0; i < numberInput; i++) {
 			int die = DamageAllocation.rollDice(1,6);
@@ -319,7 +351,7 @@ public class WeaponsDamage {
 			int EWadjDist = EWadj[1];
 //			int damage = intPhaser1[die][distanceInput];
 			int damage = intPhaser1[EWadjDie][EWadjDist];	//  EWadj[0]=adj die roll / EWadj[1]=adj distance
-			damage = AdjustDamageForCloak(damage);
+//			damage = AdjustDamageForCloak(damage);
 			total = total + damage;
 		}
 		
