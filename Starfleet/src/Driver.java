@@ -29,6 +29,8 @@ public class Driver {
 			labResearches[i] = new LabResearch(labResearchRaceNames[i]);
 		}
 		
+		TerrainStuff.TerrainTypeList = "";
+		
 		boolean cont = true;
 		
 		System.out.println("|=================================================================================|");
@@ -64,10 +66,7 @@ public class Driver {
 			System.out.println("|                                                                                 |");
 			System.out.println("|            [P]reload Scenario                                                   |");
 			System.out.println("|            [M]onster Management                                                 |");
-//			System.out.println("|            [M]onster Modification based on BPV Adjustment                       |");
-//			System.out.println("|            [L]ab & Damage Check for Monster Scenarios                           |");
-//			System.out.println("|            [X] = Monster Damage                |");
-//			System.out.println("|            [Y] = Roll for Victory Conditions (Monster Scenarios)                |");
+			System.out.println("|            [Y] = Terrain Type                                                   |");
 			System.out.println("|            [Z] = Rules to Remember                                              |");
 			System.out.println("|                                                                                 |");
 			System.out.print("|            [T]oggle On/Off for Testing Purposes ");
@@ -81,7 +80,7 @@ public class Driver {
 			System.out.println("|                                [Q]uit                                           |");
 			System.out.println("|=================================================================================|");
 
-			String userInput = getInput("IWDSRFCPLZVMYT");
+			String userInput = getInput("VIWDSRFCPMYZT");
 			String userInput3 = "";
 
 			int damageTotal = 0;
@@ -116,8 +115,8 @@ public class Driver {
 				ModifyShipSystems();
 			} else if (userInput.equalsIgnoreCase("P")) {
 				PreloadScenario();
-//			} else if (userInput.equalsIgnoreCase("L")) {
-//				MonsterStuff.MonsterScenarioCheck();
+			} else if (userInput.equalsIgnoreCase("Y")) {
+				TerrainStuff.AddTerrain();
 			} else if (userInput.equalsIgnoreCase("Z")) {
 				RulesToRemember();
 //			} else if (userInput.equalsIgnoreCase("Y")) {
@@ -133,82 +132,6 @@ public class Driver {
 			System.out.println();
 		}
 	}
-	
-	public static void ModifyMonsterBPV () {
-		MonsterBPVModifier = 1;
-	
-		if (MonsterBPVModifierApplied == true) {
-			System.out.println("Monster Modifier already applied!!!  Cannot repeat!!!");
-
-		} else {
-			double totalShipBPV = 0;
-			
-			for (int i = 0; i < Driver.currentGameYard.numShips; i++) {
-				
-				if (Driver.currentGameYard.list[i].kindOfShip == Starship.Ship.STARSHIP) {
-					
-					int intBPV = 0;
-					String thisBPV = Driver.currentGameYard.list[i].BPV;
-					String race = Driver.currentGameYard.list[i].race;
-					
-					if (Driver.currentGameYard.list[i].BPV.length() > 0) {
-						intBPV = Driver.GetEconomicBPV(race, thisBPV);
-					}
-					totalShipBPV = totalShipBPV + intBPV;
-				}
-			}
-			
-			System.out.println("Current Starship BPVs:");
-			ShipSetup.PrintCurrentThingsInGame ("SHIP", "BPV");
-			System.out.println("Starship(s) total BPV:\t" + (int) totalShipBPV);
-			MonsterBPVModifier = totalShipBPV / 125.0;
-			System.out.println();
-			
-			System.out.println("Current Monster HPs:");
-			ShipSetup.PrintCurrentThingsInGame ("MONSTER", "HEALTH");
-
-			String labResearchBlurb = "";
-			if (Driver.labResearchRequired > 0) {
-				System.out.println("Lab Research pts required to collect: " + Driver.labResearchRequired);
-				labResearchBlurb = "and/or Lab Research ";
-			}
-
-			System.out.println();
-			System.out.println("Monster Modifier:\t" + MonsterBPVModifier);
-			System.out.println("Apply Monster " + labResearchBlurb + "BPV Modifier? ");
-			
-			String yesOrNo = getInput ("YN");
-			
-			if (yesOrNo.equalsIgnoreCase("Y")) {
-				for (int i = 0; i < Driver.currentGameYard.numShips; i++) {
-					if (Driver.currentGameYard.list[i].kindOfShip == Starship.Ship.MONSTER) {
-						Driver.currentGameYard.list[i].ssd[24].numOfThisPart = (int) Math.round(Driver.currentGameYard.list[i].ssd[24].numOfThisPart * MonsterBPVModifier);
-						Driver.currentGameYard.list[i].ssd[24].remaining = (int) Math.round(Driver.currentGameYard.list[i].ssd[24].remaining * MonsterBPVModifier);
-					}
-				}
-				Driver.labResearchRequired = (int) Math.round(Driver.labResearchRequired * MonsterBPVModifier);
-				System.out.println();
-				System.out.println("Modified Monster HPs:");
-				ShipSetup.PrintCurrentThingsInGame ("MONSTER", "HEALTH");
-				MonsterBPVModifierApplied = true;
-				
-				if (Driver.labResearchRequired > 0) {
-					System.out.println("Lab Research pts required to collect: " + Driver.labResearchRequired);
-				}
-			} else {
-				System.out.println("Monster HPs have NOT been modified");
-			}
-		}
-	}
-	
-	public static void ZeroOutMonsterAndLabResearchValues() {
-		labResearchAquired = 0;
-		labResearchRequired = 0;
-		MonsterScenario = 0;
-		MonsterBPVModifier = 1.0;
-		MonsterBPVModifierApplied = false;
-	}
-	
 	
 	public static void RemoveShip(boolean print) {
 		if (Driver.TESTING) {
@@ -253,7 +176,7 @@ public class Driver {
 			String userInput2 = Driver.getInput("AMLDR");
 
 			if (userInput2.equalsIgnoreCase("M")) {
-				ModifyMonsterBPV();
+				MonsterStuff.ModifyMonsterBPV();
 			} else if (userInput2.equalsIgnoreCase("A")) {
 				MonsterStuff.AdjustMonsterHP();
 			} else if (userInput2.equalsIgnoreCase("L")) {
@@ -904,12 +827,13 @@ public class Driver {
 		
 		boolean scenarioLoaded = false; 
 		
-		while (scenarioLoaded == false) {
+		while (!scenarioLoaded) {
 			System.out.print("What scenario to load? [RETURN to cancel] ");
 			int scenario = getNumber(1,200);
+//			System.out.println("scenario: " + scenario);
 		
 			if (scenario == 1) {
-				ZeroOutMonsterAndLabResearchValues();
+				MonsterStuff.ZeroOutMonsterAndLabResearchValues();
 				MonsterScenario = 1;
 				Driver.currentGameYard.numShips = 0;
 				
@@ -925,7 +849,7 @@ public class Driver {
 				currentGameYard.list[2].speed = DamageAllocation.rollDice(1, 10) + 1;
 				
 			} else if (scenario == 2) {
-				ZeroOutMonsterAndLabResearchValues();
+				MonsterStuff.ZeroOutMonsterAndLabResearchValues();
 				MonsterScenario = 2;
 				labResearchRequired = 400;
 				Driver.currentGameYard.numShips = 0;
@@ -937,7 +861,7 @@ public class Driver {
 				currentGameYard.list[1].speed = DamageAllocation.rollDice(1, 10) + 1;
 				
 			} else if (scenario == 3) {
-				ZeroOutMonsterAndLabResearchValues();
+				MonsterStuff.ZeroOutMonsterAndLabResearchValues();
 				MonsterScenario = 3;
 				labResearchRequired = 0;
 				Driver.currentGameYard.numShips = 0;
@@ -949,7 +873,7 @@ public class Driver {
 				currentGameYard.list[1].speed = DamageAllocation.rollDice(1, 10) + 1;
 
 			} else if (scenario == 4) {
-				ZeroOutMonsterAndLabResearchValues();
+				MonsterStuff.ZeroOutMonsterAndLabResearchValues();
 				MonsterScenario = 4;
 				labResearchRequired = 400;
 				Driver.currentGameYard.numShips = 0;
@@ -961,7 +885,7 @@ public class Driver {
 				currentGameYard.list[1].speed = DamageAllocation.rollDice(1, 10) + 1;
 
 			} else if (scenario == 5) {
-				ZeroOutMonsterAndLabResearchValues();
+				MonsterStuff.ZeroOutMonsterAndLabResearchValues();
 				MonsterScenario = 5;
 				labResearchRequired = 400;
 
@@ -974,7 +898,7 @@ public class Driver {
 				currentGameYard.list[1].speed = DamageAllocation.rollDice(1, 10) + 1;
 
 			} else if (scenario == 6) {
-				ZeroOutMonsterAndLabResearchValues();
+				MonsterStuff.ZeroOutMonsterAndLabResearchValues();
 				MonsterScenario = 6;
 				Driver.currentGameYard.numShips = 0;
 
@@ -993,7 +917,7 @@ public class Driver {
 				currentGameYard.list[2].speed = DamageAllocation.rollDice(1, 10) + 1;
 
 			} else if (scenario == 8) {
-				ZeroOutMonsterAndLabResearchValues();
+				MonsterStuff.ZeroOutMonsterAndLabResearchValues();
 				MonsterScenario = 8;
 				Driver.currentGameYard.numShips = 0;
 
@@ -1026,7 +950,7 @@ public class Driver {
 //				currentGameYard.list[6].speed = 6;		//  Speed coming into game
 				
 			} else if (scenario == 101) {
-				ZeroOutMonsterAndLabResearchValues();
+				MonsterStuff.ZeroOutMonsterAndLabResearchValues();
 				Driver.currentGameYard.numShips = 0;
 
 				InstallSpecificShip("Federation", "DN");
@@ -1051,7 +975,7 @@ public class Driver {
 				currentGameYard.list[5].speed = DamageAllocation.rollDice(1, 10) + 1;
 												
 			} else if (scenario == 102) {
-				ZeroOutMonsterAndLabResearchValues();
+				MonsterStuff.ZeroOutMonsterAndLabResearchValues();
 				Driver.currentGameYard.numShips = 0;
 
 				InstallSpecificShip("Federation", "NCL");
@@ -1064,7 +988,7 @@ public class Driver {
 				currentGameYard.list[2].speed = DamageAllocation.rollDice(1, 5) + 1;
 				
 			} else if (scenario == 103) {
-				ZeroOutMonsterAndLabResearchValues();
+				MonsterStuff.ZeroOutMonsterAndLabResearchValues();
 				Driver.currentGameYard.numShips = 0;
 
 				InstallSpecificShip("Federation", "CC");
@@ -1077,7 +1001,7 @@ public class Driver {
 				currentGameYard.list[2].speed = DamageAllocation.rollDice(1, 10) + 1;
 				
 			} else if (scenario == 104) {
-				ZeroOutMonsterAndLabResearchValues();
+				MonsterStuff.ZeroOutMonsterAndLabResearchValues();
 				Driver.currentGameYard.numShips = 0;
 				
 				InstallSpecificShip("Tholian", "DD");
@@ -1090,7 +1014,7 @@ public class Driver {
 				currentGameYard.list[2].speed = DamageAllocation.rollDice(1, 5) + 1;
 				
 			} else if (scenario == 105) {
-				ZeroOutMonsterAndLabResearchValues();
+				MonsterStuff.ZeroOutMonsterAndLabResearchValues();
 				Driver.currentGameYard.numShips = 0;
 				int firstMonsterNum = FindMonsterLocation("Monster", "Planet Crusher");
 				for (int i = 0; i <= 4; i++) {
@@ -1099,7 +1023,7 @@ public class Driver {
 					currentGameYard.list[i].speed = DamageAllocation.rollDice(1, 10) + 1;
 				}
 			} else if (scenario == -1) {
-				scenarioLoaded = false;
+				scenarioLoaded = true;
 			}
 			
 			if (scenario > 0) {
