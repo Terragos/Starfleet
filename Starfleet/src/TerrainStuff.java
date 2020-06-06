@@ -350,6 +350,7 @@ public class TerrainStuff {
 			if (impulse < 22) {
 				PrintEmptyLineOrNot();
 				System.out.println("Move GRAVITY WAVE.  Strength is now " + (int) GravityWaveStrength + ".  (Terrai[N] Damage)");
+				System.out.println("\tTurns all ships 60° facing parallel to wave.");
 				GravityWaveDamage = (int) GravityWaveStrength;
 				GravityWaveStrength = GravityWaveStrength * 0.9;
 			} else if (impulse > 21) {
@@ -358,6 +359,7 @@ public class TerrainStuff {
 				GravityWaveStrength = base * GravityWaveStrengthStart / 100;
 				PrintEmptyLineOrNot();
 				System.out.println("Move GRAVITY WAVE.  Strength is now " + (int) GravityWaveStrength + ".  (Terrai[N] Damage)");
+				System.out.println("\tTurns all ships 60° facing parallel to wave.");
 			}
 			if (impulse == 32) {
 				GravityWaveTurnNumberStart = GravityWaveTurnNumberStart + GravityWaveTurnInterval;
@@ -404,9 +406,9 @@ public class TerrainStuff {
 				int facing = DamageAllocation.rollDice(1, 3);
 				System.out.print("\t" + Driver.currentGameYard.list[i].name + " moves 1 hex in direction " + direction);
 				if (Driver.currentGameYard.list[i].name != "TORP" && facing == 1) {
-					System.out.print(", rotated 60 CW");
+					System.out.print(", rotated 60° CW");
 				} else if (Driver.currentGameYard.list[i].name != "TORP" && facing == 2) {
-					System.out.print(", rotated 60 CCW");
+					System.out.print(", rotated 60° CCW");
 				} else if (Driver.currentGameYard.list[i].name != "TORP" && facing == 3) {
 					System.out.print(", same facing");
 				}
@@ -476,7 +478,8 @@ public class TerrainStuff {
 			
 			if(impulse == PulsarRandomImpulse) {
 				PrintEmptyLineOrNot();
-				System.out.println("VARIABLE PULSAR: " + PulsarBaseStrength + " dmg (0-5 hexes), " + (int) (PulsarBaseStrength*0.75) + " dmg (6-10 hexes), " + (int) (PulsarBaseStrength/2) + " dmg (11-20 hexes), " + (int) (PulsarBaseStrength/4) + " dmg (21-50 hexes), 0 dmg (50+ hexes)");
+//				System.out.println("VARIABLE PULSAR: " + PulsarBaseStrength + " dmg (0-5 hexes), " + (int) (PulsarBaseStrength*0.75) + " dmg (6-10 hexes), " + (int) (PulsarBaseStrength/2) + " dmg (11-20 hexes), " + (int) (PulsarBaseStrength/4) + " dmg (21-50 hexes), 0 dmg (50+ hexes)");
+				System.out.println("VARIABLE PULSAR: Base Strength is " + (int) (PulsarBaseStrength * 1.05));
 				
 				for (int i = 0; i < Driver.currentGameYard.numShips; i++) {
 					System.out.println();
@@ -485,17 +488,23 @@ public class TerrainStuff {
 						int distanceToPulsar = Driver.getNumberNoCancel(0, 60);
 						
 						int modifiedPulsarStrength = 0;
-						if (distanceToPulsar >= 0 && distanceToPulsar <= 5) {
-							modifiedPulsarStrength = PulsarBaseStrength;
-						} else if (distanceToPulsar >= 6 && distanceToPulsar <= 10) {
-							modifiedPulsarStrength = (int) (PulsarBaseStrength * 0.75);
-						} else if (distanceToPulsar >= 11 && distanceToPulsar <= 20) {
-							modifiedPulsarStrength = (int) (PulsarBaseStrength / 2);
-						} else if (distanceToPulsar >= 21 && distanceToPulsar <= 50) {
-							modifiedPulsarStrength = (int) (PulsarBaseStrength / 4);
-						} else if (distanceToPulsar >= 51) {
-							modifiedPulsarStrength = 0;
+
+						if (distanceToPulsar < 29) {
+							modifiedPulsarStrength = (int) (PulsarBaseStrength * ((double)(0.107411386*distanceToPulsar*distanceToPulsar) - (double)(6.015037594*distanceToPulsar) + 105)/100);
+						} else if (distanceToPulsar > 28) {
+							modifiedPulsarStrength = (int) (PulsarBaseStrength * (double)(30 - (double) distanceToPulsar/3.0)/100);
 						}
+//						if (distanceToPulsar >= 0 && distanceToPulsar <= 5) {
+//							modifiedPulsarStrength = PulsarBaseStrength;
+//						} else if (distanceToPulsar >= 6 && distanceToPulsar <= 10) {
+//							modifiedPulsarStrength = (int) (PulsarBaseStrength * 0.75);
+//						} else if (distanceToPulsar >= 11 && distanceToPulsar <= 20) {
+//							modifiedPulsarStrength = (int) (PulsarBaseStrength / 2);
+//						} else if (distanceToPulsar >= 21 && distanceToPulsar <= 50) {
+//							modifiedPulsarStrength = (int) (PulsarBaseStrength / 4);
+//						} else if (distanceToPulsar >= 51) {
+//							modifiedPulsarStrength = 0;
+//						}
 						
 						if (modifiedPulsarStrength > 0) {
 							if (Driver.currentGameYard.list[i].kindOfShip == Starship.Ship.MONSTER) {
