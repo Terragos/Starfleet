@@ -23,6 +23,8 @@ public class Driver {
 	
 	/* Main Method */
 	public static void main(String[] args) {
+		
+		// OutputStreamRedirect.main();
 
 		labResearches = new LabResearch[labResearchRaceNames.length];
 		for(int i = 0; i < labResearchRaceNames.length; i++) {
