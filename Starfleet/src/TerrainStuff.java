@@ -479,7 +479,7 @@ public class TerrainStuff {
 			if(impulse == PulsarRandomImpulse) {
 				PrintEmptyLineOrNot();
 //				System.out.println("VARIABLE PULSAR: " + PulsarBaseStrength + " dmg (0-5 hexes), " + (int) (PulsarBaseStrength*0.75) + " dmg (6-10 hexes), " + (int) (PulsarBaseStrength/2) + " dmg (11-20 hexes), " + (int) (PulsarBaseStrength/4) + " dmg (21-50 hexes), 0 dmg (50+ hexes)");
-				System.out.println("VARIABLE PULSAR: Base Strength is " + (int) (PulsarBaseStrength * 1.05));
+				System.out.println("VARIABLE PULSAR: Base Strength is " + PulsarBaseStrength);
 				
 				for (int i = 0; i < Driver.currentGameYard.numShips; i++) {
 					System.out.println();
@@ -488,12 +488,14 @@ public class TerrainStuff {
 						int distanceToPulsar = Driver.getNumberNoCancel(0, 60);
 						
 						int modifiedPulsarStrength = 0;
-
-						if (distanceToPulsar < 29) {
-							modifiedPulsarStrength = (int) (PulsarBaseStrength * ((double)(0.107411386*distanceToPulsar*distanceToPulsar) - (double)(6.015037594*distanceToPulsar) + 105)/100);
-						} else if (distanceToPulsar > 28) {
-							modifiedPulsarStrength = (int) (PulsarBaseStrength * (double)(30 - (double) distanceToPulsar/3.0)/100);
+						
+						modifiedPulsarStrength = (int) (PulsarBaseStrength * (Math.round(77.16 * (Math.pow(1.08, (-0.8*distanceToPulsar + 2))) + 10)) / 100);
+						if (Driver.TESTING) {
+							System.out.println("PulsarBaseStrength: " + PulsarBaseStrength);
+							System.out.println("modifiedPulsarStrength: " + modifiedPulsarStrength);
+							System.out.println("(Math.round(77.16 * (Math.pow(1.08, (-0.8*distanceToPulsar + 2))) + 10)) / 100): " + (Math.round(77.16 * (Math.pow(1.08, (-0.8*distanceToPulsar + 2))) + 10)) / 100);
 						}
+						
 //						if (distanceToPulsar >= 0 && distanceToPulsar <= 5) {
 //							modifiedPulsarStrength = PulsarBaseStrength;
 //						} else if (distanceToPulsar >= 6 && distanceToPulsar <= 10) {
