@@ -55,28 +55,7 @@ public class WeaponsDamage {
 			while(cont) {
 				if (totalDamage == 0) {
 					System.out.println();
-					System.out.println();
-					System.out.println("|==========================================================================|");
-					System.out.println("|                         WEAPONS DAMAGE PROCEDURE                         |");
-					System.out.println("|==========================================================================|");
-					System.out.println("|  Type [1] Phaser  [P]hoton Torpedo [S/P/O]    Disruptor [B]olt           |");
-					System.out.println("|  Type [2] Phaser  P[L]asma Torpedo [R/2/G/F]  [T]ractor-Repulsor Beam    |");
-					System.out.println("|  Type [3] Phaser  [F]usion Beam [S/O/X]       [S]uicide Shuttle (Admin)  |");
-					System.out.println("|  Type [4] Phaser  [H]ellbore [S/O/D]          Dro[N]e                    |");
-					System.out.println("|  Pr[O]be          [E]SG                       Displacement De[V]ice      |");
-					System.out.println("|                   [M]ines & Bombs                                        |");
-					System.out.println("|                                               [Z] = Force Damage         |");
-					System.out.println("|==========================================================================|");
-					System.out.println("|                        Go to [D]amage Allocation                         |");
-					if (monsterInGame == true) {
-						System.out.println("|                      Damage to [M]onster from Ship                       |");
-					}
-					if (impulseNumber == -1) {
-						System.out.println("|                          [R]eturn to Main Menu                           |");
-					} else {
-						System.out.println("|                      Return to [I]mpulse Procedure                       |");
-					}
-					System.out.println("|==========================================================================|");
+					PrintWeaponsMenu(impulseNumber);
 				}
 	
 				System.out.println();
@@ -84,7 +63,7 @@ public class WeaponsDamage {
 	
 				String weaponInput = "";
 
-				weaponInput = Driver.getInput("1234PLFHDBTQIRSNOMEVZM");
+				weaponInput = Driver.getInput("1234PLFHDBTQIRSNOMEVZMW");
 				
 				if (weaponInput.equalsIgnoreCase("1")) {
 					totalDamage = type1Phaser(totalDamage);
@@ -172,6 +151,9 @@ public class WeaponsDamage {
 					reset = true;
 					break;
 				
+				} else if(weaponInput.equalsIgnoreCase("W")) {
+					PrintWeaponsMenu(impulseNumber);
+					
 				} else if(weaponInput.equalsIgnoreCase("R")) {
 					reset = true;
 					break;
@@ -183,6 +165,32 @@ public class WeaponsDamage {
 				}
 			}
 		}
+	}
+	
+	public static void PrintWeaponsMenu(int impulseNumber) {
+		System.out.println();
+		System.out.println("|==========================================================================|");
+		System.out.println("|                         WEAPONS DAMAGE PROCEDURE                         |");
+		System.out.println("|==========================================================================|");
+		System.out.println("|  Type [1] Phaser  [P]hoton Torpedo [S/P/O]    Disruptor [B]olt           |");
+		System.out.println("|  Type [2] Phaser  P[L]asma Torpedo [R/2/G/F]  [T]ractor-Repulsor Beam    |");
+		System.out.println("|  Type [3] Phaser  [F]usion Beam [S/O/X]       [S]uicide Shuttle (Admin)  |");
+		System.out.println("|  Type [4] Phaser  [H]ellbore [S/O/D]          Dro[N]e                    |");
+		System.out.println("|  Pr[O]be          [E]SG                       Displacement De[V]ice      |");
+		System.out.println("|                   [M]ines & Bombs                                        |");
+		System.out.println("|                                               [Z] = Force Damage         |");
+		System.out.println("|==========================================================================|");
+		System.out.println("|                        Go to [D]amage Allocation                         |");
+		System.out.println("|                          Print [W]eapons Menu                            |");
+//		if (monsterInGame == true) {
+//			System.out.println("|                      Damage to [M]onster from Ship                       |");
+//		}
+		if (impulseNumber == -1) {
+			System.out.println("|                          [R]eturn to Main Menu                           |");
+		} else {
+			System.out.println("|                      Return to [I]mpulse Procedure                       |");
+		}
+		System.out.println("|==========================================================================|");
 	}
 	
 	public static double GetEWshift(int shipNumFiring, int shipNumTarget) {
@@ -749,15 +757,15 @@ public class WeaponsDamage {
 		for(int i = 0; i < numberInput; i++) {
 			int damage = 0;
 			int die = DamageAllocation.rollDice(1,6);
-			if (targetShip.cloakOn) {
-				if (die <= intDisruptor[weaponTypeNum][effectiveDistance]) {
-					damage = damage + intDisruptorDamage[damageType][effectiveDistance];
-					System.out.print("HIT!  ");
-					total = total + damage;
-				} else {
-					System.out.print("Miss  ");
-				}
-			} else {
+//			if (targetShip.cloakOn) {
+//				if (die <= intDisruptor[weaponTypeNum][effectiveDistance]) {
+//					damage = damage + intDisruptorDamage[damageType][effectiveDistance];
+//					System.out.print("HIT!  ");
+//					total = total + damage;
+//				} else {
+//					System.out.print("Miss  ");
+//				}
+//			} else {
 				int EWadj[] = GetEWadjustment(die, effectiveDistance, 40);
 				int EWadjDie = EWadj[0];
 				int EWadjDist = EWadj[1];
@@ -770,7 +778,7 @@ public class WeaponsDamage {
 					System.out.print("Miss  ");
 				}
 				
-			}
+//			}
 		}
 		System.out.println();
 		
