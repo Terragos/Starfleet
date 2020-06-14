@@ -63,6 +63,7 @@ public class Driver {
 			System.out.println("|            [S]hipyard (Add ships from)                                          |");
 			System.out.println("|            [R]emove Ships from Current Game                                     |");  
 			System.out.println("|            [F]ilter/View All Ships in Shipyard by BPV                           |");
+			System.out.println("|            [A]dd Ship Manually and Send to TXT file                             |");
 			System.out.println("|                                                                                 |");
 			System.out.println("|            [C]hange SSD Numbers (some or all)                                   |");
 			System.out.println("|                                                                                 |");
@@ -82,7 +83,7 @@ public class Driver {
 			System.out.println("|                                [Q]uit                                           |");
 			System.out.println("|=================================================================================|");
 
-			String userInput = getInput("VIWDSRFCPMYZT");
+			String userInput = getInput("VIWDSRFACPMYZT");
 			String userInput3 = "";
 
 			int damageTotal = 0;
@@ -112,6 +113,8 @@ public class Driver {
 				RemoveShip(true);
 			} else if (userInput.equalsIgnoreCase("F")) {
 				FilterShipyard();
+			} else if (userInput.equalsIgnoreCase("A")) {
+				OutputToTextFile.AddShipManually();
 			} else if (userInput.equalsIgnoreCase("C")) {
 				// Allow user to ADD ships and tell how many systems left of each type
 				ModifyShipSystems();
@@ -439,32 +442,7 @@ public class Driver {
 	public static void ChangeSomeShipSSDSystems(int shipNumInput) {
 		int systemNumToChange = 0;
 		int newAmount = 0;
-//		String extraSpaces = "";
-//		String extraSpaces2 = "";
-//		String extraSpaces3 = "";
-//
-//		System.out.println();
-//		System.out.println("Current Number of SSD boxes for each system: ");
-//		for (int numPart = 0; numPart <= 24; numPart++) {
-//			extraSpaces = " " + ShipSetup.getExtraSpaces(numPart+1, 2);
-//			extraSpaces2 = ShipSetup.getExtraSpaces(currentGameYard.list[shipNumInput].ssd[numPart].remaining, 2);
-//			extraSpaces3 = ShipSetup.getExtraSpaces(currentGameYard.list[shipNumInput].ssd[numPart].numOfThisPart, 2);
-//			System.out.print(extraSpaces + (numPart+1) + ")   " + extraSpaces2 + currentGameYard.list[shipNumInput].ssd[numPart].remaining + " / " + extraSpaces3 + currentGameYard.list[shipNumInput].ssd[numPart].numOfThisPart + "  " + currentGameYard.list[shipNumInput].ssd[numPart].name);
-//			if (currentGameYard.list[shipNumInput].ssd[numPart].name == "Flag Bridge") {
-//				System.out.print(" = Security, Web, Displacement Device");
-//			} else if (currentGameYard.list[shipNumInput].ssd[numPart].name == "Torpedo") {
-//				System.out.print(" = Photon Torpedo, Disruptor Bolt, Plasma Torpedo, SFG, Fusion Beam, Tractor-Repulsor Beam");
-//			} else if (currentGameYard.list[shipNumInput].ssd[numPart].name == "Drone") {
-//				System.out.print(" = ADD, ESG, Hellbore, Plasmatic Pulsars, Power Absorbers");
-//			} else if (currentGameYard.list[shipNumInput].ssd[numPart].name == "Shuttle") {
-//				System.out.print(" = Fighter, Mine Andormedan Hangar");
-//			} else if (currentGameYard.list[shipNumInput].ssd[numPart].name == "Cargo") {
-//				System.out.print(" = Repair, Mine Rack");
-//			} else if (currentGameYard.list[shipNumInput].ssd[numPart].name.contains("Hull")) {
-//				System.out.print(" = Repair");
-//			}
-//			System.out.println();
-//		}
+		
 		while (systemNumToChange != -1) {
 			System.out.println();
 			System.out.print("System number to change [RETURN to cancel]: ");
@@ -1135,40 +1113,6 @@ public class Driver {
 		return input;
 	}
 
-//	public static double getNumberDoubleNoCancel(double small, double big) {
-//		double input = -1.0;
-//		String userInput = "";
-//
-//		while (input == -1.0) {
-//			userInput = keyboard.nextLine().toUpperCase();
-//			if (userInput.length() >= 0) {
-//
-//				if (!userInput.contains(".")) {
-//					try {
-//						input = Integer.parseInt(userInput);
-//					} catch (NumberFormatException e) {
-//						input = -1;
-//					}
-//				} else {
-//					try {
-//						int decimalLocation = userInput.indexOf(".");
-//						int integerPart = Integer.parseInt(userInput.substring(0, decimalLocation));
-//						int decimalPart = Integer.parseInt(userInput.substring(decimalLocation, userInput.length()));
-//						input = (double) integerPart + ( (double) decimalPart / 10);
-//					} catch (NumberFormatException e) {
-//						input = -1;
-//					}
-//				}
-//				
-//				if (input < small || input > big) {
-//					System.out.print("[" + (small) + "-" + big + "]"); // Remind user what number range is being looked
-//					input = -1;
-//				}
-//			}
-//		}
-//		return input;
-//	}
-	
 	public static double getNumberDoubleNoCancel(double small, double big) {
 		double input = -1.0;
 		String userInput = "";
