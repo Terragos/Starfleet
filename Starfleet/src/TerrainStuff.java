@@ -172,6 +172,11 @@ public class TerrainStuff {
 		}
 	}
 	
+	
+	
+	
+	
+	
 	public static void RemoveTerrain(String terrainInput) {
 		String yesOrNo = Driver.getInput("YN");
 		if (yesOrNo.equalsIgnoreCase("Y")) {
@@ -180,6 +185,7 @@ public class TerrainStuff {
 			TerrainTypeList = TerrainTypeList.substring(0, terrainLocationToRemove) + TerrainTypeList.substring(terrainLocationToRemove + 1, TerrainTypeList.length());	
 		}
 	}
+	
 	
 	
 	
@@ -220,6 +226,7 @@ public class TerrainStuff {
 
 		System.out.println();
 	}
+	
 	
 	
 	
@@ -305,6 +312,7 @@ public class TerrainStuff {
 	
 	
 	
+	
 	public static void PrintEmptyLineOrNot() {
 		if (!EmptyLinePrinted) {
 			System.out.println();
@@ -312,6 +320,7 @@ public class TerrainStuff {
 		}
 		
 	}
+	
 	
 	
 	
@@ -343,6 +352,11 @@ public class TerrainStuff {
 		}
 	}
 
+	
+	
+	
+	
+	
 	public static void CheckForGravityWave(int impulse) {
 		
 		if (TerrainTypeList.contains("G") && Driver.TurnNumber == GravityWaveTurnNumberStart) {
@@ -368,6 +382,7 @@ public class TerrainStuff {
 		}
 	}
 
+	
 	
 	
 	
@@ -421,6 +436,7 @@ public class TerrainStuff {
 	
 	
 	
+	
 	public static void DustCloudDamge(int impulse) {
 		int dustCloud[][] = {{0, 1, 2, 3, 4, 5, 6, 7, 8, 9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32},   //  speed
 				  			 {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 1, 1, 1, 1},   //  impulse 5
@@ -460,6 +476,7 @@ public class TerrainStuff {
 		}
 	}
 
+	
 	
 	
 	
