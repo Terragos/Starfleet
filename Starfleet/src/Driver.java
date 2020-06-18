@@ -1,4 +1,5 @@
 import java.util.Scanner;
+import java.io.IOException;
 import java.math.*;
 
 public class Driver {
@@ -22,7 +23,7 @@ public class Driver {
 	public static LabResearch[] labResearches;
 	
 	/* Main Method */
-	public static void main(String[] args) {
+	public static void main(String[] args) throws IOException {
 		
 		// OutputStreamRedirect.main();
 
@@ -500,6 +501,8 @@ public class Driver {
 				System.out.println("| E9.0   Tractor-Repulsor Beam  3+3  Any Src             1      Sub. Tractor Beam |");
 				System.out.println("| E10.0  Hellbore               3+3  Any Src             3      Surrounding Damage|");
 				System.out.println("|          Overloaded           3+6  Any Src             -      Fdbck Dmg, dist=0 |");
+				System.out.println("| E11.0  Plasmatic Pulsar       4+4  Any Src             2      4 impulse effect  |");
+				System.out.println("|          Overloaded        4+8(or 6) Any Src           -                        |");
 				System.out.println("| FP1.0  Plasma Torpedo:                                                          |");
 				System.out.println("|          Type-R              2+2+5 Any Src    NO ship/4 starbase  *EPT 2+2+10   |");
 				System.out.println("|          Type-S (G-II)       2+2+4 Any Src             2          *EPT 2+2+8    |");
