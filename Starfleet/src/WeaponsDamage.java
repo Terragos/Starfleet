@@ -222,46 +222,6 @@ public class WeaponsDamage {
 	
 	
 	
-	public static double GetEWshift(int shipNumFiring, int shipNumTarget) {
-		int asteroidECM = 0;
-		if(TerrainStuff.TerrainTypeList.contains("A")) {
-			System.out.print("How many Asteroid hexes are being fired through (+ECM modifier for target)? ");
-			asteroidECM = Driver.getNumberNoCancel(1,100);
-		}
-		
-		int nebluaeECM = 0;
-		if(TerrainStuff.TerrainTypeList.contains("N")) {
-			System.out.println("Nebulae +ECM modifier for target)");
-			nebluaeECM = 9;
-		}
-		
-		int cloakECM = 0;
-		if(Driver.currentGameYard.list[shipNumTarget].cloakOn) {
-			System.out.println("Targetted ship is CLOAKED. (+ECM modifier for target)");
-			cloakECM = 5;
-		}
-
-		currentShip = Driver.currentGameYard.list[shipNumFiring];
-		targetShip = Driver.currentGameYard.list[shipNumTarget];
-		
-		int terrainECM = asteroidECM + cloakECM + nebluaeECM;
-		
-		Driver.electronicWarfareNet = Math.sqrt(targetShip.ECM + terrainECM - currentShip.ECCM);
-		if (Driver.electronicWarfareNet < 0) {
-			Driver.electronicWarfareNet = 0;
-		}
-		
-		if (Driver.TESTING) {
-			System.out.println("ECCM + terrain - ECM: " + Driver.electronicWarfareNet);
-		}
-		
-		return Driver.electronicWarfareNet;
-	}
-	
-	
-	
-	
-	
 	public static int GetWeaponType(String text, String options) {
 		String weaponTypeInput = "";
 		int typeNum = 0;
@@ -309,40 +269,6 @@ public class WeaponsDamage {
 		return newDistance;
 	}
 	
-	
-	
-	
-	
-	public static int[] GetEWadjustment(int die, int dist, int maxDist) {
-		int EW[] = {0,0};
-		
-		if (Driver.TESTING) {
-			System.out.println();
-			System.out.println("   die: " + die + "\t   dist: " + dist);
-			System.out.println("ECCM-ECM: " + Driver.electronicWarfareNet);
-		}
-
-//		Driver.electronicWarfareNet = GetEWshift(shipNumFiring, shipNumTarget);
-
-		int newDie = die + (int) Driver.electronicWarfareNet;
-		int newDist = dist;
-		if (newDie > 6) {
-			newDist = newDist + newDie - 6;
-			if (newDist > maxDist) {
-				newDist = maxDist;
-			}
-			newDie = 6;
-		}
-		
-		EW[0] = newDie;
-		EW[1] = newDist;
-
-		if (Driver.TESTING) {
-			System.out.println("newDie: " + newDie + "\tnewDist: " + newDist);
-		}
-		return EW;
-	}
-
 	
 	
 	
@@ -403,7 +329,7 @@ public class WeaponsDamage {
 				
 		for(int i = 0; i < numberInput; i++) {
 			int die = DamageAllocation.rollDice(1,6);
-			int EWadj[] = GetEWadjustment(die, effectiveDistance, 75);
+			int EWadj[] = ElectronicWarfare.GetEWadjustment(die, effectiveDistance, 75);
 			int EWadjDie = EWadj[0];
 			int EWadjDist = EWadj[1];
 			int damage = intPhaser1[die][distanceInput];
@@ -449,7 +375,7 @@ public class WeaponsDamage {
 		
 		for(int i = 0; i < numberInput; i++) {
 			int die = DamageAllocation.rollDice(1,6);
-			int EWadj[] = GetEWadjustment(die, distanceInput, 50);
+			int EWadj[] = ElectronicWarfare.GetEWadjustment(die, distanceInput, 50);
 			int EWadjDie = EWadj[0];
 			int EWadjDist = EWadj[1];
 			int damage = intPhaser2[EWadjDie][distanceInput];
@@ -496,7 +422,7 @@ public class WeaponsDamage {
 
 		for(int i = 0; i < numberInput; i++) {
 			int die = DamageAllocation.rollDice(1,6);
-			int EWadj[] = GetEWadjustment(die, effectiveDistance, 15);
+			int EWadj[] = ElectronicWarfare.GetEWadjustment(die, effectiveDistance, 15);
 			int EWadjDie = EWadj[0];
 			int EWadjDist = EWadj[1];
 			int damage = intPhaser3[EWadjDie][distanceInput];
@@ -543,7 +469,7 @@ public class WeaponsDamage {
 
 		for(int i = 0; i < numberInput; i++) {
 			int die = DamageAllocation.rollDice(1,6);
-			int EWadj[] = GetEWadjustment(die, distanceInput, 100);
+			int EWadj[] = ElectronicWarfare.GetEWadjustment(die, distanceInput, 100);
 			int EWadjDie = EWadj[0];
 			int EWadjDist = EWadj[1];
 			int damage = intPhaser4[EWadjDie][distanceInput];
@@ -610,7 +536,7 @@ public class WeaponsDamage {
 		for(int i = 0; i < numberInput; i++) {
 			int damage = 0;
 			int die = DamageAllocation.rollDice(1,6);
-			int EWadj[] = GetEWadjustment(die, effectiveDistance, 30);
+			int EWadj[] = ElectronicWarfare.GetEWadjustment(die, effectiveDistance, 30);
 			int EWadjDie = EWadj[0];
 			int EWadjDist = EWadj[1];
 			if (EWadjDie <= intPhoton[weaponTypeNum][EWadjDist]) {
@@ -670,7 +596,7 @@ public class WeaponsDamage {
 //		}
 				
 		int die = DamageAllocation.rollDice(2,6);
-		int EWadj[] = GetEWadjustment(die, effectiveDistance, 75);
+		int EWadj[] = ElectronicWarfare.GetEWadjustment(die, effectiveDistance, 75);
 		int EWadjDie = EWadj[0];
 		int EWadjDist = EWadj[1];
 		int damage = intPlasmaticPulsar[2][distanceInput];
@@ -797,7 +723,7 @@ public class WeaponsDamage {
 		int startTotal = total;
 		for(int i = 0; i < numberInput; i++) {
 			int die = DamageAllocation.rollDice(1,6);
-			int EWadj[] = GetEWadjustment(die, distanceInput, 24);
+			int EWadj[] = ElectronicWarfare.GetEWadjustment(die, distanceInput, 24);
 			int EWadjDie = EWadj[0];
 			int EWadjDist = EWadj[1];
 			int damage = intFusion[EWadjDie][EWadjDist];
@@ -840,7 +766,7 @@ public class WeaponsDamage {
 
 		for(int i = 0; i < numberInput; i++) {
 			int die = DamageAllocation.rollDice(1,6);
-			int EWadj[] = GetEWadjustment(die, effectiveDistance, 8);
+			int EWadj[] = ElectronicWarfare.GetEWadjustment(die, effectiveDistance, 8);
 			int EWadjDie = EWadj[0];
 			int EWadjDist = EWadj[1];
 			int damage = intFusionOver[EWadjDie][EWadjDist] * (weaponTypeNum-1);  //  Overload=1 (2-1), Suicide=2 (3-1)
@@ -920,7 +846,7 @@ public class WeaponsDamage {
 //					System.out.print("Miss  ");
 //				}
 //			} else {
-				int EWadj[] = GetEWadjustment(die, effectiveDistance, 40);
+				int EWadj[] = ElectronicWarfare.GetEWadjustment(die, effectiveDistance, 40);
 				int EWadjDie = EWadj[0];
 				int EWadjDist = EWadj[1];
 //			System.out.println("die: " + die + "\tintDisruptor[type][distanceInput]: " + intDisruptor[type][distanceInput]);
@@ -981,7 +907,7 @@ public class WeaponsDamage {
 		int startTotal = total;
 		for(int i = 0; i < numberInput; i++) {
 			int die = DamageAllocation.rollDice(1,6);
-			int EWadj[] = GetEWadjustment(die, effectiveDistance, 25);
+			int EWadj[] = ElectronicWarfare.GetEWadjustment(die, effectiveDistance, 25);
 			int EWadjDie = EWadj[0];
 			int EWadjDist = EWadj[1];
 			int damage = intTracRep[EWadjDie][EWadjDist];
@@ -1097,7 +1023,7 @@ public class WeaponsDamage {
 		int startTotal = total;
 		for(int i = 0; i < numberInput; i++) {
 			int die = DamageAllocation.rollDice(2,6);
-			int EWadj[] = GetEWadjustment(die, effectiveDistance, 40);
+			int EWadj[] = ElectronicWarfare.GetEWadjustment(die, effectiveDistance, 40);
 			int EWadjDie = EWadj[0];
 			int EWadjDist = EWadj[1];
 //			System.out.println("Die roll: " + die);
