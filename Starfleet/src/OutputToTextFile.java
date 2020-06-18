@@ -220,6 +220,11 @@ public class OutputToTextFile {
 		
 	}
 	
+	
+	
+	
+	
+	
 	public static void GetDamConSensorScannerNumbers(String unit, int newShipNum) {
 		System.out.println();
 		System.out.println("Enter " + unit + " Numbers:");
@@ -261,6 +266,11 @@ public class OutputToTextFile {
 
 	}
 	
+	
+	
+	
+	
+	
 	public static void ChangeShipSSDSystems(int shipNumInput) {
 		int systemNumToChange = 0;
 		int newAmount = 0;
@@ -286,6 +296,11 @@ public class OutputToTextFile {
 			}
 		}
 	}
+	
+	
+	
+	
+	
 	
 	public static void ChangeShipInfo(int newShipNum) {
 
@@ -371,6 +386,11 @@ public class OutputToTextFile {
 		
 	}
 	
+	
+	
+	
+	
+	
     public static void SendToTextFile(int newShipNum) throws IOException {
 
 		Starship currentShip = Driver.currentGameYard.list[newShipNum];
@@ -449,82 +469,87 @@ public class OutputToTextFile {
         writer.close();
     }
     
-    public static void SendToTextFileOld(int newShipNum) {
-
-    	Starship currentShip = Driver.currentGameYard.list[newShipNum];
-
-        try
-        {
-            // Save original out stream.
-            PrintStream originalOut = System.out;
-//            // Save original err stream.
-//            PrintStream originalErr = System.err;
-
-            // Create a new file output stream.
-            PrintStream fileOut = new PrintStream("./out.txt");
-//            // Create a new file error stream. 
-//            PrintStream fileErr = new PrintStream("./err.txt");
-
-            // Redirect standard out to file.
-            System.setOut(fileOut);
-//            // Redirect standard err to file.
-//            System.setErr(fileErr);
-
-            // Wrapped Scanner to get user input.
-            Scanner scanner = new Scanner(System.in);
-
-            fileOut.print("\"" + currentShip.race + "\", ");
-            fileOut.print("\"" + currentShip.shipType + "\", ");
-            fileOut.print("\"" + currentShip.name + "\", ");
-            fileOut.print("\"" + currentShip.crewUnits + "\", ");
-            fileOut.print("\"" + currentShip.boardingParties + "\", ");
-            fileOut.print("\"" + currentShip.BPV + "\", ");
-            fileOut.print("\"" + currentShip.breakDown + "\", ");
-            fileOut.print("\"" + currentShip.moveCost + "\", ");
-            fileOut.print("\"" + currentShip.spareShuttles + "\", ");
-            fileOut.print("\"" + currentShip.sizeClass + "\", ");
-            fileOut.print("\"" + currentShip.turnMode + "\", ");
-            fileOut.print("\"" + currentShip.ruleNum + "\", ");
-            fileOut.print("\"" + currentShip.yearInService + "\"");
-            fileOut.println();
-            
-            for (int i = 0; i < currentShip.ssd[21].numOfThisPart; i++) {
-            	fileOut.print(currentShip.damConNums[i]);
-            	if (i <= currentShip.ssd[21].numOfThisPart-2) {
-            		fileOut.print(", ");
-            	}
-            }
-            fileOut.println();
-            
-            for (int i = 0; i < currentShip.ssd[22].numOfThisPart; i++) {
-            	fileOut.print(currentShip.sensorNums[i]);
-            	if (i <= currentShip.ssd[22].numOfThisPart-2) {
-            		fileOut.print(", ");
-            	}
-            }
-            fileOut.println();
-            
-            for (int i = 0; i < currentShip.ssd[23].numOfThisPart; i++) {
-            	fileOut.print(currentShip.scannerNums[i]);
-            	if (i <= currentShip.ssd[23].numOfThisPart-2) {
-            		fileOut.print(", ");
-            	}
-            }
-            fileOut.println();
-            
-            for (int i = 0; i <= 24; i++) {
-            	fileOut.print(currentShip.ssd[i].numOfThisPart);
-            	if (i <= 23) {
-            		fileOut.print(", ");
-            	}
-            }
-            fileOut.println();
-            
-            System.setOut(originalOut);
-
-        } catch(FileNotFoundException ex) {
-            ex.printStackTrace();
-        }
-        
-    }
+    
+    
+    
+    
+    
+//    public static void SendToTextFileOld(int newShipNum) {
+//
+//    	Starship currentShip = Driver.currentGameYard.list[newShipNum];
+//
+//        try
+//        {
+//            // Save original out stream.
+//            PrintStream originalOut = System.out;
+////            // Save original err stream.
+////            PrintStream originalErr = System.err;
+//
+//            // Create a new file output stream.
+//            PrintStream fileOut = new PrintStream("./out.txt");
+////            // Create a new file error stream. 
+////            PrintStream fileErr = new PrintStream("./err.txt");
+//
+//            // Redirect standard out to file.
+//            System.setOut(fileOut);
+////            // Redirect standard err to file.
+////            System.setErr(fileErr);
+//
+//            // Wrapped Scanner to get user input.
+//            Scanner scanner = new Scanner(System.in);
+//
+//            fileOut.print("\"" + currentShip.race + "\", ");
+//            fileOut.print("\"" + currentShip.shipType + "\", ");
+//            fileOut.print("\"" + currentShip.name + "\", ");
+//            fileOut.print("\"" + currentShip.crewUnits + "\", ");
+//            fileOut.print("\"" + currentShip.boardingParties + "\", ");
+//            fileOut.print("\"" + currentShip.BPV + "\", ");
+//            fileOut.print("\"" + currentShip.breakDown + "\", ");
+//            fileOut.print("\"" + currentShip.moveCost + "\", ");
+//            fileOut.print("\"" + currentShip.spareShuttles + "\", ");
+//            fileOut.print("\"" + currentShip.sizeClass + "\", ");
+//            fileOut.print("\"" + currentShip.turnMode + "\", ");
+//            fileOut.print("\"" + currentShip.ruleNum + "\", ");
+//            fileOut.print("\"" + currentShip.yearInService + "\"");
+//            fileOut.println();
+//            
+//            for (int i = 0; i < currentShip.ssd[21].numOfThisPart; i++) {
+//            	fileOut.print(currentShip.damConNums[i]);
+//            	if (i <= currentShip.ssd[21].numOfThisPart-2) {
+//            		fileOut.print(", ");
+//            	}
+//            }
+//            fileOut.println();
+//            
+//            for (int i = 0; i < currentShip.ssd[22].numOfThisPart; i++) {
+//            	fileOut.print(currentShip.sensorNums[i]);
+//            	if (i <= currentShip.ssd[22].numOfThisPart-2) {
+//            		fileOut.print(", ");
+//            	}
+//            }
+//            fileOut.println();
+//            
+//            for (int i = 0; i < currentShip.ssd[23].numOfThisPart; i++) {
+//            	fileOut.print(currentShip.scannerNums[i]);
+//            	if (i <= currentShip.ssd[23].numOfThisPart-2) {
+//            		fileOut.print(", ");
+//            	}
+//            }
+//            fileOut.println();
+//            
+//            for (int i = 0; i <= 24; i++) {
+//            	fileOut.print(currentShip.ssd[i].numOfThisPart);
+//            	if (i <= 23) {
+//            		fileOut.print(", ");
+//            	}
+//            }
+//            fileOut.println();
+//            
+//            System.setOut(originalOut);
+//
+//        } catch(FileNotFoundException ex) {
+//            ex.printStackTrace();
+//        }
+//        
+//    }
 }
