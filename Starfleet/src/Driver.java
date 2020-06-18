@@ -22,6 +22,8 @@ public class Driver {
 	//public static int[] labResearchTotalPoints = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
 	public static LabResearch[] labResearches;
 	
+	
+	
 	/* Main Method */
 	public static void main(String[] args) throws IOException {
 		
@@ -139,6 +141,11 @@ public class Driver {
 		}
 	}
 	
+	
+	
+	
+	
+	
 	public static void RemoveShip(boolean print) {
 		if (Driver.TESTING) {
 			System.out.println("Driver.currentGameYard.numShips: " + Driver.currentGameYard.numShips);
@@ -160,6 +167,11 @@ public class Driver {
 			}
 		}
 	}
+	
+	
+	
+	
+	
 	
 	public static void MonsterManagementMenu() {
 		boolean cont = true;
@@ -198,6 +210,11 @@ public class Driver {
 		}
 	}
 	
+	
+	
+	
+	
+	
 	public static void PreGameReminders() {
 		System.out.println();
 		System.out.println("|=================================================================================|");
@@ -224,6 +241,11 @@ public class Driver {
 		System.out.println("|                                                                                 |");
 		System.out.println("|=================================================================================|");
 	}
+	
+	
+	
+	
+	
 	
 	public static void FilterShipyard() {
 		System.out.println();
@@ -268,6 +290,11 @@ public class Driver {
 		System.out.println("=============================================================================================================");
 	}
 	
+	
+	
+	
+	
+	
 	public static int GetEconomicBPV (String race, String thisBPV) {
 		int adjust = 0;
 		int intBPV = 0;
@@ -293,6 +320,11 @@ public class Driver {
 		return intBPV;
 	}
 
+	
+	
+	
+	
+	
 	public static int GetCombatBPV (String race, String thisBPV) {
 		int adjust = 0;
 		int intBPV = 0;
@@ -317,6 +349,10 @@ public class Driver {
 		return intBPV;
 	}
 
+	
+	
+	
+	
 	
 	public static void ModifyShipSystems() {
 		boolean cont = true;
@@ -356,6 +392,11 @@ public class Driver {
 		}
 	}
 
+	
+	
+	
+	
+	
 	public static void PrintSSDsystems(int shipNumInput) {
 		String extraSpaces = "";
 		String extraSpaces2 = "";
@@ -384,6 +425,11 @@ public class Driver {
 			System.out.println();
 		}
 	}
+	
+	
+	
+	
+	
 	
 	public static void ChangeAllShipSSDSystems(int shipNumInput) {
 		int dummyArray[] = { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
@@ -439,7 +485,12 @@ public class Driver {
 		ShipSetup.PrintCurrentThingsInGame("Ship", "Speed");
 		System.out.println();
 	}
-			
+		
+	
+	
+	
+	
+	
 	public static void ChangeSomeShipSSDSystems(int shipNumInput) {
 		int systemNumToChange = 0;
 		int newAmount = 0;
@@ -456,6 +507,11 @@ public class Driver {
 		}
 	}
 				
+	
+	
+	
+	
+	
 	public static void RulesToRemember() {
 
 		boolean cont = true;
@@ -769,6 +825,11 @@ public class Driver {
 		}
 	}
 
+	
+	
+	
+	
+	
 	public static void PreloadScenario() {
 		System.out.println();
 		System.out.println("|=================================================================================|");
@@ -1020,6 +1081,11 @@ public class Driver {
 		System.out.println();
 	}
 	
+	
+	
+	
+	
+	
 	public static void InstallSpecificShip(String race, String shipType) {
 		for (int i = 0; i <= defaultYard.numShips-1; i++) {
 			if (defaultYard.list[i].race == race && defaultYard.list[i].shipType == shipType) {
@@ -1028,6 +1094,11 @@ public class Driver {
 		}
 	}
 
+	
+	
+	
+	
+	
 	public static int FindMonsterLocation(String race, String shipType) {  // FInd Monster location # in shipyard
 		int firstMonsterNum = 0;
 		for (int i = 0; i <= defaultYard.numShips-1; i++) {
@@ -1038,6 +1109,11 @@ public class Driver {
 		}
 		return firstMonsterNum;
 	}
+	
+	
+	
+	
+	
 	
 	// GET LETTER AS INPUT THAT IS IN PASSED STRING
 	public static String getInput(String word) {
@@ -1061,6 +1137,11 @@ public class Driver {
 		return inputLetter;
 	}
 
+	
+	
+	
+	
+	
 	// GET LETTER AS INPUT THAT IS IN PASSED STRING
 	public static String getInputNoCancel(String word) {
 //		Scanner keyboard = new Scanner(System.in);
@@ -1083,6 +1164,11 @@ public class Driver {
 		return inputLetter;
 	}
 
+	
+	
+	
+	
+	
 	// GET NUMBER AS INPUT THAT IS BETWEEN PASSED SMALL/BIG
 	public static int getNumber(int small, int big) {
 //		Scanner keyboard = new Scanner(System.in);
@@ -1116,6 +1202,11 @@ public class Driver {
 		return input;
 	}
 
+	
+	
+	
+	
+	
 	public static double getNumberDoubleNoCancel(double small, double big) {
 		double input = -1.0;
 		String userInput = "";
@@ -1144,6 +1235,11 @@ public class Driver {
 		return input;
 	}
 
+	
+	
+	
+	
+	
 	public static int getNumberNoCancel(int small, int big) {
 		int input = -1;
 		String userInput = "";
