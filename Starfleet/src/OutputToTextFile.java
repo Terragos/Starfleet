@@ -31,6 +31,8 @@ public class OutputToTextFile {
 			Driver.InstallSpecificShip("Blank", "554");
 		} else if (format.equalsIgnoreCase("666")) {
 			Driver.InstallSpecificShip("Blank", "666");
+		} else if (format.equalsIgnoreCase("667")) {
+			Driver.InstallSpecificShip("Blank", "667");
 		} else if (format.equalsIgnoreCase("665")) {
 			Driver.InstallSpecificShip("Blank", "665");
 		} else if (format.equalsIgnoreCase("777")) {
