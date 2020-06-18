@@ -38,10 +38,20 @@ public class Starship {
 	public int indexOfNextSensor = Driver.currentGameYard.list[i].ssd[22].numOfThisPart - Driver.currentGameYard.list[i].ssd[22].remaining; 
 	public int indexOfNextScanner = Driver.currentGameYard.list[i].ssd[23].numOfThisPart - Driver.currentGameYard.list[i].ssd[23].remaining; */ 
 
+	
+	
+	
+	
+	
 	/* Default Constructor */
 	public Starship() {
 		
 	}
+	
+	
+	
+	
+	
 	
 	/* Copy Constructor */
 	public Starship(Starship ship) {
@@ -72,6 +82,11 @@ public class Starship {
 		this.ECM = ship.ECM;
 		this.ECCM = ship.ECCM;
 	}
+	
+	
+	
+	
+	
 	
 	/* Non Regular Starship Constructor */
 	public Starship(Ship kind, int speed, String name, String type) {
@@ -122,6 +137,11 @@ public class Starship {
 		}
 	}
 	
+	
+	
+	
+	
+	
 	public Starship(String race, String type, String crewUnits, String boardingParties, String BPV, 
 			String breakDown, String moveCost, String spareShuttles, String sizeClass, 
 			String turnMode, String ruleNum, String yearInService) {
@@ -165,6 +185,11 @@ public class Starship {
 		this.ssd = new Part[25];
 	}
 	
+	
+	
+	
+	
+	
 	public Starship(String race, String type, String crewUnits, String boardingParties, String BPV, 
 			String breakDown, String moveCost, String spareShuttles, String sizeClass, 
 			String turnMode, String ruleNum, String yearInService, int speed, double spi, double distrv) {
@@ -191,11 +216,20 @@ public class Starship {
 		this.ssd = new Part[25];
 	}
 	
+	
+	
+	
+	
+	
 	public String toString() {
 		return this.race.substring(0,3) + "\t" + this.shipType + "\t" + this.crewUnits + "\t" + this.boardingParties + "\t"
 				+ this.BPV + "\t" + this.breakDown + "\t" + this.moveCost + "\t" + this.spareShuttles + "\t" + this.sizeClass + "\t" 
 				+ this.turnMode + "\t" + this.ruleNum + "\t" + this.yearInService;
 	}
+	
+	
+	
+	
 	
 
 	public void setupSSD(int bridge, int flagBridge, int emerBridge, int aux, int phaser, int torpedo, int centerWarp, 
