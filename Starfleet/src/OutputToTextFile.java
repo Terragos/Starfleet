@@ -59,6 +59,7 @@ public class OutputToTextFile {
 
 		System.out.print("Race: ");
 		currentShip.race = Driver.keyboard.nextLine();
+		currentShip.race = PhaseCalculation.capFirstLetter(currentShip.race.toLowerCase());
 		System.out.print("Ship Type: ");
 		currentShip.shipType = Driver.keyboard.nextLine().toUpperCase();
 		currentShip.name = currentShip.race.substring(0, 1).toUpperCase() + currentShip.race.substring(1, 3) + "-" + currentShip.shipType;
@@ -80,7 +81,7 @@ public class OutputToTextFile {
 		System.out.print("Turn Mode: ");
 		currentShip.turnMode = Driver.keyboard.nextLine().toUpperCase();
 		System.out.print("Rule Number: ");
-		currentShip.ruleNum = Driver.keyboard.nextLine();
+		currentShip.ruleNum = Driver.keyboard.nextLine().toUpperCase();
 		System.out.print("Year in Service: ");
 		currentShip.yearInService = Driver.keyboard.nextLine();
 //		System.out.print("Dock Points:");
