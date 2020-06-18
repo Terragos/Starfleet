@@ -63,7 +63,7 @@ public class WeaponsDamage {
 	
 				String weaponInput = "";
 
-				weaponInput = Driver.getInput("1234PLFHDBTQIRSNOMEVZMW");
+				weaponInput = Driver.getInput("1234PLFHDABTQIRSNOMEVZMW");
 				
 				if (weaponInput.equalsIgnoreCase("1")) {
 					totalDamage = type1Phaser(totalDamage);
@@ -82,6 +82,17 @@ public class WeaponsDamage {
 					
 				} else if(weaponInput.equalsIgnoreCase("L")) {
 					totalDamage = plasmaTorpedo(totalDamage);
+					
+				} else if(weaponInput.equalsIgnoreCase("A")) {
+					if (totalDamage == 0) {
+						totalDamage = plasmaticPulsarDevice(totalDamage);
+					} else if (totalDamage > 0) {
+						System.out.print("Total damage (" + totalDamage + ") will be zeroed out.  OK? ");
+						String ok = Driver.getInput("YN");
+						if (ok.equalsIgnoreCase("Y")) {
+							totalDamage = plasmaticPulsarDevice(totalDamage);
+						}
+					}
 					
 				} else if(weaponInput.equalsIgnoreCase("F")) {
 					System.out.println();
@@ -167,18 +178,31 @@ public class WeaponsDamage {
 		}
 	}
 	
+	
+	
+	
+	
 	public static void PrintWeaponsMenu(int impulseNumber) {
 		System.out.println();
 		System.out.println("|==========================================================================|");
 		System.out.println("|                         WEAPONS DAMAGE PROCEDURE                         |");
-		System.out.println("|==========================================================================|");
+		System.out.println("|--------------------------------------------------------------------------|");
 		System.out.println("|  Type [1] Phaser  [P]hoton Torpedo [S/P/O]    Disruptor [B]olt           |");
 		System.out.println("|  Type [2] Phaser  P[L]asma Torpedo [R/2/G/F]  [T]ractor-Repulsor Beam    |");
 		System.out.println("|  Type [3] Phaser  [F]usion Beam [S/O/X]       [S]uicide Shuttle (Admin)  |");
 		System.out.println("|  Type [4] Phaser  [H]ellbore [S/O/D]          Dro[N]e                    |");
 		System.out.println("|  Pr[O]be          [E]SG                       Displacement De[V]ice      |");
 		System.out.println("|                   [M]ines & Bombs                                        |");
-		System.out.println("|                                               [Z] = Force Damage         |");
+		System.out.println("|                                                                          |");
+		System.out.println("|==========================================================================|");
+		System.out.println("|                             Single Volley Only                           |");
+		System.out.println("|--------------------------------------------------------------------------|");
+		System.out.println("|  Pl[A]smatic Pulsar Device                                               |");
+		System.out.println("|                                                                          |");
+		System.out.println("|==========================================================================|");
+		System.out.println("|                                   Other                                  |");
+		System.out.println("|--------------------------------------------------------------------------|");
+		System.out.println("|                            [Z] = Force Damage                            |");
 		System.out.println("|==========================================================================|");
 		System.out.println("|                        Go to [D]amage Allocation                         |");
 		System.out.println("|                          Print [W]eapons Menu                            |");
@@ -192,6 +216,10 @@ public class WeaponsDamage {
 		}
 		System.out.println("|==========================================================================|");
 	}
+	
+	
+	
+	
 	
 	public static double GetEWshift(int shipNumFiring, int shipNumTarget) {
 		int asteroidECM = 0;
@@ -229,6 +257,10 @@ public class WeaponsDamage {
 		return Driver.electronicWarfareNet;
 	}
 	
+	
+	
+	
+	
 	public static int GetWeaponType(String text, String options) {
 		String weaponTypeInput = "";
 		int typeNum = 0;
@@ -241,6 +273,10 @@ public class WeaponsDamage {
 		return typeNum;
 	}
 		
+	
+	
+	
+	
 	public static int SensorScannerMod(int distance) {
 		int sensorModifier = 1;									//  LOCK-ON SUCCESSFUL
 		int newDistance = distance;
@@ -272,6 +308,10 @@ public class WeaponsDamage {
 		return newDistance;
 	}
 	
+	
+	
+	
+	
 	public static int[] GetEWadjustment(int die, int dist, int maxDist) {
 		int EW[] = {0,0};
 		
@@ -302,6 +342,10 @@ public class WeaponsDamage {
 		return EW;
 	}
 
+	
+	
+	
+	
 	public static int AdjustDamageForCloak(int damage) {
 		
 		if (targetShip.cloakOn) {
@@ -322,6 +366,10 @@ public class WeaponsDamage {
 
 		return damage;
 	}
+	
+	
+	
+	
 	
 	public static int type1Phaser(int total) {
 		int intPhaser1[][] = {{0, 1, 2, 3, 4, 5, 6, 7, 8, 9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55,56,57,58,59,60,61,62,63,64,65,66,67,68,69,70,71,72,73,74,75,76},   //  distance
@@ -357,8 +405,8 @@ public class WeaponsDamage {
 			int EWadj[] = GetEWadjustment(die, effectiveDistance, 75);
 			int EWadjDie = EWadj[0];
 			int EWadjDist = EWadj[1];
-//			int damage = intPhaser1[die][distanceInput];
-			int damage = intPhaser1[EWadjDie][EWadjDist];	//  EWadj[0]=adj die roll / EWadj[1]=adj distance
+			int damage = intPhaser1[die][distanceInput];
+//			int damage = intPhaser1[EWadjDie][EWadjDist];	//  EWadj[0]=adj die roll / EWadj[1]=adj distance
 //			damage = AdjustDamageForCloak(damage);
 			total = total + damage;
 		}
@@ -368,6 +416,10 @@ public class WeaponsDamage {
 		
 		return total;
 	}
+	
+	
+	
+	
 	
 	public static int type2Phaser(int total) {
 		int intPhaser2[][] = {{0, 1, 2, 3, 4, 5, 6, 7, 8, 9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51},   //  distance
@@ -399,7 +451,8 @@ public class WeaponsDamage {
 			int EWadj[] = GetEWadjustment(die, distanceInput, 50);
 			int EWadjDie = EWadj[0];
 			int EWadjDist = EWadj[1];
-			int damage = intPhaser2[EWadjDie][EWadjDist];	//  EWadj[0]=adj die roll / EWadj[1]=adj distance
+			int damage = intPhaser2[EWadjDie][distanceInput];
+//			int damage = intPhaser2[EWadjDie][EWadjDist];	//  EWadj[0]=adj die roll / EWadj[1]=adj distance
 //			damage = AdjustDamageForCloak(damage);
 			total = total + damage;
 		}
@@ -409,6 +462,10 @@ public class WeaponsDamage {
 		
 		return total;
 	}
+	
+	
+	
+	
 	
 	//  TYPE 3 PHASER
 	public static int type3Phaser(int total) {
@@ -441,7 +498,8 @@ public class WeaponsDamage {
 			int EWadj[] = GetEWadjustment(die, effectiveDistance, 15);
 			int EWadjDie = EWadj[0];
 			int EWadjDist = EWadj[1];
-			int damage = intPhaser3[EWadjDie][EWadjDist];	//  EWadj[0]=adj die roll / EWadj[1]=adj distance
+			int damage = intPhaser3[EWadjDie][distanceInput];
+//			int damage = intPhaser3[EWadjDie][EWadjDist];	//  EWadj[0]=adj die roll / EWadj[1]=adj distance
 //			damage = AdjustDamageForCloak(damage);
 			total = total + damage;
 		}
@@ -451,6 +509,10 @@ public class WeaponsDamage {
 		
 		return total;
 	}
+	
+	
+	
+	
 	
 	//  TYPE 4 PHASER
 	public static int type4Phaser(int total) {
@@ -483,7 +545,8 @@ public class WeaponsDamage {
 			int EWadj[] = GetEWadjustment(die, distanceInput, 100);
 			int EWadjDie = EWadj[0];
 			int EWadjDist = EWadj[1];
-			int damage = intPhaser4[EWadjDie][EWadjDist];	//  EWadj[0]=adj die roll / EWadj[1]=adj distance
+			int damage = intPhaser4[EWadjDie][distanceInput];
+//			int damage = intPhaser4[EWadjDie][EWadjDist];	//  EWadj[0]=adj die roll / EWadj[1]=adj distance
 //			damage = AdjustDamageForCloak(damage);
 			total = total + damage;
 		}
@@ -493,6 +556,10 @@ public class WeaponsDamage {
 		
 		return total;
 	}
+	
+	
+	
+	
 	
 	//  PHOTON TORPEDO
 	public static int photonTorpedo(int total) {
@@ -567,6 +634,80 @@ public class WeaponsDamage {
 		
 		return total;
 	}
+
+	
+	
+	
+	
+	//  PLASMATIC PULSAR DEVICE
+	public static int plasmaticPulsarDevice(int total) {
+		int intPlasmaticPulsar[][] = {{0, 1, 2, 3, 4, 5, 6, 7, 8, 9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41},   //  distance
+									  {0, 0, 0, 0, 9, 9, 9, 9, 9, 9, 9, 8, 8, 8, 8, 8, 7, 7, 7, 7, 7, 6, 6, 6, 6, 6, 5, 5, 5, 5, 5, 4, 4, 4, 4, 4, 4, 4, 4, 4, 4, 0},   //  hit probability 
+									  {0, 0, 0, 0, 6, 6, 6, 6, 6, 6, 6, 5, 5, 5, 5, 5, 4, 4, 4, 4, 4, 3, 3, 3, 3, 3, 2, 2, 2, 2, 2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0}};  //  damage
+
+		String PlasmaticPulsarSplash[][] = {{"0", "1",     "2",     "3",     "4",     "5",     "6"    },   //  Chart is in reverse order
+											{"0", "0+1+0", "1+1+0", "1+1+1", "1+2+1", "1+3+1", "1+4+1"},
+											{"0", "1+0",   "1+1",   "2+1",   "2+2",   "3+2",   "3+3"  }};
+		
+		total = 0;
+		int distanceInput = 0;
+		int effectiveDistance = 0;
+		
+		System.out.println();
+		System.out.println("Plasmatic Pulsar");
+
+		System.out.print("Do you need to roll for wave-lock (first pulse or wave-lock lost)? ");
+		String input = Driver.getInput("YN");
+			
+		System.out.print("Distance: ");
+		distanceInput = Driver.getNumberNoCancel(0, 75);
+//		effectiveDistance = SensorScannerMod(distanceInput);
+		effectiveDistance = distanceInput;
+		
+//		if (targetShip.cloakOn) {
+//			effectiveDistance = effectiveDistance + 5;
+//		}
+				
+		int die = DamageAllocation.rollDice(2,6);
+		int EWadj[] = GetEWadjustment(die, effectiveDistance, 75);
+		int EWadjDie = EWadj[0];
+		int EWadjDist = EWadj[1];
+		int damage = intPlasmaticPulsar[2][distanceInput];
+		
+		if (input.equalsIgnoreCase("Y")) {
+			if (die <= intPlasmaticPulsar[1][distanceInput]) {
+				System.out.println("Wave-lock ACHEIVED this impulse. Total damage to apply " + damage);
+				System.out.println("Volley Damage: " + PlasmaticPulsarSplash[1][damage] + " (3 shields)");
+				System.out.print("        or     " + PlasmaticPulsarSplash[2][damage] + "   (2 shields, LOF directly along hex side");
+				if (damage == 1 || damage == 3 || damage == 5) {
+					System.out.print(", extra pt to stronger shield");
+				}
+				System.out.print(")\n");
+				total = damage;
+			} else {
+				System.out.println("Wave-lock FAILED this impulse. Total damage to apply " + damage);
+			}
+		} else {
+			System.out.println("Wave-lock MAINTAINED this impulse.");
+			System.out.println("Volley Damage: " + PlasmaticPulsarSplash[1][damage] + " (3 shields)");
+			System.out.print("        or     " + PlasmaticPulsarSplash[2][damage] + "   (2 shields, LOF directly along hex side");
+			if (damage == 1 || damage == 3 || damage == 5) {
+				System.out.print(", extra pt to stronger shield");
+			}
+			System.out.print(")\n");
+			total = damage;
+		}
+		
+		System.out.println();
+		System.out.println("Volley Damage: " + (total));
+		System.out.println("Go DIRECTLY to Damage Allocation");
+		
+		return total;
+	}
+
+	
+	
+	
 	
 	//  PLASMA TORPEDO
 	public static int plasmaTorpedo(int total) {
@@ -615,6 +756,10 @@ public class WeaponsDamage {
 		
 		return total;
 	}
+	
+	
+	
+	
 	
 	//  FUSION BEAM
 	public static int fusionBeam(int total) {
@@ -665,6 +810,10 @@ public class WeaponsDamage {
 		return total;
 	}
 	
+	
+	
+	
+	
 	//  FUSION BEAM OVERLOADED (int type 2) / SUICIDE (int type 3)
 	public static int fusionBeamOverloaded(int weaponTypeNum, int total) {
 		int intFusionOver[][] = {{ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9},   //  distance
@@ -712,6 +861,10 @@ public class WeaponsDamage {
 
 		return total;
 	}
+	
+	
+	
+	
 	
 	//  DISRUPTOR BOLT
 	public static int disruptorBolt(int total) {
@@ -795,6 +948,10 @@ public class WeaponsDamage {
 		return total;
 	}
 	
+	
+	
+	
+	
 	//  TRACTOR-REPULSOR BEAM
 	public static int tractorRepulsorBeam(int total) {
 		int intTracRep[][] = {{ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26},   //  distance
@@ -836,6 +993,10 @@ public class WeaponsDamage {
 		
 		return total;
 	}
+	
+	
+	
+	
 	
 	//  EXPANDING SPHERE GENERATOR
 	public static int ESG(int total) {
@@ -904,6 +1065,10 @@ public class WeaponsDamage {
 		return total;
 	}
 	
+	
+	
+	
+	
 	//  HELLBORE
 	public static int hellbore(int total) {
 		int hellbore[][] = {{ 0, 1, 2, 3, 4, 5, 6, 7, 8, 9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41},   //  distance
@@ -969,6 +1134,10 @@ public class WeaponsDamage {
 		return total;
 	}
 	
+	
+	
+	
+	
 	public static int adminSuicideShuttle(int total) {
 		int startTotal = total;
 		
@@ -987,6 +1156,10 @@ public class WeaponsDamage {
 		
 		return total;
 	}
+	
+	
+	
+	
 	
 	public static int drone(int total) {
 		int startTotal = total;
@@ -1031,6 +1204,10 @@ public class WeaponsDamage {
 		return total;
 	}
 
+	
+	
+	
+	
 	public static int probe(int total) {
 		int startTotal = total;
 		int die = 0;
@@ -1066,6 +1243,10 @@ public class WeaponsDamage {
 		return total;
 	}
 
+	
+	
+	
+	
 	public static int MinesBombs(int total) {
 		int speedInput = 0;
 		int numberInput = 0;
