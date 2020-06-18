@@ -266,6 +266,11 @@ public class PhaseCalculation {
 		}
 	}
 	
+	
+	
+	
+	
+	
 	public static void ToggleCloakShip() {
 
 		boolean cont = true;
@@ -297,6 +302,11 @@ public class PhaseCalculation {
 		
 		PhaseCalculation.PrintImpulseHeader();
 	}
+	
+	
+	
+	
+	
 	
 	public static void ShipModifyPreImpulseProcedure() {
 	
@@ -347,6 +357,11 @@ public class PhaseCalculation {
 		}
 	}
 	
+	
+	
+	
+	
+	
 	public static String PrintSpaces(String name) {
 		String spaces = "";
 		
@@ -356,6 +371,11 @@ public class PhaseCalculation {
 		
 		return spaces;
 	}
+	
+	
+	
+	
+	
 	
 	public static void CheckForAnyElectronicWarfareValues() {
 
@@ -375,6 +395,11 @@ public class PhaseCalculation {
 			System.out.println();
 		}
 	}
+	
+	
+	
+	
+	
 	
 	public static void GetElectronicWarfareValues(String howMany) {
 
@@ -438,6 +463,11 @@ public class PhaseCalculation {
 		System.out.println();
 	}
 	
+	
+	
+	
+	
+	
 	public static void ModifyShipSpeeds() {
 
 		int currentSpeed = 0;
@@ -481,6 +511,11 @@ public class PhaseCalculation {
 		
 		ShipSetup.SortCurrentShipyard();
 	}
+	
+	
+	
+	
+	
 	
 	public static void ModifySingleShipSpeed() {
 		boolean cont = true;
@@ -532,6 +567,11 @@ public class PhaseCalculation {
 		}
 		ShipSetup.SortCurrentShipyard();
 	}
+	
+	
+	
+	
+	
 	
 	public static void PrintCurrentShipsInGame() {
 		ShipSetup.SortCurrentShipyard();										// Always SORT ships before printing to screen
@@ -625,6 +665,11 @@ public class PhaseCalculation {
 
 	}
 	
+	
+	
+	
+	
+	
 	public static void PrintImpulseHeader() {
 		System.out.print("=============");
 		for(int k = 0; k < Driver.currentGameYard.numShips; k++) {	
@@ -701,6 +746,11 @@ public class PhaseCalculation {
 		System.out.print("=======================");
 	}
 
+	
+	
+	
+	
+	
 	public static void LockOnCalculations() {
 		
 		int die = 0;
@@ -735,6 +785,10 @@ public class PhaseCalculation {
 	}
 
 
+	
+	
+	
+	
 	// FIND TURN MODE NUMBER BASED ON TURN MODE LETTER
 	public static int FindHexMinToTurn(String mode, int speed) {
 		int numHexes = 0; 
@@ -850,6 +904,11 @@ public class PhaseCalculation {
 		return numHexes;
 	}
 	
+	
+	
+	
+	
+	
 	// ADD TORPEDO METHOD - ON-THE-FLY
 	public static void AddOrRemoveTorpedo() {
 		int location = findTorpInCurrGameYard(); 
@@ -872,6 +931,11 @@ public class PhaseCalculation {
 		return -1;
 	}
 
+	
+	
+	
+	
+	
 	// ADD DRONE METHOD - ON-THE-FLY
 	public static void AddDrone() {		
 		System.out.print("\nDrone Name (12 char max) [RETURN to cancel]: ");
@@ -923,6 +987,11 @@ public class PhaseCalculation {
 		}
 	}
 
+	
+	
+	
+	
+	
 	// ADD SHUTTLE METHOD - ON-THE-FLY	
 	public static void AddShuttle() {	
 		System.out.print("\nShuttle Name (16 char max) [RETURN to cancel]: ");
@@ -938,6 +1007,11 @@ public class PhaseCalculation {
 		}
 	}
 
+	
+	
+	
+	
+	
 	// ADD FIGHTER METHOD - ON-THE-FLY
 	public static void AddFighter() {		
 		System.out.print("\nFighter Name (16 char max) [RETURN to cancel]: ");
@@ -953,6 +1027,11 @@ public class PhaseCalculation {
 		}
 	}
 
+	
+	
+	
+	
+	
 	public static void AdjustForDamageControl() {
 
 		boolean cont = true;
@@ -1104,6 +1183,11 @@ public class PhaseCalculation {
 		}
 	}
 
+	
+	
+	
+	
+	
 	public static int FindLength(String name, int max, int remain) {
 		int lineLength = 0;
 		int digitCountMax = 0;
@@ -1131,6 +1215,11 @@ public class PhaseCalculation {
 	
 		return lineLength;
 	}
+	
+	
+	
+	
+	
 	
 	public static String capFirstLetter(String original) {
 	    if (original == null || original.length() == 0) {
