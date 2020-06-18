@@ -18,6 +18,9 @@ public class Shipyard {
 		list = new Starship[500];
 	}
 	
+	
+	
+	
 	public Shipyard(String name) {
 		numberOfShipyardsMadeThusFar++;
 		numShips = 0;
@@ -26,6 +29,9 @@ public class Shipyard {
 		this.name = name;
 	}
 	
+	
+	
+	
 	public void addShipToShipyard(Starship ship) {
 		
 		this.list[numShips] = new Starship(ship);
@@ -33,6 +39,9 @@ public class Shipyard {
 		if(ship.kindOfShip == Starship.Ship.STARSHIP) 
 			numStarships++;
 	}
+	
+	
+	
 	
 	public void removeShipFromShipyard(int remover) {
 		System.out.println();
@@ -44,6 +53,9 @@ public class Shipyard {
 		}
 		this.numShips--;
 	}
+	
+	
+	
 	
 	public static Shipyard setupDefaultShipyard() {	
 		Shipyard defaultYard = new Shipyard("default Yard");
@@ -1638,6 +1650,11 @@ public class Shipyard {
 	    return  defaultYard;
 	}
 	
+	
+	
+	
+	
+	
 	public void displayShipyardMenu(int pass) {
 
 		boolean isMonster = true;
@@ -1761,6 +1778,11 @@ public class Shipyard {
 		}
 	}
 	
+	
+	
+	
+	
+	
 	public static void DisplayRaceRefits(String race) {
 		if (race.contentEquals("F")) {
 			System.out.println("                                            \"+\" REFITS:   (R2.70)");
@@ -1801,6 +1823,11 @@ public class Shipyard {
 		System.out.println("=============================================================================================================");
 	}
 	
+	
+	
+	
+	
+	
 	public int numberOfShipsWithRace(String race) {
 		int count = 0;
 		for (int i = 0; i < this.numShips; i++) {
@@ -1810,6 +1837,11 @@ public class Shipyard {
 		}	
 		return count;
 	}
+	
+	
+	
+	
+	
 	
 	public int printShipyardBasedOnRace (String race) {
 
@@ -1862,6 +1894,11 @@ public class Shipyard {
 		
 		return firstOfRace;
 	}
+	
+	
+	
+	
+	
 	
 	public static String getRace(String r) {
 		String race = "";
