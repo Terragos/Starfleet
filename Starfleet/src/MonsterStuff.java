@@ -81,6 +81,11 @@ public class MonsterStuff {
 		return monsterDamage;
 	}
 
+	
+	
+	
+	
+	
 	public static int PlanetCrusher() {
 		int die = DamageAllocation.rollDice(1,6);
 		int damage = PlanetCrusherDamage[die];
@@ -93,6 +98,11 @@ public class MonsterStuff {
 		return damage;
 	}
 		
+	
+	
+	
+	
+	
 	public static int SpaceAmoeba() {
 		int damage = 0;
 		int die = DamageAllocation.rollDice(1,6);
@@ -110,6 +120,11 @@ public class MonsterStuff {
 		return damage;
 	}
 	
+	
+	
+	
+	
+	
 	public static int MorayEel() {
 		int die = DamageAllocation.rollDice(1,6);
 		int damage = MorayEelDamage[die];
@@ -122,6 +137,11 @@ public class MonsterStuff {
 		return damage;
 	}
 				
+	
+	
+	
+	
+	
 	public static int CosmicCloud() {
 		int damage = 0;
 		int die = DamageAllocation.rollDice(1,6);
@@ -143,6 +163,11 @@ public class MonsterStuff {
 		return damage;
 	}
 					
+	
+	
+	
+	
+	
 	public static int Sunsnake() {
 		int die = DamageAllocation.rollDice(1,6);
 		int damage = MorayEelDamage[die];
@@ -154,7 +179,12 @@ public class MonsterStuff {
 
 		return damage;
 	}
-						
+				
+	
+	
+	
+	
+	
 	public static int MindMonster() {
 		int damage = 0;
 		int die = DamageAllocation.rollDice(1,6);
@@ -180,7 +210,12 @@ public class MonsterStuff {
 		damage = 0;
 		return damage;
 	}
-							
+					
+	
+	
+	
+	
+	
 	public static int MindMonsterAttacksPlanet() {			//  Returns mind wipe data as damage to planet
 		int damage = 0;
 		int die = DamageAllocation.rollDice(1,6);
@@ -194,6 +229,11 @@ public class MonsterStuff {
 		return damage;
 	}
 
+	
+	
+	
+	
+	
 	public static int SpaceDragon() {
 		int damage = 0;
 		int die = DamageAllocation.rollDice(1,6);
@@ -202,6 +242,11 @@ public class MonsterStuff {
 		return damage;
 	}
 		
+	
+	
+	
+	
+	
 	public static int ArastozAttack(String size) {
 		
 		System.out.println("size: " + size);
@@ -224,6 +269,11 @@ public class MonsterStuff {
 
 		return damage;
 	}
+	
+	
+	
+	
+	
 	
 	public static void DidArastozCombine() {
 
@@ -335,12 +385,22 @@ public class MonsterStuff {
 		}
 	}
 	
+	
+	
+	
+	
+	
 	public static void RemoveMonsterFromGame(int whichShip) {
 		for (int n = whichShip; n <= Driver.currentGameYard.numShips; n++) {	
 			Driver.currentGameYard.list[n] = Driver.currentGameYard.list[n+1];
 		}
 		Driver.currentGameYard.numShips--;
 	}
+	
+	
+	
+	
+	
 	
 	public static int MonsterDamageFromShip(int numMonster, int damageToMonster) {
 //		int whichMonster = -5;
@@ -369,6 +429,11 @@ public class MonsterStuff {
 		return damageToMonster;
 	}
 	
+	
+	
+	
+	
+	
 	public static int DamageToPlanet(int numPlanet, int damageToPlanet) {
 //		int whichPlanet = -5;
 		
@@ -395,6 +460,11 @@ public class MonsterStuff {
 		}
 		return damageToPlanet;
 	}
+	
+	
+	
+	
+	
 	
 	public static int MonsterAttacksPlanet(int damageToPlanet) {
 		int whichPlanet = -5;
@@ -428,6 +498,11 @@ public class MonsterStuff {
 		return damageToPlanet;
 	}
 
+	
+	
+	
+	
+	
 	public static void MonsterScenarioCheck() {
 		String monsterName = "";
 		int monsterDamageRemaining = 0;
@@ -486,6 +561,11 @@ public class MonsterStuff {
 		}
 	}
 
+	
+	
+	
+	
+	
 	public static void RollForVictoryConditions() {
 		String monsterName = "";
 		for (int i = 0; i < Driver.currentGameYard.numShips; i++) {
@@ -816,6 +896,11 @@ public class MonsterStuff {
 			}
 		}
 	}
+	
+	
+	
+	
+	
 	
 	public static void ZeroOutMonsterAndLabResearchValues() {
 		Driver.labResearchAquired = 0;
