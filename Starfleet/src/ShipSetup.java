@@ -18,6 +18,11 @@ public class ShipSetup {
 		}
 	}
 	
+	
+	
+	
+	
+	
 	public static int GetAdjustedInput(int printSpecific, String whatToPrint, String whatAspect1) {
 		int inputNum = Driver.getNumber(0, printSpecific);
 		
@@ -52,6 +57,11 @@ public class ShipSetup {
 		}
 		return -1;
 	}
+	
+	
+	
+	
+	
 	
 	public static int PrintCurrentThingsInGame(String whatToPrint, String whatAspect1 /*, String whatAspect2 */) { 
 
@@ -223,6 +233,11 @@ public class ShipSetup {
 		System.out.println();
 		return printNum;
 	}
+	
+	
+	
+	
+	
 	
 	public static String getExtraSpaces (int num, int maxDigits) {
 
