@@ -310,6 +310,11 @@ public class DamageAllocation {
 		waitForReturn();
 	}
 	
+	
+	
+	
+	
+	
 	public static void RollForCriticalHit () {
 		int die = DamageAllocation.rollDice(2, 6);
 		System.out.println();
@@ -368,6 +373,11 @@ public class DamageAllocation {
 		System.out.println();
 	}
 	
+	
+	
+	
+	
+	
 	// ROLL DICE METHOD
 	public static int rollDice(int numOfDice, int numOfSides) {
 		Random randomGenerator = new Random();
@@ -386,6 +396,11 @@ public class DamageAllocation {
 		return totalDieRoll;
 	}
 
+	
+	
+	
+	
+	
 	// WAIT FOR RETURN
 	public static void waitForReturn () {
 		Scanner keyboard = new Scanner(System.in);  //  Create a Scanner object
@@ -397,6 +412,11 @@ public class DamageAllocation {
 			}
 		}
 	}
+	
+	
+	
+	
+	
 	
 	public static String spacesToCenter(String textToCenter, int spaceWidth) {
 		String returnString = "";
