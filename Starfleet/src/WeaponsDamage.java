@@ -7,6 +7,7 @@ public class WeaponsDamage {
 	public static Starship targetShip;
 	public static Scanner keyboard = new Scanner(System.in);
 	
+	
 	public static void WeaponsDam (int impulseNumber) {   //  If yes > 0 then in the middle of an Impulse Movement Procedure
 		int totalDamage = 0;
 		
