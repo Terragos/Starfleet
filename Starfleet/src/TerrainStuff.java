@@ -330,23 +330,28 @@ public class TerrainStuff {
 		if (TerrainTypeList.contains("B")) {
 			if (impulse == 32) {
 				PrintEmptyLineOrNot();
-				System.out.println("BLACK HOLE: Everything within 30 hexes moves 1 hex closer");
+				System.out.println("BLACK HOLE:");
+				System.out.println("\tEverything within 30 hexes moves 1 hex closer.");
 
 			} else if (impulse == 11 || impulse == 22) {
 				PrintEmptyLineOrNot();
-				System.out.println("BLACK HOLE: Everything within 20 hexes moves 1 hex closer");
+				System.out.println("BLACK HOLE:");
+				System.out.println("\tEverything within 20 hexes moves 1 hex closer.");
 				
 			} else if (impulse == 5 || impulse == 16 || impulse == 27) {
 				PrintEmptyLineOrNot();
-				System.out.println("BLACK HOLE: Everything within 10 hexes moves 1 hex closer");
+				System.out.println("BLACK HOLE:");
+				System.out.println("\tEverything within 10 hexes moves 1 hex closer.");
 				
 			} else if (impulse == 2 || impulse == 8 || impulse == 13 || impulse == 19 || impulse == 24 || impulse == 29) {
 				PrintEmptyLineOrNot();
-				System.out.println("BLACK HOLE: Everything within 5 hexes moves 1 hex closer");
+				System.out.println("BLACK HOLE:");
+				System.out.println("\tEverything within 5 hexes moves 1 hex closer.");
 				
 			} else {
 				PrintEmptyLineOrNot();
-				System.out.println("BLACK HOLE: Everything within 2 hexes moves 1 hex closer");
+				System.out.println("BLACK HOLE:");
+				System.out.println("\tEverything within 2 hexes moves 1 hex closer.");
 
 			}
 		}
@@ -363,8 +368,8 @@ public class TerrainStuff {
 			
 			if (impulse < 22) {
 				PrintEmptyLineOrNot();
-				System.out.println("Move GRAVITY WAVE.  Strength is now " + (int) GravityWaveStrength + ".  (Terrai[N] Damage)");
-				System.out.println("\tTurns all ships 60° facing parallel to wave.");
+				System.out.println("GRAVITY WAVE moves:");
+				System.out.println("\tStrength is now " + (int) GravityWaveStrength + ".  Colliding ships turned 60° facing parallel to wave.  (Terrai[N] Damage)");
 				GravityWaveDamage = (int) GravityWaveStrength;
 				GravityWaveStrength = GravityWaveStrength * 0.9;
 			} else if (impulse > 21) {
@@ -372,9 +377,9 @@ public class TerrainStuff {
 				GravityWaveDamage = (int) GravityWaveStrength;
 				GravityWaveStrength = base * GravityWaveStrengthStart / 100;
 				PrintEmptyLineOrNot();
-				System.out.println("Move GRAVITY WAVE.  Strength is now " + (int) GravityWaveStrength + ".  (Terrai[N] Damage)");
-				System.out.println("\tTurns all ships 60° facing parallel to wave.");
-			}
+				System.out.println("GRAVITY WAVE moves:");
+				System.out.println("\tStrength is now " + (int) GravityWaveStrength + ".  Colliding ships turned 60° facing parallel to wave.  (Terrai[N] Damage)");
+							}
 			if (impulse == 32) {
 				GravityWaveTurnNumberStart = GravityWaveTurnNumberStart + GravityWaveTurnInterval;
 				GravityWaveStrength = GravityWaveStrengthStart; 
@@ -421,11 +426,11 @@ public class TerrainStuff {
 				int facing = DamageAllocation.rollDice(1, 3);
 				System.out.print("\t" + Driver.currentGameYard.list[i].name + " moves 1 hex in direction " + direction);
 				if (Driver.currentGameYard.list[i].name != "TORP" && facing == 1) {
-					System.out.print(", rotated 60° CW");
+					System.out.print(", rotated 60° CW.");
 				} else if (Driver.currentGameYard.list[i].name != "TORP" && facing == 2) {
-					System.out.print(", rotated 60° CCW");
+					System.out.print(", rotated 60° CCW.");
 				} else if (Driver.currentGameYard.list[i].name != "TORP" && facing == 3) {
-					System.out.print(", same facing");
+					System.out.print(", same facing.");
 				}
 				System.out.println();
 				
@@ -459,7 +464,8 @@ public class TerrainStuff {
 							count++;
 							if (count == 1) {
 								PrintEmptyLineOrNot();
-								System.out.print("DUST CLOUD damage (" + DustCloudIntensity + "): " + name);
+								System.out.println("DUST CLOUD:");
+								System.out.print("\tDamage (" + DustCloudIntensity + "): " + name);
 							} else {
 								System.out.print(", " + name);
 							}
@@ -496,7 +502,8 @@ public class TerrainStuff {
 			if(impulse == PulsarRandomImpulse) {
 				PrintEmptyLineOrNot();
 //				System.out.println("VARIABLE PULSAR: " + PulsarBaseStrength + " dmg (0-5 hexes), " + (int) (PulsarBaseStrength*0.75) + " dmg (6-10 hexes), " + (int) (PulsarBaseStrength/2) + " dmg (11-20 hexes), " + (int) (PulsarBaseStrength/4) + " dmg (21-50 hexes), 0 dmg (50+ hexes)");
-				System.out.println("VARIABLE PULSAR: Base Strength is " + PulsarBaseStrength);
+				System.out.println("VARIABLE PULSAR:");
+				System.out.println("\tBase Strength is " + PulsarBaseStrength + ".");
 				
 				for (int i = 0; i < Driver.currentGameYard.numShips; i++) {
 					System.out.println();
