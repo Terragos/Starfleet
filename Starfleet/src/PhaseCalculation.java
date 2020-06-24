@@ -40,26 +40,9 @@ public class PhaseCalculation {
 		//  BEGIN ACTUAL IMPULSE MOVEMENT PROCEDURE
 		for(int i = 1; i <= Driver.numImpulses; i++) {
 
-			if(TerrainStuff.TerrainTypeList.contains("B") || TerrainStuff.TerrainTypeList.contains("D") || TerrainStuff.TerrainTypeList.contains("V")) {
-				if(i == 1) {
-					System.out.println();
-					System.out.println("(Printing ALL Impulses due to Terrain)");
-					System.out.println();
-				}
-				printAllImpulses = true;
-			}
-
-			if(TerrainStuff.TerrainTypeList.contains("B") || TerrainStuff.TerrainTypeList.contains("G") || TerrainStuff.TerrainTypeList.contains("D") || TerrainStuff.TerrainTypeList.contains("N") || TerrainStuff.TerrainTypeList.contains("V")) {
-				TerrainStuff.CheckForBlackHoleMovement(i);
-				TerrainStuff.CheckForGravityWave(i);
-				TerrainStuff.DustCloudDamge(i);
-				TerrainStuff.NebulaeRandomMovement(i);
-				TerrainStuff.PulsarDamage(i);
-				if (TerrainStuff.EmptyLinePrinted) {
-					System.out.println();
-					TerrainStuff.EmptyLinePrinted = false;
-				}
-			}
+			printAllImpulses = CheckToForceAllImpulses(i, printAllImpulses);	//  Some terrains need all impulses to be displayed
+			
+			CheckForTerrainEffects(i);
 			
 			int move = 0;
 			for(int m = 0; m < Driver.currentGameYard.numShips; m++) {	
@@ -267,6 +250,77 @@ public class PhaseCalculation {
 	}
 	
 	
+	
+	
+	
+	public static boolean CheckToForceAllImpulses(int impulseNum, boolean printAllImpulses) {
+		
+		if(TerrainStuff.TerrainTypeList.contains("B") || TerrainStuff.TerrainTypeList.contains("D") || TerrainStuff.TerrainTypeList.contains("V")) {
+			if(impulseNum == 1) {
+				System.out.println();
+				System.out.println("(Printing ALL Impulses due to Terrain)");
+				System.out.println();
+			}
+			printAllImpulses = true;
+		}
+		
+		for (int shipNum = 0; shipNum < Driver.currentGameYard.numShips; shipNum++) {
+			if (Driver.currentGameYard.list[shipNum].race.equalsIgnoreCase("ISC")) {
+				printAllImpulses = true;
+			}
+		}
+		
+		return printAllImpulses;
+	}
+	
+	
+	
+	
+	
+	public static void CheckForTerrainEffects(int impulseNum) {
+		int flag = 0;
+		
+		if(TerrainStuff.TerrainTypeList.contains("B")) {
+			TerrainStuff.CheckForBlackHoleMovement(impulseNum);
+			flag++;
+		}
+		if(TerrainStuff.TerrainTypeList.contains("G")) {
+			TerrainStuff.CheckForGravityWave(impulseNum);
+			flag++;
+		}
+		if(TerrainStuff.TerrainTypeList.contains("D")) {
+			TerrainStuff.DustCloudDamge(impulseNum);
+			flag++;
+		}
+		if(TerrainStuff.TerrainTypeList.contains("N")) {
+			TerrainStuff.NebulaeRandomMovement(impulseNum);
+			flag++;
+		}
+		if(TerrainStuff.TerrainTypeList.contains("V")) {
+			TerrainStuff.PulsarDamage(impulseNum);
+			flag++;
+		}
+			
+		if(flag > 0) {
+			if (TerrainStuff.EmptyLinePrinted) {
+				System.out.println();
+				TerrainStuff.EmptyLinePrinted = false;
+			}
+		}	
+
+//		if(TerrainStuff.TerrainTypeList.contains("B") || TerrainStuff.TerrainTypeList.contains("G") || TerrainStuff.TerrainTypeList.contains("D") || TerrainStuff.TerrainTypeList.contains("N") || TerrainStuff.TerrainTypeList.contains("V")) {
+//			TerrainStuff.CheckForBlackHoleMovement(impulseNum);
+//			TerrainStuff.CheckForGravityWave(impulseNum);
+//			TerrainStuff.DustCloudDamge(impulseNum);
+//			TerrainStuff.NebulaeRandomMovement(impulseNum);
+//			TerrainStuff.PulsarDamage(impulseNum);
+//			if (TerrainStuff.EmptyLinePrinted) {
+//				System.out.println();
+//				TerrainStuff.EmptyLinePrinted = false;
+//			}
+//		}
+
+	}
 	
 	
 	
