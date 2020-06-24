@@ -321,7 +321,7 @@ public class OutputToTextFile {
 			currentShip.shipType = typeInput;
 		}
 
-		currentShip.name = currentShip.race + "-" + currentShip.shipType;
+		currentShip.name = currentShip.race.substring(0, 1).toUpperCase() + currentShip.race.substring(1, 3) + "-" + currentShip.shipType;
 		System.out.println("Ship Name = " + currentShip.name);
 
 		System.out.print("Crew Units (" + currentShip.crewUnits + "): ");
