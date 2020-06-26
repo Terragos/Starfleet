@@ -92,6 +92,7 @@ public class Starship {
 	public Starship(Ship kind, int speed, String name, String type) {
 		int[] fake = {0};
 		if(kind == Ship.TORPEDO) { 
+			this.race = "-";
 			this.name = name;
 			this.turnMode = "X";
 			this.speed = speed;
@@ -101,6 +102,7 @@ public class Starship {
 			this.kindOfShip = kind;
 			this.shipType = type;
 		} else if(kind == Ship.DRONE) {
+			this.race = "-";
 			this.name = name;
 			this.speed = speed;
 			this.spi = speed/32.0;
@@ -113,6 +115,7 @@ public class Starship {
 			this.setupSSD(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 5, fake, fake, fake);
 			// Maybe make a drone class
 		} else if(kind == Ship.SHUTTLE) {
+			this.race = "-";
 			this.name = name;
 			this.speed = speed;
 			this.spi = speed/32.0;
@@ -124,6 +127,7 @@ public class Starship {
 			this.ssd = new Part[25];
 			this.setupSSD(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 6, fake, fake, fake);
 		} else if(kind == Ship.FIGHTER) {
+			this.race = "-";
 			this.name = name;
 			this.speed = speed;
 			this.spi = speed/32.0;
