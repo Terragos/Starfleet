@@ -1554,6 +1554,29 @@ public class Shipyard {
 		ship.setupSSD(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 199, se, sc, da);
 		defaultYard.addShipToShipyard(ship);
 
+		//  RIFT INVADERS  =============================================================================================
+
+		ship = new Starship("Rift Invader", "50", "-", "-", "-", "-", "-", "-", "-", "-", "-", "-");
+		se = new int[]{6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6};
+		sc = new int[]{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+		da = new int[]{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+		ship.setupSSD(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 50, se, sc, da);
+		defaultYard.addShipToShipyard(ship);
+
+		ship = new Starship("Rift Invader", "100", "-", "-", "-", "-", "-", "-", "-", "-", "-", "-");
+		se = new int[]{6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6};
+		sc = new int[]{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+		da = new int[]{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+		ship.setupSSD(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 100, se, sc, da);
+		defaultYard.addShipToShipyard(ship);
+
+		ship = new Starship("Rift Invader", "150", "-", "-", "-", "-", "-", "-", "-", "-", "-", "-");
+		se = new int[]{6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6};
+		sc = new int[]{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+		da = new int[]{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+		ship.setupSSD(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 150, se, sc, da);
+		defaultYard.addShipToShipyard(ship);
+
 		//  OTHER  =============================================================================================
 
 		ship = new Starship("Blank", "333", "-", "-", "-", "-", "-", "-", "-", "-", "-", "-");
@@ -1951,6 +1974,10 @@ public class Shipyard {
 			race = "Seltorian";
 		} else if (r.equalsIgnoreCase("I")) {
 			race = "ISC";
+		} else if (r.equalsIgnoreCase("J")) {
+			race = "Jindarian";
+		} else if (r.equalsIgnoreCase("V")) {
+			race = "Vudar";
 		} else if (r.equalsIgnoreCase("C")) {
 			race = "Civilian";
 		} else if (r.equalsIgnoreCase("Q")) {
