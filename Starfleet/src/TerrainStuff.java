@@ -194,34 +194,41 @@ public class TerrainStuff {
 		
 		System.out.print("Current Terrain List: ");
 		
-		for (int i = 0; i <= TerrainTypeList.length(); i++) {
+		if (TerrainTypeList.length() > 0) {
+			for (int i = 0; i <= TerrainTypeList.length(); i++) {
+				
+				if (i == TerrainTypeList.indexOf("A")) {
+					System.out.print("Asteroids");
+				} else if (i == TerrainTypeList.indexOf("B")) {
+					System.out.print("Black Hole");
+				} else if (i == TerrainTypeList.indexOf("N")) {
+					System.out.print("Nebulae");
+				} else if (i == TerrainTypeList.indexOf("V")) {
+					System.out.print("Variable Pulsar");
+				} else if (i == TerrainTypeList.indexOf("S")) {
+					System.out.print("Sunspots");
+				} else if (i == TerrainTypeList.indexOf("I")) {
+					System.out.print("Ion Storms");
+				} else if (i == TerrainTypeList.indexOf("R")) {
+					System.out.print("Radiation Zone");
+				} else if (i == TerrainTypeList.indexOf("D")) {
+					System.out.print("Dust Clouds");
+				} else if (i == TerrainTypeList.indexOf("W")) {
+					System.out.print("WYN Radiation Zone");
+				} else if (i == TerrainTypeList.indexOf("P")) {
+					System.out.print("Planetary Rings");
+				} else if (i == TerrainTypeList.indexOf("G")) {
+					System.out.print("Gravity Waves");
+				}
+				
+				if (i < TerrainTypeList.length()-1) {
+					System.out.print(", ");
+				}
+			}
 			
-			if (i == TerrainTypeList.indexOf("A")) {
-				System.out.print("Asteroids");
-			} else if (i == TerrainTypeList.indexOf("B")) {
-				System.out.print("Black Hole");
-			} else if (i == TerrainTypeList.indexOf("N")) {
-				System.out.print("Nebulae");
-			} else if (i == TerrainTypeList.indexOf("V")) {
-				System.out.print("Variable Pulsar");
-			} else if (i == TerrainTypeList.indexOf("S")) {
-				System.out.print("Sunspots");
-			} else if (i == TerrainTypeList.indexOf("I")) {
-				System.out.print("Ion Storms");
-			} else if (i == TerrainTypeList.indexOf("R")) {
-				System.out.print("Radiation Zone");
-			} else if (i == TerrainTypeList.indexOf("D")) {
-				System.out.print("Dust Clouds");
-			} else if (i == TerrainTypeList.indexOf("W")) {
-				System.out.print("WYN Radiation Zone");
-			} else if (i == TerrainTypeList.indexOf("P")) {
-				System.out.print("Planetary Rings");
-			} else if (i == TerrainTypeList.indexOf("G")) {
-				System.out.print("Gravity Waves");
-			}
-			if (i < TerrainTypeList.length()-1) {
-				System.out.print(", ");
-			}
+		} else {
+			System.out.print("None"); 
+			
 		}
 
 		System.out.println();
