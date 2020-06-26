@@ -40,9 +40,17 @@ public class PhaseCalculation {
 		//  BEGIN ACTUAL IMPULSE MOVEMENT PROCEDURE
 		for(int i = 1; i <= Driver.numImpulses; i++) {
 
+			SoloScenario.NumberImpulsesSoFar++;
+			
 			printAllImpulses = CheckToForceAllImpulses(i, printAllImpulses);	//  Some terrains need all impulses to be displayed
 			
 			CheckForTerrainEffects(i);
+			
+			if (Driver.SoloScenario > 0) {
+				SoloScenario.SoloScenarios();
+			}
+			
+//			System.out.println("Driver.currentGameYard.numShips: " + Driver.currentGameYard.numShips);
 			
 			int move = 0;
 			for(int m = 0; m < Driver.currentGameYard.numShips; m++) {	
@@ -263,6 +271,8 @@ public class PhaseCalculation {
 			}
 			printAllImpulses = true;
 		}
+		
+//		System.out.println("Driver.currentGameYard.numShips: " + Driver.currentGameYard.numShips);
 		
 		for (int shipNum = 0; shipNum < Driver.currentGameYard.numShips; shipNum++) {
 			if (Driver.currentGameYard.list[shipNum].race.equalsIgnoreCase("ISC")) {
@@ -968,11 +978,15 @@ public class PhaseCalculation {
 		int location = findTorpInCurrGameYard(); 
 		if(location != -1) {
 			Driver.currentGameYard.removeShipFromShipyard(location + 1);
-		}else {
+		} else {
 			Starship torp = new Starship(Starship.Ship.TORPEDO, 32, "TORP", "Torpedo");
 			Driver.currentGameYard.addShipToShipyard(torp);
 		}
 	}
+	
+	
+	
+	
 	
 	public static int findTorpInCurrGameYard() {
 		
