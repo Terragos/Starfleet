@@ -1,7 +1,9 @@
 
 public class SoloScenario {
 
-	public static int RiftInvaderNum = 2;
+	public static int RiftInvaderNumSmall = 1;
+	public static int RiftInvaderNumMedium = 0;
+	public static int RiftInvaderNumLarge = 0;
 	public static int NumberImpulsesSoFar = 0;
 	
 	public static void SoloScenarios() {
@@ -42,39 +44,41 @@ public class SoloScenario {
 		
 		if (invaderChance == 2) {
 			
-			RiftInvaderNum++;
 			
 			if (typeChance >= 1 & typeChance <= 3) {
-				Driver.InstallSpecificShip("Rift Invader", "50");
+				RiftInvaderNumSmall++;
+				Driver.InstallSpecificShip("Rift Invader", "1");
 				int totalShips = Driver.currentGameYard.numShips - 1;
 				Driver.currentGameYard.list[totalShips].speed = 20;
 				Driver.currentGameYard.list[totalShips].spi = 20/32.0;
 				Driver.currentGameYard.list[totalShips].distrv = 0;
-				Driver.currentGameYard.list[totalShips].name = Driver.currentGameYard.list[totalShips].name + " " + (char) (64 + RiftInvaderNum);
+				Driver.currentGameYard.list[totalShips].name = Driver.currentGameYard.list[totalShips].name + " " + (char) (64 + RiftInvaderNumSmall);
 				System.out.println();
-				System.out.println("New Rift Invader (50) arriving from rift section " + entryPositionChance + ", facing " + facingLetter + ".");
+				System.out.println("New " + Driver.currentGameYard.list[totalShips].name + " (25 hp) arriving from rift section " + entryPositionChance + ", facing " + facingLetter + ".");
 				System.out.println();
 
 			} else if (typeChance == 4 || typeChance == 5) {
-				Driver.InstallSpecificShip("Rift Invader", "100");
+				RiftInvaderNumMedium++;
+				Driver.InstallSpecificShip("Rift Invader", "2");
 				int totalShips = Driver.currentGameYard.numShips - 1;
 				Driver.currentGameYard.list[Driver.currentGameYard.numShips-1].speed = 18;
 				Driver.currentGameYard.list[Driver.currentGameYard.numShips-1].spi = 18/32.0;
 				Driver.currentGameYard.list[totalShips].distrv = 0;
-				Driver.currentGameYard.list[totalShips].name = Driver.currentGameYard.list[totalShips].name + " " + (char) (64 + RiftInvaderNum);
+				Driver.currentGameYard.list[totalShips].name = Driver.currentGameYard.list[totalShips].name + " " + (char) (64 + RiftInvaderNumMedium);
 				System.out.println();
-				System.out.println("New Rift Invader (100) arriving from rift section " + entryPositionChance + ", facing " + facingLetter + ".");
+				System.out.println("New " + Driver.currentGameYard.list[totalShips].name + " (50 hp) arriving from rift section " + entryPositionChance + ", facing " + facingLetter + ".");
 				System.out.println();
 				
 			} else if (typeChance == 6) {
-				Driver.InstallSpecificShip("Rift Invader", "150");
+				RiftInvaderNumLarge++;
+				Driver.InstallSpecificShip("Rift Invader", "3");
 				int totalShips = Driver.currentGameYard.numShips - 1;
 				Driver.currentGameYard.list[Driver.currentGameYard.numShips-1].speed = 16;
 				Driver.currentGameYard.list[Driver.currentGameYard.numShips-1].spi = 16/32.0;
 				Driver.currentGameYard.list[totalShips].distrv = 0;
-				Driver.currentGameYard.list[totalShips].name = Driver.currentGameYard.list[totalShips].name + " " + (char) (64 + RiftInvaderNum);
+				Driver.currentGameYard.list[totalShips].name = Driver.currentGameYard.list[totalShips].name + " " + (char) (64 + RiftInvaderNumLarge);
 				System.out.println();
-				System.out.println("New Rift Invader (150) arriving from rift section " + entryPositionChance + ", facing " + facingLetter + ".");
+				System.out.println("New " + Driver.currentGameYard.list[totalShips].name + " (75 hp) arriving from rift section " + entryPositionChance + ", facing " + facingLetter + ".");
 				System.out.println();
 				
 			}
