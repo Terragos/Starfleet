@@ -8,6 +8,7 @@ public class Driver {
 	public static int labResearchAquired = 0;
 	public static int labResearchRequired = 0;
 	public static int MonsterScenario = 0;
+	public static int SoloScenario = 0;
 	public static double MonsterBPVModifier = 1.0;
 	public static boolean MonsterBPVModifierApplied = false;
 	public static int numImpulses = 0;
@@ -18,7 +19,7 @@ public class Driver {
 	public static Shipyard defaultYard = Shipyard.setupDefaultShipyard();
 	public static Scanner keyboard = new Scanner(System.in);
 
-	public static String[] labResearchRaceNames = {"Federation", "Klingon", "Romulan", "Kzinti", "Gorn", "Tholian", "Orion", "Hydran", "Lyran", "WYN", "Andromedan", "Frax", "Seltorian, ISC"};
+	public static String[] labResearchRaceNames = {"Federation", "Klingon", "Romulan", "Kzinti", "Gorn", "Tholian", "Orion", "Hydran", "Lyran", "WYN", "Andromedan", "Frax", "Seltorian", "ISC", "Jindarian", "Vudar"};
 	//public static int[] labResearchTotalPoints = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
 	public static LabResearch[] labResearches;
 	
@@ -27,7 +28,6 @@ public class Driver {
 	/* Main Method */
 	public static void main(String[] args) throws IOException {
 		
-		// OutputStreamRedirect.main();
 
 		labResearches = new LabResearch[labResearchRaceNames.length];
 		for(int i = 0; i < labResearchRaceNames.length; i++) {
@@ -847,8 +847,8 @@ public class Driver {
 		System.out.println("|      9.                                                                         |");
 		System.out.println("|     10.                                                                         |");
 		System.out.println("|                                                                                 |");
-		System.out.println("|  2-PLAYER:                                                                      |");
-		System.out.println("|     21.                                                                         |");
+		System.out.println("|  Solo Scenarios:                                                                |");
+		System.out.println("|     21. Rift Invaders                              Fed-CC x2     Invaders x2    |");
 		System.out.println("|     22.                                                                         |");
 		System.out.println("|     23.                                                                         |");
 		System.out.println("|     24.                                                                         |");
@@ -993,6 +993,21 @@ public class Driver {
 //				InstallSpecificShip("Lyran", "CA");
 //				currentGameYard.list[6].speed = 6;		//  Speed coming into game
 				
+			} else if (scenario == 21) {
+				SoloScenario = 1;
+				labResearchRequired = 200;
+				Driver.currentGameYard.numShips = 0;
+				
+				InstallSpecificShip("Federation", "CC");
+				currentGameYard.list[0].speed = 20;
+				
+				InstallSpecificShip("Federation", "CC");
+				currentGameYard.list[1].speed = 0;
+				
+				InstallSpecificShip("Rift Invader", "1");
+				currentGameYard.list[2].name = "Rif-1 A";
+				currentGameYard.list[2].speed = 20;
+
 			} else if (scenario == 101) {
 				MonsterStuff.ZeroOutMonsterAndLabResearchValues();
 				Driver.currentGameYard.numShips = 0;
